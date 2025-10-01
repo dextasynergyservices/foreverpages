@@ -7,11 +7,16 @@ const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
+  recommendedConfig: {},
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript", "eslint:recommended",
-    "plugin:prettier/recommended"),
+  ...compat.extends(
+    "next/core-web-vitals",
+    "next/typescript",
+    "eslint:recommended",
+    "plugin:prettier/recommended"
+  ),
   {
     ignores: [
       "node_modules/**",
@@ -23,6 +28,10 @@ const eslintConfig = [
       "coverage",
       "src/generated/**",
     ],
+    rules: {
+      "prettier/prettier": "error",
+      "react/no-unescaped-entities": "warn",
+    },
   },
 ];
 
