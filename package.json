@@ -4,9 +4,22 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "build": "pnpm prisma generate && next build",
+    "start": "next start -p ${PORT:-8080}",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "lint:fix": "eslint --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "lint-all": "pnpm lint && pnpm format",
+    "lint:next": "next lint",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:generate": "prisma generate",
+    "prisma:studio": "prisma studio",
+    "seed:tasks": "tsx prisma/seed-tasks-cp.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.16.3",
@@ -23,7 +36,10 @@
     "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
     "prisma": "^6.16.3",
     "tailwindcss": "^4.1.13",
     "typescript": "^5"

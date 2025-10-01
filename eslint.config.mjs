@@ -7,11 +7,19 @@ const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
+  recommendedConfig: {},
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript", "eslint:recommended",
-    "plugin:prettier/recommended"),
+  // extended configs
+  ...compat.extends(
+    "next/core-web-vitals",
+    "next/typescript",
+    "eslint:recommended",
+    "plugin:prettier/recommended"
+  ),
+
+  // ✅ separate ignore block
   {
     ignores: [
       "node_modules/**",
@@ -19,10 +27,18 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
-      "public",
-      "coverage",
+      "public/**",
+      "coverage/**",
       "src/generated/**",
     ],
+  },
+
+  // ✅ rules block as its own config object
+  {
+    rules: {
+      "prettier/prettier": "error",
+      "react/no-unescaped-entities": "warn",
+    },
   },
 ];
 
