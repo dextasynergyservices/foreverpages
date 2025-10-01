@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "moduleResolution": "Node",
+    "module": "ESNext",
+    "noEmit": false,
+    "outDir": "dist",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "strict": true
+  },
+  "include": ["prisma/**/*.ts"]
+}

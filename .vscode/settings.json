@@ -1,0 +1,46 @@
+{
+  // Format using Prettier on save
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // Fix ESLint issues on save
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // Tailwind class support
+  "tailwindCSS.includeLanguages": {
+    "typescript": "html",
+    "typescriptreact": "html"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    "twMerge\\(([^)]*)\\)",
+    "clsx\\(([^)]*)\\)",
+    "classnames\\(([^)]*)\\)"
+  ],
+
+  // Prettier only runs if a config is present
+  "prettier.requireConfig": true,
+
+  // Show unused code (gray out)
+  "editor.showUnused": true,
+
+  // Organize imports
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+
+  // TypeScript aliases (jsconfig/tsconfig paths support)
+  "typescript.preferences.importModuleSpecifierEnding": "auto",
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  // File-specific settings
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // Line endings
+  "files.eol": "\n",
+
+  // Optional: Trim trailing whitespace on save
+  "files.trimTrailingWhitespace": true
+}
