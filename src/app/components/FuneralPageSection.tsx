@@ -49,12 +49,113 @@ const sampleFuneralPages: FuneralPageItem[] = [
   },
 ];
 
+// Canvas animation classes
+class GridItem {
+  x: number;
+  y: number;
+  points: { hex: Array<{ x: number; y: number }>; hl: Array<{ x: number; y: number }> };
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+    this.points = {
+      hex: [],
+      hl: [],
+    };
+    this.init();
+  }
+
+  init() {
+    const { PI, cos, sin } = Math;
+    const HEX_CRAD = 12;
+    const HEX_GAP = 2;
+
+    for (let i = 0; i < 6; i++) {
+      const angle = (PI / 3) * i;
+      this.points.hex.push({
+        x: this.x + HEX_CRAD * cos(angle),
+        y: this.y + HEX_CRAD * sin(angle),
+      });
+    }
+
+    const innerRadius = HEX_CRAD - HEX_GAP;
+    for (let i = 0; i < 6; i++) {
+      const angle = (PI / 3) * i;
+      this.points.hl.push({
+        x: this.x + innerRadius * cos(angle),
+        y: this.y + innerRadius * sin(angle),
+      });
+    }
+  }
+
+  draw(ct: CanvasRenderingContext2D) {
+    ct.moveTo(this.points.hex[0].x, this.points.hex[0].y);
+    for (let i = 1; i < 6; i++) {
+      ct.lineTo(this.points.hex[i].x, this.points.hex[i].y);
+    }
+    ct.closePath();
+  }
+
+  highlight(ct: CanvasRenderingContext2D) {
+    ct.moveTo(this.points.hl[0].x, this.points.hl[0].y);
+    for (let i = 1; i < 6; i++) {
+      ct.lineTo(this.points.hl[i].x, this.points.hl[i].y);
+    }
+    ct.closePath();
+  }
+}
+
+class Grid {
+  cols: number;
+  rows: number;
+  items: GridItem[];
+
+  constructor(rows: number, cols: number) {
+    this.cols = cols || 16;
+    this.rows = rows || 16;
+    this.items = [];
+    this.init();
+  }
+
+  init() {
+    const { sqrt } = Math;
+    const HEX_CRAD = 12;
+    const HEX_GAP = 2;
+    const unit_y = HEX_CRAD * sqrt(3) * 0.5 + 0.5 * HEX_GAP;
+    const unit_x = 3 * HEX_CRAD + HEX_GAP * sqrt(3);
+    const off_x = 1.5 * HEX_CRAD + HEX_GAP * sqrt(3) * 0.5;
+
+    for (let row = 0; row < this.rows; row++) {
+      const y = row * unit_y;
+      for (let col = 0; col < this.cols; col++) {
+        const x = (row % 2 === 0 ? 0 : off_x) + col * unit_x;
+        this.items.push(new GridItem(x, y));
+      }
+    }
+  }
+
+  draw(ct: CanvasRenderingContext2D, hexBg: string, hexHl: string, hexHlw: number) {
+    ct.fillStyle = hexBg;
+    ct.beginPath();
+    this.items.forEach((item) => item.draw(ct));
+    ct.closePath();
+    ct.fill();
+
+    ct.strokeStyle = hexHl;
+    ct.lineWidth = hexHlw;
+    ct.beginPath();
+    this.items.forEach((item) => item.highlight(ct));
+    ct.closePath();
+    ct.stroke();
+  }
+}
+
 // Canvas animation function
 const initCanvas = (canvas: HTMLCanvasElement, isDark: boolean) => {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
-  const { PI, cos, sin, sqrt, min } = Math;
+  const { sqrt, min } = Math;
   const HEX_CRAD = 12;
 
   const HEX_BG = isDark ? "#000000" : "#ffffff";
@@ -64,99 +165,14 @@ const initCanvas = (canvas: HTMLCanvasElement, isDark: boolean) => {
 
   const unit_x = 3 * HEX_CRAD + HEX_GAP * sqrt(3);
   const unit_y = HEX_CRAD * sqrt(3) * 0.5 + 0.5 * HEX_GAP;
-  const off_x = 1.5 * HEX_CRAD + HEX_GAP * sqrt(3) * 0.5;
 
   let w: number, h: number, _min: number;
-  let grid: { x: number; y: number; hex: { x: number; y: number; r: number } }[];
+  let grid: Grid;
   let source = { x: 0, y: 0 };
   let t = 0;
   let animationId: number | null = null;
   let isMouseMoving = false;
   let lastMouseTime = 0;
-
-  class GridItem {
-    x: number;
-    y: number;
-    points: { hex: Array<{ x: number; y: number }>; hl: Array<{ x: number; y: number }> };
-
-    constructor(x = 0, y = 0) {
-      this.x = x;
-      this.y = y;
-      this.points = { hex: [], hl: [] };
-      this.init();
-    }
-
-    init() {
-      const ba = PI / 3;
-      const ri = HEX_CRAD - 0.5 * HEX_HLW;
-
-      for (let i = 0; i < 6; i++) {
-        const a = i * ba;
-        const x = this.x + HEX_CRAD * cos(a);
-        const y = this.y + HEX_CRAD * sin(a);
-
-        this.points.hex.push({ x, y });
-
-        if (i > 2) {
-          const xh = this.x + ri * cos(a);
-          const yh = this.y + ri * sin(a);
-          this.points.hl.push({ x: xh, y: yh });
-        }
-      }
-    }
-
-    draw(ct: CanvasRenderingContext2D) {
-      for (let i = 0; i < 6; i++) {
-        const method = i === 0 ? "moveTo" : "lineTo";
-        ct[method](this.points.hex[i].x, this.points.hex[i].y);
-      }
-    }
-
-    highlight(ct: CanvasRenderingContext2D) {
-      for (let i = 0; i < 3; i++) {
-        const method = i === 0 ? "moveTo" : "lineTo";
-        ct[method](this.points.hl[i].x, this.points.hl[i].y);
-      }
-    }
-  }
-
-  class Grid {
-    cols: number;
-    rows: number;
-    items: GridItem[];
-
-    constructor(rows: number, cols: number) {
-      this.cols = cols || 16;
-      this.rows = rows || 16;
-      this.items = [];
-      this.init();
-    }
-
-    init() {
-      for (let row = 0; row < this.rows; row++) {
-        const y = row * unit_y;
-        for (let col = 0; col < this.cols; col++) {
-          const x = (row % 2 === 0 ? 0 : off_x) + col * unit_x;
-          this.items.push(new GridItem(x, y));
-        }
-      }
-    }
-
-    draw(ct: CanvasRenderingContext2D) {
-      ct.fillStyle = HEX_BG;
-      ct.beginPath();
-      this.items.forEach((item) => item.draw(ct));
-      ct.closePath();
-      ct.fill();
-
-      ct.strokeStyle = HEX_HL;
-      ct.lineWidth = HEX_HLW;
-      ct.beginPath();
-      this.items.forEach((item) => item.highlight(ct));
-      ct.closePath();
-      ct.stroke();
-    }
-  }
 
   const init = () => {
     w = canvas.width = canvas.offsetWidth;
@@ -206,7 +222,7 @@ const initCanvas = (canvas: HTMLCanvasElement, isDark: boolean) => {
     light.addColorStop(1, `rgba(${lightColor}, 0)`);
 
     fillBackground(light);
-    grid.draw(ctx);
+    grid.draw(ctx, HEX_BG, HEX_HL, HEX_HLW);
 
     t++;
     animationId = requestAnimationFrame(neon);
