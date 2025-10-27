@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useTranslations } from "@/hooks/useTranslations";
-import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export const LanguageTest: React.FC = () => {
   const { t, locale } = useTranslations();
