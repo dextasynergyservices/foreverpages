@@ -8,7 +8,7 @@ import { FuneralPageSection } from "@/components/FuneralPageSection";
 import { HowItWorksSection } from "@/components/HowItWorksSection ";
 import { FAQSection } from "@/components/FAQ";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
-import { Contact } from "@/components/contact";
+import { Contact } from "@/components/Contact";
 import { CTASection } from "@/components/CTASection";
 import { PricingSection } from "@/components/PricingSection";
 import { Footer } from "@/components/Footer";
