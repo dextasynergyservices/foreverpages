@@ -1,0 +1,305 @@
+{
+  "hero": {
+    "title": "Sọpụrụ Ihe Ncheta Ha",
+    "subtitle": "Mepụta ebe nrụọrụ weebụ ncheta mara mma ebe ezinụlọ na ndị enyi na-eme emume ndụ ma na-ekerịta ihe ncheta ọnụ",
+    "buttons": {
+      "create": "Mepụta Ibe Ncheta",
+      "view": "Lelee Ihe Nlereanya Ncheta"
+    }
+  },
+  "navbar": {
+    "logo": "ForeverPages",
+    "navigation": {
+      "features": "Ihe Ngosipụta",
+      "home": "Ụlọ",
+      "memorials": "Ibe Ncheta",
+      "howItWorks": "Otu Ọ Si Arụ Ọrụ",
+      "support": "Kpọtụrụ Anyị"
+    },
+    "buttons": {
+      "signIn": "Banye"
+    }
+  },
+  "contact": {
+    "title": "Kpọtụrụ Anyị",
+    "subtitle": "Ị nwere ajụjụ ma ọ bụ ịchọrọ enyemaka? Anyị nọ ebe a iji nyere gị aka ịmepụta ncheta mara mma.",
+    "info": {
+      "email": {
+        "title": "Zitere Anyị Email",
+        "description": "Zitere anyị email n'oge ọ bụla"
+      },
+      "phone": {
+        "title": "Kpọọ Anyị",
+        "description": "Mọnde ruo Fraịdee site n’elekere 10 ruo 6 (WAT)"
+      },
+      "address": {
+        "title": "Adreesị Ụlọ Ọrụ"
+      },
+      "hours": {
+        "title": "Oge Ọrụ",
+        "weekdays": "Mọnde - Fraịdee",
+        "saturday": "Satọdee",
+        "sunday": "Sọnde",
+        "closed": "Emeghị"
+      }
+    },
+    "form": {
+      "name": "Aha Dum",
+      "namePlaceholder": "Tinye aha gị dum",
+      "email": "Adreesị Email",
+      "emailPlaceholder": "Tinye adreesị email gị",
+      "subject": "Isiokwu",
+      "subjectPlaceholder": "Kedu ihe nke a gbasara?",
+      "message": "Ozi",
+      "messagePlaceholder": "Gwa anyị otú anyị ga-esi nyere gị aka...",
+      "send": "Zipu Ozi",
+      "sending": "Na-eziga..."
+    }
+  },
+
+  "features": {
+    "title": "Atụmatụ Obi Ebere",
+    "subtitle": "Ihe niile ịchọrọ iji mepụta otuto mara mma na-adịgide adịgide nke na-akpọkọta ndị mmadụ",
+    "items": {
+      "memoryGallery": {
+        "title": "Ebe Ncheta Foto",
+        "description": "Kekọrịta foto, vidiyo, na ihe ncheta dị oke ọnụ ahịa na-enweghị oke na nchịkọta mara mma nke na-akọ akụkọ zuru ezu nke njem ndụ onye ị hụrụ n'anya na oge pụrụ iche ndị e weghaara n'oge."
+      },
+      "tributeWall": {
+        "title": "Mgbidi Otuto",
+        "description": "Ndị enyi na ezinụlọ nwere ike ịhapụ ozi sitere n'obi, kesaa akụkọ nkeonwe, ma nye nkasi obi n'ime oghere a raara nye nke na-aghọ ebe nzukọ dijitalụ maka onye ọ bụla nwere mmasị n'ebe onye ị hụrụ n'anya nọ."
+      },
+      "privacyControls": {
+        "title": "Njikwa Nzuzo",
+        "description": "Jide n'aka na ị na-achịkwa onye nwere ike ile anya ma nye aka na ncheta site na ntọala nzuzo anyị zuru ezu nke na-eme ka obi sie ike na nchekwa ezinụlọ gị n'oge a siri ike."
+      },
+      "foreverPreserved": {
+        "title": "Echekwabara Ruo Mgbe Ebighị Ebi",
+        "description": "Ibe ncheta gị ka echekwabara ruo mgbe ebighị ebi na nchekwa igwe ojii anyị nke nchekwa, na-eme ka ha nọgide na-enweta maka ọgbọ ndị na-abịa n'ọdịnihu iji gaa, cheta, ma jiri nlezianya ruo mgbe ebighị ebi na-enweghị oke oge."
+      }
+    }
+  },
+  "funeralPages": {
+    "title": "Ncheta Obodo",
+    "subtitle": "Hụ otú ndị ọzọ si asọpụrụ ndị ha hụrụ n'anya site na ibe ncheta mara mma nke ahaziri",
+    "viewMore": "Lelee Ncheta Ndị Ọzọ",
+    "featured": "Egosipụtara",
+    "tributes": "otuto",
+    "visits": "nleta",
+    "by": "Site na",
+    "memorialImage": "Onyonyo Ncheta"
+  },
+  "allFuneralPage": {
+    "title": "Ncheta Ụlọ Ọha",
+    "subtitle": "Lee otu ndị ọzọ si echeta ndị ha hụrụ n’anya site n’ịmepụta ibe ncheta mara mma ma pụrụ iche",
+    "by": "Site n'aka",
+    "view": "Lelee",
+    "noMemorials": "Enweghị ibe ncheta e chọtara.",
+    "previous": "O gara aga",
+    "next": "Ọzọ",
+    "searchPlaceholder": "Chọọ site n’aha ma ọ bụ ezinụlọ...",
+    "search": "Chọọ"
+  },
+  "howItWorks": {
+    "title": "Otu O Si Arụ",
+    "subtitle": "Ịmepụta ncheta mara mma dị mfe ma na-ewe naanị nkeji ole na ole",
+    "steps": {
+      "create": {
+        "number": "01",
+        "title": "Mepụta Ncheta Gị",
+        "description": "Malite site n'ịhọrọ template mara mma na ịgbakwunye ozi bụ isi gbasara onye ị hụrụ n'anya. Interface anyị nwere nghọta na-eme ka ọ dị mfe ịmalite na naanị nkeji ole na ole.",
+        "icon": "✍️"
+      },
+      "addContent": {
+        "number": "02",
+        "title": "Tinye Foto & Akụkọ",
+        "description": "Bulite foto dị oke ọnụ ahịa, dee akụkọ bara uru, ma hazie ihe ncheta n'ụzọ na-asọpụrụ ndụ ha na ihe nketa ha n'ezie.",
+        "icon": "📸"
+      },
+      "share": {
+        "number": "03",
+        "title": "Kekọrịta na Ezinụlọ",
+        "description": "Kpọọ ezinụlọ na ndị enyi ka ha nye aka na ihe ncheta ha, foto, na otuto iji mepụta ncheta zuru ezu ọnụ.",
+        "icon": "👥"
+      },
+      "preserve": {
+        "number": "04",
+        "title": "Chekwaa Ruo Mgbe Ebighị Ebi",
+        "description": "Ncheta gị ka echekwabara n'enweghị nsogbu ma ọ ga-anọgide na-enweta maka ọgbọ ndị na-abịa n'ọdịnihu iji gaa, cheta, ma jiri nlezianya ruo mgbe ebighị ebi.",
+        "icon": "💝"
+      }
+    },
+    "buttons": {
+      "watchDemo": "Lelee Vidiyo Ngosi"
+    },
+    "modal": {
+      "title": "Otu O Si Arụ - Ngosi",
+      "description": "Lelee ngosi a dị ngwa iji hụ otú ọ dị mfe imepụta ibe ncheta mara mma",
+      "placeholder": "Dochie nke a na ihe ọkpụkpọ vidiyo gị"
+    }
+  },
+  "testimonials": {
+    "title": "Ihe Ezinụlọ Na-ekwu",
+    "subtitle": "Akụkọ eziokwu sitere na ezinụlọ ndị chọtara nkasi obi na ọgwụgwọ site na ikpo okwu anyị",
+    "testimonials": {
+      "sarah": {
+        "name": "Sarah Johnson",
+        "role": "Nwa Nwanyị",
+        "content": "Ịmepụta ncheta maka nna m bụ otu n'ime ahụmịhe ọgwụgwọ kachasị. Ikpo okwu ahụ mere ka ọ dị mfe ịchịkọta foto na akụkọ sitere na ezinụlọ anyị dum. Ọ ghọrọ ebe anyị niile na-agakarị."
+      },
+      "michael": {
+        "name": "Michael Chen",
+        "role": "Nwa Nwoke",
+        "content": "Njikwa nzuzo nyere anyị obi ike, na template mara mma nyere anyị aka imepụta ihe pụrụ iche n'ezie. Ndị enyi na ezinụlọ si gburugburu ụwa nwere ike inye aka na ihe ncheta ha."
+      },
+      "emily": {
+        "name": "Emily Rodriguez",
+        "role": "Nwa Nwa Nwanyị",
+        "content": "Enwere m ike ichekwa akụkọ na usoro nri nne nne m n'ụzọ ga-adịgide ruo mgbe ebighị ebi. Otu nkwado ahụ bụ ezigbo enyemaka n'oge usoro ahụ dum."
+      },
+      "emanuel": {
+        "name": "Emanuel Okeke",
+        "role": "Nwa Nwa Nwoke",
+        "content": "Enwere m ike ichekwa akụkọ na usoro nri nne nne m n'ụzọ ga-adịgide ruo mgbe ebighị ebi. Otu nkwado ahụ bụ ezigbo enyemaka n'oge usoro ahụ dum."
+      },
+      "boma": {
+        "name": "Boma George",
+        "role": "Nwa Nwa Nwanyị",
+        "content": "Enwere m ike ichekwa akụkọ na usoro nri nne nne m n'ụzọ ga-adịgide ruo mgbe ebighị ebi. Otu nkwado ahụ bụ ezigbo enyemaka n'oge usoro ahụ dum."
+      },
+      "tosin": {
+        "name": "Tosin Ola",
+        "role": "Nwa Nwa Nwoke",
+        "content": "Enwere m ike ichekwa akụkọ na usoro nri nne nne m n'ụzọ ga-adịgide ruo mgbe ebighị ebi. Otu nkwado ahụ bụ ezigbo enyemaka n'oge usoro ahụ dum."
+      },
+      "aish": {
+        "name": "Aish Usman",
+        "role": "Nwa Nwa Nwanyị",
+        "content": "Enwere m ike ichekwa akụkọ na usoro nri nne nne m n'ụzọ ga-adịgide ruo mgbe ebighị ebi. Otu nkwado ahụ bụ ezigbo enyemaka n'oge usoro ahụ dum."
+      }
+    },
+    "joinFamilies": {
+      "title": "Sonye na Ezinụlọ",
+      "description": "Ihe karịrị ezinụlọ 50,000 tụkwasịrị anyị obi iji nyere aka ichekwa ihe ncheta ndị ha hụrụ n'anya. Malite imepụta ncheta gị taa ma sonye na obodo anyị nwere ọmịiko."
+    }
+  },
+  "pricing": {
+    "title": "Ọnụ Ahịa Dị Mfe, Nke Doro Anya",
+    "subtitle": "Họrọ atụmatụ nke dabara na mkpa ezinụlọ gị",
+    "plans": {
+      "basic": {
+        "name": "Nke Bụ Isi",
+        "price": "120,000",
+        "period": "/60ụbọchị",
+        "description": "Zuru oke maka ịmalite",
+        "features": {
+          "photos": "Ruo foto 50",
+          "template": "Template bụ isi",
+          "tributeWall": "Mgbidi otuto",
+          "mobile": "Na-anabata ekwentị mkpanaaka",
+          "privacy": "Njikwa nzuzo bụ isi"
+        },
+        "button": "Malite N'efu"
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "250,000",
+        "period": "/90ụbọchị",
+        "description": "Nhọrọ kachasị ewu ewu",
+        "features": {
+          "photos": "Foto & vidiyo na-enweghị oke",
+          "template": "Template premium",
+          "customization": "Nhazi dị elu",
+          "support": "Nkwado mbụ",
+          "backup": "Nbudata & ndabere",
+          "analytics": "Dashboard nyocha",
+          "domain": "Ngalaba nkeonwe"
+        },
+        "button": "Họrọ Premium",
+        "badge": "Kachasị Ewu Ewu"
+      },
+      "family": {
+        "name": "Ezinụlọ",
+        "price": "350,000",
+        "period": "/365ụbọchị",
+        "description": "Maka ezinụlọ gbasaa",
+        "features": {
+          "photos": "Ihe niile dị na Premium",
+          "template": "Ncheta ọtụtụ",
+          "tributeWall": "Njikọ osisi ezinụlọ",
+          "mobile": "Njikwa nzuzo dị elu",
+          "privacy": "Nkwado a raara nye",
+          "support": "Akara nkeonwe",
+          "branding": "Ịnweta API"
+        },
+        "button": "Họrọ Ezinụlọ",
+        "badge": "Ezinụlọ Gbasaa"
+      }
+    },
+    "allPlansInclude": {
+      "title": "Atụmatụ Niile Gụnyere",
+      "description": "Enyemaka nhazi n'efu, nkwado ndị ahịa 24/7, na obi ike na ncheta gị ga-echekwa ruo mgbe ebighị ebi."
+    }
+  },
+  "cta": {
+    "title": "Malite Ime Ncheta Taa",
+    "subtitle": "Sonye na ọtụtụ puku ezinụlọ ndị chọtara nkasi obi n'ichekwa na ịkekọrịta ihe ncheta ndị ha hụrụ n'anya.",
+    "buttons": {
+      "getStarted": "Malite N'efu",
+      "viewSample": "Lelee Ihe Nlereanya Ncheta"
+    },
+    "reassurance": "Achọghị kaadị kredit • Nhazi dị mfe • Atụmatụ n'efu ruo mgbe ebighị ebi dị"
+  },
+  "footer": {
+    "links": {
+      "privacy": "Iwu Nzuzo",
+      "terms": "Usoro Ọrụ",
+      "support": "Nkwado",
+      "contact": "Kpọtụrụ"
+    },
+    "copyright": "Ibé Akwụkwọ Ebighị Ebi. Emepụtara site n'ịhụnanya iji sọpụrụ ndụ ọ bụla."
+  },
+  "common": {
+    "loading": "Na-ebu...",
+    "error": "Njehie mere",
+    "retry": "Nwalee ọzọ",
+    "close": "Mechie",
+    "save": "Chekwaa",
+    "cancel": "Kagbuo"
+  },
+  "faq": {
+    "title": "Ajụjụ a Na-ajụkarị",
+    "subtitle": "Chọta azịza maka ajụjụ ndị a na-ajụkarị gbasara ịmepụta na ijikwa ibe ncheta",
+    "items": {
+      "memorialDuration": {
+        "question": "Olee ogologo oge ibe ncheta ga-anọgide dịrị ndụ?",
+        "answer": "Ibe ncheta gị ga-anọgide dị ndụ ruo mgbe ebighị ebi. Anyị kwere nkwa ichekwa ihe ncheta dijitalụ ndị a ka ọ bụrụ ihe a ga-echeta ruo ọtụtụ ọgbọ n’ọdịnihu."
+      },
+      "contentTypes": {
+        "question": "Kedu ụdị ọdịnaya m nwere ike itinye na ibe ncheta?",
+        "answer": "Ị nwere ike itinye foto, vidiyo, ihe edere, ndekọ olu, na ihe ndị dị mkpa gbasara ndụ. Ụlọ ọrụ anyị na-akwado ọtụtụ ụdị faịlụ iji mee ka e nwee ihe ncheta zuru oke."
+      },
+      "privacyControl": {
+        "question": "Enwere m ike ijikwa ndị nwere ike ịhụ ibe ncheta?",
+        "answer": "Ee, ị nwere njikwa zuru oke. Ị nwere ike ime ka ọ bụrụ nke ọha, kee paswọọdụ ma ọ bụ kesaa naanị ndị ị họọrọ site na njikọ kpọrọ òkè."
+      },
+      "multipleContributors": {
+        "question": "Enwere ọtụtụ mmadụ nwere ike itinye aka n’otu ibe ncheta?",
+        "answer": "Ee, i nwere ike ịkpọ ndị ezinụlọ na ndị enyi ka ha kesaa foto na akụkọ ha. Nke a na-eme ka ọ bụrụ ebe mmekọrịta ebe mmadụ niile nwere ike ịkekọrịta echiche ha."
+      },
+      "changesAfterCreation": {
+        "question": "Enwere m ike ime mgbanwe mgbe emepere ibe ncheta?",
+        "answer": "Ee, i nwere ike ịgbakwunye ma ọ bụ gbanwee ihe ọ bụla n’oge ọ bụla. Ị nwekwara ike imelite nchekwa ma ọ bụ gbanwee ihe ndị e dere."
+      },
+      "cost": {
+        "question": "Ò nwere ụgwọ ọ bụla metụtara imepụta ibe ncheta?",
+        "answer": "Anyị nwere nhọrọ efu na nke a na-akwụ ụgwọ. Nhọpụta efu nwere atụmatụ dị mkpa, ebe nke a na-akwụ ụgwọ nwere ohere nchekwa karịrị, ịhazi dị elu, na nchekwa ọzọ."
+      }
+    },
+    "help": {
+      "title": "Ị ka nwere ajụjụ?",
+      "description": "Ụlọ ọrụ enyemaka anyị dị njikere inyere gị aka ime ihe ncheta mara mma na nke ga-adịru ogologo oge",
+      "button": "Kpọtụrụ Enyemaka"
+    }
+  }
+}

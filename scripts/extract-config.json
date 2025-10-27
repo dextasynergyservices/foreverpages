@@ -1,0 +1,45 @@
+{
+  "scanDirs": ["src/app/components", "src/app", "src/components"],
+  "includePatterns": ["**/*.tsx", "**/*.jsx", "**/*.ts", "**/*.js"],
+  "excludePatterns": [
+    "**/*.test.*",
+    "**/*.spec.*",
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**"
+  ],
+  "localesDir": "src/lib/locales",
+  "locales": ["en", "es", "fr", "ha", "ig", "yo"],
+  "defaultLocale": "en",
+  "minTextLength": 3,
+  "maxTextLength": 200,
+  "skipPatterns": [
+    "^\d+$",
+    "^[a-zA-Z0-9._-]+$",
+    "^(true|false|null|undefined)$",
+    "^[{}[\\]();,.\\s]+$",
+    "^(and|or|the|a|an|in|on|at|to|for|of|with|by)$",
+    "^[A-Z_]+$",
+    "^\\$[\\d.]+$",
+    "^https?:\\/\\/",
+    "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+  ],
+  "textPatterns": [
+    "[\"']([^\"']{3,})[\"']",
+    "`([^`]{3,})`",
+    ">\\s*([^<>{}\\n]{3,})\\s*<",
+    "(title|alt|placeholder|aria-label|aria-describedby)=[\"']([^\"']{3,})[\"']"
+  ],
+  "keyGeneration": {
+    "maxKeyLength": 50,
+    "separator": "_",
+    "includeFileContext": true,
+    "normalizeText": true
+  },
+  "output": {
+    "verbose": false,
+    "dryRun": false,
+    "generateReport": true,
+    "backupFiles": true
+  }
+}

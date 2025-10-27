@@ -1,0 +1,304 @@
+{
+  "hero": {
+    "title": "Honor Their Memory",
+    "subtitle": "Create beautiful memorial websites where families and friends celebrate lives and share memories together",
+    "buttons": {
+      "create": "Create a Memorial Page",
+      "view": "View Sample Memorial"
+    }
+  },
+  "navbar": {
+    "logo": "ForeverPages",
+    "navigation": {
+      "features": "Features",
+      "home": "Home",
+      "memorials": "Memorial Pages",
+      "howItWorks": "How It Works",
+      "support": "Contact"
+    },
+    "buttons": {
+      "signIn": "Sign In"
+    }
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "subtitle": "Have questions or need support? We're here to help you create a beautiful memorial.",
+    "info": {
+      "email": {
+        "title": "Email Us",
+        "description": "Send us an email anytime"
+      },
+      "phone": {
+        "title": "Call Us",
+        "description": "Mon-Fri from 10am to 6pm (WAT)"
+      },
+      "address": {
+        "title": "Office Address"
+      },
+      "hours": {
+        "title": "Business Hours",
+        "weekdays": "Monday - Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday",
+        "closed": "Closed"
+      }
+    },
+    "form": {
+      "name": "Full Name",
+      "namePlaceholder": "Enter your full name",
+      "email": "Email Address",
+      "emailPlaceholder": "Enter your email address",
+      "subject": "Subject",
+      "subjectPlaceholder": "What is this regarding?",
+      "message": "Message",
+      "messagePlaceholder": "Tell us how we can help you...",
+      "send": "Send Message",
+      "sending": "Sending..."
+    }
+  },
+  "features": {
+    "title": "Compassionate Features",
+    "subtitle": "Everything you need to create a beautiful, lasting tribute that brings people together",
+    "items": {
+      "memoryGallery": {
+        "title": "Memory Gallery",
+        "description": "Share unlimited photos, videos, and cherished memories in a beautifully organized collection that tells the complete story of your loved one's life journey and special moments captured over time."
+      },
+      "tributeWall": {
+        "title": "Tribute Wall",
+        "description": "Friends and family can leave heartfelt messages, share personal stories, and offer condolences in a dedicated space that becomes a digital gathering place for everyone who cared about your loved one."
+      },
+      "privacyControls": {
+        "title": "Privacy Controls",
+        "description": "Maintain complete control over who can view and contribute to the memorial with our comprehensive privacy settings that ensure your family's comfort and security during this difficult time."
+      },
+      "foreverPreserved": {
+        "title": "Forever Preserved",
+        "description": "Your memorial pages are permanently preserved in our secure cloud storage, ensuring they remain accessible for future generations to visit, remember, and cherish forever without any time limitations."
+      }
+    }
+  },
+  "funeralPages": {
+    "title": "Community Memorials",
+    "subtitle": "See how others are honoring their loved ones with beautiful, personalized memorial pages",
+    "viewMore": "View More Memorials",
+    "featured": "Featured",
+    "tributes": "tributes",
+    "visits": "visits",
+    "by": "By",
+    "memorialImage": "Memorial Image"
+  },
+  "allFuneralPage": {
+    "title": "Community Memorials",
+    "subtitle": "See how others are honoring their loved ones with beautiful, personalized memorial pages",
+    "by": "By",
+    "view": "View",
+    "noMemorials": "No memorial pages found.",
+    "previous": "Previous",
+    "next": "Next",
+    "searchPlaceholder": "Search by name or family...",
+    "search": "Search"
+  },
+  "howItWorks": {
+    "title": "How It Works",
+    "subtitle": "Creating a beautiful memorial is simple and takes just a few minutes",
+    "steps": {
+      "create": {
+        "number": "01",
+        "title": "Create Your Memorial",
+        "description": "Start by choosing a beautiful template and adding basic information about your loved one. Our intuitive interface makes it easy to get started in just minutes.",
+        "icon": "✍️"
+      },
+      "addContent": {
+        "number": "02",
+        "title": "Add Photos & Stories",
+        "description": "Upload cherished photos, write meaningful stories, and organize memories in a way that truly honors their life and legacy.",
+        "icon": "📸"
+      },
+      "share": {
+        "number": "03",
+        "title": "Share with Family",
+        "description": "Invite family and friends to contribute their own memories, photos, and tributes to create a comprehensive memorial together.",
+        "icon": "👥"
+      },
+      "preserve": {
+        "number": "04",
+        "title": "Preserve Forever",
+        "description": "Your memorial is safely stored and will remain accessible for future generations to visit, remember, and cherish forever.",
+        "icon": "💝"
+      }
+    },
+    "buttons": {
+      "watchDemo": "Watch Demo Video"
+    },
+    "modal": {
+      "title": "How It Works - Demo",
+      "description": "Watch this quick demo to see how easy it is to create a beautiful memorial page",
+      "placeholder": "Replace this with your video player component"
+    }
+  },
+  "testimonials": {
+    "title": "What Families Are Saying",
+    "subtitle": "Real stories from families who have found comfort and healing through our platform",
+    "testimonials": {
+      "sarah": {
+        "name": "Sarah Johnson",
+        "role": "Daughter",
+        "content": "Creating a memorial for my father was one of the most healing experiences. The platform made it so easy to gather photos and stories from our entire family. It's become a place we all visit regularly."
+      },
+      "michael": {
+        "name": "Michael Chen",
+        "role": "Son",
+        "content": "The privacy controls gave us peace of mind, and the beautiful templates helped us create something truly special. Friends and family from around the world could contribute their memories."
+      },
+      "emily": {
+        "name": "Emily Rodriguez",
+        "role": "Granddaughter",
+        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+      },
+      "emanuel": {
+        "name": "Emanuel Okeke",
+        "role": "Grandson",
+        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+      },
+      "boma": {
+        "name": "Boma George",
+        "role": "Granddaughter",
+        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+      },
+      "tosin": {
+        "name": "Tosin Ola",
+        "role": "Grandson",
+        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+      },
+      "aish": {
+        "name": "Aish Usman",
+        "role": "Granddaughter",
+        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+      }
+    },
+    "joinFamilies": {
+      "title": "Join Families",
+      "description": "Over 50,000 families have trusted us to help preserve their loved ones' memories. Start creating your memorial today and join our compassionate community."
+    }
+  },
+  "pricing": {
+    "title": "Simple, Transparent Pricing",
+    "subtitle": "Choose the plan that's right for your family's needs",
+    "plans": {
+      "basic": {
+        "name": "Basic",
+        "price": "120,000",
+        "period": "/60days",
+        "description": "Perfect for getting started",
+        "features": {
+          "photos": "Up to 50 photos",
+          "template": "Basic template",
+          "tributeWall": "Tribute wall",
+          "mobile": "Mobile responsive",
+          "privacy": "Basic privacy controls"
+        },
+        "button": "Get Started Free"
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "250,000",
+        "period": "/90days",
+        "description": "Most popular choice",
+        "features": {
+          "photos": "Unlimited photos & videos",
+          "template": "Premium templates",
+          "customization": "Advanced customization",
+          "support": "Priority support",
+          "backup": "Download & backup",
+          "analytics": "Analytics dashboard",
+          "domain": "Custom domain"
+        },
+        "button": "Choose Premium",
+        "badge": "Most Popular"
+      },
+      "family": {
+        "name": "Family",
+        "price": "350,000",
+        "period": "/365days",
+        "description": "For extended families",
+        "features": {
+          "photos": "Everything in Premium",
+          "template": "Multiple memorials",
+          "tributeWall": "Family tree integration",
+          "mobile": "Advanced privacy controls",
+          "privacy": "Dedicated support",
+          "support": "Custom branding",
+          "branding": "API access"
+        },
+        "button": "Choose Family"
+      }
+    },
+    "allPlansInclude": {
+      "title": "All Plans Include",
+      "description": "Free setup assistance, 24/7 customer support, and the peace of mind that your memorial will be preserved forever."
+    }
+  },
+  "cta": {
+    "title": "Start Creating a Memorial Today",
+    "subtitle": "Join thousands of families who have found comfort in preserving and sharing the memories of their loved ones.",
+    "buttons": {
+      "getStarted": "Get Started Free",
+      "viewSample": "View Sample Memorial"
+    },
+    "reassurance": "No credit card required • Easy setup • Free forever plan available"
+  },
+  "footer": {
+    "links": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "support": "Support",
+      "contact": "Contact"
+    },
+    "copyright": "ForeverPages. Created with love to honor every life."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Find answers to common questions about creating and managing memorial pages",
+    "items": {
+      "memorialDuration": {
+        "question": "How long will the memorial page remain active?",
+        "answer": "Your memorial page will remain active forever. We are committed to preserving these digital legacies indefinitely, ensuring that future generations can always remember and celebrate the lives of their loved ones."
+      },
+      "contentTypes": {
+        "question": "What type of content can I add to a memorial page?",
+        "answer": "You can add photos, videos, written memories, audio recordings, and important life milestones. Our platform supports various media formats to help you create a comprehensive and meaningful tribute."
+      },
+      "privacyControl": {
+        "question": "Can I control who can view the memorial page?",
+        "answer": "Yes, you have full control over the privacy settings. You can make the page public, private with password protection, or share it only with specific people via invitation links."
+      },
+      "multipleContributors": {
+        "question": "Can multiple people contribute to the same memorial page?",
+        "answer": "Absolutely. You can invite family members and friends to contribute their own memories, photos, and stories. This creates a collaborative space where everyone can share their unique perspective and memories."
+      },
+      "changesAfterCreation": {
+        "question": "Can I make changes to the memorial page after it's created?",
+        "answer": "Yes, you can update and edit the memorial page at any time. Add new content, modify existing information, or update privacy settings whenever needed."
+      },
+      "cost": {
+        "question": "Is there a cost associated with creating a memorial page?",
+        "answer": "We offer both free and premium options. The free version includes essential features, while premium options provide additional storage, advanced customization, and enhanced privacy controls. Our goal is to make digital memorials accessible to everyone."
+      }
+    },
+    "help": {
+      "title": "Still have questions?",
+      "description": "Our support team is here to help you create a beautiful and lasting tribute",
+      "button": "Contact Support"
+    }
+  }
+}
