@@ -1,0 +1,306 @@
+{
+  "hero": {
+    "title": "Honrar Su Memoria",
+    "subtitle": "Crea hermosos sitios web conmemorativos donde las familias y amigos celebran vidas y comparten recuerdos juntos",
+    "buttons": {
+      "create": "Crear una Página Conmemorativa",
+      "view": "Ver Memorial de Ejemplo"
+    }
+  },
+
+  "navbar": {
+    "logo": "ForeverPages",
+    "navigation": {
+      "features": "Características",
+      "home": "Inicio",
+      "memorials": "Páginas Conmemorativas",
+      "howItWorks": "Cómo Funciona",
+      "support": "Contacto"
+    },
+    "buttons": {
+      "signIn": "Iniciar Sesión"
+    }
+  },
+  "contact": {
+    "title": "Ponte en Contacto",
+    "subtitle": "¿Tienes preguntas o necesitas ayuda? Estamos aquí para ayudarte a crear una hermosa conmemoración.",
+    "info": {
+      "email": {
+        "title": "Envíanos un Correo",
+        "description": "Mándanos un correo en cualquier momento"
+      },
+      "phone": {
+        "title": "Llámanos",
+        "description": "Lunes a Viernes de 10 a 18 h (WAT)"
+      },
+      "address": {
+        "title": "Dirección de la Oficina"
+      },
+      "hours": {
+        "title": "Horario Laboral",
+        "weekdays": "Lunes - Viernes",
+        "saturday": "Sábado",
+        "sunday": "Domingo",
+        "closed": "Cerrado"
+      }
+    },
+    "form": {
+      "name": "Nombre Completo",
+      "namePlaceholder": "Escribe tu nombre completo",
+      "email": "Correo Electrónico",
+      "emailPlaceholder": "Escribe tu correo electrónico",
+      "subject": "Asunto",
+      "subjectPlaceholder": "¿De qué se trata?",
+      "message": "Mensaje",
+      "messagePlaceholder": "Cuéntanos cómo podemos ayudarte...",
+      "send": "Enviar Mensaje",
+      "sending": "Enviando..."
+    }
+  },
+
+  "features": {
+    "title": "Características Compasivas",
+    "subtitle": "Todo lo que necesitas para crear un hermoso tributo duradero que una a las personas",
+    "items": {
+      "memoryGallery": {
+        "title": "Galería de Recuerdos",
+        "description": "Comparte fotos, videos y recuerdos preciados ilimitados en una colección bellamente organizada que cuenta la historia completa del viaje de vida de tu ser querido y los momentos especiales capturados a lo largo del tiempo."
+      },
+      "tributeWall": {
+        "title": "Muro de Tributo",
+        "description": "Los amigos y familiares pueden dejar mensajes sinceros, compartir historias personales y ofrecer condolencias en un espacio dedicado que se convierte en un lugar de reunión digital para todos los que se preocupaban por tu ser querido."
+      },
+      "privacyControls": {
+        "title": "Controles de Privacidad",
+        "description": "Mantén control completo sobre quién puede ver y contribuir al memorial con nuestra configuración de privacidad integral que asegura la comodidad y seguridad de tu familia durante este momento difícil."
+      },
+      "foreverPreserved": {
+        "title": "Preservado Para Siempre",
+        "description": "Tus páginas conmemorativas están permanentemente preservadas en nuestro almacenamiento en la nube seguro, asegurando que permanezcan accesibles para las generaciones futuras para visitar, recordar y atesorar para siempre sin limitaciones de tiempo."
+      }
+    }
+  },
+  "funeralPages": {
+    "title": "Memoriales Comunitarios",
+    "subtitle": "Ve cómo otros honran a sus seres queridos con hermosas páginas conmemorativas personalizadas",
+    "viewMore": "Ver Más Memoriales",
+    "featured": "Destacado",
+    "tributes": "tributos",
+    "visits": "visitas",
+    "by": "Por",
+    "memorialImage": "Imagen Conmemorativa"
+  },
+  "allFuneralPage": {
+    "title": "Conmemoraciones Comunitarias",
+    "subtitle": "Descubre cómo otros honran a sus seres queridos con hermosas páginas conmemorativas personalizadas",
+    "by": "Por",
+    "view": "Ver",
+    "noMemorials": "No se encontraron páginas conmemorativas.",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "searchPlaceholder": "Buscar por nombre o familia...",
+    "search": "Buscar"
+  },
+  "howItWorks": {
+    "title": "Cómo Funciona",
+    "subtitle": "Crear un hermoso memorial es simple y toma solo unos minutos",
+    "steps": {
+      "create": {
+        "number": "01",
+        "title": "Crea Tu Memorial",
+        "description": "Comienza eligiendo una hermosa plantilla y agregando información básica sobre tu ser querido. Nuestra interfaz intuitiva hace que sea fácil comenzar en solo minutos.",
+        "icon": "✍️"
+      },
+      "addContent": {
+        "number": "02",
+        "title": "Agrega Fotos e Historias",
+        "description": "Sube fotos preciadas, escribe historias significativas y organiza recuerdos de una manera que realmente honre su vida y legado.",
+        "icon": "📸"
+      },
+      "share": {
+        "number": "03",
+        "title": "Comparte con la Familia",
+        "description": "Invita a familiares y amigos a contribuir con sus propios recuerdos, fotos y tributos para crear un memorial completo juntos.",
+        "icon": "👥"
+      },
+      "preserve": {
+        "number": "04",
+        "title": "Preserva Para Siempre",
+        "description": "Tu memorial está almacenado de forma segura y permanecerá accesible para las generaciones futuras para visitar, recordar y atesorar para siempre.",
+        "icon": "💝"
+      }
+    },
+    "buttons": {
+      "watchDemo": "Ver Video Demostrativo"
+    },
+    "modal": {
+      "title": "Cómo Funciona - Demo",
+      "description": "Mira esta demostración rápida para ver qué tan fácil es crear una hermosa página conmemorativa",
+      "placeholder": "Reemplaza esto con tu componente reproductor de video"
+    }
+  },
+  "testimonials": {
+    "title": "Lo Que Dicen las Familias",
+    "subtitle": "Historias reales de familias que han encontrado consuelo y sanación a través de nuestra plataforma",
+    "testimonials": {
+      "sarah": {
+        "name": "Sarah Johnson",
+        "role": "Hija",
+        "content": "Crear un memorial para mi padre fue una de las experiencias más sanadoras. La plataforma hizo tan fácil reunir fotos e historias de toda nuestra familia. Se ha convertido en un lugar que todos visitamos regularmente."
+      },
+      "michael": {
+        "name": "Michael Chen",
+        "role": "Hijo",
+        "content": "Los controles de privacidad nos dieron tranquilidad, y las hermosas plantillas nos ayudaron a crear algo realmente especial. Amigos y familiares de todo el mundo pudieron contribuir con sus recuerdos."
+      },
+      "emily": {
+        "name": "Emily Rodriguez",
+        "role": "Nieta",
+        "content": "Pude preservar las historias y recetas de mi abuela de una manera que durará para siempre. El equipo de soporte fue increíblemente útil durante todo el proceso."
+      },
+      "emanuel": {
+        "name": "Emanuel Okeke",
+        "role": "Nieto",
+        "content": "Pude preservar las historias y recetas de mi abuela de una manera que durará para siempre. El equipo de soporte fue increíblemente útil durante todo el proceso."
+      },
+      "boma": {
+        "name": "Boma George",
+        "role": "Nieta",
+        "content": "Pude preservar las historias y recetas de mi abuela de una manera que durará para siempre. El equipo de soporte fue increíblemente útil durante todo el proceso."
+      },
+      "tosin": {
+        "name": "Tosin Ola",
+        "role": "Nieto",
+        "content": "Pude preservar las historias y recetas de mi abuela de una manera que durará para siempre. El equipo de soporte fue increíblemente útil durante todo el proceso."
+      },
+      "aish": {
+        "name": "Aish Usman",
+        "role": "Nieta",
+        "content": "Pude preservar las historias y recetas de mi abuela de una manera que durará para siempre. El equipo de soporte fue increíblemente útil durante todo el proceso."
+      }
+    },
+    "joinFamilies": {
+      "title": "Únete a las Familias",
+      "description": "Más de 50,000 familias han confiado en nosotros para ayudar a preservar los recuerdos de sus seres queridos. Comienza a crear tu memorial hoy y únete a nuestra comunidad compasiva."
+    }
+  },
+  "pricing": {
+    "title": "Precios Simples y Transparentes",
+    "subtitle": "Elige el plan que sea adecuado para las necesidades de tu familia",
+    "plans": {
+      "basic": {
+        "name": "Básico",
+        "price": "120,000",
+        "period": "/60días",
+        "description": "Perfecto para comenzar",
+        "features": {
+          "photos": "Hasta 50 fotos",
+          "template": "Plantilla básica",
+          "tributeWall": "Muro de tributo",
+          "mobile": "Responsive móvil",
+          "privacy": "Controles de privacidad básicos"
+        },
+        "button": "Comenzar Gratis"
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "250,000",
+        "period": "/90días",
+        "description": "Opción más popular",
+        "features": {
+          "photos": "Fotos y videos ilimitados",
+          "template": "Plantillas premium",
+          "customization": "Personalización avanzada",
+          "support": "Soporte prioritario",
+          "backup": "Descarga y respaldo",
+          "analytics": "Panel de análisis",
+          "domain": "Dominio personalizado"
+        },
+        "button": "Elegir Premium",
+        "badge": "Más Popular"
+      },
+      "family": {
+        "name": "Familia",
+        "price": "350,000",
+        "period": "/365días",
+        "description": "Para familias extendidas",
+        "features": {
+          "photos": "Todo en Premium",
+          "template": "Múltiples memoriales",
+          "tributeWall": "Integración árbol genealógico",
+          "mobile": "Controles de privacidad avanzados",
+          "privacy": "Soporte dedicado",
+          "support": "Marca personalizada",
+          "branding": "Acceso API"
+        },
+        "button": "Elegir Familia",
+        "badge": "Más Popular"
+      }
+    },
+    "allPlansInclude": {
+      "title": "Todos los Planes Incluyen",
+      "description": "Asistencia de configuración gratuita, soporte al cliente 24/7, y la tranquilidad de que tu memorial será preservado para siempre."
+    }
+  },
+  "cta": {
+    "title": "Comienza a Crear un Memorial Hoy",
+    "subtitle": "Únete a miles de familias que han encontrado consuelo preservando y compartiendo los recuerdos de sus seres queridos.",
+    "buttons": {
+      "getStarted": "Comenzar Gratis",
+      "viewSample": "Ver Memorial de Ejemplo"
+    },
+    "reassurance": "No se requiere tarjeta de crédito • Configuración fácil • Plan gratuito para siempre disponible"
+  },
+  "footer": {
+    "links": {
+      "privacy": "Política de Privacidad",
+      "terms": "Términos de Servicio",
+      "support": "Soporte",
+      "contact": "Contacto"
+    },
+    "copyright": "Páginas Eternas. Creado con amor para honrar cada vida."
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "retry": "Reintentar",
+    "close": "Cerrar",
+    "save": "Guardar",
+    "cancel": "Cancelar"
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "subtitle": "Encuentra respuestas a las preguntas más comunes sobre la creación y gestión de páginas conmemorativas",
+    "items": {
+      "memorialDuration": {
+        "question": "¿Cuánto tiempo permanecerá activa la página conmemorativa?",
+        "answer": "Tu página conmemorativa permanecerá activa para siempre. Estamos comprometidos a preservar estos legados digitales indefinidamente, asegurando que las futuras generaciones siempre puedan recordar y celebrar las vidas de sus seres queridos."
+      },
+      "contentTypes": {
+        "question": "¿Qué tipo de contenido puedo agregar a una página conmemorativa?",
+        "answer": "Puedes agregar fotos, videos, recuerdos escritos, grabaciones de audio y momentos importantes de la vida. Nuestra plataforma admite varios formatos de medios para ayudarte a crear un homenaje completo y significativo."
+      },
+      "privacyControl": {
+        "question": "¿Puedo controlar quién puede ver la página conmemorativa?",
+        "answer": "Sí, tienes control total sobre la configuración de privacidad. Puedes hacer la página pública, privada con protección por contraseña o compartirla solo con personas específicas mediante enlaces de invitación."
+      },
+      "multipleContributors": {
+        "question": "¿Pueden varias personas contribuir a la misma página conmemorativa?",
+        "answer": "Por supuesto. Puedes invitar a familiares y amigos a contribuir con sus propios recuerdos, fotos e historias. Esto crea un espacio colaborativo donde todos pueden compartir sus perspectivas y recuerdos únicos."
+      },
+      "changesAfterCreation": {
+        "question": "¿Puedo hacer cambios en la página conmemorativa después de crearla?",
+        "answer": "Sí, puedes actualizar y editar la página conmemorativa en cualquier momento. Agrega nuevo contenido, modifica la información existente o ajusta la configuración de privacidad cuando sea necesario."
+      },
+      "cost": {
+        "question": "¿Hay algún costo asociado con la creación de una página conmemorativa?",
+        "answer": "Ofrecemos opciones gratuitas y premium. La versión gratuita incluye funciones esenciales, mientras que las opciones premium ofrecen almacenamiento adicional, personalización avanzada y controles de privacidad mejorados. Nuestro objetivo es hacer que los homenajes digitales sean accesibles para todos."
+      }
+    },
+    "help": {
+      "title": "¿Aún tienes preguntas?",
+      "description": "Nuestro equipo de soporte está aquí para ayudarte a crear un tributo hermoso y duradero",
+      "button": "Contactar Soporte"
+    }
+  }
+}

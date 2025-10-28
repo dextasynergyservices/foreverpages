@@ -1,0 +1,304 @@
+{
+  "hero": {
+    "title": "Girmama Tunawarsu",
+    "subtitle": "Ƙirƙiri kyawawan shafukan tunawa inda iyalai da abokai suke bikin rayuwa da raba tunawa tare",
+    "buttons": {
+      "create": "Ƙirƙiri Shafi na Tunawa",
+      "view": "Dubi Misalin Tunawa"
+    }
+  },
+  "navbar": {
+    "logo": "ForeverPages",
+    "navigation": {
+      "features": "Fasaloli",
+      "home": "Gida",
+      "memorials": "Shafukan Tunawa",
+      "howItWorks": "Yadda Yake Aiki",
+      "support": "Tuntube Mu"
+    },
+    "buttons": {
+      "signIn": "Shiga"
+    }
+  },
+  "contact": {
+    "title": "Tuntube Mu",
+    "subtitle": "Kana da tambaya ko kana buƙatar taimako? Muna nan don taimaka maka ka ƙirƙiri kyakkyawan shafin tunawa.",
+    "info": {
+      "email": {
+        "title": "Aiko Mana da Imel",
+        "description": "Aiko mana da imel a kowane lokaci"
+      },
+      "phone": {
+        "title": "Kira Mu",
+        "description": "Litinin zuwa Juma’a daga ƙarfe 10 na safe zuwa 6 na yamma (WAT)"
+      },
+      "address": {
+        "title": "Adireshin Ofishi"
+      },
+      "hours": {
+        "title": "Lokutan Aiki",
+        "weekdays": "Litinin - Juma’a",
+        "saturday": "Asabar",
+        "sunday": "Lahadi",
+        "closed": "Rufe"
+      }
+    },
+    "form": {
+      "name": "Cikakken Suna",
+      "namePlaceholder": "Shigar da cikakken sunanka",
+      "email": "Adireshin Imel",
+      "emailPlaceholder": "Shigar da adireshin imel ɗinka",
+      "subject": "Batun",
+      "subjectPlaceholder": "Menene wannan yake nufi?",
+      "message": "Saƙo",
+      "messagePlaceholder": "Faɗa mana yadda za mu taimake ka...",
+      "send": "Aika Saƙo",
+      "sending": "Ana aikawa..."
+    }
+  },
+  "features": {
+    "title": "Fasali na Tausayi",
+    "subtitle": "Duk abin da kake buƙata don ƙirƙiri kyakkyawan girmamawa mai dorewa wanda ke haɗa mutane",
+    "items": {
+      "memoryGallery": {
+        "title": "Gidan Hotuna na Tunawa",
+        "description": "Raba hotuna, bidiyo, da tunawa masu daraja marasa iyaka a cikin tarin kyawawa wanda ke ba da labarin cikakken tafiyar rayuwar wanda kake so da lokutan musamman da aka ɗauka a kan lokaci."
+      },
+      "tributeWall": {
+        "title": "Katanga na Girmamawa",
+        "description": "Abokai da iyalai za su iya barin saƙonni masu zuciya, raba labarun sirri, da ba da ta'aziyya a cikin wuri na musamman wanda ya zama wurin taro na dijital ga duk wanda ya damu da wanda kake so."
+      },
+      "privacyControls": {
+        "title": "Sarumai na Keɓe",
+        "description": "Kula da cikakken iko akan wanda zai iya gani da ba da gudummawa ga tunawa tare da cikakkun saitunan keɓe waɗanda ke tabbatar da jin daɗi da aminci na dangin ku a wannan lokacin mai wahala."
+      },
+      "foreverPreserved": {
+        "title": "Ajiye Har Abada",
+        "description": "Shafukan tunawa naku ana ajiye su har abada a cikin ma'ajin girgije mai tsaro, yana tabbatar da cewa za su kasance masu samuwa ga ƙarnoni na gaba don ziyarta, tunawa, da kiyayewa har abada ba tare da iyakokin lokaci ba."
+      }
+    }
+  },
+  "funeralPages": {
+    "title": "Tunawa na Al'umma",
+    "subtitle": "Dubi yadda wasu ke girmama waɗanda suke so tare da kyawawan shafukan tunawa na musamman",
+    "viewMore": "Dubi Ƙarin Tunawa",
+    "featured": "An Nuna",
+    "tributes": "girmamawa",
+    "visits": "ziyara",
+    "by": "Ta",
+    "memorialImage": "Hoton Tunawa"
+  },
+  "allFuneralPage": {
+    "title": "Tunawa na Al'umma",
+    "subtitle": "Ga yadda wasu ke girmama ƙaunatattunsu ta hanyar kyawawan shafukan tunawa na musamman",
+    "by": "Daga",
+    "view": "Duba",
+    "noMemorials": "Ba a samu shafukan tunawa ba.",
+    "previous": "Na baya",
+    "next": "Na gaba",
+    "searchPlaceholder": "Nema ta suna ko iyali...",
+    "search": "Nema"
+  },
+  "howItWorks": {
+    "title": "Yadda Yake Aiki",
+    "subtitle": "Ƙirƙiri kyakkyawan tunawa mai sauƙi kuma yana ɗaukar mintuna kaɗan kawai",
+    "steps": {
+      "create": {
+        "number": "01",
+        "title": "Ƙirƙiri Tunawar Ku",
+        "description": "Fara da zaɓar kyakkyawan samfuri da ƙara bayanan asali game da wanda kake so. Interface ɗin mu mai hankali yana sa ya zama mai sauƙi don farawa cikin mintuna kaɗan kawai.",
+        "icon": "✍️"
+      },
+      "addContent": {
+        "number": "02",
+        "title": "Ƙara Hotuna & Labarun",
+        "description": "Loda hotuna masu daraja, rubuta labarun ma'ana, da tsara tunawa ta hanyar da ta gaske ke girmama rayuwarsu da gadonsu.",
+        "icon": "📸"
+      },
+      "share": {
+        "number": "03",
+        "title": "Raba da Dangi",
+        "description": "Gayyata dangi da abokai don ba da gudummawar tunawarsu, hotuna, da girmamawa don ƙirƙiri cikakken tunawa tare.",
+        "icon": "👥"
+      },
+      "preserve": {
+        "number": "04",
+        "title": "Ajiye Har Abada",
+        "description": "Tunawar ku ana ajiye ta lafiya kuma za ta kasance masu samuwa ga ƙarnoni na gaba don ziyarta, tunawa, da kiyayewa har abada.",
+        "icon": "💝"
+      }
+    },
+    "buttons": {
+      "watchDemo": "Kalli Bidiyon Demo"
+    },
+    "modal": {
+      "title": "Yadda Yake Aiki - Demo",
+      "description": "Kalli wannan demo mai sauri don ganin yadda yake da sauƙi don ƙirƙiri kyakkyawan shafi na tunawa",
+      "placeholder": "Maye wannan da ɓangaren mai kunnawa bidiyo"
+    }
+  },
+  "testimonials": {
+    "title": "Abin da Iyalai ke Faɗa",
+    "subtitle": "Labarun gaskiya daga iyalai waɗanda suka sami ta'aziyya da warkewa ta hanyar dandalin mu",
+    "testimonials": {
+      "sarah": {
+        "name": "Sarah Johnson",
+        "role": "'Ya",
+        "content": "Ƙirƙiri tunawa ga mahaifina ya kasance ɗaya daga cikin abubuwan warkewa. Dandalin ya sa ya zama mai sauƙi don tattara hotuna da labarun daga dukan dangin mu. Ya zama wuri da muke ziyarta akai-akai."
+      },
+      "michael": {
+        "name": "Michael Chen",
+        "role": "Ɗa",
+        "content": "Sarumai na keɓe sun ba mu kwanciyar hankali, kuma kyawawan samfuran sun taimaka mana mu ƙirƙiri wani abu na musamman. Abokai da dangi daga duniya duka za su iya ba da gudummawar tunawarsu."
+      },
+      "emily": {
+        "name": "Emily Rodriguez",
+        "role": "Jikanya",
+        "content": "Na iya ajiye labarun kakata da girke-girke ta hanyar da za ta dore har abada. Ƙungiyar taimako ta kasance mai taimako sosai a duk tsarin."
+      },
+      "emanuel": {
+        "name": "Emanuel Okeke",
+        "role": "Jikan",
+        "content": "Na iya ajiye labarun kakata da girke-girke ta hanyar da za ta dore har abada. Ƙungiyar taimako ta kasance mai taimako sosai a duk tsarin."
+      },
+      "boma": {
+        "name": "Boma George",
+        "role": "Jikanya",
+        "content": "Na iya ajiye labarun kakata da girke-girke ta hanyar da za ta dore har abada. Ƙungiyar taimako ta kasance mai taimako sosai a duk tsarin."
+      },
+      "tosin": {
+        "name": "Tosin Ola",
+        "role": "Jikan",
+        "content": "Na iya ajiye labarun kakata da girke-girke ta hanyar da za ta dore har abada. Ƙungiyar taimako ta kasance mai taimako sosai a duk tsarin."
+      },
+      "aish": {
+        "name": "Aish Usman",
+        "role": "Jikanya",
+        "content": "Na iya ajiye labarun kakata da girke-girke ta hanyar da za ta dore har abada. Ƙungiyar taimako ta kasance mai taimako sosai a duk tsarin."
+      }
+    },
+    "joinFamilies": {
+      "title": "Shiga Iyalai",
+      "description": "Sama da iyalai 50,000 sun amince da mu don taimakawa ajiye tunawan waɗanda suke so. Fara ƙirƙiri tunawar ku a yau kuma ku shiga al'ummarmu mai tausayi."
+    }
+  },
+  "pricing": {
+    "title": "Farashin Saurin, Bayyane",
+    "subtitle": "Zaɓi shirin da ya dace da bukatun dangin ku",
+    "plans": {
+      "basic": {
+        "name": "Na Asali",
+        "price": "120,000",
+        "period": "/60kwanaki",
+        "description": "Ya dace don farawa",
+        "features": {
+          "photos": "Har zuwa hotuna 50",
+          "template": "Samfuri na asali",
+          "tributeWall": "Katanga na girmamawa",
+          "mobile": "Mai amsawa na wayar hannu",
+          "privacy": "Sarumai na keɓe na asali"
+        },
+        "button": "Fara Kyauta"
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "250,000",
+        "period": "/90kwanaki",
+        "description": "Zaɓin da ya fi shahara",
+        "features": {
+          "photos": "Hotuna & bidiyo marasa iyaka",
+          "template": "Samfuran premium",
+          "customization": "Keɓance mai ci gaba",
+          "support": "Taimako na farko",
+          "backup": "Zazzagewa & ajiya",
+          "analytics": "Dashboard na nazari",
+          "domain": "Yankin na musamman"
+        },
+        "button": "Zaɓi Premium",
+        "badge": "Mafi Shahara"
+      },
+      "family": {
+        "name": "Dangi",
+        "price": "350,000",
+        "period": "/365kwanaki",
+        "description": "Ga iyalai masu faɗi",
+        "features": {
+          "photos": "Duk abin da ke cikin Premium",
+          "template": "Tunawa da yawa",
+          "tributeWall": "Haɗin bishiyar dangi",
+          "mobile": "Sarumai na keɓe mai ci gaba",
+          "privacy": "Taimako na musamman",
+          "support": "Alamar na musamman",
+          "branding": "Shiga API"
+        },
+        "button": "Zaɓi Dangi",
+        "badge": "Mafi Shahara"
+      }
+    },
+    "allPlansInclude": {
+      "title": "Duk Shirye-shiryen Sun Haɗa",
+      "description": "Taimakon saita kyauta, taimakon abokin ciniki 24/7, da kwanciyar hankali cewa tunawar ku za ta ajiye har abada."
+    }
+  },
+  "cta": {
+    "title": "Fara Ƙirƙiri Tunawa A Yau",
+    "subtitle": "Shiga cikin dubban iyalai waɗanda suka sami ta'aziyya ta hanyar ajiye da raba tunawan waɗanda suke so.",
+    "buttons": {
+      "getStarted": "Fara Kyauta",
+      "viewSample": "Dubi Misalin Tunawa"
+    },
+    "reassurance": "Ba a buƙata katin kiredit • Saita mai sauƙi • Shirin kyauta har abada yana samuwa"
+  },
+  "footer": {
+    "links": {
+      "privacy": "Manufar Keɓe",
+      "terms": "Sharuɗɗan Sabis",
+      "support": "Taimako",
+      "contact": "Tuntuɓi"
+    },
+    "copyright": "Shafukan Har Abada. An ƙirƙira da ƙauna don girmama kowane rayuwa."
+  },
+  "common": {
+    "loading": "Ana ɗauka...",
+    "error": "Kuskure ya faru",
+    "retry": "Sake gwadawa",
+    "close": "Rufe",
+    "save": "Ajiye",
+    "cancel": "Soke"
+  },
+  "faq": {
+    "title": "Tambayoyi da Ake Yawan Yi",
+    "subtitle": "Nemi amsoshi ga tambayoyi da ake yawan yi game da ƙirƙira da kula da shafukan tunawa",
+    "items": {
+      "memorialDuration": {
+        "question": "Har yaushe shafin tunawa zai kasance a kunne?",
+        "answer": "Shafin tunawarka zai kasance a kunne har abada. Mun kuduri aniyar adana waɗannan abubuwan tunawa na dijital don ƙarni masu zuwa su ci gaba da tunawa da girmama rayuwar masoyansu."
+      },
+      "contentTypes": {
+        "question": "Wane irin abun ciki zan iya saka a shafin tunawa?",
+        "answer": "Za ka iya saka hotuna, bidiyo, labarai, sautin murya, da muhimman abubuwan rayuwa. Dandalinmu yana tallafawa nau’ikan fayiloli daban-daban don taimaka maka ka ƙirƙiri tunawa mai ma’ana."
+      },
+      "privacyControl": {
+        "question": "Zan iya sarrafa wanda zai iya ganin shafin tunawa?",
+        "answer": "Eh, kana da cikakken iko da saitunan sirri. Za ka iya barin shafin ya kasance a fili, ka sanya kalmar sirri, ko kuma ka raba shi da wasu mutane kaɗan kawai ta hanyar haɗin gayyata."
+      },
+      "multipleContributors": {
+        "question": "Mutane da yawa za su iya taimakawa a shafi ɗaya?",
+        "answer": "Tabbas. Za ka iya gayyatar ’yan uwa da abokai su ƙara hotuna da labarinsu. Wannan yana ƙirƙirar sarari na haɗin kai inda kowa zai iya bayar da gudunmawar sa."
+      },
+      "changesAfterCreation": {
+        "question": "Zan iya yin canje-canje bayan an ƙirƙiri shafin tunawa?",
+        "answer": "Eh, za ka iya sabunta ko gyara shafin a kowane lokaci. Ƙara sabon abun ciki, gyara tsoho, ko canza saitin sirri idan ya zama dole."
+      },
+      "cost": {
+        "question": "Akwai kuɗi da ke tattare da ƙirƙirar shafin tunawa?",
+        "answer": "Muna bayar da zaɓuɓɓuka kyauta da na biyan kuɗi. Kyauta tana da muhimman fasali, yayin da na biyan kuɗi ke da ƙarin ajiya, ƙarin fasali da cikakken ikon sirri."
+      }
+    },
+    "help": {
+      "title": "Har yanzu kana da tambayoyi?",
+      "description": "Ƙungiyarmu tana nan don taimaka maka ƙirƙirar shafin tunawa mai kyau da na har abada",
+      "button": "Tuntubi Taimako"
+    }
+  }
+}

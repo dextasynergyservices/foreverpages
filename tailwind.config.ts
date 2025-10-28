@@ -18,8 +18,12 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        serif: ["Playfair Display", "serif"],
-        inter: ["Inter", "sans-serif"],
+        sans: ["var(--font-geist-sans)", "var(--font-inter)", "sans-serif"],
+        serif: ["var(--font-playfair)", "serif"],
+        mono: ["var(--font-geist-mono)", "monospace"],
+        inter: ["var(--font-inter)", "sans-serif"],
+        geist: ["var(--font-geist-sans)", "sans-serif"],
+        playfair: ["var(--font-playfair)", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",

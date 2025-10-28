@@ -1,0 +1,304 @@
+{
+  "hero": {
+    "title": "Gbàgbé Iye Wọn",
+    "subtitle": "Ṣẹda awọn oju-ọna memorial ti o dara nibiti awọn ẹbi ati awọn ọrẹ ṣe ayẹyẹ awọn igbesi aye ati pin awọn iranti pọ",
+    "buttons": {
+      "create": "Ṣẹda Oju-ọna Memorial",
+      "view": "Wo Memorial Apeere"
+    }
+  },
+  "navbar": {
+    "logo": "ForeverPages",
+    "navigation": {
+      "features": "Àwọn Ànfààní",
+      "home": "Ilé",
+      "memorials": "Ojú-ìwé Iranti",
+      "howItWorks": "Bí Ó Ṣe Nṣiṣẹ́",
+      "support": "Pe Wa"
+    },
+    "buttons": {
+      "signIn": "Wọlé"
+    }
+  },
+  "contact": {
+    "title": "Kan Sí Wa",
+    "subtitle": "Ṣé o ní ìbéèrè tàbí o fẹ́ ìrànlọ́wọ́? A wà níbí láti ràn ọ lọ́wọ́ láti dá ojú-ìwé iranti ẹlẹ́wà sílẹ̀.",
+    "info": {
+      "email": {
+        "title": "Fíránṣẹ́ Ìmeèlì Sí Wa",
+        "description": "Fíránṣẹ́ ìmeèlì nígbàkúgbà"
+      },
+      "phone": {
+        "title": "Pe Wa",
+        "description": "Mọ́ńdè sí Furaìdé láti agogo mẹ́wàá owurọ̀ sí mẹ́fà ìrọ̀lẹ́ (WAT)"
+      },
+      "address": {
+        "title": "Àdírẹ́sì Ọ́fíìsì"
+      },
+      "hours": {
+        "title": "Àkókò Ìṣẹ́",
+        "weekdays": "Mọ́ńdè - Furaìdé",
+        "saturday": "Sátidé",
+        "sunday": "Sọ́ńdé",
+        "closed": "Tíì"
+      }
+    },
+    "form": {
+      "name": "Orúkọ Kíkún",
+      "namePlaceholder": "Tẹ orúkọ kíkún rẹ",
+      "email": "Àdírẹ́sì Ìmeèlì",
+      "emailPlaceholder": "Tẹ àdírẹ́sì ìmeèlì rẹ",
+      "subject": "Kókó Ọ̀rọ̀",
+      "subjectPlaceholder": "Kí ni èyí ń tọ́ka sí?",
+      "message": "Ìfìrànṣẹ́",
+      "messagePlaceholder": "Sọ fún wa bí a ṣe lè ràn ọ lọ́wọ́...",
+      "send": "Fíránṣẹ́ Ìfìrànṣẹ́",
+      "sending": "Nfíránṣẹ́..."
+    }
+  },
+  "features": {
+    "title": "Awọn ẹya Ifẹ",
+    "subtitle": "Ohun gbogbo ti o nilo lati ṣẹda ẹbun ti o dara ati ti o duro ti o mu awọn eniyan pọ",
+    "items": {
+      "memoryGallery": {
+        "title": "Ile-ẹkọ Iye",
+        "description": "Pin awọn fọto, fidio ati awọn iranti ti o niyelori laisẹwọn ni akojọ ti o dara ti o sọ itan kikun ti irin-ajo igbesi aye eni ti o fẹràn rẹ ati awọn akoko pataki ti a gba lori akoko."
+      },
+      "tributeWall": {
+        "title": "Odi Tribute",
+        "description": "Awọn ọrẹ ati ẹbi le fi awọn ifiranṣẹ ti o ni ọkàn, pin awọn itan ara ẹni, ati fun awọn ifọrọran ni aaye ti o yan ti o di ibi ipade dijital fun gbogbo eniyan ti o ni ifẹ si eni ti o fẹràn rẹ."
+      },
+      "privacyControls": {
+        "title": "Awọn Iṣakoso Ikọkọ",
+        "description": "Mọ iṣakoso kikun lori ẹniti o le wo ati ṣe agbekalẹ si memorial pẹlu awọn eto ikọkọ wa ti o daju ki o daju itura ati aabo ẹbi rẹ nigba akoko ti o lewu yii."
+      },
+      "foreverPreserved": {
+        "title": "Fi Pamu Lailẹhin",
+        "description": "Awọn oju-ọna memorial rẹ ni a fi pamu lailai ni ibi ipamọ awọsanma aabo wa, ti o daju pe wọn maa jẹ aaye fun awọn iran-iran ti o nbọ lati wọle, ranti, ati fi pamu lailai laisi awọn idiwọn akoko."
+      }
+    }
+  },
+  "funeralPages": {
+    "title": "Awọn Memorial Agbegbe",
+    "subtitle": "Wo bawo awọn miiran ṣe gbà awọn eniyan ti wọn fẹràn pẹlu awọn oju-ọna memorial ti o dara, ti a ṣe",
+    "viewMore": "Wo Awọn Memorial Diẹ Si",
+    "featured": "Ti a Yẹ",
+    "tributes": "awọn tribute",
+    "visits": "awọn ibewo",
+    "by": "Nipa",
+    "memorialImage": "Aworan Memorial"
+  },
+  "allFuneralPage": {
+    "title": "Iranti Awujọ",
+    "subtitle": "Wo bí àwọn míì ṣe ń bọ́wọ̀ fún olólùfẹ́ wọn pẹ̀lú àwọn ojú-ìwé iranti ẹlẹ́wà tí a ṣe pẹ̀lú ìfẹ́",
+    "by": "Láti ọdọ",
+    "view": "Wo",
+    "noMemorials": "Ko sí ojú-ìwé iranti tí a rí.",
+    "previous": "Tó kọjá",
+    "next": "Tó ń bọ̀",
+    "searchPlaceholder": "Ṣàwárí orúkọ tàbí ìdílé...",
+    "search": "Ṣàwárí"
+  },
+  "howItWorks": {
+    "title": "Bawo Ni O Ṣe",
+    "subtitle": "Ṣiṣẹda memorial ti o dara rọrun ati o gba awọn iṣẹju diẹ nikan",
+    "steps": {
+      "create": {
+        "number": "01",
+        "title": "Ṣẹda Memorial Rẹ",
+        "description": "Bẹrẹ nipasẹ yiyan template ti o dara ati fifi awọn alaye ipilẹ lori eni ti o fẹràn rẹ. Interface wa ti o ni oye ṣe ki o rọrun lati bẹrẹ ni awọn iṣẹju nikan.",
+        "icon": "✍️"
+      },
+      "addContent": {
+        "number": "02",
+        "title": "Fi Awọn Fọto & Awọn Itan",
+        "description": "Gbe awọn fọto ti o niyelori soke, kọ awọn itan ti o ni itumo, ati ṣe agbekalẹ awọn iranti ni ọna ti o daju gba igbesi aye ati ọrọ wọn.",
+        "icon": "📸"
+      },
+      "share": {
+        "number": "03",
+        "title": "Pin Pẹlu Ẹbi",
+        "description": "Pe awọn ẹbi ati awọn ọrẹ lati ṣe agbekalẹ awọn iranti wọn, awọn fọto, ati awọn tribute lati ṣẹda memorial kikun pọ.",
+        "icon": "👥"
+      },
+      "preserve": {
+        "number": "04",
+        "title": "Fi Pamu Lailẹhin",
+        "description": "Memorial rẹ ni a fi pamu ni aabo ati yoo maa jẹ aaye fun awọn iran-iran ti o nbọ lati wọle, ranti, ati fi pamu lailai.",
+        "icon": "💝"
+      }
+    },
+    "buttons": {
+      "watchDemo": "Wo Fidio Demo"
+    },
+    "modal": {
+      "title": "Bawo Ni O Ṣe - Demo",
+      "description": "Wo demo kukuru yii lati ri bawo ni o rọrun lati ṣẹda oju-ọna memorial ti o dara",
+      "placeholder": "Rọpo eyi pẹlu ẹya olupilẹṣẹ fidio rẹ"
+    }
+  },
+  "testimonials": {
+    "title": "Kini Awọn Ẹbi Nsọ",
+    "subtitle": "Awọn itan gidi lati awọn ẹbi ti o ti ri itunu ati iwosan nipasẹ ẹrọ wa",
+    "testimonials": {
+      "sarah": {
+        "name": "Sarah Johnson",
+        "role": "Omo",
+        "content": "Ṣiṣẹda memorial fun baba mi jẹ ọkan ninu awọn iriri iwosan julọ. Ẹrọ ṣe ki o rọrun lati gba awọn fọto ati awọn itan lati gbogbo ẹbi wa. O ti di ibi ti a gbogbo wọle ni igba kan."
+      },
+      "michael": {
+        "name": "Michael Chen",
+        "role": "Omo",
+        "content": "Awọn iṣakoso ikọkọ fun wa ni itura ọkàn, ati awọn template ti o dara ṣe iranlọwọ fun wa lati ṣẹda nkan ti o ṣe pataki gidi. Awọn ọrẹ ati ẹbi lati gbogbo agbaye le ṣe agbekalẹ awọn iranti wọn."
+      },
+      "emily": {
+        "name": "Emily Rodriguez",
+        "role": "Omo-ọmọ",
+        "content": "Mo lẹ ṣe fi pamu awọn itan ati awọn eroja iya agba mi ni ọna ti yoo duro lailai. Ẹgbẹ atilẹyin jẹ iranlọwọ pupọ ni gbogbo ọna."
+      },
+      "emanuel": {
+        "name": "Emanuel Okeke",
+        "role": "Omo-ọmọ",
+        "content": "Mo lẹ ṣe fi pamu awọn itan ati awọn eroja iya agba mi ni ọna ti yoo duro lailai. Ẹgbẹ atilẹyin jẹ iranlọwọ pupọ ni gbogbo ọna."
+      },
+      "boma": {
+        "name": "Boma George",
+        "role": "Omo-ọmọ",
+        "content": "Mo lẹ ṣe fi pamu awọn itan ati awọn eroja iya agba mi ni ọna ti yoo duro lailai. Ẹgbẹ atilẹyin jẹ iranlọwọ pupọ ni gbogbo ọna."
+      },
+      "tosin": {
+        "name": "Tosin Ola",
+        "role": "Omo-ọmọ",
+        "content": "Mo lẹ ṣe fi pamu awọn itan ati awọn eroja iya agba mi ni ọna ti yoo duro lailai. Ẹgbẹ atilẹyin jẹ iranlọwọ pupọ ni gbogbo ọna."
+      },
+      "aish": {
+        "name": "Aish Usman",
+        "role": "Omo-ọmọ",
+        "content": "Mo lẹ ṣe fi pamu awọn itan ati awọn eroja iya agba mi ni ọna ti yoo duro lailai. Ẹgbẹ atilẹyin jẹ iranlọwọ pupọ ni gbogbo ọna."
+      }
+    },
+    "joinFamilies": {
+      "title": "Darapọ Mọ Awọn Ẹbi",
+      "description": "O ju 50,000 awọn ẹbi ti gbagbọ wa lati ṣe iranlọwọ fi pamu awọn iranti awọn eniyan ti wọn fẹràn. Bẹrẹ ṣiṣẹda memorial rẹ loni ati darapọ mọ agbegbe ifẹ wa."
+    }
+  },
+  "pricing": {
+    "title": "Owo Rọrun, Ti O Han",
+    "subtitle": "Yan ero ti o tọ fun awọn nilo ẹbi rẹ",
+    "plans": {
+      "basic": {
+        "name": "Ipilẹ",
+        "price": "120,000",
+        "period": "/60ọjọ́",
+        "description": "Dara fun bẹrẹ",
+        "features": {
+          "photos": "O to 50 awọn fọto",
+          "template": "Template ipilẹ",
+          "tributeWall": "Odi tribute",
+          "mobile": "Mobile responsive",
+          "privacy": "Awọn iṣakoso ikọkọ ipilẹ"
+        },
+        "button": "Bẹrẹ Owo"
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "250,000",
+        "period": "/90ọjọ́",
+        "description": "Yiyan ti o gbajumo",
+        "features": {
+          "photos": "Awọn fọto & fidio laisẹwọn",
+          "template": "Awọn template premium",
+          "customization": "Aṣa iwọle",
+          "support": "Atilẹyin pataki",
+          "backup": "Gbigba & ipamọ",
+          "analytics": "Dashboard awọn iṣiro",
+          "domain": "Agbegbe ara ẹni"
+        },
+        "button": "Yan Premium",
+        "badge": "Ti O Gbajumo Julọ"
+      },
+      "family": {
+        "name": "Ẹbi",
+        "price": "350,000",
+        "period": "/365ọjọ́",
+        "description": "Fun awọn ẹbi ti o gun",
+        "features": {
+          "photos": "Ohun gbogbo ni Premium",
+          "template": "Awọn memorial pupọ",
+          "tributeWall": "Iṣopọ igi ẹbi",
+          "mobile": "Awọn iṣakoso ikọkọ iwọle",
+          "privacy": "Atilẹyin ti a yan",
+          "support": "Ami ara ẹni",
+          "branding": "Wiwọle API"
+        },
+        "button": "Yan Ẹbi",
+        "badge": "Ti O Gun Julọ"
+      }
+    },
+    "allPlansInclude": {
+      "title": "Gbogbo Awọn Ero Pẹlu",
+      "description": "Iranlọwọ ṣeto owo, atilẹyin alagbase 24/7, ati itura ọkàn pe memorial rẹ yoo fi pamu lailai."
+    }
+  },
+  "cta": {
+    "title": "Bẹrẹ Ṣiṣẹda Memorial Loni",
+    "subtitle": "Darapọ mọ awọn ẹbi ẹgbẹrun ti o ti ri itunu ni fifi pamu ati pin awọn iranti awọn eniyan ti wọn fẹràn.",
+    "buttons": {
+      "getStarted": "Bẹrẹ Owo",
+      "viewSample": "Wo Memorial Apeere"
+    },
+    "reassurance": "Ko nilo kaadi kirediti • Ṣeto rọrun • Ero owo lailai wa"
+  },
+  "footer": {
+    "links": {
+      "privacy": "Eto Ikọkọ",
+      "terms": "Awọn Ofin Iṣẹ",
+      "support": "Atilẹyin",
+      "contact": "Kan si"
+    },
+    "copyright": "Àwọn Ojúewé Títí Láé. A ṣẹda pẹlu ifẹ lati gba gbogbo igbesi aye."
+  },
+  "common": {
+    "loading": "N gba...",
+    "error": "Aṣiṣe kan ṣẹlẹ",
+    "retry": "Gbiyanju lẹẹkansi",
+    "close": "Pa",
+    "save": "Fi pamu",
+    "cancel": "Fagilee"
+  },
+  "faq": {
+    "title": "Ìbéèrè Tí A Máa N Béèrè Lóòpọ̀",
+    "subtitle": "Wa ìdáhùn sí ìbéèrè tó wọ́pọ̀ jùlọ nípa bí a ṣe ń dá àti bó ṣe yẹ ká tọ́jú ojú-ìwé iranti",
+    "items": {
+      "memorialDuration": {
+        "question": "Báwo ni pẹ́ tí ojú-ìwé iranti yóò máa wà?",
+        "answer": "Ojú-ìwé iranti rẹ̀ yóò máa wà títí láé. A dájú pé a óò pa ìrántí àwọn ayé wọ̀nyí mọ́ kí ìran tó ń bọ lè máa rántí àwọn olólùfẹ́ wọn."
+      },
+      "contentTypes": {
+        "question": "Kí ni mo lè fi sí ojú-ìwé iranti?",
+        "answer": "O lè fi fọ́tò, fídíò, ìrántí tí a kọ, ohun tí a gbà, àti àwọn iṣẹ́ pàtàkì síbẹ̀. Pẹpẹ wa gba gbogbo fọ́màtì àwòrán àti ohun tí o bá fẹ́ lo."
+      },
+      "privacyControl": {
+        "question": "Ṣé mo lè ṣàkóso ẹni tí yóò rí ojú-ìwé iranti mi?",
+        "answer": "Bẹ́ẹ̀ni, o ní àṣẹ pátápátá. O lè jẹ́ kí ojú-ìwé náà ṣí sí gbogbo ènìyàn, ṣètò òfin aṣínà, tàbí pín án pẹ̀lú àwọn ènìyàn pàtàkì péré."
+      },
+      "multipleContributors": {
+        "question": "Ṣé àwọn ènìyàn púpọ̀ lè fi ohun sí ojú-ìwé kan naa?",
+        "answer": "Bẹ́ẹ̀ni. O lè pe àwọn ẹbí àti ọ̀rẹ́ rẹ láti fi fọ́tò, ìrántí àti ìtàn wọn sí ojú-ìwé náà. Èyí mú kí gbogbo ènìyàn lè kópa pẹ̀lú àfọwọ́sowọ́pọ̀."
+      },
+      "changesAfterCreation": {
+        "question": "Ṣé mo lè ṣe àtúnṣe lẹ́yìn tí mo dá ojú-ìwé iranti?",
+        "answer": "Bẹ́ẹ̀ni, o lè ṣe àtúnṣe nígbàkúgbà. Fi ohun tuntun kún, yí àwọn àlàyé padà, tàbí ṣètò ìpamọ́ tuntun nígbà tí o bá fẹ́."
+      },
+      "cost": {
+        "question": "Ṣé ó ní owó láti dá ojú-ìwé iranti?",
+        "answer": "A ní àṣàyàn ọfẹ́ àti àṣàyàn tó sanwó. Ẹ̀yà ọfẹ́ ní àwọn ohun tó ṣe pàtàkì, nígbà tí ẹ̀yà tó sanwó fún ni ìpamọ́ tó pọ̀, àtúnṣe tó dára jùlọ, àti àbójútó ìpamọ́ tó gaju."
+      }
+    },
+    "help": {
+      "title": "Ṣé o ní ìbéèrè mìíràn?",
+      "description": "Ẹgbẹ́ ìrànlọ́wọ́ wa wà níbẹ láti ràn ẹ́ lọ́wọ́ láti dá ìrántí tó lẹ́wà tó sì pẹ́",
+      "button": "Kan sí Ẹgbẹ́ Ìrànlọ́wọ́"
+    }
+  }
+}
