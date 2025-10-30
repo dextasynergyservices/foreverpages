@@ -300,5 +300,253 @@
       "description": "Our support team is here to help you create a beautiful and lasting tribute",
       "button": "Contact Support"
     }
+  },
+  "dashboard": {
+    "sidebar": {
+      "brand": "ForeverPages",
+      "nav": {
+        "analytics": "Analytics",
+        "gallery": "Gallery",
+        "builder": "Funeral Builder",
+        "invitations": "Invitations",
+        "tributes": "Tributes",
+        "settings": "Settings"
+      }
+    },
+    "analytics": {
+      "title": "Analytics Dashboard",
+      "subtitle": "Track engagement and activity on your memorial pages",
+      "exportReport": "Export Report",
+      "timeRanges": {
+        "7days": "Last 7 days",
+        "30days": "Last 30 days",
+        "90days": "Last 90 days",
+        "1year": "Last year"
+      },
+      "fromLastPeriod": "from last period",
+      "visitorTrends": {
+        "title": "Visitor Trends",
+        "description": "Daily visitors over the past 30 days"
+      },
+      "mostVisited": {
+        "title": "Most Visited Pages",
+        "description": "Popular sections of the memorial",
+        "views": "views"
+      },
+      "recentActivity": {
+        "title": "Recent Activity",
+        "description": "Latest interactions with your memorial pages"
+      },
+      "memorialSummary": {
+        "title": "Memorial Summary",
+        "description": "Key information at a glance",
+        "viewMemorial": "View Memorial Page",
+        "created": "Created",
+        "status": "Status",
+        "photos": "Photos",
+        "approvedTributes": "Approved Tributes",
+        "serviceRsvps": "Service RSVPs",
+        "memorialPage": "Memorial Page"
+      }
+    },
+    "gallery": {
+      "title": "Photo & Video Gallery",
+      "subtitle": "Manage memories and media for the memorial",
+      "uploadMedia": "Upload Media",
+      "uploadDialogTitle": "Upload Photos & Videos",
+      "labels": {
+        "selectFiles": "Select Files",
+        "titleOptional": "Title (Optional)"
+      },
+      "actions": {
+        "upload": "Upload",
+        "addMore": "Click to add more photos & videos",
+        "preview": "Preview",
+        "delete": "Delete"
+      }
+    },
+    "invitations": {
+      "title": "Service Invitations",
+      "subtitle": "Send invitations and manage RSVPs for memorial services",
+      "tabs": {
+        "create": "Create Invitation",
+        "manage": "Manage Invites",
+        "rsvp": "RSVP Responses"
+      },
+      "create": {
+        "invitationDetails": "Invitation Details",
+        "emailSubject": "Email Subject",
+        "personalMessage": "Personal Message",
+        "templateStyle": "Template Style",
+        "serviceInformation": "Service Information",
+        "dateTime": "Date & Time",
+        "venue": "Venue",
+        "address": "Address",
+        "rsvpRequired": "RSVP Required",
+        "recipients": "Recipients",
+        "emailAddresses": "Email Addresses"
+      },
+      "actions": {
+        "importFromContacts": "Import from Contacts",
+        "sendInvitations": "Send Invitations",
+        "resend": "Resend",
+        "remove": "Remove",
+        "exportList": "Export List",
+        "addMoreRecipients": "Add More Recipients"
+      },
+      "manage": {
+        "sentInvitations": "Sent Invitations",
+        "trackDelivery": "Track delivery status and manage your invitation list"
+      },
+      "rsvp": {
+        "attending": "Attending",
+        "cannotAttend": "Cannot Attend",
+        "noResponse": "No Response",
+        "responsesTitle": "RSVP Responses",
+        "responsesDescription": "View and manage responses from invitees"
+      }
+    },
+    "pageBuilder": {
+      "header": {
+        "title": "Create Memorial",
+        "cancel": "Cancel"
+      },
+      "steps": {
+        "chooseTemplate": {
+          "title": "Choose Template",
+          "description": "Select a design that honors your loved one"
+        },
+        "basicInfo": {
+          "title": "Basic Information",
+          "description": "Tell us about your loved one"
+        },
+        "details": {
+          "title": "Memorial Details",
+          "description": "Add photos and memories"
+        },
+        "review": {
+          "title": "Review",
+          "description": "Review and create your memorial"
+        }
+      },
+      "buttons": {
+        "previous": "Previous",
+        "next": "Next",
+        "create": "Create Memorial"
+      }
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Manage your account and memorial page preferences",
+      "tabs": {
+        "profile": "Profile",
+        "memorial": "Memorial",
+        "privacy": "Privacy",
+        "notifications": "Notifications",
+        "advanced": "Advanced"
+      },
+      "profile": {
+        "title": "Profile Information",
+        "description": "Update your personal information and account details",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "Email Address",
+        "phone": "Phone Number",
+        "relationship": "Relationship to Deceased",
+        "save": "Save Profile Changes"
+      },
+      "memorial": {
+        "title": "Memorial Page Settings",
+        "description": "Configure your memorial page appearance and behavior",
+        "pageTitle": "Memorial Page Title",
+        "customUrl": "Custom URL (Optional)",
+        "theme": "Theme",
+        "publicMemorial": {
+          "label": "Public Memorial",
+          "description": "Allow anyone to view the memorial page"
+        },
+        "allowTributes": {
+          "label": "Allow Tributes",
+          "description": "Let visitors leave tribute messages"
+        },
+        "moderateTributes": {
+          "label": "Moderate Tributes",
+          "description": "Review tributes before they appear publicly"
+        },
+        "save": "Save Memorial Settings"
+      },
+      "privacy": {
+        "title": "Privacy & Security",
+        "description": "Control who can see and interact with your memorial",
+        "visibility": "Memorial Visibility",
+        "indexing": "Search Engine Indexing",
+        "access": {
+          "title": "Access Management",
+          "additionalAdmins": "Additional Administrators",
+          "sendAdminInvites": "Send Admin Invitations"
+        },
+        "save": "Save Privacy Settings"
+      },
+      "notifications": {
+        "title": "Notification Preferences",
+        "description": "Choose how and when you want to be notified",
+        "email": {
+          "label": "Email Notifications",
+          "description": "Receive updates via email"
+        },
+        "types": {
+          "newTributes": "New Tributes",
+          "photoUploads": "Photo Uploads",
+          "rsvpUpdates": "RSVP Updates",
+          "weeklySummary": "Weekly Summary"
+        },
+        "save": "Save Notification Settings"
+      },
+      "advanced": {
+        "title": "Advanced Settings",
+        "description": "Advanced options and data management",
+        "export": {
+          "title": "Data Export",
+          "description": "Download all your memorial data including photos, tributes, and information",
+          "button": "Export Memorial Data"
+        },
+        "domain": {
+          "title": "Custom Domain",
+          "description": "Connect your own domain name to this memorial (Premium feature)",
+          "connect": "Connect Domain"
+        },
+        "danger": {
+          "title": "Danger Zone",
+          "archive": "Archive Memorial",
+          "archiveDescription": "Make the memorial private and stop accepting new tributes",
+          "delete": "Delete Memorial",
+          "deleteDescription": "Permanently delete this memorial and all associated data. This cannot be undone."
+        },
+        "account": {
+          "title": "Account Actions",
+          "signOut": "Sign Out"
+        }
+      }
+    },
+    "tributes": {
+      "title": "Tributes & Condolences",
+      "subtitle": "Manage and moderate tribute messages from visitors",
+      "tabs": {
+        "pending": "Pending Review",
+        "approved": "Approved",
+        "flagged": "Flagged",
+        "all": "All Tributes"
+      },
+      "actions": {
+        "approve": "Approve",
+        "reject": "Reject",
+        "flag": "Flag"
+      },
+      "empty": {
+        "noPending": "No Pending Tributes",
+        "allReviewed": "All tributes have been reviewed"
+      },
+      "live": "Live"
+    }
   }
 }

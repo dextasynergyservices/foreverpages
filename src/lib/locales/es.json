@@ -302,5 +302,253 @@
       "description": "Nuestro equipo de soporte está aquí para ayudarte a crear un tributo hermoso y duradero",
       "button": "Contactar Soporte"
     }
+  },
+  "dashboard": {
+    "sidebar": {
+      "brand": "ForeverPages",
+      "nav": {
+        "analytics": "Análisis",
+        "gallery": "Galería",
+        "builder": "Creador de Funeral",
+        "invitations": "Invitaciones",
+        "tributes": "Tributos",
+        "settings": "Configuración"
+      }
+    },
+    "analytics": {
+      "title": "Panel de Análisis",
+      "subtitle": "Sigue el compromiso y la actividad en tus páginas conmemorativas",
+      "exportReport": "Exportar Informe",
+      "timeRanges": {
+        "7days": "Últimos 7 días",
+        "30days": "Últimos 30 días",
+        "90days": "Últimos 90 días",
+        "1year": "Último año"
+      },
+      "fromLastPeriod": "respecto al período anterior",
+      "visitorTrends": {
+        "title": "Tendencias de Visitantes",
+        "description": "Visitantes diarios durante los últimos 30 días"
+      },
+      "mostVisited": {
+        "title": "Páginas Más Visitadas",
+        "description": "Secciones populares del memorial",
+        "views": "vistas"
+      },
+      "recentActivity": {
+        "title": "Actividad Reciente",
+        "description": "Últimas interacciones con tus páginas conmemorativas"
+      },
+      "memorialSummary": {
+        "title": "Resumen del Memorial",
+        "description": "Información clave de un vistazo",
+        "viewMemorial": "Ver Página Conmemorativa",
+        "created": "Creado",
+        "status": "Estado",
+        "photos": "Fotos",
+        "approvedTributes": "Tributos Aprobados",
+        "serviceRsvps": "RSVP del Servicio",
+        "memorialPage": "Página Conmemorativa"
+      }
+    },
+    "gallery": {
+      "title": "Galería de Fotos y Videos",
+      "subtitle": "Gestiona recuerdos y medios del memorial",
+      "uploadMedia": "Subir Medios",
+      "uploadDialogTitle": "Subir Fotos y Videos",
+      "labels": {
+        "selectFiles": "Seleccionar Archivos",
+        "titleOptional": "Título (Opcional)"
+      },
+      "actions": {
+        "upload": "Subir",
+        "addMore": "Haz clic para agregar más fotos y videos",
+        "preview": "Vista previa",
+        "delete": "Eliminar"
+      }
+    },
+    "invitations": {
+      "title": "Invitaciones al Servicio",
+      "subtitle": "Envía invitaciones y gestiona RSVPs para servicios conmemorativos",
+      "tabs": {
+        "create": "Crear Invitación",
+        "manage": "Gestionar Invitaciones",
+        "rsvp": "Respuestas RSVP"
+      },
+      "create": {
+        "invitationDetails": "Detalles de la Invitación",
+        "emailSubject": "Asunto del Correo",
+        "personalMessage": "Mensaje Personal",
+        "templateStyle": "Estilo de Plantilla",
+        "serviceInformation": "Información del Servicio",
+        "dateTime": "Fecha y Hora",
+        "venue": "Lugar",
+        "address": "Dirección",
+        "rsvpRequired": "RSVP Requerido",
+        "recipients": "Destinatarios",
+        "emailAddresses": "Direcciones de Correo"
+      },
+      "actions": {
+        "importFromContacts": "Importar desde Contactos",
+        "sendInvitations": "Enviar Invitaciones",
+        "resend": "Reenviar",
+        "remove": "Eliminar",
+        "exportList": "Exportar Lista",
+        "addMoreRecipients": "Agregar Más Destinatarios"
+      },
+      "manage": {
+        "sentInvitations": "Invitaciones Enviadas",
+        "trackDelivery": "Sigue el estado de entrega y gestiona tu lista de invitaciones"
+      },
+      "rsvp": {
+        "attending": "Asistirán",
+        "cannotAttend": "No Pueden Asistir",
+        "noResponse": "Sin Respuesta",
+        "responsesTitle": "Respuestas RSVP",
+        "responsesDescription": "Ver y gestionar respuestas de los invitados"
+      }
+    },
+    "pageBuilder": {
+      "header": {
+        "title": "Crear Memorial",
+        "cancel": "Cancelar"
+      },
+      "steps": {
+        "chooseTemplate": {
+          "title": "Elegir Plantilla",
+          "description": "Selecciona un diseño que honre a tu ser querido"
+        },
+        "basicInfo": {
+          "title": "Información Básica",
+          "description": "Cuéntanos sobre tu ser querido"
+        },
+        "details": {
+          "title": "Detalles del Memorial",
+          "description": "Agrega fotos y recuerdos"
+        },
+        "review": {
+          "title": "Revisar",
+          "description": "Revisa y crea tu memorial"
+        }
+      },
+      "buttons": {
+        "previous": "Anterior",
+        "next": "Siguiente",
+        "create": "Crear Memorial"
+      }
+    },
+    "settings": {
+      "title": "Configuración",
+      "subtitle": "Gestiona tu cuenta y preferencias de la página conmemorativa",
+      "tabs": {
+        "profile": "Perfil",
+        "memorial": "Memorial",
+        "privacy": "Privacidad",
+        "notifications": "Notificaciones",
+        "advanced": "Avanzado"
+      },
+      "profile": {
+        "title": "Información del Perfil",
+        "description": "Actualiza tu información personal y los detalles de la cuenta",
+        "firstName": "Nombre",
+        "lastName": "Apellido",
+        "email": "Correo Electrónico",
+        "phone": "Número de Teléfono",
+        "relationship": "Relación con el Fallecido",
+        "save": "Guardar Cambios del Perfil"
+      },
+      "memorial": {
+        "title": "Configuración de la Página Conmemorativa",
+        "description": "Configura la apariencia y el comportamiento de tu página conmemorativa",
+        "pageTitle": "Título de la Página Conmemorativa",
+        "customUrl": "URL Personalizada (Opcional)",
+        "theme": "Tema",
+        "publicMemorial": {
+          "label": "Memorial Público",
+          "description": "Permitir que cualquiera vea la página conmemorativa"
+        },
+        "allowTributes": {
+          "label": "Permitir Tributos",
+          "description": "Permitir que los visitantes dejen mensajes de tributo"
+        },
+        "moderateTributes": {
+          "label": "Moderar Tributos",
+          "description": "Revisar tributos antes de que aparezcan públicamente"
+        },
+        "save": "Guardar Configuración del Memorial"
+      },
+      "privacy": {
+        "title": "Privacidad y Seguridad",
+        "description": "Controla quién puede ver e interactuar con tu memorial",
+        "visibility": "Visibilidad del Memorial",
+        "indexing": "Indexación en Motores de Búsqueda",
+        "access": {
+          "title": "Gestión de Acceso",
+          "additionalAdmins": "Administradores Adicionales",
+          "sendAdminInvites": "Enviar Invitaciones de Administrador"
+        },
+        "save": "Guardar Configuración de Privacidad"
+      },
+      "notifications": {
+        "title": "Preferencias de Notificación",
+        "description": "Elige cómo y cuándo deseas recibir notificaciones",
+        "email": {
+          "label": "Notificaciones por Correo",
+          "description": "Recibir actualizaciones por correo electrónico"
+        },
+        "types": {
+          "newTributes": "Nuevos Tributos",
+          "photoUploads": "Subidas de Fotos",
+          "rsvpUpdates": "Actualizaciones de RSVP",
+          "weeklySummary": "Resumen Semanal"
+        },
+        "save": "Guardar Preferencias de Notificación"
+      },
+      "advanced": {
+        "title": "Configuración Avanzada",
+        "description": "Opciones avanzadas y gestión de datos",
+        "export": {
+          "title": "Exportación de Datos",
+          "description": "Descarga todos tus datos del memorial incluyendo fotos, tributos e información",
+          "button": "Exportar Datos del Memorial"
+        },
+        "domain": {
+          "title": "Dominio Personalizado",
+          "description": "Conecta tu propio dominio a este memorial (Función Premium)",
+          "connect": "Conectar Dominio"
+        },
+        "danger": {
+          "title": "Zona de Peligro",
+          "archive": "Archivar Memorial",
+          "archiveDescription": "Hacer el memorial privado y dejar de aceptar nuevos tributos",
+          "delete": "Eliminar Memorial",
+          "deleteDescription": "Eliminar permanentemente este memorial y todos los datos asociados. Esto no se puede deshacer."
+        },
+        "account": {
+          "title": "Acciones de la Cuenta",
+          "signOut": "Cerrar Sesión"
+        }
+      }
+    },
+    "tributes": {
+      "title": "Tributos y Condolencias",
+      "subtitle": "Gestiona y modera mensajes de tributo de los visitantes",
+      "tabs": {
+        "pending": "Revisión Pendiente",
+        "approved": "Aprobados",
+        "flagged": "Marcados",
+        "all": "Todos los Tributos"
+      },
+      "actions": {
+        "approve": "Aprobar",
+        "reject": "Rechazar",
+        "flag": "Marcar"
+      },
+      "empty": {
+        "noPending": "No hay tributos pendientes",
+        "allReviewed": "Todos los tributos han sido revisados"
+      },
+      "live": "En vivo"
+    }
   }
 }

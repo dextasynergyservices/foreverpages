@@ -301,5 +301,253 @@
       "description": "Ụlọ ọrụ enyemaka anyị dị njikere inyere gị aka ime ihe ncheta mara mma na nke ga-adịru ogologo oge",
       "button": "Kpọtụrụ Enyemaka"
     }
+  },
+  "dashboard": {
+    "sidebar": {
+      "brand": "ForeverPages",
+      "nav": {
+        "analytics": "Nchịkọta",
+        "gallery": "Ngalaba Foto",
+        "builder": "Onye Mepụta Ncheta",
+        "invitations": "Oku",
+        "tributes": "Otuto",
+        "settings": "Nhazi"
+      }
+    },
+    "analytics": {
+      "title": "Dashboard Nchịkọta",
+      "subtitle": "Lelee mmekọrịta na omume ndị mmadụ n’elu ibe ncheta gị",
+      "exportReport": "Zipụ akụkọ",
+      "timeRanges": {
+        "7days": "Ụbọchị 7 gara aga",
+        "30days": "Ụbọchị 30 gara aga",
+        "90days": "Ụbọchị 90 gara aga",
+        "1year": "Afọ gara aga"
+      },
+      "fromLastPeriod": "site n’oge gara aga",
+      "visitorTrends": {
+        "title": "Usoro ndị na-abịa ileta",
+        "description": "Ndị gara ileta kwa ụbọchị n’ime ụbọchị 30 gara aga"
+      },
+      "mostVisited": {
+        "title": "Ibe kacha eleta",
+        "description": "Akụkụ ndị kacha ewu ewu n’ebe ncheta ahụ",
+        "views": "nlele"
+      },
+      "recentActivity": {
+        "title": "Omume nke gara aga",
+        "description": "Mmegharị ndị ikpeazụ n’ebe ncheta gị dị"
+      },
+      "memorialSummary": {
+        "title": "Nchịkọta ncheta",
+        "description": "Ozi dị mkpa n’otu anya",
+        "viewMemorial": "Lelee Ibe Ncheta",
+        "created": "Emepụtara",
+        "status": "Ọnọdụ",
+        "photos": "Foto",
+        "approvedTributes": "Otuto e kwadoro",
+        "serviceRsvps": "RSVP ọrụ",
+        "memorialPage": "Ibe Ncheta"
+      },
+      "gallery": {
+        "title": "Ngalaba Foto & Vidio",
+        "subtitle": "Jikwaa ihe ncheta na mgbasa ozi maka ncheta ahụ",
+        "uploadMedia": "Bulite Mgbasa ozi",
+        "uploadDialogTitle": "Bulite Foto & Vidio",
+        "labels": {
+          "selectFiles": "Họrọ faịlụ",
+          "titleOptional": "Aha (Nhọrọ)"
+        },
+        "actions": {
+          "upload": "Bulite",
+          "addMore": "Pịa ka ịgbakwunye foto & vidio ọzọ",
+          "preview": "Lelee tupu ebulite",
+          "delete": "Hichapụ"
+        }
+      },
+      "invitations": {
+        "title": "Mmemme Ịkpọ",
+        "subtitle": "Zipụ oku na jikwaa azịza RSVP maka ọrụ ncheta",
+        "tabs": {
+          "create": "Mepụta oku",
+          "manage": "Jikwaa oku",
+          "rsvp": "Azịza RSVP"
+        },
+        "create": {
+          "invitationDetails": "Nkọwa oku",
+          "emailSubject": "Isiokwu ozi email",
+          "personalMessage": "Ozi nke onwe",
+          "templateStyle": "Ụdị ihe atụ",
+          "serviceInformation": "Ozi ọrụ",
+          "dateTime": "Ụbọchị & Oge",
+          "venue": "Ebe omume ga-eme",
+          "address": "Adreesị",
+          "rsvpRequired": "A chọrọ RSVP",
+          "recipients": "Ndị nnata",
+          "emailAddresses": "Adreesị Email"
+        },
+        "actions": {
+          "importFromContacts": "Bubata site na Kọntaktị",
+          "sendInvitations": "Zipụ oku",
+          "resend": "Zipụ ọzọ",
+          "remove": "Wepu",
+          "exportList": "Zipụ ndepụta",
+          "addMoreRecipients": "Tinye ndị nnata ọzọ"
+        },
+        "manage": {
+          "sentInvitations": "Oku ezitere",
+          "trackDelivery": "Chọpụta ọnọdụ nnyefe na jikwaa ndepụta oku gị"
+        },
+        "rsvp": {
+          "attending": "Ga-abịa",
+          "cannotAttend": "Agaghị abịa",
+          "noResponse": "Enweghị azịza",
+          "responsesTitle": "Azịza RSVP",
+          "responsesDescription": "Lelee ma jikwaa azịza sitere n'aka ndị nnata"
+        }
+      },
+      "pageBuilder": {
+        "header": {
+          "title": "Mepụta Ncheta",
+          "cancel": "Kagbuo"
+        },
+        "steps": {
+          "chooseTemplate": {
+            "title": "Họrọ ihe atụ",
+            "description": "Họrọ imewe nke na-asọpụrụ onye i hụrụ n’anya"
+          },
+          "basicInfo": {
+            "title": "Ozi dị mfe",
+            "description": "Gwa anyị gbasara onye i hụrụ n’anya"
+          },
+          "details": {
+            "title": "Nkọwa Ncheta",
+            "description": "Tinye foto na ihe ncheta"
+          },
+          "review": {
+            "title": "Nlele",
+            "description": "Lelee ma mepụta ncheta gị"
+          }
+        },
+        "buttons": {
+          "previous": "Gaa azụ",
+          "next": "Gaa n’ihu",
+          "create": "Mepụta Ncheta"
+        }
+      },
+      "settings": {
+        "title": "Nhazi",
+        "subtitle": "Jikwaa akaụntụ gị na ntọala ibe ncheta gị",
+        "tabs": {
+          "profile": "Profaịlụ",
+          "memorial": "Ncheta",
+          "privacy": "Nzuzo",
+          "notifications": "Ozi",
+          "advanced": "Nke omimi"
+        },
+        "profile": {
+          "title": "Ozi Profaịlụ",
+          "description": "Melite ozi onwe gị na nkọwa akaụntụ",
+          "firstName": "Aha Mbụ",
+          "lastName": "Aha ikpeazụ",
+          "email": "Adreesị Email",
+          "phone": "Nọmba Ekwentị",
+          "relationship": "Mmekọrịta gị na onye nwụrụ anwụ",
+          "save": "Chekwaa mgbanwe profaịlụ"
+        },
+        "memorial": {
+          "title": "Nhazi Ibe Ncheta",
+          "description": "Hazie ọdịdị na omume nke ibe ncheta gị",
+          "pageTitle": "Aha Ibe Ncheta",
+          "customUrl": "URL omenala (Nhọrọ)",
+          "theme": "Isiokwu",
+          "publicMemorial": {
+            "label": "Ncheta Ọha",
+            "description": "Kwe ka onye ọ bụla hụ ibe ncheta ahụ"
+          },
+          "allowTributes": {
+            "label": "Kwe ka e tinye otuto",
+            "description": "Kwe ka ndị ọbịa hapụ ozi otuto"
+          },
+          "moderateTributes": {
+            "label": "Nchịkwa otuto",
+            "description": "Nyocha otuto tupu e gosipụta ha n'ihu ọha"
+          },
+          "save": "Chekwaa Nhazi Ncheta"
+        },
+        "privacy": {
+          "title": "Nzuzo & Nchekwa",
+          "description": "Jikwaa onye nwere ike ịhụ ma soro na ncheta gị",
+          "visibility": "Ịhụnanya Ncheta",
+          "indexing": "Nyochaa site n’ime nchọgharị",
+          "access": {
+            "title": "Nchịkwa nnweta",
+            "additionalAdmins": "Ndị nchịkwa ọzọ",
+            "sendAdminInvites": "Zipụ oku nchịkwa"
+          },
+          "save": "Chekwaa Nhazi Nzuzo"
+        },
+        "notifications": {
+          "title": "Nhọrọ Ozi",
+          "description": "Họrọ otu na mgbe ịchọrọ inata ozi",
+          "email": {
+            "label": "Ozi Email",
+            "description": "Nata mmelite site na email"
+          },
+          "types": {
+            "newTributes": "Otuto ọhụrụ",
+            "photoUploads": "Foto bulite",
+            "rsvpUpdates": "Mmelite RSVP",
+            "weeklySummary": "Nchịkọta izu"
+          },
+          "save": "Chekwaa Nhazi Ozi"
+        },
+        "advanced": {
+          "title": "Nhazi Dị elu",
+          "description": "Nhọrọ dị elu na njikwa data",
+          "export": {
+            "title": "Zipụ Data",
+            "description": "Budata data ncheta gị niile gụnyere foto, otuto, na ozi",
+            "button": "Zipụ Data Ncheta"
+          },
+          "domain": {
+            "title": "Domịn omenala",
+            "description": "Jikọọ aha domịn gị na ncheta a (ọrụ dị elu)",
+            "connect": "Jikọọ Domịn"
+          },
+          "danger": {
+            "title": "Mpaghara ize ndụ",
+            "archive": "Chekwaa Ncheta",
+            "archiveDescription": "Mee ka ncheta bụrụ nkeonwe ma kwụsị inata otuto ọhụrụ",
+            "delete": "Hichapụ Ncheta",
+            "deleteDescription": "Hichapụ ncheta a na data niile ya kpamkpam. Enweghị ike iweghachi nke a."
+          },
+          "account": {
+            "title": "Omume Akaụntụ",
+            "signOut": "Pụọ na Akaụntụ"
+          }
+        }
+      },
+      "tributes": {
+        "title": "Otuto & Nkwanye Obi",
+        "subtitle": "Jikwaa na nyochaa ozi otuto sitere n'aka ndị ọbịa",
+        "tabs": {
+          "pending": "Na-echere nlele",
+          "approved": "Anabatara",
+          "flagged": "Kpachapụrụ anya",
+          "all": "Otuto niile"
+        },
+        "actions": {
+          "approve": "Kwado",
+          "reject": "Jụ",
+          "flag": "Kpọpụta"
+        },
+        "empty": {
+          "noPending": "Enweghị otuto na-eche nlele",
+          "allReviewed": "A nyochala otuto niile"
+        },
+        "live": "Na ndụ"
+      }
+    }
   }
 }

@@ -300,5 +300,26 @@
       "description": "Ẹgbẹ́ ìrànlọ́wọ́ wa wà níbẹ láti ràn ẹ́ lọ́wọ́ láti dá ìrántí tó lẹ́wà tó sì pẹ́",
       "button": "Kan sí Ẹgbẹ́ Ìrànlọ́wọ́"
     }
+  },
+  "dashboard": {
+    "sidebar": {
+      "brand": "ForeverPages",
+      "nav": {
+        "analytics": "Awọn iṣiro",
+        "gallery": "Geleri",
+        "builder": "Oníṣe Iranti",
+        "invitations": "Ìpè",
+        "tributes": "Ìbùkún",
+        "settings": "Ètò"
+      }
+    }
+  },
+  "analytics": {
+    "timeRanges": {
+      "7days": "Ọjọ 7 sẹ́yìn",
+      "30days": "Ọjọ 30 sẹ́yìn",
+      "90days": "Ọjọ 90 sẹ́yìn",
+      "1year": "Ọdún tó kọjá"
+    }
   }
 }
