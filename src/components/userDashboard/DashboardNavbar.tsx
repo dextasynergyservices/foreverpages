@@ -1,7 +1,6 @@
-// components/dashboard/SidebarNavigation.tsx
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   Heart,
@@ -25,7 +24,8 @@ interface DashboardNavbarProps {
   onClose: () => void;
 }
 
-const DashboardNavbar = ({ isOpen, onClose }: DashboardNavbarProps) => {
+// Inner component that uses useSearchParams
+function DashboardNavbarContent({ isOpen, onClose }: DashboardNavbarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const activeSection = searchParams.get("section") || "analytics";
@@ -170,6 +170,31 @@ const DashboardNavbar = ({ isOpen, onClose }: DashboardNavbarProps) => {
       {/* Overlay for mobile */}
       {isOpen && <div className="fixed inset-0 bg-black/40 lg:hidden z-40" onClick={onClose} />}
     </>
+  );
+}
+
+// Main component with Suspense
+const DashboardNavbar = ({ isOpen, onClose }: DashboardNavbarProps) => {
+  const { theme } = useTheme();
+  const sidebarBgClass = theme === "dark" ? "bg-black text-white" : "bg-white text-black";
+
+  return (
+    <Suspense
+      fallback={
+        <div
+          className={`fixed lg:static inset-y-0 left-0 w-64 ${sidebarBgClass} shadow-soft border-r border-border flex flex-col z-50 transform transition-transform duration-300 ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
+        >
+          <div className="p-6 border-b border-border">
+            <div className="flex items-center space-x-2">
+              <Heart className="h-8 w-8 text-primary" />
+              <h1 className="text-xl font-serif font-bold">Loading...</h1>
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <DashboardNavbarContent isOpen={isOpen} onClose={onClose} />
+    </Suspense>
   );
 };
 
