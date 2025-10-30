@@ -12,7 +12,7 @@ import { useTheme } from "@/hooks/useTheme";
 
 export interface DashboardProps {
   activeSection: string;
-  onSectionChange: (section: string) => void;
+  onSectionChange?: (section: string) => void; // Made optional
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({ activeSection }) => {
