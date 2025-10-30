@@ -8,7 +8,7 @@ function UserDashboardContent() {
   const searchParams = useSearchParams();
   const activeSection = searchParams.get("section") || "analytics";
 
-  return <Dashboard activeSection={activeSection} onSectionChange={() => {}} />;
+  return <Dashboard activeSection={activeSection} />;
 }
 
 export default function UserDashboard() {
