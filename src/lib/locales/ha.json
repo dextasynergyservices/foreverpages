@@ -300,5 +300,38 @@
       "description": "Ƙungiyarmu tana nan don taimaka maka ƙirƙirar shafin tunawa mai kyau da na har abada",
       "button": "Tuntubi Taimako"
     }
+  },
+  "dashboard": {
+    "sidebar": {
+      "brand": "ForeverPages",
+      "nav": {
+        "analytics": "Nazari",
+        "gallery": "Galari",
+        "builder": "Mai Gina Tunawa",
+        "invitations": "Gayyata",
+        "tributes": "Girmamawa",
+        "settings": "Saituna"
+      }
+    },
+    "analytics": {
+      "timeRanges": {
+        "7days": "Kwanaki 7 da suka gabata",
+        "30days": "Kwanaki 30 da suka gabata",
+        "90days": "Kwanaki 90 da suka gabata",
+        "1year": "Shekara da ta gabata"
+      },
+      "fromLastPeriod": "daga zangon da ya gabata",
+      "mostVisited": {
+        "views": "ziyara"
+      },
+      "memorialSummary": {
+        "created": "An ƙirƙira",
+        "status": "Matsayi",
+        "photos": "Hotuna",
+        "approvedTributes": "Girmamawa da aka amince",
+        "serviceRsvps": "RSVP na Bikin",
+        "memorialPage": "Shafin Tunawa"
+      }
+    }
   }
 }

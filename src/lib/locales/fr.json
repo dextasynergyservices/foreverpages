@@ -300,5 +300,253 @@
       "description": "Notre équipe d’assistance est là pour vous aider à créer un hommage beau et durable",
       "button": "Contacter le Support"
     }
+  },
+  "dashboard": {
+    "sidebar": {
+      "brand": "ForeverPages",
+      "nav": {
+        "analytics": "Analyses",
+        "gallery": "Galerie",
+        "builder": "Créateur de funérailles",
+        "invitations": "Invitations",
+        "tributes": "Hommages",
+        "settings": "Paramètres"
+      }
+    },
+    "analytics": {
+      "title": "Tableau de bord analytique",
+      "subtitle": "Suivez l'engagement et l'activité sur vos pages commémoratives",
+      "exportReport": "Exporter le rapport",
+      "timeRanges": {
+        "7days": "7 derniers jours",
+        "30days": "30 derniers jours",
+        "90days": "90 derniers jours",
+        "1year": "L'année dernière"
+      },
+      "fromLastPeriod": "par rapport à la période précédente",
+      "visitorTrends": {
+        "title": "Tendances des visiteurs",
+        "description": "Visiteurs quotidiens au cours des 30 derniers jours"
+      },
+      "mostVisited": {
+        "title": "Pages les plus visitées",
+        "description": "Sections populaires du mémorial",
+        "views": "vues"
+      },
+      "recentActivity": {
+        "title": "Activité récente",
+        "description": "Dernières interactions avec vos pages commémoratives"
+      },
+      "memorialSummary": {
+        "title": "Résumé du mémorial",
+        "description": "Informations clés en un coup d'œil",
+        "viewMemorial": "Voir la page commémorative",
+        "created": "Créé",
+        "status": "Statut",
+        "photos": "Photos",
+        "approvedTributes": "Hommages approuvés",
+        "serviceRsvps": "RSVP du service",
+        "memorialPage": "Page commémorative"
+      },
+      "gallery": {
+        "title": "Galerie photo et vidéo",
+        "subtitle": "Gérez les souvenirs et les médias du mémorial",
+        "uploadMedia": "Téléverser des médias",
+        "uploadDialogTitle": "Téléverser des photos et vidéos",
+        "labels": {
+          "selectFiles": "Sélectionner des fichiers",
+          "titleOptional": "Titre (facultatif)"
+        },
+        "actions": {
+          "upload": "Téléverser",
+          "addMore": "Cliquez pour ajouter plus de photos et vidéos",
+          "preview": "Aperçu",
+          "delete": "Supprimer"
+        }
+      },
+      "invitations": {
+        "title": "Invitations aux services",
+        "subtitle": "Envoyez des invitations et gérez les réponses RSVP pour les services commémoratifs",
+        "tabs": {
+          "create": "Créer une invitation",
+          "manage": "Gérer les invitations",
+          "rsvp": "Réponses RSVP"
+        },
+        "create": {
+          "invitationDetails": "Détails de l'invitation",
+          "emailSubject": "Objet du courriel",
+          "personalMessage": "Message personnel",
+          "templateStyle": "Style du modèle",
+          "serviceInformation": "Informations du service",
+          "dateTime": "Date et heure",
+          "venue": "Lieu",
+          "address": "Adresse",
+          "rsvpRequired": "RSVP requis",
+          "recipients": "Destinataires",
+          "emailAddresses": "Adresses e-mail"
+        },
+        "actions": {
+          "importFromContacts": "Importer depuis les contacts",
+          "sendInvitations": "Envoyer les invitations",
+          "resend": "Renvoyer",
+          "remove": "Supprimer",
+          "exportList": "Exporter la liste",
+          "addMoreRecipients": "Ajouter d'autres destinataires"
+        },
+        "manage": {
+          "sentInvitations": "Invitations envoyées",
+          "trackDelivery": "Suivez le statut de livraison et gérez votre liste d'invitations"
+        },
+        "rsvp": {
+          "attending": "Participera",
+          "cannotAttend": "Ne peut pas participer",
+          "noResponse": "Aucune réponse",
+          "responsesTitle": "Réponses RSVP",
+          "responsesDescription": "Consultez et gérez les réponses des invités"
+        }
+      },
+      "pageBuilder": {
+        "header": {
+          "title": "Créer un mémorial",
+          "cancel": "Annuler"
+        },
+        "steps": {
+          "chooseTemplate": {
+            "title": "Choisir un modèle",
+            "description": "Sélectionnez un design qui honore votre être cher"
+          },
+          "basicInfo": {
+            "title": "Informations de base",
+            "description": "Parlez-nous de votre être cher"
+          },
+          "details": {
+            "title": "Détails du mémorial",
+            "description": "Ajoutez des photos et des souvenirs"
+          },
+          "review": {
+            "title": "Révision",
+            "description": "Vérifiez et créez votre mémorial"
+          }
+        },
+        "buttons": {
+          "previous": "Précédent",
+          "next": "Suivant",
+          "create": "Créer le mémorial"
+        }
+      },
+      "settings": {
+        "title": "Paramètres",
+        "subtitle": "Gérez votre compte et les préférences de votre page commémorative",
+        "tabs": {
+          "profile": "Profil",
+          "memorial": "Mémorial",
+          "privacy": "Confidentialité",
+          "notifications": "Notifications",
+          "advanced": "Avancé"
+        },
+        "profile": {
+          "title": "Informations du profil",
+          "description": "Mettez à jour vos informations personnelles et les détails du compte",
+          "firstName": "Prénom",
+          "lastName": "Nom de famille",
+          "email": "Adresse e-mail",
+          "phone": "Numéro de téléphone",
+          "relationship": "Lien avec le défunt",
+          "save": "Enregistrer les modifications du profil"
+        },
+        "memorial": {
+          "title": "Paramètres de la page commémorative",
+          "description": "Configurez l'apparence et le comportement de votre page",
+          "pageTitle": "Titre de la page du mémorial",
+          "customUrl": "URL personnalisée (facultatif)",
+          "theme": "Thème",
+          "publicMemorial": {
+            "label": "Mémorial public",
+            "description": "Permettre à tout le monde de voir la page"
+          },
+          "allowTributes": {
+            "label": "Autoriser les hommages",
+            "description": "Laisser les visiteurs écrire des messages d’hommage"
+          },
+          "moderateTributes": {
+            "label": "Modérer les hommages",
+            "description": "Examiner les hommages avant publication"
+          },
+          "save": "Enregistrer les paramètres du mémorial"
+        },
+        "privacy": {
+          "title": "Confidentialité et sécurité",
+          "description": "Contrôlez qui peut voir et interagir avec votre mémorial",
+          "visibility": "Visibilité du mémorial",
+          "indexing": "Indexation par les moteurs de recherche",
+          "access": {
+            "title": "Gestion des accès",
+            "additionalAdmins": "Administrateurs supplémentaires",
+            "sendAdminInvites": "Envoyer des invitations administrateur"
+          },
+          "save": "Enregistrer les paramètres de confidentialité"
+        },
+        "notifications": {
+          "title": "Préférences de notification",
+          "description": "Choisissez comment et quand être notifié",
+          "email": {
+            "label": "Notifications par e-mail",
+            "description": "Recevoir des mises à jour par e-mail"
+          },
+          "types": {
+            "newTributes": "Nouveaux hommages",
+            "photoUploads": "Téléversements de photos",
+            "rsvpUpdates": "Mises à jour RSVP",
+            "weeklySummary": "Résumé hebdomadaire"
+          },
+          "save": "Enregistrer les paramètres de notification"
+        },
+        "advanced": {
+          "title": "Paramètres avancés",
+          "description": "Options avancées et gestion des données",
+          "export": {
+            "title": "Exporter les données",
+            "description": "Téléchargez toutes vos données commémoratives y compris photos, hommages et informations",
+            "button": "Exporter les données du mémorial"
+          },
+          "domain": {
+            "title": "Domaine personnalisé",
+            "description": "Connectez votre propre nom de domaine à ce mémorial (fonction premium)",
+            "connect": "Connecter un domaine"
+          },
+          "danger": {
+            "title": "Zone de danger",
+            "archive": "Archiver le mémorial",
+            "archiveDescription": "Rendre le mémorial privé et arrêter les nouveaux hommages",
+            "delete": "Supprimer le mémorial",
+            "deleteDescription": "Supprimer définitivement ce mémorial et toutes ses données. Action irréversible."
+          },
+          "account": {
+            "title": "Actions du compte",
+            "signOut": "Se déconnecter"
+          }
+        }
+      },
+      "tributes": {
+        "title": "Hommages et condoléances",
+        "subtitle": "Gérez et modérez les messages d'hommage des visiteurs",
+        "tabs": {
+          "pending": "En attente de révision",
+          "approved": "Approuvés",
+          "flagged": "Signalés",
+          "all": "Tous les hommages"
+        },
+        "actions": {
+          "approve": "Approuver",
+          "reject": "Rejeter",
+          "flag": "Signaler"
+        },
+        "empty": {
+          "noPending": "Aucun hommage en attente",
+          "allReviewed": "Tous les hommages ont été examinés"
+        },
+        "live": "En ligne"
+      }
+    }
   }
 }
