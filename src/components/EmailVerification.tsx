@@ -189,7 +189,7 @@ export default function EmailVerificationPage() {
 
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <link href="/" className="inline-block">
+          <Link href="/" className="inline-block">
             <div
               className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 shadow-lg transition-colors ${
                 theme === "dark" ? "bg-white hover:bg-white/80" : "bg-black hover:bg-black/80"
@@ -197,7 +197,7 @@ export default function EmailVerificationPage() {
             >
               <Heart className={`w-8 h-8 ${theme === "dark" ? "text-black" : "text-white"}`} />
             </div>
-          </link>
+          </Link>
           <h1
             className={`text-3xl font-bold mb-2 ${theme === "dark" ? "text-white" : "text-black"}`}
           >

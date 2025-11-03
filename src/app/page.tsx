@@ -10,7 +10,7 @@ import { FAQSection } from "@/components/FAQ";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { Contact } from "@/components/Contact";
 import { CTASection } from "@/components/CTASection";
-import PricingSection from "@/components/allFuneralPages/pricingSection/pricing-section";
+import PricingSection from "@/components/pricingSection/pricing-section";
 import { Footer } from "@/components/Footer";
 import { LoadingPage } from "@/components/LoadingPage";
 import { useTheme } from "@/hooks/useTheme";

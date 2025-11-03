@@ -5,6 +5,7 @@ import { Heart, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Navbar } from "@/components/Navbar";
+import Link from "next/link";
 
 export default function LoginPage() {
   const { theme } = useTheme();
@@ -66,7 +67,7 @@ export default function LoginPage() {
       <Navbar />
       <div className="w-full max-w-md">
         <div className={`text-center mb-8`}>
-          <link href="/" className="inline-block">
+          <Link href="/" className="inline-block">
             <div
               className={`inline-flex items-center justify-center w-16 h-16 bg-black rounded-full mb-4 shadow-lg hover:bg-gray-800 transition-colors ${theme === "dark" ? "bg-white " : "bg-black"}`}
             >
@@ -74,7 +75,7 @@ export default function LoginPage() {
                 className={`w-8 h-8 ${theme === "dark" ? "text-white fill-black" : "text-black fill-white"}`}
               />
             </div>
-          </link>
+          </Link>
           <h1
             className={`text-3xl font-bold text-black mb-2 ${theme === "dark" ? "text-white " : "text-black"}`}
           >

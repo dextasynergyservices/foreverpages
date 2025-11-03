@@ -6,6 +6,7 @@ import { Heart, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Navbar } from "@/components/Navbar";
+import Link from "next/link";
 
 export default function RegisterPage() {
   const { theme } = useTheme();
@@ -82,13 +83,13 @@ export default function RegisterPage() {
       >
         <Navbar />
         <div className={`text-center mb-8 mt-16`}>
-          <link href="/" className="inline-block">
+          <Link href="/" className="inline-block">
             <div
               className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 shadow-lg hover:bg-gray-800 transition-colors ${theme === "dark" ? "bg-white hover:bg-white/80" : "bg-black hover:bg-black/80"}`}
             >
               <Heart className={`w-8 h-8 ${theme === "dark" ? "text-black" : "text-white"}`} />
             </div>
-          </link>
+          </Link>
           <h1
             className={`text-3xl font-bold mb-2 ${theme === "dark" ? "text-white" : "text-black"}`}
           >

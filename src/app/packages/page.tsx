@@ -1,4 +1,4 @@
-import PricingSection from "@/components/allFuneralPages/pricingSection/pricing-section";
+import PricingSection from "@/components/pricingSection/pricing-section";
 import { Navbar } from "@/components/Navbar";
 
 export default function page() {

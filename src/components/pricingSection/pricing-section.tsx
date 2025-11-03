@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslations } from "@/hooks/useTranslations";
 import { cn } from "@/lib/utils";
-import PricingCards from "@/components/allFuneralPages/pricingSection/pricing-cards";
-import PricingModal from "@/components/allFuneralPages/pricingSection/pricing-modal";
-import { plans } from "@/components/allFuneralPages/pricingSection/pricing-data";
+import PricingCards from "@/components/pricingSection/pricing-cards";
+import PricingModal from "@/components/pricingSection/pricing-modal";
+import { plans } from "@/components/pricingSection/pricing-data";
 
 const PricingSection = (): React.ReactNode => {
   const { theme } = useTheme();
