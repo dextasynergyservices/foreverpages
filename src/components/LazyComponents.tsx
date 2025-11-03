@@ -36,7 +36,7 @@ export const LazyHowItWorksSection = dynamic(
 );
 
 export const LazyPricingSection = dynamic(
-  () => import("./PricingSection").then((mod) => ({ default: mod.PricingSection })),
+  () => import("@/components/pricingSection/pricing-section"),
   {
     loading: () => <div className="py-20 flex items-center justify-center">Loading...</div>,
     ssr: true,

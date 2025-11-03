@@ -183,8 +183,15 @@
     }
   },
   "pricing": {
-    "title": "Simple, Transparent Pricing",
-    "subtitle": "Choose the plan that's right for your family's needs",
+    "modal": {
+      "plan": "Plan",
+      "featuresIncluded": "Features Included:",
+      "termsAndConditions": "Terms & Conditions",
+      "proceedToPayment": "Proceed to Payment",
+      "agreeTermsMessage": "Please agree to the terms and conditions to proceed with payment"
+    },
+    "title": "Choose Your Plan",
+    "subtitle": "Select the perfect plan to create a beautiful memorial website",
     "plans": {
       "basic": {
         "name": "Basic",
@@ -547,6 +554,204 @@
         "allReviewed": "All tributes have been reviewed"
       },
       "live": "Live"
+    }
+  },
+  "termsAndConditions": {
+    "agree": "I agree to the Terms and Conditions",
+    "title": "Memorial Website Service Terms and Conditions",
+    "sections": {
+      "serviceDescription": {
+        "title": "1. Service Description",
+        "content": "Our memorial website service provides a platform to create and maintain online memorials for loved ones. This includes hosting, templates, and maintenance as specified in your chosen plan."
+      },
+      "paymentTerms": {
+        "title": "2. Payment Terms",
+        "content": "All payments are one-time fees for the selected plan. Payment is required before service activation. Fees are non-refundable once the website has been created and published."
+      },
+      "contentGuidelines": {
+        "title": "3. Content Guidelines",
+        "content": "You agree to provide appropriate content that respects the memory of the deceased. We reserve the right to remove any content that violates our community guidelines or is deemed inappropriate."
+      },
+      "privacyAndData": {
+        "title": "4. Privacy and Data",
+        "content": "We respect your privacy and will handle all personal information in accordance with our privacy policy. Memorial content may be publicly accessible unless privacy settings are applied."
+      },
+      "serviceAvailability": {
+        "title": "5. Service Availability",
+        "content": "We strive to maintain 99% uptime but cannot guarantee uninterrupted service. Scheduled maintenance may occur with prior notice."
+      },
+      "intellectualProperty": {
+        "title": "6. Intellectual Property",
+        "content": "You retain rights to the content you provide. We retain rights to the platform, templates, and technology. The memorial website design is licensed for your use."
+      },
+      "termination": {
+        "title": "7. Termination",
+        "content": "You may request termination of service at any time. We reserve the right to terminate service for violation of terms. Memorial websites are maintained for the duration specified in your plan."
+      },
+      "limitationOfLiability": {
+        "title": "8. Limitation of Liability",
+        "content": "Our liability is limited to the amount paid for the service. We are not liable for indirect damages or losses resulting from service use."
+      }
+    },
+    "note": "Note: By checking the agreement box, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions."
+  },
+  "register": {
+    "welcome": "Create Account",
+    "subtitle": "Create a lasting memory",
+    "form": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "placeholders": {
+      "name": "Enter your full name",
+      "email": "Enter your email",
+      "password": "Enter your password",
+      "confirmPassword": "Confirm your password"
+    },
+    "buttons": {
+      "createAccount": "Create Account",
+      "loginHere": "Login here"
+    },
+    "errors": {
+      "nameRequired": "Name is required",
+      "emailRequired": "Email is required",
+      "invalidEmail": "Please enter a valid email",
+      "passwordRequired": "Password is required",
+      "passwordLength": "Password must be at least 8 characters",
+      "passwordsDontMatch": "Passwords do not match"
+    },
+    "alreadyHaveAccount": "Already have an account?",
+    "terms": {
+      "byRegistering": "By registering, you agree to our",
+      "termsOfService": "Terms of Service",
+      "and": "and",
+      "privacyPolicy": "Privacy Policy"
+    },
+    "tagline": "A place to honor and remember those we love"
+  },
+  "login": {
+    "welcomeBack": "Welcome Back",
+    "subtitle": "Login to ForeverPages",
+    "form": {
+      "email": "Email Address",
+      "password": "Password"
+    },
+    "placeholders": {
+      "email": "Enter your email",
+      "password": "Enter your password"
+    },
+    "buttons": {
+      "login": "Login",
+      "registerHere": "Register here"
+    },
+    "errors": {
+      "emailRequired": "Email is required",
+      "invalidEmail": "Please enter a valid email",
+      "passwordRequired": "Password is required"
+    },
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "tagline": "A place to honor and remember those we love"
+  },
+  "forgotPassword": {
+    "title": "Forgot Password",
+    "subtitle": "Enter your email to reset your password",
+    "form": {
+      "email": "Email Address"
+    },
+    "placeholders": {
+      "email": "Enter your email address"
+    },
+    "buttons": {
+      "resetPassword": "Reset Password",
+      "sending": "Sending..."
+    },
+    "errors": {
+      "emailRequired": "Email is required",
+      "invalidEmail": "Please enter a valid email address"
+    },
+    "backToLogin": "Back to Login",
+    "success": {
+      "title": "Check Your Email",
+      "subtitle": "We've sent you a password reset link",
+      "checkEmail": "Check Your Email",
+      "instructions": "We've sent a password reset link to {email}. Please check your inbox and follow the instructions to reset your password.",
+      "tryAgain": "Try Another Email",
+      "backToLogin": "Back to Login"
+    },
+    "tagline": "A place to honor and remember those we love"
+  },
+  "resetPassword": {
+    "title": "Reset Password",
+    "subtitle": "Create a new password for your account",
+    "form": {
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "placeholders": {
+      "newPassword": "Enter your new password",
+      "confirmPassword": "Confirm your new password"
+    },
+    "buttons": {
+      "resetPassword": "Reset Password",
+      "resetting": "Resetting..."
+    },
+    "errors": {
+      "passwordRequired": "Password is required",
+      "passwordLength": "Password must be at least 8 characters",
+      "passwordsDontMatch": "Passwords do not match"
+    },
+    "backToLogin": "Back to Login",
+    "success": {
+      "title": "Password Reset",
+      "subtitle": "Your password has been successfully reset",
+      "passwordReset": "Password Reset Successful",
+      "loginAgain": "You can now login with your new password",
+      "backToLogin": "Back to Login"
+    },
+    "tagline": "A place to honor and remember those we love"
+  },
+  "emailVerification": {
+    "title": "Verify Your Email",
+    "subtitle": "Enter the 6-digit code sent to your email",
+    "enterCode": "Enter Verification Code",
+    "instructions": "Please enter the 6-digit verification code we sent to your email address.",
+    "spamWarning": "If you don't see the email, check your spam folder.",
+    "didntReceive": "Didn't receive the code?",
+    "resendIn": "Resend in",
+    "verifying": "Verifying your code...",
+    "buttons": {
+      "resend": "Resend Code",
+      "resendCode": "Resend Verification Code",
+      "sending": "Sending...",
+      "backToLogin": "Back to Login"
+    },
+    "success": {
+      "toast": "Email verified successfully! Redirecting..."
+    },
+    "error": {
+      "expired": "Verification code has expired. Please request a new one.",
+      "invalid": "Invalid code. Please check and try again."
+    },
+    "tagline": "A place to honor and remember those we love"
+  },
+  "confirmEmail": {
+    "title": "Confirming Your Email",
+    "subtitle": "We're verifying your email address",
+    "verifying": "Verifying your email address...",
+    "redirectNotice": "You will be redirected to login automatically",
+    "success": {
+      "toast": "Email confirmed successfully!",
+      "redirecting": "Redirecting to login..."
+    },
+    "error": {
+      "toast": "Email confirmation failed",
+      "expired": "Confirmation link has expired",
+      "invalid": "Invalid confirmation link",
+      "network": "Network error. Please try again."
     }
   }
 }

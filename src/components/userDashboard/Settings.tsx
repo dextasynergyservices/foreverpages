@@ -176,7 +176,11 @@ const Settings = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                <Button variant="memorial" className="w-full" onClick={handleSaveProfile}>
+                <Button
+                  variant="memorial"
+                  className={`w-50 justify-center align-center ${theme === "dark" ? "bg-white text-black" : "bg-black text-white"}`}
+                  onClick={handleSaveProfile}
+                >
                   {t("dashboard.settings.profile.save")}
                 </Button>
               </CardContent>
@@ -280,7 +284,11 @@ const Settings = () => {
                   </div>
                 </div>
 
-                <Button variant="memorial" className="w-full" onClick={handleSaveMemorialSettings}>
+                <Button
+                  variant="memorial"
+                  className={`w-50 justify-center align-center ${theme === "dark" ? "bg-white text-black" : "bg-black text-white"}`}
+                  onClick={handleSaveMemorialSettings}
+                >
                   {t("dashboard.settings.memorial.save")}
                 </Button>
               </CardContent>
@@ -355,7 +363,11 @@ const Settings = () => {
                   </div>
                 </div>
 
-                <Button variant="memorial" className="w-full" onClick={handleSavePrivacySettings}>
+                <Button
+                  variant="memorial"
+                  className={`w-50 justify-center align-center ${theme === "dark" ? "bg-white text-black" : "bg-black text-white"}`}
+                  onClick={handleSavePrivacySettings}
+                >
                   {t("dashboard.settings.privacy.save")}
                 </Button>
               </CardContent>

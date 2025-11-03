@@ -183,8 +183,15 @@
     }
   },
   "pricing": {
-    "title": "Tarification Simple et Transparente",
-    "subtitle": "Choisissez le plan qui convient aux besoins de votre famille",
+    "modal": {
+      "plan": "Plan",
+      "featuresIncluded": "Fonctionnalités Incluses:",
+      "termsAndConditions": "Termes et Conditions",
+      "proceedToPayment": "Procéder au Paiement",
+      "agreeTermsMessage": "Veuillez accepter les termes et conditions pour procéder au paiement"
+    },
+    "title": "Choisissez votre forfait",
+    "subtitle": "Sélectionnez le forfait parfait pour créer un magnifique site commémoratif",
     "plans": {
       "basic": {
         "name": "Basique",
@@ -201,13 +208,13 @@
         "button": "Commencer Gratuitement"
       },
       "premium": {
-        "name": "Premium",
+        "name": "De qualité supérieure",
         "price": "250,000",
         "period": "/90jours",
         "description": "Choix le plus populaire",
         "features": {
           "photos": "Photos et vidéos illimitées",
-          "template": "Modèles premium",
+          "template": "Modèles de qualité supérieure",
           "customization": "Personnalisation avancée",
           "support": "Support prioritaire",
           "backup": "Téléchargement et sauvegarde",
@@ -547,6 +554,204 @@
         },
         "live": "En ligne"
       }
+    }
+  },
+  "termsAndConditions": {
+    "agree": "J'accepte les Termes et Conditions",
+    "title": "Termes et Conditions du Service de Site Web Commémoratif",
+    "sections": {
+      "serviceDescription": {
+        "title": "1. Description du Service",
+        "content": "Notre service de site web commémoratif fournit une plateforme pour créer et maintenir des mémoriaux en ligne pour les êtres chers. Cela comprend l'hébergement, les modèles et la maintenance comme spécifié dans votre plan choisi."
+      },
+      "paymentTerms": {
+        "title": "2. Conditions de Paiement",
+        "content": "Tous les paiements sont des frais uniques pour le plan sélectionné. Le paiement est requis avant l'activation du service. Les frais ne sont pas remboursables une fois que le site web a été créé et publié."
+      },
+      "contentGuidelines": {
+        "title": "3. Directives de Contenu",
+        "content": "Vous acceptez de fournir un contenu approprié qui respecte la mémoire du défunt. Nous nous réservons le droit de supprimer tout contenu qui viole nos directives communautaires ou est jugé inapproprié."
+      },
+      "privacyAndData": {
+        "title": "4. Confidentialité et Données",
+        "content": "Nous respectons votre vie privée et traiterons toutes les informations personnelles conformément à notre politique de confidentialité. Le contenu commémoratif peut être accessible publiquement sauf si les paramètres de confidentialité sont appliqués."
+      },
+      "serviceAvailability": {
+        "title": "5. Disponibilité du Service",
+        "content": "Nous nous efforçons de maintenir 99% de temps de fonctionnement mais ne pouvons pas garantir un service ininterrompu. Une maintenance planifiée peut survenir avec préavis."
+      },
+      "intellectualProperty": {
+        "title": "6. Propriété Intellectuelle",
+        "content": "Vous conservez les droits sur le contenu que vous fournissez. Nous conservons les droits sur la plateforme, les modèles et la technologie. La conception du site web commémoratif est sous licence pour votre utilisation."
+      },
+      "termination": {
+        "title": "7. Résiliation",
+        "content": "Vous pouvez demander la résiliation du service à tout moment. Nous nous réservons le droit de résilier le service pour violation des conditions. Les sites web commémoratifs sont maintenus pour la durée spécifiée dans votre plan."
+      },
+      "limitationOfLiability": {
+        "title": "8. Limitation de Responsabilité",
+        "content": "Notre responsabilité est limitée au montant payé pour le service. Nous ne sommes pas responsables des dommages ou pertes indirects résultant de l'utilisation du service."
+      }
+    },
+    "note": "Remarque : En cochant la case d'accord, vous reconnaissez avoir lu, compris et accepté d'être lié par ces Termes et Conditions."
+  },
+  "register": {
+    "welcome": "Créer un compte",
+    "subtitle": "Créez un souvenir impérissable",
+    "form": {
+      "name": "Nom Complet",
+      "email": "Adresse Email",
+      "password": "Mot de Passe",
+      "confirmPassword": "Confirmer le Mot de Passe"
+    },
+    "placeholders": {
+      "name": "Entrez votre nom complet",
+      "email": "Entrez votre email",
+      "password": "Entrez votre mot de passe",
+      "confirmPassword": "Confirmez votre mot de passe"
+    },
+    "buttons": {
+      "createAccount": "Créer un Compte",
+      "loginHere": "Se connecter ici"
+    },
+    "errors": {
+      "nameRequired": "Le nom est requis",
+      "emailRequired": "L'email est requis",
+      "invalidEmail": "Veuillez entrer un email valide",
+      "passwordRequired": "Le mot de passe est requis",
+      "passwordLength": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordsDontMatch": "Les mots de passe ne correspondent pas"
+    },
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "terms": {
+      "byRegistering": "En vous inscrivant, vous acceptez nos",
+      "termsOfService": "Conditions d'Utilisation",
+      "and": "et",
+      "privacyPolicy": "Politique de Confidentialité"
+    },
+    "tagline": "Un lieu pour honorer et se souvenir de ceux que nous aimons"
+  },
+  "login": {
+    "welcomeBack": "Bon retour",
+    "subtitle": "Connectez-vous à ForeverPages",
+    "form": {
+      "email": "Adresse Email",
+      "password": "Mot de Passe"
+    },
+    "placeholders": {
+      "email": "Entrez votre email",
+      "password": "Entrez votre mot de passe"
+    },
+    "buttons": {
+      "login": "Se Connecter",
+      "registerHere": "Inscrivez-vous ici"
+    },
+    "errors": {
+      "emailRequired": "L'email est requis",
+      "invalidEmail": "Veuillez entrer un email valide",
+      "passwordRequired": "Le mot de passe est requis"
+    },
+    "rememberMe": "Se souvenir de moi",
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "tagline": "Un lieu pour honorer et se souvenir de ceux que nous aimons"
+  },
+  "forgotPassword": {
+    "title": "Mot de Passe Oublié",
+    "subtitle": "Entrez votre email pour réinitialiser votre mot de passe",
+    "form": {
+      "email": "Adresse Email"
+    },
+    "placeholders": {
+      "email": "Entrez votre adresse email"
+    },
+    "buttons": {
+      "resetPassword": "Réinitialiser le Mot de Passe",
+      "sending": "Envoi en cours..."
+    },
+    "errors": {
+      "emailRequired": "L'email est requis",
+      "invalidEmail": "Veuillez entrer une adresse email valide"
+    },
+    "backToLogin": "Retour à la Connexion",
+    "success": {
+      "title": "Vérifiez votre Email",
+      "subtitle": "Nous vous avons envoyé un lien de réinitialisation",
+      "checkEmail": "Vérifiez votre Email",
+      "instructions": "Nous avons envoyé un lien de réinitialisation à {email}. Veuillez vérifier votre boîte de réception et suivre les instructions.",
+      "tryAgain": "Essayer un Autre Email",
+      "backToLogin": "Retour à la Connexion"
+    },
+    "tagline": "Un lieu pour honorer et se souvenir de ceux que nous aimons"
+  },
+  "resetPassword": {
+    "title": "Réinitialiser le mot de passe",
+    "subtitle": "Créez un nouveau mot de passe pour votre compte",
+    "form": {
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe"
+    },
+    "placeholders": {
+      "newPassword": "Entrez votre nouveau mot de passe",
+      "confirmPassword": "Confirmez votre nouveau mot de passe"
+    },
+    "buttons": {
+      "resetPassword": "Réinitialiser le mot de passe",
+      "resetting": "Réinitialisation..."
+    },
+    "errors": {
+      "passwordRequired": "Le mot de passe est requis",
+      "passwordLength": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordsDontMatch": "Les mots de passe ne correspondent pas"
+    },
+    "backToLogin": "Retour à la connexion",
+    "success": {
+      "title": "Réinitialisation du mot de passe",
+      "subtitle": "Votre mot de passe a été réinitialisé avec succès",
+      "passwordReset": "Réinitialisation réussie",
+      "loginAgain": "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe",
+      "backToLogin": "Retour à la connexion"
+    },
+    "tagline": "Un lieu pour honorer et se souvenir de ceux que nous aimons"
+  },
+  "emailVerification": {
+    "title": "Vérifiez votre e-mail",
+    "subtitle": "Entrez le code à 6 chiffres envoyé à votre e-mail",
+    "enterCode": "Entrez le code de vérification",
+    "instructions": "Veuillez entrer le code de vérification à 6 chiffres que nous avons envoyé à votre adresse e-mail.",
+    "spamWarning": "Si vous ne voyez pas l'e-mail, vérifiez votre dossier spam.",
+    "didntReceive": "Vous n'avez pas reçu le code ?",
+    "resendIn": "Renvoyer dans",
+    "verifying": "Vérification du code...",
+    "buttons": {
+      "resend": "Renvoyer le code",
+      "resendCode": "Renvoyer le code de vérification",
+      "sending": "Envoi...",
+      "backToLogin": "Retour à la connexion"
+    },
+    "success": {
+      "toast": "E-mail vérifié avec succès ! Redirection..."
+    },
+    "error": {
+      "expired": "Le code de vérification a expiré. Veuillez en demander un nouveau.",
+      "invalid": "Code invalide. Veuillez vérifier et réessayer."
+    },
+    "tagline": "Un lieu pour honorer et se souvenir de ceux que nous aimons"
+  },
+  "confirmEmail": {
+    "title": "Confirmation de votre e-mail",
+    "subtitle": "Nous vérifions votre adresse e-mail",
+    "verifying": "Vérification de votre adresse e-mail...",
+    "redirectNotice": "Vous serez redirigé automatiquement vers la page de connexion",
+    "success": {
+      "toast": "E-mail confirmé avec succès !",
+      "redirecting": "Redirection vers la connexion..."
+    },
+    "error": {
+      "toast": "Échec de la confirmation de l'e-mail",
+      "expired": "Le lien de confirmation a expiré",
+      "invalid": "Lien de confirmation invalide",
+      "network": "Erreur réseau. Veuillez réessayer."
     }
   }
 }

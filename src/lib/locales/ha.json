@@ -183,8 +183,15 @@
     }
   },
   "pricing": {
-    "title": "Farashin Saurin, Bayyane",
-    "subtitle": "Zaɓi shirin da ya dace da bukatun dangin ku",
+    "modal": {
+      "plan": "Shiri",
+      "featuresIncluded": "Abubuwan da aka Haɗa:",
+      "termsAndConditions": "Sharuɗɗan da Sharuɗɗan",
+      "proceedToPayment": "Ci gaba da Biyan Kuɗi",
+      "agreeTermsMessage": "Don Allah a yarda da sharuɗɗan da sharuɗɗan don ci gaba da biyan kuɗi"
+    },
+    "title": "Zaɓi Tsarin Ku",
+    "subtitle": "Zaɓi shirin da ya fi dacewa don ƙirƙirar kyakkyawan gidan yanar gizo na tunawa",
     "plans": {
       "basic": {
         "name": "Na Asali",
@@ -201,13 +208,13 @@
         "button": "Fara Kyauta"
       },
       "premium": {
-        "name": "Premium",
+        "name": "Mafi inganci",
         "price": "250,000",
         "period": "/90kwanaki",
         "description": "Zaɓin da ya fi shahara",
         "features": {
           "photos": "Hotuna & bidiyo marasa iyaka",
-          "template": "Samfuran premium",
+          "template": "Samfuran mafi inganci",
           "customization": "Keɓance mai ci gaba",
           "support": "Taimako na farko",
           "backup": "Zazzagewa & ajiya",
@@ -332,6 +339,204 @@
         "serviceRsvps": "RSVP na Bikin",
         "memorialPage": "Shafin Tunawa"
       }
+    }
+  },
+  "termsAndConditions": {
+    "agree": "Na yarda da Sharuɗɗan da Sharuɗɗan",
+    "title": "Sharuɗɗan da Sharuɗɗan Sabis na Shafukan Tunawa",
+    "sections": {
+      "serviceDescription": {
+        "title": "1. Bayanin Sabis",
+        "content": "Sabis ɗin mu na shafukan tunawa yana ba da dandali don ƙirƙira da kiyaye tunanin kan layi ga masoyi. Wannan ya haɗa da ɗaukar bakuncin, samfuri, da kiyayewa kamar yadda aka ƙayyade a cikin shirin da kuka zaɓa."
+      },
+      "paymentTerms": {
+        "title": "2. Sharuɗɗan Biyan Kuɗi",
+        "content": "Duk biyan kuɗi kuɗi ne na lokaci ɗaya don shirin da aka zaɓa. Ana buƙatar biyan kuɗi kafin kunna sabis. Ba a sake dawowa kuɗin ba bayan an ƙirƙiri shafin yanar gizon kuma an buga shi."
+      },
+      "contentGuidelines": {
+        "title": "3. Jagororin Abun ciki",
+        "content": "Kun yarda don ba da abun ciki da ya dace wanda ke mutunta tunanin marigayi. Muna da haƙƙin cire duk wani abun ciki wanda ya saba wa jagororin al'ummarmu ko kuma an ɗauke shi bai dace ba."
+      },
+      "privacyAndData": {
+        "title": "4. Sirri da Bayanai",
+        "content": "Muna mutunta sirrinku kuma za mu riƙe duk bayanan sirri daidai da manufofin sirrinmu. Abun cikin tunawa na iya zama mai samuwa ga jama'a sai dai idan an yi amfani da saitunan sirri."
+      },
+      "serviceAvailability": {
+        "title": "5. Samuwar Sabis",
+        "content": "Muna ƙoƙarin kiyaye lokacin aiki na 99% amma ba za mu iya ba da garantin sabis mara katsewa ba. Za a iya yin aikin kulawa da aka tsara tare da sanarwa ta farko."
+      },
+      "intellectualProperty": {
+        "title": "6. Mallakar Hankali",
+        "content": "Kuna riƙe haƙƙoƙin abun cikin da kuke bayarwa. Muna riƙe haƙƙoƙin dandalin, samfuran, da fasaha. An ba da lasisin ƙirar shafin yanar gizon tunawa don amfanin ku."
+      },
+      "termination": {
+        "title": "7. Ƙarshe",
+        "content": "Kuna iya neman ƙare sabis a kowane lokaci. Muna da haƙƙin ƙare sabis don keta sharuɗɗan. Ana kula da shafukan yanar gizon tunawa har tsawon lokacin da aka ƙayyade a cikin shirin ku."
+      },
+      "limitationOfLiability": {
+        "title": "8. Iyakance Alhaki",
+        "content": "Alhakkinmu yana iyakance ga adadin kuɗin da aka biya don sabis ɗin. Ba mu da alhakin lalacewa ko asarar da ta biyo baya sakamakon amfani da sabis."
+      }
+    },
+    "note": "Bayanin: Ta hanyar danna akwatin yarjejeniya, kun amince cewa kun karanta, kun fahimta, kuma kun yarda a ɗaure ku da waɗannan Sharuɗɗan da Sharuɗɗan."
+  },
+  "register": {
+    "welcome": "Ƙirƙiri Asusu",
+    "subtitle": "Ƙirƙiri abin tunawa mai ɗorewa",
+    "form": {
+      "name": "Cikakken suna",
+      "email": "Adireshin imel",
+      "password": "Kalmar sirri",
+      "confirmPassword": "Tabbatar da kalmar sirri"
+    },
+    "placeholders": {
+      "name": "Shigar da cikakken sunanka",
+      "email": "Shigar da imel ɗinka",
+      "password": "Shigar da kalmar sirrinka",
+      "confirmPassword": "Tabbatar da kalmar sirrinka"
+    },
+    "buttons": {
+      "createAccount": "Ƙirƙiri Asusu",
+      "loginHere": "Shiga nan"
+    },
+    "errors": {
+      "nameRequired": "Ana buƙatar suna",
+      "emailRequired": "Ana buƙatar imel",
+      "invalidEmail": "Da fatan za a shigar da sahihin imel",
+      "passwordRequired": "Ana buƙatar kalmar sirri",
+      "passwordLength": "Kalmar sirri dole ta ƙunshi aƙalla haruffa 8",
+      "passwordsDontMatch": "Kalmar sirri ba ta dace ba"
+    },
+    "alreadyHaveAccount": "Kana da asusu tuni?",
+    "terms": {
+      "byRegistering": "Ta hanyar yin rajista, kana yarda da",
+      "termsOfService": "Ka’idojin Sabis",
+      "and": "da",
+      "privacyPolicy": "Manufar Sirri"
+    },
+    "tagline": "Wuri don girmamawa da tunawa da waɗanda muke ƙauna"
+  },
+  "login": {
+    "welcomeBack": "Barka da Dawo",
+    "subtitle": "Shiga ForeverPages",
+    "form": {
+      "email": "Adireshin Imel",
+      "password": "Kalmar Sirri"
+    },
+    "placeholders": {
+      "email": "Shigar da imel ɗin ku",
+      "password": "Shigar da kalmar sirrinka"
+    },
+    "buttons": {
+      "login": "Shiga",
+      "registerHere": "Yi rijista a nan"
+    },
+    "errors": {
+      "emailRequired": "Ana buƙatar imel",
+      "invalidEmail": "Da fatan za a shigar da ingantaccen imel",
+      "passwordRequired": "Ana buƙatar kalmar sirri"
+    },
+    "rememberMe": "Tuna ni",
+    "forgotPassword": "Kuna manta kalmar sirri?",
+    "noAccount": "Baku da asusu ba?",
+    "tagline": "Wuri don girmamawa da tunawa da waɗanda muke ƙauna"
+  },
+  "forgotPassword": {
+    "title": "Manta Kalmar Sirri",
+    "subtitle": "Shigar da imel ɗin ku don sake saita kalmar sirri",
+    "form": {
+      "email": "Adireshin Imel"
+    },
+    "placeholders": {
+      "email": "Shigar da adireshin imel ɗin ku"
+    },
+    "buttons": {
+      "resetPassword": "Sake Saita Kalmar Sirri",
+      "sending": "Ana aikawa..."
+    },
+    "errors": {
+      "emailRequired": "Ana buƙatar imel",
+      "invalidEmail": "Da fatan za a shigar da ingantaccen adireshin imel"
+    },
+    "backToLogin": "Koma Shiga",
+    "success": {
+      "title": "Duba Imel ɗin Ku",
+      "subtitle": "Mun aiko muku da hanyar sake saita kalmar sirri",
+      "checkEmail": "Duba Imel ɗin Ku",
+      "instructions": "Mun aika hanyar sake saita kalmar sirri zuwa {email}. Da fatan za a duba akwatin saƙonku ku bi umarnin.",
+      "tryAgain": "Ƙoƙari Wani Imel",
+      "backToLogin": "Koma Shiga"
+    },
+    "tagline": "Wuri don girmamawa da tunawa da waɗanda muke ƙauna"
+  },
+  "resetPassword": {
+    "title": "Sake saita kalmar sirri",
+    "subtitle": "Ƙirƙiri sabuwar kalmar sirri don asusunka",
+    "form": {
+      "newPassword": "Sabuwar kalmar sirri",
+      "confirmPassword": "Tabbatar da kalmar sirri"
+    },
+    "placeholders": {
+      "newPassword": "Shigar da sabuwar kalmar sirrinka",
+      "confirmPassword": "Tabbatar da sabuwar kalmar sirrinka"
+    },
+    "buttons": {
+      "resetPassword": "Sake saita kalmar sirri",
+      "resetting": "Ana sake saitawa..."
+    },
+    "errors": {
+      "passwordRequired": "Ana buƙatar kalmar sirri",
+      "passwordLength": "Kalmar sirri dole ta kasance aƙalla haruffa 8",
+      "passwordsDontMatch": "Kalmar sirri ba ta dace ba"
+    },
+    "backToLogin": "Koma shafin shiga",
+    "success": {
+      "title": "An sake saita kalmar sirri",
+      "subtitle": "An sake saita kalmar sirrinka cikin nasara",
+      "passwordReset": "Sake saitawa cikin nasara",
+      "loginAgain": "Yanzu zaka iya shiga da sabuwar kalmar sirrinka",
+      "backToLogin": "Koma shafin shiga"
+    },
+    "tagline": "Wuri don girmamawa da tunawa da waɗanda muke ƙauna"
+  },
+  "emailVerification": {
+    "title": "Tabbatar da Imel ɗinka",
+    "subtitle": "Shigar da lambar 6 da aka aiko zuwa imel ɗinka",
+    "enterCode": "Shigar da lambar tabbatarwa",
+    "instructions": "Da fatan za a shigar da lambar tabbatarwa mai lamba 6 da muka aiko zuwa adireshin imel ɗinka.",
+    "spamWarning": "Idan ba ka ga imel ɗin ba, duba spam.",
+    "didntReceive": "Ba ka samu lambar ba?",
+    "resendIn": "Aika kuma cikin",
+    "verifying": "Ana duba lambarka...",
+    "buttons": {
+      "resend": "Aika lamba kuma",
+      "resendCode": "Aika lambar tabbatarwa kuma",
+      "sending": "Ana aikawa...",
+      "backToLogin": "Koma shafin shiga"
+    },
+    "success": {
+      "toast": "An tabbatar da imel cikin nasara! Ana tura ka..."
+    },
+    "error": {
+      "expired": "Lambar tabbatarwa ta ƙare. Da fatan za a nema sabuwa.",
+      "invalid": "Lambar ba daidai ba ce. Da fatan za a sake gwadawa."
+    },
+    "tagline": "Wuri don girmamawa da tunawa da waɗanda muke ƙauna"
+  },
+  "confirmEmail": {
+    "title": "Ana tabbatar da imel ɗinka",
+    "subtitle": "Muna duba adireshin imel ɗinka",
+    "verifying": "Ana tabbatar da adireshin imel ɗinka...",
+    "redirectNotice": "Za a tura ka kai tsaye zuwa shafin shiga",
+    "success": {
+      "toast": "An tabbatar da imel cikin nasara!",
+      "redirecting": "Ana tura zuwa shafin shiga..."
+    },
+    "error": {
+      "toast": "Tabbatar da imel ta gaza",
+      "expired": "Hanyan tabbatarwa ta ƙare",
+      "invalid": "Hanyan tabbatarwa ba ta daidai ba",
+      "network": "Kuskuren sadarwa. Da fatan za a sake gwadawa."
     }
   }
 }

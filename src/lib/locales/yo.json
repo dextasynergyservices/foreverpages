@@ -183,8 +183,15 @@
     }
   },
   "pricing": {
-    "title": "Owo Rọrun, Ti O Han",
-    "subtitle": "Yan ero ti o tọ fun awọn nilo ẹbi rẹ",
+    "modal": {
+      "plan": "Eto",
+      "featuresIncluded": "Awọn ẹya ti A pẹlu:",
+      "termsAndConditions": "Awọn Ofin ati Awọn Ọran",
+      "proceedToPayment": "Tẹsiwaju si Isanwo",
+      "agreeTermsMessage": "Jọwọ gba awọn ofin ati awọn ọran lati tẹsiwaju si isanwo"
+    },
+    "title": "Yan ètò rẹ",
+    "subtitle": "Yan ètò to peye lati dá oju opo wẹẹbu iranti ẹlẹwà sílẹ",
     "plans": {
       "basic": {
         "name": "Ipilẹ",
@@ -201,13 +208,13 @@
         "button": "Bẹrẹ Owo"
       },
       "premium": {
-        "name": "Premium",
+        "name": "Aṣáájú didara",
         "price": "250,000",
         "period": "/90ọjọ́",
         "description": "Yiyan ti o gbajumo",
         "features": {
           "photos": "Awọn fọto & fidio laisẹwọn",
-          "template": "Awọn template premium",
+          "template": "Awọn template aṣáájú didara",
           "customization": "Aṣa iwọle",
           "support": "Atilẹyin pataki",
           "backup": "Gbigba & ipamọ",
@@ -320,6 +327,204 @@
       "30days": "Ọjọ 30 sẹ́yìn",
       "90days": "Ọjọ 90 sẹ́yìn",
       "1year": "Ọdún tó kọjá"
+    }
+  },
+  "termsAndConditions": {
+    "agree": "Mo gba Awọn Ofin ati Awọn Ọran",
+    "title": "Awọn Ofin ati Awọn Ọran Iṣẹ Oju opo wẹẹbu Iṣẹ Iranti",
+    "sections": {
+      "serviceDescription": {
+        "title": "1. Apejuwe Iṣẹ",
+        "content": "Iṣẹ oju opo wẹẹbu iranti wa pese ibugbe lati ṣẹda ati lati ṣetọju awọn iranti lori ayelujara fun awọn olufẹ. Eyi pẹlu gbigbale, awọn àpẹẹrẹ, ati itọju bi a ti ṣalaye ninu eto ti o yan."
+      },
+      "paymentTerms": {
+        "title": "2. Awọn Ofin Isanwo",
+        "content": "Gbogbo awọn isanwo jẹ owo-iṣẹ kan fun eto ti a yan. Isanwo nilo ṣaaju ki a to mu iṣẹ naa ṣiṣẹ. A ko le san awọn owo-iṣẹ pada ni kete ti a ti ṣẹda oju opo wẹẹbu naa ati ti a ti tẹjade."
+      },
+      "contentGuidelines": {
+        "title": "3. Awọn Itọsọna Akoonu",
+        "content": "O gba lati pese akoonu to yẹ ti o nṣọpọ iranti alaigbala. A ni ẹtọ lati yọ eyikeyi akoonu ti o kọja awọn itọsọna awujọ wa tabi ti a ka pe ko tọ."
+      },
+      "privacyAndData": {
+        "title": "4. Ìkọ̀kọ̀ ati Data",
+        "content": "A nṣọpọ ìkọ̀kọ̀ rẹ ati a yoo ṣakoso gbogbo alaye ti ara ẹni ni ibamu pẹlu ilana ìkọ̀kọ̀ wa. Akoonu iranti le jẹ ti gbogbo eniyan ayafi ti a ba lo awọn eto ìkọ̀kọ̀."
+      },
+      "serviceAvailability": {
+        "title": "5. Wiwa Iṣẹ",
+        "content": "A n gbiyanju lati ṣetọju iṣẹ ni 99% ṣugbọn a ko le ṣe ileri iṣẹ laisi idaduro. Atunṣe ti a ṣeto le waye pẹlu ìkìlọ̀ tẹlẹ."
+      },
+      "intellectualProperty": {
+        "title": "6. Ọ̀nà Ọlọ́gbọ́n",
+        "content": "O tọju awọn ẹtọ ti akoonu ti o pese. A tọju awọn ẹtọ ti ibugbe, awọn àpẹẹrẹ, ati imọ-ẹrọ. A fi iṣẹ apẹrẹ oju opo wẹẹbu iranti silẹ fun lilo rẹ."
+      },
+      "termination": {
+        "title": "7. Ipari",
+        "content": "O le beere ipari iṣẹ nigbakugba. A ni ẹtọ lati pari iṣẹ fun ifọwọyi awọn ofin. A ṣetọju awọn oju opo wẹẹbu iranti fun akoko ti a ṣalaye ninu eto rẹ."
+      },
+      "limitationOfLiability": {
+        "title": "8. Idiwọ Ọrọ̀",
+        "content": "Ọrọ wa diẹ sii ni iye owo ti a san fun iṣẹ naa. A ko ni ẹtọ fun ibajẹ tabi ipadanu ti o jade lati lilo iṣẹ."
+      }
+    },
+    "note": "Akiyesi: Nipa fifa aropo ijarẹ, o jẹwọ pe o ti ka, oye, ati gba lati wa ni ẹṣẹ labẹ awọn Ofin ati Awọn Ọran wọnyi."
+  },
+  "register": {
+    "welcome": "Ṣẹda Àkọọlẹ",
+    "subtitle": "Ṣẹda iranti to máa pẹ́ títí",
+    "form": {
+      "name": "Orukọ kikun",
+      "email": "Adirẹsi imeeli",
+      "password": "Ọrọ aṣínà",
+      "confirmPassword": "Jẹrisi ọrọ aṣínà"
+    },
+    "placeholders": {
+      "name": "Tẹ orukọ kikun rẹ",
+      "email": "Tẹ imeeli rẹ",
+      "password": "Tẹ ọrọ aṣínà rẹ",
+      "confirmPassword": "Jẹrisi ọrọ aṣínà rẹ"
+    },
+    "buttons": {
+      "createAccount": "Ṣẹda àkọọlẹ",
+      "loginHere": "Wọlé nibi"
+    },
+    "errors": {
+      "nameRequired": "Orukọ nilo",
+      "emailRequired": "Imeeli nilo",
+      "invalidEmail": "Jọwọ tẹ imeeli to wulo sii",
+      "passwordRequired": "Ọrọ aṣínà nilo",
+      "passwordLength": "Ọrọ aṣínà gbọdọ jẹ o kere ju lẹ́tà mẹjọ (8)",
+      "passwordsDontMatch": "Ọrọ aṣínà ko baramu"
+    },
+    "alreadyHaveAccount": "Ṣe o ti ni àkọọlẹ tẹlẹ?",
+    "terms": {
+      "byRegistering": "Nípa ìforúkọsílẹ, o fọwọ́ sí",
+      "termsOfService": "Àwọn Ofin Iṣẹ",
+      "and": "ati",
+      "privacyPolicy": "Ètò Àṣírí"
+    },
+    "tagline": "Ibi láti bọ́wò fún àti rántí àwọn tí a fẹ́ràn"
+  },
+  "login": {
+    "welcomeBack": "Ẹ kú àbọ̀",
+    "subtitle": "Bọ̀wọ́ si ForeverPages",
+    "form": {
+      "email": "Adirẹsi Imẹ̀li",
+      "password": "Ọrọ̀igbaniwọlé"
+    },
+    "placeholders": {
+      "email": "Tẹ adirẹsi imẹ̀li rẹ sii",
+      "password": "Tẹ ọrọ̀igbaniwọlé rẹ sii"
+    },
+    "buttons": {
+      "login": "Bọ̀wọ́",
+      "registerHere": "Forukọsilẹ nibi"
+    },
+    "errors": {
+      "emailRequired": "Adirẹsi imẹ̀li nilo",
+      "invalidEmail": "Jọwọ tẹ adirẹsi imẹ̀li tọ sii",
+      "passwordRequired": "Ọrọ̀igbaniwọlé nilo"
+    },
+    "rememberMe": "Ranti mi",
+    "forgotPassword": "Gbàgbé ọrọ̀igbaniwọlé?",
+    "noAccount": "Ṣé o ni iroyin?",
+    "tagline": "Ibi lati bọwọ fun ati iranti awọn ti a nifẹẹ"
+  },
+  "forgotPassword": {
+    "title": "Gbagbe Ọrọ̀igbaniwọlé",
+    "subtitle": "Tẹ imẹ̀li rẹ sii lati tún ọrọ̀igbaniwọlé rẹ ṣe",
+    "form": {
+      "email": "Adirẹsi Imẹ̀li"
+    },
+    "placeholders": {
+      "email": "Tẹ adirẹsi imẹ̀li rẹ sii"
+    },
+    "buttons": {
+      "resetPassword": "Tún Ọrọ̀igbaniwọlé Ṣe",
+      "sending": "Ń firanṣẹ..."
+    },
+    "errors": {
+      "emailRequired": "Adirẹsi imẹ̀li nilo",
+      "invalidEmail": "Jọwọ tẹ adirẹsi imẹ̀li tọ sii"
+    },
+    "backToLogin": "Padà sí Bọ̀wọ́",
+    "success": {
+      "title": "Ṣe Ayẹwo Imẹ̀li Rẹ",
+      "subtitle": "A ti firanṣẹ ọna asopọ lati tún ọrọ̀igbaniwọlé rẹ ṣe",
+      "checkEmail": "Ṣe Ayẹwo Imẹ̀li Rẹ",
+      "instructions": "A ti firanṣẹ ọna asopọ lati tún ọrọ̀igbaniwọlé rẹ ṣe si {email}. Jọwọ ṣayẹwo inbox rẹ ki o tẹle awọn ilana.",
+      "tryAgain": "Gbiyanju Imẹ̀li Mìíràn",
+      "backToLogin": "Padà sí Bọ̀wọ́"
+    },
+    "tagline": "Ibi lati bọwọ fun ati iranti awọn ti a nifẹẹ"
+  },
+  "resetPassword": {
+    "title": "Tun ṣètò Ọrọ aṣínà",
+    "subtitle": "Ṣẹda ọrọ aṣínà tuntun fun àkọọlẹ rẹ",
+    "form": {
+      "newPassword": "Ọrọ aṣínà tuntun",
+      "confirmPassword": "Jẹrisi ọrọ aṣínà"
+    },
+    "placeholders": {
+      "newPassword": "Tẹ ọrọ aṣínà tuntun rẹ",
+      "confirmPassword": "Jẹrisi ọrọ aṣínà tuntun rẹ"
+    },
+    "buttons": {
+      "resetPassword": "Tun ṣètò Ọrọ aṣínà",
+      "resetting": "Ń tun ṣètò..."
+    },
+    "errors": {
+      "passwordRequired": "Ọrọ aṣínà nilo",
+      "passwordLength": "Ọrọ aṣínà gbọdọ jẹ o kere ju lẹ́tà mẹjọ",
+      "passwordsDontMatch": "Ọrọ aṣínà kò baramu"
+    },
+    "backToLogin": "Padà sí ìbòwọlé",
+    "success": {
+      "title": "Àtunṣe Ọrọ aṣínà",
+      "subtitle": "Ọrọ aṣínà rẹ ti tún ṣe ní àṣeyọrí",
+      "passwordReset": "Àtunṣe aṣeyọrí",
+      "loginAgain": "O lè wọlé pẹ̀lú ọrọ aṣínà tuntun rẹ",
+      "backToLogin": "Padà sí ìbòwọlé"
+    },
+    "tagline": "Ibi láti bọ́wò fún àti rántí àwọn tí a fẹ́ràn"
+  },
+  "emailVerification": {
+    "title": "Jẹrisi Imeeli rẹ",
+    "subtitle": "Tẹ kóòdù àyẹ̀wò mẹ́fà tí a fi ránṣẹ́ sí imeeli rẹ",
+    "enterCode": "Tẹ kóòdù àyẹ̀wò",
+    "instructions": "Jọwọ tẹ kóòdù àyẹ̀wò mẹ́fà tí a fi ránṣẹ́ sí imeeli rẹ.",
+    "spamWarning": "Ti o bá kò rí imeeli náà, ṣàyẹ̀wò spam rẹ.",
+    "didntReceive": "Kò gba kóòdù náà?",
+    "resendIn": "Tún rán nínú",
+    "verifying": "Ń jẹrisi kóòdù rẹ...",
+    "buttons": {
+      "resend": "Tún rán kóòdù",
+      "resendCode": "Tún rán kóòdù àyẹ̀wò",
+      "sending": "Ń ránṣẹ́...",
+      "backToLogin": "Padà sí ìbòwọlé"
+    },
+    "success": {
+      "toast": "Imeeli ti jẹrisi ní àṣeyọrí! Ń darí ọ lọ..."
+    },
+    "error": {
+      "expired": "Kóòdù àyẹ̀wò ti parí. Jọwọ béèrè tuntun.",
+      "invalid": "Kóòdù kò tọ́. Jọwọ ṣàyẹ̀wò kí o tún gbìyànjú."
+    },
+    "tagline": "Ibi láti bọ́wò fún àti rántí àwọn tí a fẹ́ràn"
+  },
+  "confirmEmail": {
+    "title": "Ń jẹrisi Imeeli rẹ",
+    "subtitle": "A ń jẹrisi adirẹsi imeeli rẹ",
+    "verifying": "Ń jẹrisi imeeli rẹ...",
+    "redirectNotice": "A ó darí ọ lọ sí ìbòwọlé laifọwọyi",
+    "success": {
+      "toast": "Imeeli jẹrisi ní àṣeyọrí!",
+      "redirecting": "Ń darí lọ sí ìbòwọlé..."
+    },
+    "error": {
+      "toast": "Ìjẹrisi imeeli kò ṣàṣeyọrí",
+      "expired": "Ìtọ́ka ìjẹrisi ti parí",
+      "invalid": "Ìtọ́ka ìjẹrisi kò tọ́",
+      "network": "Àṣìṣe nẹ́tíwọ́ọ̀kì. Jọwọ tún gbìyànjú."
     }
   }
 }

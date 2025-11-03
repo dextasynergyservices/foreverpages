@@ -118,7 +118,7 @@ export const Navbar: React.FC = () => {
             {t("navbar.navigation.support")}
           </a>
           <LanguageSwitcher />
-          <button
+          <a
             className={`h-9 px-4 inline-flex items-center justify-center rounded-md border transition-all duration-300 whitespace-nowrap ${
               isScrolled
                 ? displayTheme === "dark"
@@ -128,9 +128,10 @@ export const Navbar: React.FC = () => {
                   ? "border-white/50 bg-transparent text-white hover:bg-white/10"
                   : "border-gray-900/50 bg-transparent text-gray-900 hover:bg-gray-900/10"
             }`}
+            href="/login"
           >
             {t("navbar.buttons.signIn")}
-          </button>
+          </a>
           <ThemeToggle
             className={`h-9 w-9 inline-flex items-center justify-center rounded-md border transition-all duration-300 ${
               isScrolled
