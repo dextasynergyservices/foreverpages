@@ -13,11 +13,12 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center space-x-2 mb-4 md:mb-0">
-            <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-            <span className="text-base sm:text-lg font-serif font-semibold">
+            <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+            <span className="text-white text-base sm:text-lg font-serif font-semibold">
               {t("navbar.logo")}
             </span>
           </div>
+
           <div className="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm text-white">
             <Button variant="ghost" size="sm" className="text-white hover:text-primary" asChild>
               <Link href="/privacy-policy">{t("footer.links.privacy")}</Link>

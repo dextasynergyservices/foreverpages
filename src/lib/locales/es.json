@@ -185,8 +185,15 @@
     }
   },
   "pricing": {
-    "title": "Precios Simples y Transparentes",
-    "subtitle": "Elige el plan que sea adecuado para las necesidades de tu familia",
+    "modal": {
+      "plan": "Plan",
+      "featuresIncluded": "Características Incluidas:",
+      "termsAndConditions": "Términos y Condiciones",
+      "proceedToPayment": "Continuar al Pago",
+      "agreeTermsMessage": "Por favor acepte los términos y condiciones para proceder con el pago"
+    },
+    "title": "Elige tu plan",
+    "subtitle": "Selecciona el plan perfecto para crear un hermoso sitio web conmemorativo",
     "plans": {
       "basic": {
         "name": "Básico",
@@ -203,13 +210,13 @@
         "button": "Comenzar Gratis"
       },
       "premium": {
-        "name": "Premium",
+        "name": "de primera calidad",
         "price": "250,000",
         "period": "/90días",
         "description": "Opción más popular",
         "features": {
           "photos": "Fotos y videos ilimitados",
-          "template": "Plantillas premium",
+          "template": "Plantillas de primera calidad",
           "customization": "Personalización avanzada",
           "support": "Soporte prioritario",
           "backup": "Descarga y respaldo",
@@ -549,6 +556,204 @@
         "allReviewed": "Todos los tributos han sido revisados"
       },
       "live": "En vivo"
+    }
+  },
+  "termsAndConditions": {
+    "agree": "Acepto los Términos y Condiciones",
+    "title": "Términos y Condiciones del Servicio de Sitios Web Conmemorativos",
+    "sections": {
+      "serviceDescription": {
+        "title": "1. Descripción del Servicio",
+        "content": "Nuestro servicio de sitios web conmemorativos proporciona una plataforma para crear y mantener memoriales en línea para seres queridos. Esto incluye alojamiento, plantillas y mantenimiento según lo especificado en su plan elegido."
+      },
+      "paymentTerms": {
+        "title": "2. Términos de Pago",
+        "content": "Todos los pagos son tarifas únicas para el plan seleccionado. Se requiere el pago antes de la activación del servicio. Las tarifas no son reembolsables una vez que el sitio web ha sido creado y publicado."
+      },
+      "contentGuidelines": {
+        "title": "3. Directrices de Contenido",
+        "content": "Usted acepta proporcionar contenido apropiado que respete la memoria del fallecido. Nos reservamos el derecho de eliminar cualquier contenido que viole nuestras directrices comunitarias o sea considerado inapropiado."
+      },
+      "privacyAndData": {
+        "title": "4. Privacidad y Datos",
+        "content": "Respetamos su privacidad y manejaremos toda la información personal de acuerdo con nuestra política de privacidad. El contenido conmemorativo puede ser públicamente accesible a menos que se apliquen configuraciones de privacidad."
+      },
+      "serviceAvailability": {
+        "title": "5. Disponibilidad del Servicio",
+        "content": "Nos esforzamos por mantener un 99% de tiempo de actividad, pero no podemos garantizar un servicio ininterrumpido. El mantenimiento programado puede ocurrir con previo aviso."
+      },
+      "intellectualProperty": {
+        "title": "6. Propiedad Intelectual",
+        "content": "Usted conserva los derechos del contenido que proporciona. Nosotros conservamos los derechos de la plataforma, plantillas y tecnología. El diseño del sitio web conmemorativo está licenciado para su uso."
+      },
+      "termination": {
+        "title": "7. Terminación",
+        "content": "Puede solicitar la terminación del servicio en cualquier momento. Nos reservamos el derecho de terminar el servicio por violación de los términos. Los sitios web conmemorativos se mantienen durante la duración especificada en su plan."
+      },
+      "limitationOfLiability": {
+        "title": "8. Limitación de Responsabilidad",
+        "content": "Nuestra responsabilidad se limita al monto pagado por el servicio. No somos responsables por daños o pérdidas indirectas resultantes del uso del servicio."
+      }
+    },
+    "note": "Nota: Al marcar la casilla de acuerdo, usted reconoce que ha leído, entendido y acepta estar obligado por estos Términos y Condiciones."
+  },
+  "register": {
+    "welcome": "Crear cuenta",
+    "subtitle": "Crea un recuerdo duradero",
+    "form": {
+      "name": "Nombre Completo",
+      "email": "Correo Electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar Contraseña"
+    },
+    "placeholders": {
+      "name": "Ingresa tu nombre completo",
+      "email": "Ingresa tu correo electrónico",
+      "password": "Ingresa tu contraseña",
+      "confirmPassword": "Confirma tu contraseña"
+    },
+    "buttons": {
+      "createAccount": "Crear Cuenta",
+      "loginHere": "Iniciar sesión aquí"
+    },
+    "errors": {
+      "nameRequired": "El nombre es requerido",
+      "emailRequired": "El correo electrónico es requerido",
+      "invalidEmail": "Por favor ingresa un correo electrónico válido",
+      "passwordRequired": "La contraseña es requerida",
+      "passwordLength": "La contraseña debe tener al menos 8 caracteres",
+      "passwordsDontMatch": "Las contraseñas no coinciden"
+    },
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "terms": {
+      "byRegistering": "Al registrarte, aceptas nuestros",
+      "termsOfService": "Términos de Servicio",
+      "and": "y",
+      "privacyPolicy": "Política de Privacidad"
+    },
+    "tagline": "Un lugar para honrar y recordar a quienes amamos"
+  },
+  "login": {
+    "welcomeBack": "Bienvenido de Nuevo",
+    "subtitle": "Inicia sesión en ForeverPages",
+    "form": {
+      "email": "Correo Electrónico",
+      "password": "Contraseña"
+    },
+    "placeholders": {
+      "email": "Ingresa tu correo electrónico",
+      "password": "Ingresa tu contraseña"
+    },
+    "buttons": {
+      "login": "Iniciar Sesión",
+      "registerHere": "Regístrate aquí"
+    },
+    "errors": {
+      "emailRequired": "El correo electrónico es requerido",
+      "invalidEmail": "Por favor ingresa un correo electrónico válido",
+      "passwordRequired": "La contraseña es requerida"
+    },
+    "rememberMe": "Recordarme",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "noAccount": "¿No tienes una cuenta?",
+    "tagline": "Un lugar para honrar y recordar a quienes amamos"
+  },
+  "forgotPassword": {
+    "title": "Olvidé mi Contraseña",
+    "subtitle": "Ingresa tu correo para restablecer tu contraseña",
+    "form": {
+      "email": "Correo Electrónico"
+    },
+    "placeholders": {
+      "email": "Ingresa tu correo electrónico"
+    },
+    "buttons": {
+      "resetPassword": "Restablecer Contraseña",
+      "sending": "Enviando..."
+    },
+    "errors": {
+      "emailRequired": "El correo electrónico es requerido",
+      "invalidEmail": "Por favor ingresa un correo electrónico válido"
+    },
+    "backToLogin": "Volver al Inicio de Sesión",
+    "success": {
+      "title": "Revisa tu Correo",
+      "subtitle": "Te hemos enviado un enlace para restablecer tu contraseña",
+      "checkEmail": "Revisa tu Correo",
+      "instructions": "Hemos enviado un enlace para restablecer tu contraseña a {email}. Por favor revisa tu bandeja de entrada y sigue las instrucciones.",
+      "tryAgain": "Probar Otro Correo",
+      "backToLogin": "Volver al Inicio de Sesión"
+    },
+    "tagline": "Un lugar para honrar y recordar a quienes amamos"
+  },
+  "resetPassword": {
+    "title": "Restablecer contraseña",
+    "subtitle": "Crea una nueva contraseña para tu cuenta",
+    "form": {
+      "newPassword": "Nueva contraseña",
+      "confirmPassword": "Confirmar contraseña"
+    },
+    "placeholders": {
+      "newPassword": "Introduce tu nueva contraseña",
+      "confirmPassword": "Confirma tu nueva contraseña"
+    },
+    "buttons": {
+      "resetPassword": "Restablecer contraseña",
+      "resetting": "Restableciendo..."
+    },
+    "errors": {
+      "passwordRequired": "La contraseña es obligatoria",
+      "passwordLength": "La contraseña debe tener al menos 8 caracteres",
+      "passwordsDontMatch": "Las contraseñas no coinciden"
+    },
+    "backToLogin": "Volver al inicio de sesión",
+    "success": {
+      "title": "Restablecer contraseña",
+      "subtitle": "Tu contraseña se ha restablecido correctamente",
+      "passwordReset": "Restablecimiento de contraseña exitoso",
+      "loginAgain": "Ahora puedes iniciar sesión con tu nueva contraseña",
+      "backToLogin": "Volver al inicio de sesión"
+    },
+    "tagline": "Un lugar para honrar y recordar a quienes amamos"
+  },
+  "emailVerification": {
+    "title": "Verifica tu correo electrónico",
+    "subtitle": "Introduce el código de 6 dígitos enviado a tu correo electrónico",
+    "enterCode": "Introduce el código de verificación",
+    "instructions": "Por favor, introduce el código de verificación de 6 dígitos que enviamos a tu dirección de correo electrónico.",
+    "spamWarning": "Si no ves el correo, revisa tu carpeta de spam.",
+    "didntReceive": "¿No recibiste el código?",
+    "resendIn": "Reenviar en",
+    "verifying": "Verificando tu código...",
+    "buttons": {
+      "resend": "Reenviar código",
+      "resendCode": "Reenviar código de verificación",
+      "sending": "Enviando...",
+      "backToLogin": "Volver al inicio de sesión"
+    },
+    "success": {
+      "toast": "¡Correo verificado con éxito! Redirigiendo..."
+    },
+    "error": {
+      "expired": "El código de verificación ha expirado. Solicita uno nuevo.",
+      "invalid": "Código inválido. Por favor verifica e inténtalo de nuevo."
+    },
+    "tagline": "Un lugar para honrar y recordar a quienes amamos"
+  },
+  "confirmEmail": {
+    "title": "Confirmando tu correo electrónico",
+    "subtitle": "Estamos verificando tu dirección de correo electrónico",
+    "verifying": "Verificando tu dirección de correo electrónico...",
+    "redirectNotice": "Serás redirigido automáticamente al inicio de sesión",
+    "success": {
+      "toast": "¡Correo confirmado con éxito!",
+      "redirecting": "Redirigiendo al inicio de sesión..."
+    },
+    "error": {
+      "toast": "Error en la confirmación del correo electrónico",
+      "expired": "El enlace de confirmación ha expirado",
+      "invalid": "Enlace de confirmación inválido",
+      "network": "Error de red. Por favor, inténtalo de nuevo."
     }
   }
 }

@@ -184,8 +184,15 @@
     }
   },
   "pricing": {
-    "title": "Ọnụ Ahịa Dị Mfe, Nke Doro Anya",
-    "subtitle": "Họrọ atụmatụ nke dabara na mkpa ezinụlọ gị",
+    "modal": {
+      "plan": "Atụmatụ",
+      "featuresIncluded": "Atụmatụ Ndị Agụnyere:",
+      "termsAndConditions": "Usoro na Ọnọdụ",
+      "proceedToPayment": "Gaa n'ihu n'ịkwụ ụgwọ",
+      "agreeTermsMessage": "Biko kwenye na usoro na ọnọdụ iji gaa n'ihu n'ịkwụ ụgwọ"
+    },
+    "title": "Họrọ atụmatụ gị",
+    "subtitle": "Họrọ atụmatụ zuru oke iji mepụta weebụsaịtị ncheta mara mma",
     "plans": {
       "basic": {
         "name": "Nke Bụ Isi",
@@ -202,13 +209,13 @@
         "button": "Malite N'efu"
       },
       "premium": {
-        "name": "Premium",
+        "name": "Ọkwa elu",
         "price": "250,000",
         "period": "/90ụbọchị",
         "description": "Nhọrọ kachasị ewu ewu",
         "features": {
           "photos": "Foto & vidiyo na-enweghị oke",
-          "template": "Template premium",
+          "template": "Template Ọkwa elu",
           "customization": "Nhazi dị elu",
           "support": "Nkwado mbụ",
           "backup": "Nbudata & ndabere",
@@ -548,6 +555,204 @@
         },
         "live": "Na ndụ"
       }
+    }
+  },
+  "termsAndConditions": {
+    "agree": "Ekwenyere m na Usoro na Ọnọdụ",
+    "title": "Usoro na Ọnọdụ Ọrụ Ebe Nrụtụaka Ncheta",
+    "sections": {
+      "serviceDescription": {
+        "title": "1. Nkọwa Ọrụ",
+        "content": "Ọrụ ebe nrụtụaka ncheta anyị na-enye ebe iji mepụta ma na-echekwa ebe ncheta n'ịntanetị maka ndị mmadụ hụrụ n'anya. Nke a gụnyere nnabata, ụdị, na mmezi dịka akọwapụtara na atụmatụ ị họọrọ."
+      },
+      "paymentTerms": {
+        "title": "2. Usoro Ịkwụ Ụgwọ",
+        "content": "Ụgwọ niile bụ ụgwọ otu oge maka atụmatụ ahọpụtara. A chọrọ ịkwụ ụgwọ tupu ịmalite ọrụ. A gaghị akwụghachi ụgwọ ozugbo emepụtara ma bipụtachaa weebụsaịtị ahụ."
+      },
+      "contentGuidelines": {
+        "title": "3. Ntuziaka Ọdịnaya",
+        "content": "Ị kwenyere ịnye ọdịnya kwesịrị ekwesị nke na-asọpụrụ ncheta onye nwụrụ anwụ. Anyị nwere ikike iwepụ ọdịnaya ọ bụla na-emebi ụkpụrụ obodo anyị ma ọ bụ nke a na-ewere na ọ dịghị mma."
+      },
+      "privacyAndData": {
+        "title": "4. Nzuzo na Data",
+        "content": "Anyị na-asọpụrụ nzuzo gị ma ga-ejikwa ozi nkeonwe gị niile dịka iwu nzuzo anyị siri dị. Enwere ike ịnweta ọdịnaya ncheta n'ihu ọha ma ọ bụrụ na etinyeghị ntọala nzuzo."
+      },
+      "serviceAvailability": {
+        "title": "5. Nnweta Ọrụ",
+        "content": "Anyị na-agba mbọ idobe oge ọrụ 99% mana anyị enweghị ike ikwe nkwa ọrụ na-adịghị akwụsị akwụsị. Enwere ike ime mmezi ahaziri ahazi na ọkwa mbụ."
+      },
+      "intellectualProperty": {
+        "title": "6. Ikike Ọgụgụ isi",
+        "content": "Ị na-ejigide ikike nke ọdịnaya ị na-enye. Anyị na-ejigide ikike nke ikpo okwu, ụdị, na teknụzụ. E nyere gị ikike iji nhazi weebụsaịtị ncheta ahụ."
+      },
+      "termination": {
+        "title": "7. Nkwụsị",
+        "content": "Ị nwere ike ịrịọ ka a kwụsị ọrụ n'oge ọ bụla. Anyị nwere ikike ịkwụsị ọrụ maka mmebi usoro. A na-edobe ebe nrụtụaka ncheta maka oge akọwapụtara na atụmatụ gị."
+      },
+      "limitationOfLiability": {
+        "title": "8. Mmachi nke Ịba Ụgwọ",
+        "content": "Ihe anyị ga-akwụ bụ naanị ego a kwụrụ maka ọrụ ahụ. Anyị anaghị akwụ ụgwọ maka mmebi ma ọ bụ mfu ndị na-apụtaghị ìhè sitere na iji ọrụ."
+      }
+    },
+    "note": "Rịba ama: Site n'ịpị igbe nkwenye, ị kwenyere na ị gụọla, ghọtara, ma kwenye na a ga-ejide gị n'okpuru Usoro na Ọnọdụ ndị a."
+  },
+  "register": {
+    "welcome": "Mepụta Akaụntụ",
+    "subtitle": "Mepụta ncheta ga-adịru mgbe niile",
+    "form": {
+      "name": "Aha zuru ezu",
+      "email": "Adreesị email",
+      "password": "Okwu nzuzo",
+      "confirmPassword": "Kwenye okwu nzuzo"
+    },
+    "placeholders": {
+      "name": "Tinye aha gị zuru ezu",
+      "email": "Tinye email gị",
+      "password": "Tinye okwu nzuzo gị",
+      "confirmPassword": "Kwenye okwu nzuzo gị"
+    },
+    "buttons": {
+      "createAccount": "Mepụta Akaụntụ",
+      "loginHere": "Banye ebe a"
+    },
+    "errors": {
+      "nameRequired": "Aha achọrọ",
+      "emailRequired": "Email achọrọ",
+      "invalidEmail": "Biko tinye email ziri ezi",
+      "passwordRequired": "Okwu nzuzo achọrọ",
+      "passwordLength": "Okwu nzuzo ga-enwekarị opekata mpe mkpụrụedemede 8",
+      "passwordsDontMatch": "Okwu nzuzo adabaghị"
+    },
+    "alreadyHaveAccount": "Ị nwere akaụntụ ugbu a?",
+    "terms": {
+      "byRegistering": "Site n’ịdebanye aha, ị kwenyere na",
+      "termsOfService": "Usoro Ọrụ",
+      "and": "na",
+      "privacyPolicy": "Iwu Nzuzo"
+    },
+    "tagline": "Ebe e ji ekele ma cheta ndị anyị hụrụ n’anya"
+  },
+  "login": {
+    "welcomeBack": "Nnọọ",
+    "subtitle": "Banye na ForeverPages",
+    "form": {
+      "email": "Adreesị Ozi-e",
+      "password": "Okwuntughe"
+    },
+    "placeholders": {
+      "email": "Tinye ozi-e gị",
+      "password": "Tinye okwuntughe gị"
+    },
+    "buttons": {
+      "login": "Banye",
+      "registerHere": "Debanye aha ebe a"
+    },
+    "errors": {
+      "emailRequired": "Ozi-e achọrọ",
+      "invalidEmail": "Biko tinye ezigbo ozi-e",
+      "passwordRequired": "Okwuntughe achọrọ"
+    },
+    "rememberMe": "Cheta m",
+    "forgotPassword": "Chefuru okwuntughe?",
+    "noAccount": "Ị nweghị akaụntụ?",
+    "tagline": "Ebe iji kwanyere ndị anyị hụrụ n'anya ma cheta ha"
+  },
+  "forgotPassword": {
+    "title": "Echefuela Okwuntughe",
+    "subtitle": "Tinye ozi-e gị iji megharịa okwuntughe gị",
+    "form": {
+      "email": "Adreesị Ozi-e"
+    },
+    "placeholders": {
+      "email": "Tinye adreesị ozi-e gị"
+    },
+    "buttons": {
+      "resetPassword": "Megharịa Okwuntughe",
+      "sending": "Na-eziga..."
+    },
+    "errors": {
+      "emailRequired": "Ozi-e achọrọ",
+      "invalidEmail": "Biko tinye ezigbo adreesị ozi-e"
+    },
+    "backToLogin": "Lagachi na Nbanye",
+    "success": {
+      "title": "Lelee Ozi-e Gị",
+      "subtitle": "Anyị ezitela gị njikọ iji megharịa okwuntughe gị",
+      "checkEmail": "Lelee Ozi-e Gị",
+      "instructions": "Anyị ezitela njikọ imegharị okwuntughe na {email}. Biko lelee igbe mbata gị ma soro ntuziaka ahụ.",
+      "tryAgain": "Nwalee Ozi-e Ọzọ",
+      "backToLogin": "Lagachi na Nbanye"
+    },
+    "tagline": "Ebe iji kwanyere ndị anyị hụrụ n'anya ma cheta ha"
+  },
+  "resetPassword": {
+    "title": "Tọgharia okwuntughe",
+    "subtitle": "Mepụta okwuntughe ọhụrụ maka akaụntụ gị",
+    "form": {
+      "newPassword": "Okwuntughe ọhụrụ",
+      "confirmPassword": "Kwenye okwuntughe"
+    },
+    "placeholders": {
+      "newPassword": "Tinye okwuntughe ọhụrụ gị",
+      "confirmPassword": "Kwenye okwuntughe ọhụrụ gị"
+    },
+    "buttons": {
+      "resetPassword": "Tọgharia okwuntughe",
+      "resetting": "Na tọgharia..."
+    },
+    "errors": {
+      "passwordRequired": "A chọrọ okwuntughe",
+      "passwordLength": "Okwuntughe ga-adịkarị opekata mpe mkpụrụedemede 8",
+      "passwordsDontMatch": "Okwuntughe adabaghị"
+    },
+    "backToLogin": "Laghachi na nbanye",
+    "success": {
+      "title": "Tọgharia okwuntughe",
+      "subtitle": "A tọgharịrị okwuntughe gị nke ọma",
+      "passwordReset": "Tọgharia gara nke ọma",
+      "loginAgain": "Ị nwere ike ibanye ugbu a na okwuntughe ọhụrụ gị",
+      "backToLogin": "Laghachi na nbanye"
+    },
+    "tagline": "Ebe e ji ekele ma cheta ndị anyị hụrụ n’anya"
+  },
+  "emailVerification": {
+    "title": "Kwenye email gị",
+    "subtitle": "Tinye koodu nọmba isii e zigara gị n’email",
+    "enterCode": "Tinye koodu nkwenye",
+    "instructions": "Biko tinye koodu nkwenye nọmba isii e zigara gị n’email.",
+    "spamWarning": "Ọ bụrụ na ị naghị ahụ email ahụ, lelee folda spam gị.",
+    "didntReceive": "Ị nweghị koodu ahụ?",
+    "resendIn": "Zipu ọzọ n'ime",
+    "verifying": "Na-enyocha koodu gị...",
+    "buttons": {
+      "resend": "Zipu koodu ọzọ",
+      "resendCode": "Zipu koodu nkwenye ọzọ",
+      "sending": "Na-eziga...",
+      "backToLogin": "Laghachi na nbanye"
+    },
+    "success": {
+      "toast": "E kwenyere email gị nke ọma! Na-eziga gị..."
+    },
+    "error": {
+      "expired": "Koodu nkwenye agwụla. Biko chọọ nke ọhụrụ.",
+      "invalid": "Koodu ezighi ezi. Biko lelee ma nwalee ọzọ."
+    },
+    "tagline": "Ebe e ji ekele ma cheta ndị anyị hụrụ n’anya"
+  },
+  "confirmEmail": {
+    "title": "Na-enyocha email gị",
+    "subtitle": "Anyị na-enyocha adreesị email gị",
+    "verifying": "Na-enyocha adreesị email gị...",
+    "redirectNotice": "A ga-eziga gị na nbanye n’onwe ya",
+    "success": {
+      "toast": "E kwenyere email gị nke ọma!",
+      "redirecting": "Na-eziga gị na nbanye..."
+    },
+    "error": {
+      "toast": "Email nkwenye adịghị aga nke ọma",
+      "expired": "Njikọ nkwenye agwụla",
+      "invalid": "Njikọ nkwenye ezighi ezi",
+      "network": "Njehie netwọk. Biko nwalee ọzọ."
     }
   }
 }
