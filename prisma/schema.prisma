@@ -13,3 +13,1278 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+
+// ============================================
+// CORE USER & AUTHENTICATION
+// ============================================
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  password      String?   // Hashed password for email/password auth
+  image         String?
+  bio           String?   @db.Text
+  phone         String?
+
+  // Role & Permissions
+  role          UserRole  @default(USER)
+
+  // Current Plan
+  currentPlanId String?
+  currentPlan   Plan?     @relation("UserCurrentPlan", fields: [currentPlanId], references: [id], onDelete: SetNull)
+
+  // Email verification tracking
+  verificationMethod VerificationMethod?
+  lastVerificationSentAt DateTime?
+  verificationAttempts Int @default(0)
+
+  // Security
+  twoFactorEnabled Boolean @default(false)
+  twoFactorSecret  String?
+
+  // Preferences
+  notificationsEnabled Boolean @default(true)
+  language             String  @default("en")
+  timezone             String  @default("UTC")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userTemplates UserTemplate[]
+  payments      Payment[]
+  accounts         Account[]
+  sessions         Session[]
+  memorials        Memorial[]
+  posts            Post[]
+  comments         Comment[]
+  reactions        Reaction[]
+  uploads          Upload[]
+  notifications    Notification[]
+  sentInvitations  Invitation[]     @relation("InvitedBy")
+  receivedInvites  Invitation[]     @relation("InvitedUser")
+  subscriptions    Subscription[]
+  activityLogs     ActivityLog[]
+
+  @@index([email])
+  @@index([role])
+  @@index([currentPlanId])
+}
+
+enum UserRole {
+  USER
+  MODERATOR
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum VerificationMethod {
+  LINK
+  CODE
+}
+
+model VerificationToken {
+  id         String   @id @default(cuid())
+  identifier String   // Usually email address
+  token      String   @unique
+  code       String   // 6-digit verification code
+  type       VerificationType
+  expires    DateTime
+  usedAt     DateTime?
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, token])
+  @@index([identifier])
+  @@index([code])
+  @@index([expires])
+}
+
+enum VerificationType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+  EMAIL_CHANGE
+  TWO_FACTOR
+}
+
+// ============================================
+// MEMORIAL PAGES
+// ============================================
+
+model Memorial {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+
+  // Deceased Information
+  firstName   String
+  lastName    String
+  middleName  String?
+  maidenName  String?
+  nicknames   String[] // Array of nicknames
+  prefix      String?  // Dr., Rev., etc.
+  suffix      String?  // Jr., Sr., III, etc.
+
+  // Life Dates
+  birthDate   DateTime
+  deathDate   DateTime
+  age         Int?     // Calculated or manual
+
+  // Places
+  birthPlace  String?
+  deathPlace  String?
+  hometown    String?
+  residence   String?
+  nationality String?
+
+  // Biography
+  biography   String?  @db.Text
+  epitaph     String?  @db.Text
+  obituary    String?  @db.Text
+  lifeStory   String?  @db.Text
+  legacy      String?  @db.Text
+
+  // Images
+  profilePhoto String?
+  coverPhoto   String?
+  galleryPhotos String[] // Array of image URLs
+
+  // Funeral & Memorial Info
+  funeralDate      DateTime?
+  funeralLocation  String?
+  funeralDetails   String?   @db.Text
+  burialPlace      String?
+  burialDate       DateTime?
+  memorialService  String?   @db.Text
+
+  // Charitable Info
+  charityName      String?
+  charityUrl       String?
+  donationInfo     String?   @db.Text
+
+  // Settings
+  visibility       MemorialVisibility @default(PUBLIC)
+  allowComments    Boolean            @default(true)
+  moderateComments Boolean            @default(false)
+  allowPhotos      Boolean            @default(true)
+  allowStories     Boolean            @default(true)
+  allowCandles     Boolean            @default(true)
+  allowFlowers     Boolean            @default(true)
+
+  // QR Code & Sharing
+  qrCodeUrl        String?
+  customDomain     String?            @unique
+  password         String?            // For password-protected memorials
+
+  // SEO
+  metaTitle        String?
+  metaDescription  String?
+  keywords         String[]
+
+  // Statistics
+  viewCount        Int      @default(0)
+  shareCount       Int      @default(0)
+  candleCount      Int      @default(0)
+  flowerCount      Int      @default(0)
+
+  // Status
+  isPublished      Boolean  @default(false)
+  isPremium        Boolean  @default(false)
+  expiresAt        DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  publishedAt DateTime?
+
+  // Relations
+  ownerId     String
+  owner       User            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+ // Use UserTemplate instead of Template
+  userTemplateId String?
+  userTemplate   UserTemplate? @relation(fields: [userTemplateId], references: [id], onDelete: SetNull)
+
+  invitations Invitation[]
+  timeline    TimelineEvent[]
+  family      FamilyMember[]
+  posts       Post[]
+  comments    Comment[]
+  reactions   Reaction[]
+  uploads     Upload[]
+  candles     VirtualCandle[]
+  flowers     VirtualFlower[]
+  guestbook   GuestbookEntry[]
+  tags        MemorialTag[]
+
+  @@index([slug])
+  @@index([ownerId])
+  @@index([visibility])
+  @@index([isPublished])
+  @@index([createdAt])
+  @@index([userTemplateId])
+}
+
+enum MemorialVisibility {
+  PUBLIC
+  UNLISTED
+  PRIVATE
+  PASSWORD_PROTECTED
+}
+
+// ============================================
+// COLLABORATION & PERMISSIONS
+// ============================================
+
+model Invitation {
+  id          String           @id @default(cuid())
+  email       String
+  role        MemorialRole
+  token       String           @unique
+  status      InvitationStatus @default(PENDING)
+  message     String?          @db.Text
+
+  expiresAt   DateTime
+  sentAt      DateTime         @default(now())
+  acceptedAt  DateTime?
+  declinedAt  DateTime?
+
+  memorialId  String
+  memorial    Memorial @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+
+  invitedById String
+  invitedBy   User     @relation("InvitedBy", fields: [invitedById], references: [id], onDelete: Cascade)
+
+  invitedUserId String?
+  invitedUser   User?   @relation("InvitedUser", fields: [invitedUserId], references: [id])
+
+  @@index([memorialId])
+  @@index([email])
+  @@index([token])
+  @@index([status])
+}
+
+enum MemorialRole {
+  OWNER
+  ADMIN
+  EDITOR
+  CONTRIBUTOR
+  VIEWER
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  EXPIRED
+  REVOKED
+}
+
+// ============================================
+// TIMELINE & LIFE EVENTS
+// ============================================
+
+model TimelineEvent {
+  id          String        @id @default(cuid())
+  title       String
+  description String?       @db.Text
+  date        DateTime
+  endDate     DateTime?     // For events with duration
+  eventType   TimelineEventType
+  location    String?
+  images      String[]
+
+  isHighlight Boolean       @default(false)
+  order       Int?          // Custom ordering
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  memorialId  String
+  memorial    Memorial      @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+
+  @@index([memorialId])
+  @@index([date])
+  @@index([eventType])
+}
+
+enum TimelineEventType {
+  BIRTH
+  EDUCATION
+  GRADUATION
+  CAREER
+  MARRIAGE
+  ENGAGEMENT
+  CHILDREN
+  GRANDCHILDREN
+  MILITARY
+  AWARD
+  ACHIEVEMENT
+  TRAVEL
+  HOBBY
+  VOLUNTEER
+  PUBLICATION
+  RETIREMENT
+  ILLNESS
+  DEATH
+  FUNERAL
+  MEMORIAL
+  OTHER
+}
+
+// ============================================
+// FAMILY TREE
+// ============================================
+
+model FamilyMember {
+  id           String              @id @default(cuid())
+  firstName    String
+  lastName     String
+  relationship FamilyRelationship
+  isDeceased   Boolean             @default(false)
+  birthYear    Int?
+  deathYear    Int?
+  photo        String?
+  bio          String?             @db.Text
+
+  memorialId   String
+  memorial     Memorial            @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+
+  @@index([memorialId])
+  @@index([relationship])
+}
+
+enum FamilyRelationship {
+  SPOUSE
+  PARTNER
+  FATHER
+  MOTHER
+  SON
+  DAUGHTER
+  BROTHER
+  SISTER
+  GRANDFATHER
+  GRANDMOTHER
+  GRANDSON
+  GRANDDAUGHTER
+  UNCLE
+  AUNT
+  NEPHEW
+  NIECE
+  COUSIN
+  OTHER
+}
+
+// ============================================
+// CONTENT & POSTS
+// ============================================
+
+model Post {
+  id          String     @id @default(cuid())
+  title       String?
+  content     String     @db.Text
+  type        PostType
+
+  // Media
+  images      String[]
+  videos      String[]
+  attachments String[]
+
+  // Moderation
+  isApproved  Boolean    @default(true)
+  isPinned    Boolean    @default(false)
+
+  // Author Info (for non-users)
+  authorName  String?
+  authorEmail String?
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  memorialId  String
+  memorial    Memorial   @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+
+  authorId    String?
+  author      User?      @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  comments    Comment[]
+  reactions   Reaction[]
+
+  @@index([memorialId])
+  @@index([type])
+  @@index([isApproved])
+  @@index([createdAt])
+}
+
+enum PostType {
+  TRIBUTE
+  MEMORY
+  STORY
+  CONDOLENCE
+  PHOTO
+  VIDEO
+  ANNOUNCEMENT
+}
+
+model Comment {
+  id          String   @id @default(cuid())
+  content     String   @db.Text
+
+  // Author Info (for non-users)
+  authorName  String?
+  authorEmail String?
+
+  isApproved  Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  postId      String?
+  post        Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  memorialId  String
+  memorial    Memorial @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+
+  authorId    String?
+  author      User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  parentId    String?
+  parent      Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies     Comment[] @relation("CommentReplies")
+
+  @@index([postId])
+  @@index([memorialId])
+  @@index([authorId])
+  @@index([parentId])
+  @@index([createdAt])
+}
+
+model Reaction {
+  id         String       @id @default(cuid())
+  type       ReactionType
+
+  createdAt  DateTime     @default(now())
+
+  postId     String?
+  post       Post?        @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  memorialId String
+  memorial   Memorial     @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+
+  userId     String
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId, type])
+  @@index([memorialId])
+  @@index([userId])
+}
+
+enum ReactionType {
+  HEART
+  PRAYER
+  HUG
+  ROSE
+  CANDLE
+  DOVE
+  ANGEL
+}
+
+// ============================================
+// MEDIA & UPLOADS
+// ============================================
+
+model Upload {
+  id           String     @id @default(cuid())
+  fileName     String
+  originalName String
+  mimeType     String
+  fileSize     Int
+  url          String
+  thumbnailUrl String?
+
+  type         UploadType
+
+  // Metadata
+  width        Int?
+  height       Int?
+  duration     Int?       // seconds for video/audio
+
+  title        String?
+  description  String?    @db.Text
+  caption      String?
+
+  // Organization
+  album        String?
+  tags         String[]
+  dateTaken    DateTime?
+
+  isPublic     Boolean    @default(true)
+
+  createdAt    DateTime   @default(now())
+
+  memorialId   String
+  memorial     Memorial   @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+
+  uploaderId   String
+  uploader     User       @relation(fields: [uploaderId], references: [id], onDelete: Cascade)
+
+  @@index([memorialId])
+  @@index([type])
+  @@index([album])
+  @@index([uploaderId])
+}
+
+enum UploadType {
+  IMAGE
+  VIDEO
+  AUDIO
+  DOCUMENT
+}
+
+// ============================================
+// VIRTUAL TRIBUTES
+// ============================================
+
+model VirtualCandle {
+  id          String   @id @default(cuid())
+  message     String?  @db.Text
+  senderName  String
+  senderEmail String?
+
+  litAt       DateTime @default(now())
+  expiresAt   DateTime // Candles expire after X days
+
+  memorialId  String
+  memorial    Memorial @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+
+  @@index([memorialId])
+  @@index([litAt])
+}
+
+model VirtualFlower {
+  id          String     @id @default(cuid())
+  flowerType  FlowerType
+  message     String?    @db.Text
+  senderName  String
+  senderEmail String?
+
+  sentAt      DateTime   @default(now())
+
+  memorialId  String
+  memorial    Memorial   @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+
+  @@index([memorialId])
+  @@index([sentAt])
+}
+
+enum FlowerType {
+  ROSE
+  LILY
+  CARNATION
+  ORCHID
+  TULIP
+  SUNFLOWER
+  MIXED_BOUQUET
+}
+
+model GuestbookEntry {
+  id          String   @id @default(cuid())
+  name        String
+  email       String?
+  location    String?
+  message     String   @db.Text
+  relationship String?
+
+  isApproved  Boolean  @default(true)
+  isPublic    Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+
+  memorialId  String
+  memorial    Memorial @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+
+  @@index([memorialId])
+  @@index([createdAt])
+}
+
+// ============================================
+// SUBSCRIPTIONS & BILLING
+// ============================================
+
+model Plan {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?  @db.Text
+
+  // Pricing & Duration
+  price       Decimal  @db.Decimal(10, 2)  // Single price
+  currency    String   @default("NGN")
+  durationDays Int     // Number of days the plan is valid for
+
+  // Plan Features
+  maxMemorials        Int      @default(1)
+  maxPhotosPerMemorial Int     @default(50)
+  maxVideosPerMemorial Int     @default(5)
+  maxStorageGB        Int      @default(1)
+
+  // Display & Marketing
+  isPopular       Boolean  @default(false)
+  isVisible       Boolean  @default(true)
+  displayOrder    Int      @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  subscriptions Subscription[]
+  templates     Template[]
+  payments    Payment[]
+  users         User[]         @relation("UserCurrentPlan")
+
+  @@index([slug])
+  @@index([isVisible])
+  @@index([displayOrder])
+  @@index([durationDays])
+}
+// ============================================
+// DYNAMIC TEMPLATE SYSTEM (Next.js/React/Tailwind)
+// ============================================
+
+model Template {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?  @db.Text
+  category    String   @default("general")
+  version     String   @default("1.0.0")
+
+  // Template Assets
+  previewImage   String
+  thumbnailImage String
+
+  // React Component Configuration
+  componentPath  String  // Path to main React component (e.g., "templates/classic/MemorialTemplate")
+  propsSchema    Json?   // JSON schema for template configuration/validation
+
+  // Template Features
+  supportedSections TemplateSectionType[]
+  layoutType     TemplateLayout @default(FLEXIBLE)
+
+  // Design System Configuration
+  designTokens   Json?   // Tailwind classes, colors, typography, etc.
+  defaultConfig  Json?   // Default settings for new memorials
+
+  // Status & Organization
+  isActive       Boolean  @default(true)
+  isFeatured     Boolean  @default(false)
+  displayOrder   Int      @default(0)
+
+  // Usage Statistics
+  usageCount     Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  userTemplates  UserTemplate[]
+  sections       TemplateSection[]
+  plans       Plan[]
+
+  @@index([slug])
+  @@index([category])
+  @@index([isActive])
+  @@index([isFeatured])
+  @@index([displayOrder])
+}
+
+model TemplateSection {
+  id          String              @id @default(cuid())
+  type        TemplateSectionType
+  name        String
+  description String?             @db.Text
+
+  // Component Configuration
+  componentPath  String?          // Path to section component (optional - falls back to default)
+  propsSchema    Json?            // JSON schema for section configuration
+
+  // Section Configuration
+  layout      TemplateSectionLayout @default(DEFAULT)
+  contentConfig Json?              // Supported content types and limits
+  styleConfig   Json?              // Default styling options
+
+  // Behavior
+  isCollapsible    Boolean @default(false)
+  isHideable       Boolean @default(true)
+  defaultVisible   Boolean @default(true)
+
+  // Order & Requirements
+  order            Int
+  required         Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  templateId      String
+  template        Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@unique([templateId, type])
+  @@index([templateId])
+  @@index([type])
+  @@index([order])
+}
+
+// Enums remain the same as previous version
+enum TemplateLayout {
+  SINGLE_COLUMN
+  TWO_COLUMN
+  TWO_COLUMN_ASYMMETRICAL
+  GRID
+  MAGAZINE
+  TIMELINE_FOCUS
+  STORY
+  FLEXIBLE
+  CUSTOM
+}
+
+enum TemplateSectionType {
+  HERO
+  BIOGRAPHY
+  GALLERY
+  TIMELINE
+  FAMILY_TREE
+  TRIBUTES
+  CONDOLENCES
+  GUESTBOOK
+  DONATIONS
+  FUNERAL_INFO
+  MEMORIES
+  STORIES
+  ACHIEVEMENTS
+  MILITARY_SERVICE
+  EDUCATION_CAREER
+  PHOTO_ALBUM
+  VIDEO_GALLERY
+  AUDIO_MEMORIES
+  DOCUMENTS
+  VIRTUAL_CANDLES
+  VIRTUAL_FLOWERS
+  MAP_LOCATIONS
+  TESTIMONIALS
+  QUOTES
+  CUSTOM
+}
+
+enum TemplateSectionLayout {
+  DEFAULT
+  GRID
+  LIST
+  CARDS
+  MASONRY
+  SLIDER
+  ACCORDION
+  TABBED
+  TIMELINE_VERTICAL
+  TIMELINE_HORIZONTAL
+  MAP
+  STATISTICS
+  TESTIMONIAL_SLIDER
+  QUOTE_CAROUSEL
+}
+
+enum TemplateContentType {
+  TEXT
+  RICH_TEXT
+  IMAGE
+  VIDEO
+  AUDIO
+  DOCUMENT
+  GALLERY
+  TIMELINE_EVENT
+  FAMILY_MEMBER
+  TRIBUTE
+  COMMENT
+  GUESTBOOK_ENTRY
+  CANDLE
+  FLOWER
+  DONATION_INFO
+  LOCATION
+  QUOTE
+  STATISTIC
+  SOCIAL_SHARE
+  CONTACT_FORM
+}
+
+model UserTemplate {
+  id          String   @id @default(cuid())
+  name        String   // User can rename their template
+  description String?  @db.Text
+
+  // References
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  baseTemplateId String
+  baseTemplate   Template @relation(fields: [baseTemplateId], references: [id], onDelete: Cascade)
+
+  // User's custom configuration
+  config      Json?    // Colors, fonts, layout settings
+  sections    Json?    // Section ordering and customizations
+
+  // Status
+  isActive    Boolean  @default(true)
+  isPublished Boolean  @default(false)
+
+  // User's custom assets (if they uploaded their own)
+  customPreviewImage   String?
+  customThumbnailImage String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relation to memorial when published
+  memorials   Memorial[]
+
+  @@unique([userId, baseTemplateId, name]) // User can have multiple copies of same template
+  @@index([userId])
+  @@index([baseTemplateId])
+  @@index([isActive])
+}
+
+model Subscription {
+  id                String             @id @default(cuid())
+  status            SubscriptionStatus
+
+  // Subscription Period
+  startDate        DateTime
+  expiresAt        DateTime  // When the subscription expires
+
+  // Payment Info (Paystack)
+  paystackReference String?   @unique  // Paystack transaction reference
+  paystackCustomerCode String? // Paystack customer code for recurring payments
+
+  // Subscription Management
+  autoRenew        Boolean   @default(true)
+  canceledAt       DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId    String
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  planId    String
+  plan      Plan   @relation(fields: [planId], references: [id])
+
+  // Payment history
+  payments  Payment[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([planId])
+  @@index([expiresAt])
+  @@index([paystackReference])
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  EXPIRED
+  CANCELED
+  PENDING_PAYMENT
+}
+
+
+model Payment {
+  id                String        @id @default(cuid())
+  amount            Decimal       @db.Decimal(10, 2)
+  currency          String        @default("NGN")
+
+  // Paystack References
+  paystackReference String        @unique
+  paystackAuthorizationUrl String? // For initial payment
+  paystackAccessCode String?      // Paystack access code
+
+  // Payment Status
+  status            PaymentStatus @default(PENDING)
+  paidAt            DateTime?
+  failedAt          DateTime?
+
+  // Payment Details
+  paymentMethod     String?       // card, bank_transfer, etc.
+  customerEmail     String?
+  customerName      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  subscriptionId String?
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  userId    String
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  planId    String
+  plan      Plan   @relation(fields: [planId], references: [id])
+
+  @@index([userId])
+  @@index([subscriptionId])
+  @@index([paystackReference])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  ABANDONED
+  REFUNDED
+}
+
+// ============================================
+// NOTIFICATIONS
+// ============================================
+
+model Notification {
+  id        String           @id @default(cuid())
+  type      NotificationType
+  title     String
+  message   String           @db.Text
+  link      String?
+
+  isRead    Boolean          @default(false)
+  readAt    DateTime?
+
+  createdAt DateTime         @default(now())
+
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
+}
+
+enum NotificationType {
+  NEW_TRIBUTE
+  NEW_COMMENT
+  NEW_PHOTO
+  NEW_CANDLE
+  NEW_FLOWER
+  INVITATION
+  MEMORIAL_ANNIVERSARY
+  BIRTHDAY_ANNIVERSARY
+  EXPIRING_SOON
+  SYSTEM
+}
+
+// ============================================
+// ANALYTICS
+// ============================================
+
+model PageView {
+  id          String   @id @default(cuid())
+  memorialId  String
+
+  // Visitor info
+  ipAddress   String?
+  userAgent   String?
+  country     String?
+  city        String?
+  referrer    String?
+
+  viewedAt    DateTime @default(now())
+
+  @@index([memorialId])
+  @@index([viewedAt])
+}
+
+model ActivityLog {
+  id          String       @id @default(cuid())
+  action      ActivityType
+  entityType  String       // "Memorial", "Post", "Comment", etc.
+  entityId    String
+
+  // Details
+  description String?      @db.Text
+  metadata    Json?        // Store additional data
+  ipAddress   String?
+  userAgent   String?
+
+  createdAt   DateTime     @default(now())
+
+  userId      String?
+  user        User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+enum ActivityType {
+  CREATED
+  UPDATED
+  DELETED
+  VIEWED
+  SHARED
+  DOWNLOADED
+  INVITED
+  ACCEPTED_INVITE
+  DECLINED_INVITE
+  COMMENTED
+  REACTED
+  UPLOADED
+  REPORTED
+  MODERATED
+}
+
+// ============================================
+// REPORTING & MODERATION
+// ============================================
+
+model Report {
+  id          String       @id @default(cuid())
+  reason      ReportReason
+  description String?      @db.Text
+  status      ReportStatus @default(PENDING)
+
+  // What's being reported
+  entityType  String       // "Post", "Comment", "Memorial", "User"
+  entityId    String
+
+  // Reporter info
+  reporterName  String?
+  reporterEmail String?
+  reporterIp    String?
+
+  // Resolution
+  resolvedAt    DateTime?
+  resolution    String?    @db.Text
+  resolvedById  String?
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([entityType, entityId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum ReportReason {
+  SPAM
+  INAPPROPRIATE_CONTENT
+  HARASSMENT
+  FALSE_INFORMATION
+  COPYRIGHT_VIOLATION
+  IMPERSONATION
+  OTHER
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWING
+  RESOLVED
+  DISMISSED
+}
+
+// ============================================
+// EMAIL & COMMUNICATIONS
+// ============================================
+
+model EmailLog {
+  id          String      @id @default(cuid())
+  to          String
+  from        String
+  subject     String
+  template    EmailTemplate
+
+  // Status tracking
+  status      EmailStatus @default(PENDING)
+  sentAt      DateTime?
+  deliveredAt DateTime?
+  openedAt    DateTime?
+  clickedAt   DateTime?
+  failedAt    DateTime?
+  errorMessage String?    @db.Text
+
+  // Email service provider IDs
+  providerId  String?    // SendGrid, Resend, etc.
+  messageId   String?
+
+  // Context
+  userId      String?
+  memorialId  String?
+  metadata    Json?
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([to])
+  @@index([status])
+  @@index([template])
+  @@index([createdAt])
+}
+
+enum EmailTemplate {
+  WELCOME
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+  INVITATION
+  NEW_TRIBUTE
+  NEW_COMMENT
+  MEMORIAL_ANNIVERSARY
+  BIRTHDAY_REMINDER
+  SUBSCRIPTION_CONFIRMATION
+  SUBSCRIPTION_EXPIRING
+  REPORT_RECEIVED
+  REPORT_RESOLVED
+}
+
+enum EmailStatus {
+  PENDING
+  SENT
+  DELIVERED
+  OPENED
+  CLICKED
+  BOUNCED
+  FAILED
+  COMPLAINED
+}
+
+// ============================================
+// SEARCH & DISCOVERY
+// ============================================
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  count     Int      @default(0)
+
+  createdAt DateTime @default(now())
+
+  memorials MemorialTag[]
+
+  @@index([slug])
+  @@index([count])
+}
+
+model MemorialTag {
+  id         String   @id @default(cuid())
+
+  memorialId String
+  memorial   Memorial @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+
+  tagId      String
+  tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+
+  @@unique([memorialId, tagId])
+  @@index([memorialId])
+  @@index([tagId])
+}
+
+model SavedMemorial {
+  id         String   @id @default(cuid())
+
+  userId     String
+  memorialId String
+
+  notes      String?  @db.Text
+
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, memorialId])
+  @@index([userId])
+  @@index([memorialId])
+}
+
+// ============================================
+// SYSTEM CONFIGURATION
+// ============================================
+
+model SiteSettings {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String @db.Text
+  type  SettingType
+
+  description String?  @db.Text
+  isPublic    Boolean  @default(false)
+
+  updatedAt DateTime @updatedAt
+
+  @@index([key])
+}
+
+enum SettingType {
+  STRING
+  NUMBER
+  BOOLEAN
+  JSON
+  TEXT
+}
+
+model Announcement {
+  id        String   @id @default(cuid())
+  title     String
+  message   String   @db.Text
+  type      AnnouncementType
+
+  isActive  Boolean  @default(true)
+  startDate DateTime @default(now())
+  endDate   DateTime?
+
+  // Targeting
+  showToAll Boolean  @default(true)
+  showToGuests Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([startDate, endDate])
+}
+
+enum AnnouncementType {
+  INFO
+  SUCCESS
+  WARNING
+  ERROR
+  MAINTENANCE
+}
