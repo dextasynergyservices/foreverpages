@@ -3,11 +3,12 @@
 import React, { useState, useEffect } from "react";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslations } from "@/hooks/useTranslations";
-import { LanguageSwitcher, LanguageSwitcherCompact } from "@/components/LanguageSwitcher";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Heart, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import Link from "next/link";
 
 export const Navbar: React.FC = () => {
   const { theme } = useTheme();
@@ -67,7 +68,7 @@ export const Navbar: React.FC = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
-          <a
+          <Link
             href="#hero"
             className={`transition-all duration-300 hover:opacity-100 ${
               isScrolled
@@ -78,9 +79,9 @@ export const Navbar: React.FC = () => {
             }`}
           >
             {t("navbar.navigation.home")}
-          </a>
+          </Link>
 
-          <a
+          <Link
             href="#memorial-pages"
             className={`transition-all duration-300 hover:opacity-100 ${
               isScrolled
@@ -91,9 +92,9 @@ export const Navbar: React.FC = () => {
             }`}
           >
             {t("navbar.navigation.memorials")}
-          </a>
+          </Link>
 
-          <a
+          <Link
             href="#how-it-works"
             className={`transition-all duration-300 hover:opacity-100 ${
               isScrolled
@@ -104,8 +105,8 @@ export const Navbar: React.FC = () => {
             }`}
           >
             {t("navbar.navigation.howItWorks")}
-          </a>
-          <a
+          </Link>
+          <Link
             href="#contact"
             className={`transition-all duration-300 hover:opacity-100 ${
               isScrolled
@@ -116,9 +117,9 @@ export const Navbar: React.FC = () => {
             }`}
           >
             {t("navbar.navigation.support")}
-          </a>
+          </Link>
           <LanguageSwitcher />
-          <a
+          <Link
             className={`h-9 px-4 inline-flex items-center justify-center rounded-md border transition-all duration-300 whitespace-nowrap ${
               isScrolled
                 ? displayTheme === "dark"
@@ -131,7 +132,7 @@ export const Navbar: React.FC = () => {
             href="/login"
           >
             {t("navbar.buttons.signIn")}
-          </a>
+          </Link>
           <ThemeToggle
             className={`h-9 w-9 inline-flex items-center justify-center rounded-md border transition-all duration-300 ${
               isScrolled
@@ -172,30 +173,50 @@ export const Navbar: React.FC = () => {
                   : "bg-black backdrop-blur-lg border-white text-white"
               }`}
             >
+              {/* Add SheetHeader with visually hidden title for accessibility */}
+              <SheetHeader>
+                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+              </SheetHeader>
+
               <div className="flex flex-col space-y-6 mt-8">
-                <a
-                  href="#features"
+                {/* Add the missing Home link */}
+                <Link
+                  href="#hero"
                   className="opacity-80 hover:opacity-100 transition-opacity text-lg"
                   onClick={() => setIsOpen(false)}
                 >
-                  {t("navbar.navigation.features")}
-                </a>
-                <a
+                  {t("navbar.navigation.home")}
+                </Link>
+
+                {/* Add the missing Memorials link */}
+                <Link
+                  href="#memorial-pages"
+                  className="opacity-80 hover:opacity-100 transition-opacity text-lg"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {t("navbar.navigation.memorials")}
+                </Link>
+
+                {/* Keep existing mobile links */}
+                <Link
                   href="#how-it-works"
                   className="opacity-80 hover:opacity-100 transition-opacity text-lg"
                   onClick={() => setIsOpen(false)}
                 >
                   {t("navbar.navigation.howItWorks")}
-                </a>
-                <a
-                  href="#support"
+                </Link>
+
+                {/* Fix: This should be #contact to match desktop */}
+                <Link
+                  href="#contact"
                   className="opacity-80 hover:opacity-100 transition-opacity text-lg"
                   onClick={() => setIsOpen(false)}
                 >
                   {t("navbar.navigation.support")}
-                </a>
-                <div className="flex items-center gap-3">
-                  <LanguageSwitcherCompact />
+                </Link>
+
+                <div className="flex items-center gap-4">
+                  <LanguageSwitcher />
                   <ThemeToggle
                     className={`h-9 w-9 inline-flex items-center justify-center rounded-md border transition-colors ${
                       displayTheme === "dark"
@@ -205,8 +226,12 @@ export const Navbar: React.FC = () => {
                     size="md"
                   />
                 </div>
-                <Button variant="memorial-outline" size="xs" className="w-full">
-                  {t("navbar.buttons.signIn")}
+
+                {/* Fix: Make this button actually navigate to login */}
+                <Button variant="memorial-outline" size="xs" className="w-full" asChild>
+                  <Link href="/login" onClick={() => setIsOpen(false)}>
+                    {t("navbar.buttons.signIn")}
+                  </Link>
                 </Button>
               </div>
             </SheetContent>
