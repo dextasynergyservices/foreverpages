@@ -76,11 +76,11 @@ export const HeroSection = () => {
   }, []);
 
   const handleCreateMemorial = () => {
-    router.push("/create-memorial");
+    router.push("/packages");
   };
 
   const handleViewSample = () => {
-    router.push("/memorial/sample");
+    router.push("/funeral-pages");
   };
 
   return (
