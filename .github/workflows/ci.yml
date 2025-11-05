@@ -61,6 +61,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Setup environment
+        run: echo "DATABASE_URL=postgresql://dummy:dummy@localhost:5432/dummy" >> .env
+
       - name: Generate Prisma Client
         run: pnpm prisma generate
 
@@ -87,6 +90,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Setup environment
+        run: echo "DATABASE_URL=postgresql://dummy:dummy@localhost:5432/dummy" >> .env
 
       - name: Generate Prisma Client
         run: pnpm prisma generate
@@ -120,9 +126,12 @@ jobs:
 
       - name: Setup environment
         run: |
-          cp .env.example .env
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
-          echo "NEXT_PUBLIC_APP_URL=http://localhost:3000" >> .env
+          echo "DATABASE_URL=postgresql://dummy:dummy@localhost:5432/dummy" >> .env
+          echo "NEXTAUTH_SECRET=dummy-secret-for-ci-build" >> .env
+          echo "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}" >> .env
+          echo "NEXT_PUBLIC_APP_URL=${{ secrets.NEXT_PUBLIC_APP_URL }}" >> .env
+          echo "NEXT_PUBLIC_RECAPTCHA_SITE_KEY=${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}" >> .env
+          echo "RECAPTCHA_SECRET_KEY=${{ secrets.RECAPTCHA_SECRET_KEY }}" >> .env
 
       - name: Generate Prisma Client
         run: pnpm prisma generate
