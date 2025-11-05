@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/hooks/useTheme";
 import { LanguageProvider } from "@/providers/LanguageProvider";
@@ -9,6 +9,11 @@ import { geistSans, geistMono } from "@/lib/fonts";
 import { Toaster } from "react-hot-toast";
 import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
 import { PushNotificationInitializer } from "@/components/PushNotificationInitializer";
+
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000";
 
 export const metadata: Metadata = {
   title: "ForeverPages - Create Beautiful Memorial Pages",
@@ -23,7 +28,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"),
+  metadataBase: new URL(baseUrl),
   alternates: {
     canonical: "/",
   },
@@ -66,11 +71,12 @@ export const metadata: Metadata = {
     shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
     { media: "(prefers-color-scheme: dark)", color: "#000000" },
