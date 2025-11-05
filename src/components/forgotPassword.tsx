@@ -1,29 +1,37 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Heart, Mail, ArrowLeft } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Navbar } from "@/components/Navbar";
 import Link from "next/link";
+import toast from "react-hot-toast";
+import { LoadingSpinner } from "@/components/ui/skeleton";
 
 export default function ForgotPasswordPage() {
   const { theme } = useTheme();
   const { t } = useTranslations();
   const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Load email from localStorage on component mount
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("forgotPasswordEmail");
+    if (savedEmail) {
+      setEmail(savedEmail);
+    }
+  }, []);
+
   const validateEmail = () => {
     if (!email.trim()) {
-      setError(t("forgotPassword.errors.emailRequired"));
+      toast.error(t("forgotPassword.errors.emailRequired"));
       return false;
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      setError(t("forgotPassword.errors.invalidEmail"));
+      toast.error(t("forgotPassword.errors.invalidEmail"));
       return false;
     }
-    setError("");
     return true;
   };
 
@@ -37,13 +45,18 @@ export default function ForgotPasswordPage() {
         console.log("Password reset requested for:", email);
         setIsSubmitted(true);
         setIsLoading(false);
+        toast.success("Password reset email sent successfully!");
+        // Clear saved email on successful submission
+        localStorage.removeItem("forgotPasswordEmail");
       }, 1500);
     }
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    if (error) setError("");
+    const value = e.target.value;
+    setEmail(value);
+    // Save to localStorage
+    localStorage.setItem("forgotPasswordEmail", value);
   };
 
   if (isSubmitted) {
@@ -189,12 +202,11 @@ export default function ForgotPasswordPage() {
                     theme === "dark"
                       ? "bg-black text-white border-white/30 focus:ring-white"
                       : "bg-white text-black border-black/30 focus:ring-black"
-                  } ${error ? "border-red-500" : ""}`}
+                  }`}
                   placeholder={t("forgotPassword.placeholders.email")}
                   disabled={isLoading}
                 />
               </div>
-              {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
             </div>
 
             <button
@@ -206,9 +218,14 @@ export default function ForgotPasswordPage() {
                   : "bg-black text-white hover:bg-black/80"
               }`}
             >
-              {isLoading
-                ? t("forgotPassword.buttons.sending")
-                : t("forgotPassword.buttons.resetPassword")}
+              {isLoading ? (
+                <div className="flex items-center justify-center space-x-2">
+                  <LoadingSpinner size="sm" />
+                  <span>{t("forgotPassword.buttons.sending")}</span>
+                </div>
+              ) : (
+                t("forgotPassword.buttons.resetPassword")
+              )}
             </button>
           </form>
 

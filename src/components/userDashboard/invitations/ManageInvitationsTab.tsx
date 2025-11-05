@@ -13,8 +13,8 @@ interface ThemeClasses {
 
 interface ManageInvitationsTabProps {
   invitations: Invitation[];
-  onRemoveInvitation: (id: number) => void;
-  onResendInvitation: (id: number) => void;
+  onRemoveInvitation: (id: string) => void;
+  onResendInvitation: (id: string) => void;
   theme: string;
   themeClasses: ThemeClasses;
   t: (key: string, params?: unknown, fallback?: string) => string;

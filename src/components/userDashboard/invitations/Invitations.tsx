@@ -8,9 +8,12 @@ import { InvitationsHeader } from "./InvitationsHeader";
 import { CreateInvitationTab } from "./CreateInvitationTab";
 import { ManageInvitationsTab } from "./ManageInvitationsTab";
 import { RSVPTab } from "./RSVPTab";
+import { InvitationCardSkeleton } from "@/components/ui/skeleton";
+import { useInvitations } from "@/hooks/useQueries";
+import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 
 export interface Invitation {
-  id: number;
+  id: string;
   email: string;
   name: string;
   status: "sent" | "pending" | "delivered";
@@ -20,23 +23,21 @@ export interface Invitation {
 const Invitations = () => {
   const { t } = useTranslations();
   const { theme } = useTheme();
-  const [invitations, setInvitations] = useState<Invitation[]>([
-    { id: 1, email: "family@email.com", name: "Family Members", status: "sent", rsvp: "yes" },
-    { id: 2, email: "friends@email.com", name: "Close Friends", status: "pending", rsvp: null },
-    {
-      id: 3,
-      email: "colleagues@email.com",
-      name: "Work Colleagues",
-      status: "sent",
-      rsvp: "maybe",
-    },
-  ]);
+  const { data: invitationsData, isLoading, error } = useInvitations();
+  const [invitations, setInvitations] = useState<Invitation[]>([]);
 
-  const handleRemoveInvitation = (id: number) => {
+  // Update local state when data loads
+  React.useEffect(() => {
+    if (invitationsData?.data?.invitations) {
+      setInvitations(invitationsData.data.invitations);
+    }
+  }, [invitationsData]);
+
+  const handleRemoveInvitation = (id: string) => {
     setInvitations(invitations.filter((inv) => inv.id !== id));
   };
 
-  const handleResendInvitation = (id: number) => {
+  const handleResendInvitation = (id: string) => {
     console.log("Resending invitation:", id);
   };
 
@@ -89,18 +90,62 @@ const Invitations = () => {
         </TabsContent>
 
         <TabsContent value="manage" className="space-y-6">
-          <ManageInvitationsTab
-            invitations={invitations}
-            onRemoveInvitation={handleRemoveInvitation}
-            onResendInvitation={handleResendInvitation}
-            theme={theme}
-            themeClasses={themeClasses}
-            t={safeT}
-          />
+          {isLoading ? (
+            <div className="space-y-4">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <InvitationCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : error ? (
+            <QueryErrorBoundary>
+              <div
+                className={`min-h-screen ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}
+              >
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground text-lg">
+                      {t("invitations.error", {}, "Unable to load invitations data")}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </QueryErrorBoundary>
+          ) : (
+            <ManageInvitationsTab
+              invitations={invitations}
+              onRemoveInvitation={handleRemoveInvitation}
+              onResendInvitation={handleResendInvitation}
+              theme={theme}
+              themeClasses={themeClasses}
+              t={safeT}
+            />
+          )}
         </TabsContent>
 
         <TabsContent value="rsvp" className="space-y-6">
-          <RSVPTab invitations={invitations} themeClasses={themeClasses} t={safeT} />
+          {isLoading ? (
+            <div className="space-y-4">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <InvitationCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : error ? (
+            <QueryErrorBoundary>
+              <div
+                className={`min-h-screen ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}
+              >
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground text-lg">
+                      {t("invitations.error", {}, "Unable to load invitations data")}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </QueryErrorBoundary>
+          ) : (
+            <RSVPTab invitations={invitations} themeClasses={themeClasses} t={safeT} />
+          )}
         </TabsContent>
       </Tabs>
     </div>

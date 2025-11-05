@@ -17,7 +17,9 @@
       "support": "Kpọtụrụ Anyị"
     },
     "buttons": {
-      "signIn": "Banye"
+      "signIn": "Banye",
+      "signOut": "Pụọ",
+      "dashboard": "Dashboard"
     }
   },
   "contact": {
@@ -637,10 +639,12 @@
     "subtitle": "Banye na ForeverPages",
     "form": {
       "email": "Adreesị Ozi-e",
+      "emailOrPhone": "Ozi-e ma ọ bụ Nọmba Ekwentị",
       "password": "Okwuntughe"
     },
     "placeholders": {
       "email": "Tinye ozi-e gị",
+      "emailOrPhone": "Tinye ozi-e ma ọ bụ nọmba ekwentị gị",
       "password": "Tinye okwuntughe gị"
     },
     "buttons": {
@@ -753,6 +757,32 @@
       "expired": "Njikọ nkwenye agwụla",
       "invalid": "Njikọ nkwenye ezighi ezi",
       "network": "Njehie netwọk. Biko nwalee ọzọ."
+    }
+  },
+  "offline": {
+    "status": {
+      "online": "Nọ n'ịntanetị",
+      "offline": "Anọghị n'ịntanetị",
+      "syncing": "Na-emekọrịta..."
+    },
+    "pendingActions": "Ihe omume na-echere: {count}",
+    "syncProgress": {
+      "synchronizing": "Na-emekọrịta...",
+      "progress": "Ọganihu: {current}/{total}",
+      "title": "Ọganihu Nmekọrịta",
+      "complete": "Emechara"
+    },
+    "banner": {
+      "offlineMessage": "Ị nọ n'ịntanetị ugbu a.",
+      "pendingActions": "Ị nwere ihe omume {count} na-echere nke ga-emekọrịta mgbe ị laghachiri n'ịntanetị."
+    },
+    "lastSync": "Nmekọrịta ikpeazụ: {synced} emekọrịtara, {failed} dara",
+    "loading": {
+      "offline": "Anọghị n'ịntanetị",
+      "viewingCached": "Na-ele ihe onyonyo echekwara",
+      "actionsQueued": "{count} ihe omume nọ n'ahịrị",
+      "willSyncWhenOnline": "ga-emekọrịta mgbe ị nọ n'ịntanetị",
+      "savedLocally": "A ga-echekwa ya na mpaghara ma emekọrịta mgbe ị nọ n'ịntanetị"
     }
   }
 }

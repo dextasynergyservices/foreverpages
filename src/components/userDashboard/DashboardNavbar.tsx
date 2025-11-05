@@ -11,6 +11,7 @@ import {
   Settings,
   Users,
   BarChart3,
+  LogOut,
 } from "lucide-react";
 import { X } from "lucide-react";
 import { LanguageSwitcherCompact } from "@/components/LanguageSwitcher";
@@ -18,6 +19,8 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useTheme } from "@/hooks/useTheme";
 import { Button } from "../ui/button";
+import { useSession } from "next-auth/react";
+import { useLogout } from "@/hooks/useLogout";
 
 interface DashboardNavbarProps {
   isOpen: boolean;
@@ -27,6 +30,8 @@ interface DashboardNavbarProps {
 // Inner component that uses useSearchParams
 function DashboardNavbarContent({ isOpen, onClose }: DashboardNavbarProps) {
   const router = useRouter();
+  const { data: session } = useSession();
+  const { logout, isLoggingOut } = useLogout();
   const searchParams = useSearchParams();
   const activeSection = searchParams.get("section") || "analytics";
   const { t } = useTranslations();
@@ -152,8 +157,10 @@ function DashboardNavbarContent({ isOpen, onClose }: DashboardNavbarProps) {
                 <Users className="h-5 w-5 text-primary-foreground" />
               </div>
               <div>
-                <p className="font-medium">Sarah Johnson</p>
-                <p className="text-sm text-muted-foreground">Family Admin</p>
+                <p className="font-medium">{session?.user?.name || "User"}</p>
+                <p className="text-sm text-muted-foreground">
+                  {session?.user?.email || "user@email.com"}
+                </p>
               </div>
             </div>
           </div>
@@ -161,8 +168,15 @@ function DashboardNavbarContent({ isOpen, onClose }: DashboardNavbarProps) {
 
         {/* logout button */}
         <div className="p-4">
-          <Button variant="memorial-outline" size="sm" className="w-full">
-            Logout
+          <Button
+            variant="memorial-outline"
+            size="sm"
+            className="w-full text-red-600 hover:text-red-700"
+            onClick={logout}
+            disabled={isLoggingOut}
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            {isLoggingOut ? "Logging out..." : "Logout"}
           </Button>
         </div>
       </div>

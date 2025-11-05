@@ -8,7 +8,10 @@ import { MediaGrid } from "./MediaGrid";
 import { MediaLightbox } from "./MediaLightbox";
 import { UploadCard } from "./UploadCard";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { MediaCardSkeleton } from "@/components/ui/skeleton";
 import { UploadForm } from "./UploadForm";
+import { useGallery } from "@/hooks/useQueries";
+import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 
 interface MediaItem {
   id: number;
@@ -20,12 +23,22 @@ interface MediaItem {
 const Gallery = () => {
   const { t } = useTranslations();
   const { theme } = useTheme();
-  const [photos, setPhotos] = useState<MediaItem[]>([
-    { id: 1, url: "/memorial-background.jpg", title: "Family Gathering", type: "image" },
-    { id: 2, url: "/hero-memorial.jpg", title: "Wedding Day", type: "image" },
-  ]);
-
+  const { data: galleryData, isLoading, error } = useGallery();
+  const [photos, setPhotos] = useState<MediaItem[]>([]);
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
+
+  // Update photos when data is loaded
+  React.useEffect(() => {
+    if (galleryData?.data?.media) {
+      const transformedMedia = galleryData.data.media.map((item, index) => ({
+        id: index + 1, // Use index as number ID for UI purposes
+        url: item.url,
+        title: item.title,
+        type: item.type,
+      }));
+      setPhotos(transformedMedia);
+    }
+  }, [galleryData]);
 
   const handleDelete = (id: number) => {
     setPhotos(photos.filter((photo) => photo.id !== id));
@@ -44,20 +57,34 @@ const Gallery = () => {
   };
 
   return (
-    <>
+    <QueryErrorBoundary>
       <Dialog>
         <div
           className={`min-h-screen p-4 md:p-8 ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"} relative`}
         >
           <GalleryHeader theme={theme} t={safeT} externalDialog />
 
-          <MediaGrid
-            photos={photos}
-            onDelete={handleDelete}
-            onSelectMedia={setSelectedMedia}
-            themeClasses={themeClasses}
-            t={safeT}
-          />
+          {isLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <MediaCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : error ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground text-lg">
+                {safeT("gallery.error", {}, "Unable to load gallery")}
+              </p>
+            </div>
+          ) : (
+            <MediaGrid
+              photos={photos}
+              onDelete={handleDelete}
+              onSelectMedia={setSelectedMedia}
+              themeClasses={themeClasses}
+              t={safeT}
+            />
+          )}
 
           {/* Upload Card placed separately */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
@@ -85,7 +112,7 @@ const Gallery = () => {
         onClose={() => setSelectedMedia(null)}
         theme={theme}
       />
-    </>
+    </QueryErrorBoundary>
   );
 };
 

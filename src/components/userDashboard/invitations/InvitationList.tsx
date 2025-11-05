@@ -5,8 +5,8 @@ import { Invitation } from "./Invitations";
 
 interface InvitationListProps {
   invitations: Invitation[];
-  onRemoveInvitation: (id: number) => void;
-  onResendInvitation: (id: number) => void;
+  onRemoveInvitation: (id: string) => void;
+  onResendInvitation: (id: string) => void;
   theme: string;
   cardBorder: string;
   textMuted: string;

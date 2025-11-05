@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Heart, Mail, ArrowLeft, CheckCircle, XCircle } from "lucide-react";
+import { Heart, Mail, ArrowLeft } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Navbar } from "@/components/Navbar";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function EmailVerificationPage() {
   const { theme } = useTheme();
@@ -16,9 +17,6 @@ export default function EmailVerificationPage() {
   const [isResendDisabled, setIsResendDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [showError, setShowError] = useState(false);
-  const [error, setError] = useState("");
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -46,26 +44,19 @@ export default function EmailVerificationPage() {
 
       if (isSuccess) {
         setIsVerifying(false);
-        setShowToast(true);
+        toast.success(t("emailVerification.success.toast"));
 
-        // Show success toast for 2 seconds then redirect
+        // Redirect after showing success toast
         setTimeout(() => {
           router.push("/login");
         }, 2000);
       } else {
         setIsVerifying(false);
-        setError(t("emailVerification.error.invalid"));
-        setShowError(true);
+        toast.error(t("emailVerification.error.invalid"));
 
         // Clear the code for retry
         setCode(["", "", "", "", "", ""]);
         inputRefs.current[0]?.focus();
-
-        // Hide error after 3 seconds
-        setTimeout(() => {
-          setShowError(false);
-          setError("");
-        }, 3000);
       }
     }, 500);
   }, [router, t]);
@@ -81,16 +72,13 @@ export default function EmailVerificationPage() {
     if (isResendDisabled) return;
 
     setIsLoading(true);
-    // Clear any existing errors
-    setShowError(false);
-    setError("");
 
     // Simulate API call
     setTimeout(() => {
       setTimeLeft(90);
       setIsResendDisabled(true);
       setIsLoading(false);
-      console.log("Verification code resent");
+      toast.success("Verification code sent successfully");
 
       // Clear the current code
       setCode(["", "", "", "", "", ""]);
@@ -154,38 +142,6 @@ export default function EmailVerificationPage() {
       }`}
     >
       <Navbar />
-
-      {/* Success Toast */}
-      {showToast && (
-        <div
-          className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transform transition-all duration-300 ${
-            theme === "dark"
-              ? "bg-green-900/90 border-green-700 text-white"
-              : "bg-green-100 border-green-300 text-green-900"
-          }`}
-        >
-          <div className="flex items-center space-x-2">
-            <CheckCircle className="w-5 h-5" />
-            <span className="font-medium">{t("emailVerification.success.toast")}</span>
-          </div>
-        </div>
-      )}
-
-      {/* Error Toast */}
-      {showError && (
-        <div
-          className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transform transition-all duration-300 ${
-            theme === "dark"
-              ? "bg-red-900/90 border-red-700 text-white"
-              : "bg-red-100 border-red-300 text-red-900"
-          }`}
-        >
-          <div className="flex items-center space-x-2">
-            <XCircle className="w-5 h-5" />
-            <span className="font-medium">{error}</span>
-          </div>
-        </div>
-      )}
 
       <div className="w-full max-w-md">
         <div className="text-center mb-8">

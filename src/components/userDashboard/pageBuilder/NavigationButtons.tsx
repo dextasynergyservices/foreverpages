@@ -11,6 +11,7 @@ interface NavigationButtonsProps {
   onNextStep: () => void;
   onCreateMemorial: () => void;
   t: (key: string, params?: unknown, fallback?: string) => string;
+  isCreating?: boolean;
 }
 
 export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
@@ -21,6 +22,7 @@ export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
   onNextStep,
   onCreateMemorial,
   t,
+  isCreating = false,
 }) => {
   const { theme } = useTheme();
   const prevEnabled = currentStep > 0;
@@ -47,8 +49,10 @@ export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
           <ArrowRight className="h-4 w-4 ml-2" />
         </Button>
       ) : (
-        <Button variant="memorial" onClick={onCreateMemorial}>
-          {t("dashboard.pageBuilder.buttons.create")}
+        <Button variant="memorial" onClick={onCreateMemorial} disabled={isCreating}>
+          {isCreating
+            ? t("dashboard.pageBuilder.buttons.creating", {}, "Creating...")
+            : t("dashboard.pageBuilder.buttons.create")}
           <Heart className="h-4 w-4 ml-2" />
         </Button>
       )}
