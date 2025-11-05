@@ -10,10 +10,7 @@ import { Toaster } from "react-hot-toast";
 import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
 import { PushNotificationInitializer } from "@/components/PushNotificationInitializer";
 
-const baseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000";
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
 export const metadata: Metadata = {
   title: "ForeverPages - Create Beautiful Memorial Pages",
