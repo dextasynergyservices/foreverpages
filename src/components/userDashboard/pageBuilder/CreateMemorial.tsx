@@ -8,10 +8,13 @@ import { Header } from "./Header";
 import { ProgressSteps } from "./ProgressSteps";
 import { StepContent } from "./StepContent";
 import { NavigationButtons } from "./NavigationButtons";
+import { useOfflineMemorials } from "@/hooks/useOfflineMemorials";
+import { OfflineBanner, SyncProgress } from "@/components/ui/offline-indicator";
 
 const CreateMemorial = () => {
   const { t } = useTranslations();
   const { theme } = useTheme();
+  const { createMemorial: createOfflineMemorial, isLoading: isCreating } = useOfflineMemorials();
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedTemplate, setSelectedTemplate] = useState("");
   const router = useRouter();
@@ -71,8 +74,22 @@ const CreateMemorial = () => {
     }
   };
 
-  const createMemorial = () => {
-    router.push("/memorial/sample");
+  const createMemorial = async () => {
+    try {
+      // Create memorial data (this would come from form state in a real implementation)
+      const memorialData = {
+        title: `Memorial for ${selectedTemplate}`,
+        description: `A beautiful memorial created with the ${selectedTemplate} template`,
+        imageUrl: `/images/memorial-${selectedTemplate}.jpg`,
+        createdBy: "current-user-id", // This would come from auth context
+      };
+
+      const memorialId = await createOfflineMemorial(memorialData);
+      router.push(`/memorial/${memorialId}`);
+    } catch (error) {
+      console.error("Failed to create memorial:", error);
+      // In a real app, you'd show an error toast here
+    }
   };
 
   // Create a type-safe wrapper for the t function
@@ -86,10 +103,14 @@ const CreateMemorial = () => {
     >
       <Header />
 
+      {/* Offline indicators */}
+      <OfflineBanner />
+      <SyncProgress />
+
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Sidebar - vertical progress + tips */}
-          <aside className="lg:col-span-3">
+          {/* Sidebar - hidden on mobile, shown on large screens */}
+          <aside className="hidden lg:block lg:col-span-3">
             <div
               className={`sticky top-20 border rounded-lg p-4 ${theme === "dark" ? "border-white/10 bg-black" : "border-gray-200 bg-white"}`}
             >
@@ -117,6 +138,11 @@ const CreateMemorial = () => {
 
           {/* Main canvas */}
           <main className="lg:col-span-9">
+            {/* Mobile progress indicator */}
+            <div className="lg:hidden mb-6">
+              <ProgressSteps steps={steps} currentStep={currentStep} t={safeT} vertical={false} />
+            </div>
+
             <div
               className={`border rounded-lg p-4 md:p-6 shadow-sm ${theme === "dark" ? "border-white/10 bg-black" : "border-gray-200 bg-white"}`}
             >
@@ -137,6 +163,7 @@ const CreateMemorial = () => {
                   onNextStep={nextStep}
                   onCreateMemorial={createMemorial}
                   t={safeT}
+                  isCreating={isCreating}
                 />
               </div>
             </div>

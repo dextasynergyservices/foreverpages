@@ -1,78 +1,144 @@
 // app/register/page.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Heart, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Navbar } from "@/components/Navbar";
 import Link from "next/link";
+import { registerSchema, type RegisterInput } from "@/lib/validation";
+import ReCAPTCHA from "react-google-recaptcha";
+import toast from "react-hot-toast";
+import { LoadingSpinner, AuthFormSkeleton } from "@/components/ui/skeleton";
 
 export default function RegisterPage() {
   const { theme } = useTheme();
   const { t } = useTranslations();
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<RegisterInput>({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const [errors, setErrors] = useState<{
-    name?: string;
-    email?: string;
-    password?: string;
-    confirmPassword?: string;
-  }>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof RegisterInput | "recaptcha", string>>>(
+    {}
+  );
+  const [touched, setTouched] = useState<
+    Partial<Record<keyof RegisterInput | "recaptcha", boolean>>
+  >({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(true);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+
+  // Load form data from localStorage on component mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsPageLoading(false);
+    }, 1500); // Simulate loading time
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name as keyof typeof errors]) {
+    setFormData((prev) => {
+      const newData = { ...prev, [name]: value };
+      // Save to localStorage
+      localStorage.setItem("signupFormData", JSON.stringify(newData));
+      return newData;
+    });
+    if (errors[name as keyof RegisterInput]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
+  const handleBlur = (field: keyof RegisterInput) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    // Real-time validation on blur
+    const fieldResult = registerSchema.shape[field].safeParse(formData[field]);
+    if (!fieldResult.success) {
+      setErrors((prev) => ({
+        ...prev,
+        [field]: fieldResult.error.issues[0].message,
+      }));
+    } else {
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
+  const getFieldStatus = (field: keyof RegisterInput) => {
+    if (!touched[field]) return "";
+    if (errors[field]) return "error";
+    if (formData[field] && !errors[field]) return "success";
+    return "";
+  };
+
   const validateForm = () => {
-    const newErrors: {
-      name?: string;
-      email?: string;
-      password?: string;
-      confirmPassword?: string;
-    } = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = t("register.errors.nameRequired");
+    const result = registerSchema.safeParse(formData);
+    if (!result.success) {
+      const newErrors: Partial<Record<keyof RegisterInput | "recaptcha", string>> = {};
+      result.error.issues.forEach((error) => {
+        const field = error.path[0] as keyof RegisterInput;
+        newErrors[field] = error.message;
+      });
+      setErrors(newErrors);
+      // Show toast for the first validation error
+      const firstError = result.error.issues[0];
+      toast.error(firstError.message);
+      return false;
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = t("register.errors.emailRequired");
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = t("register.errors.invalidEmail");
+    if (!recaptchaToken) {
+      setErrors({ recaptcha: "Please complete the reCAPTCHA verification" });
+      toast.error("Please complete the reCAPTCHA verification");
+      return false;
     }
 
-    if (!formData.password) {
-      newErrors.password = t("register.errors.passwordRequired");
-    } else if (formData.password.length < 8) {
-      newErrors.password = t("register.errors.passwordLength");
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = t("register.errors.passwordsDontMatch");
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    setErrors({});
+    return true;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
-      // Add your registration API call here
-      console.log("Registration submitted:", formData);
-      // Example: await signUp(formData);
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          recaptchaToken,
+        }),
+      });
+
+      if (response.ok) {
+        toast.success("Account created successfully! Please log in.");
+        // Clear saved form data on successful registration
+        localStorage.removeItem("signupFormData");
+        // Registration successful, redirect to login
+        window.location.href = "/login";
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || "Registration failed");
+      }
+    } catch {
+      toast.error("An error occurred during registration");
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (isPageLoading) {
+    return <AuthFormSkeleton />;
+  }
 
   return (
     <div
@@ -121,8 +187,17 @@ export default function RegisterPage() {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black ${
-                    errors.name ? "border-red-500" : "border-gray-300"
+                  onBlur={() => handleBlur("name")}
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
+                    theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+                  } ${
+                    getFieldStatus("name") === "error"
+                      ? "border-red-500 bg-red-50"
+                      : getFieldStatus("name") === "success"
+                        ? "border-green-500 bg-green-50"
+                        : theme === "dark"
+                          ? "border-white/70 focus:ring-white"
+                          : "border-gray-300 focus:ring-black"
                   }`}
                   placeholder={t("register.placeholders.name")}
                 />
@@ -151,8 +226,17 @@ export default function RegisterPage() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-3 border rounded-lg  ${theme === "dark" ? "bg-black text-white border-white/30 focus:outline-none focus:ring-2 focus:ring-black" : "bg-white text-black border-black/30 focus:outline-none focus:ring-2 focus:ring-black"} ${
-                    errors.email ? "border-red-500" : "border-gray-300"
+                  onBlur={() => handleBlur("email")}
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
+                    theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+                  } ${
+                    getFieldStatus("email") === "error"
+                      ? "border-red-500 bg-red-50"
+                      : getFieldStatus("email") === "success"
+                        ? "border-green-500 bg-green-50"
+                        : theme === "dark"
+                          ? "border-white/70 focus:ring-white"
+                          : "border-gray-300 focus:ring-black"
                   }`}
                   placeholder={t("register.placeholders.email")}
                 />
@@ -177,8 +261,14 @@ export default function RegisterPage() {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className={`w-full pl-10 pr-12 py-3 border rounded-lg  ${theme === "dark" ? "bg-black text-white border-white/30 focus:outline-none focus:ring-2 focus:ring-black" : "bg-white text-black border-black/30 focus:outline-none focus:ring-2 focus:ring-black"} ${
-                    errors.password ? "border-red-500" : "border-gray-300"
+                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
+                    theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+                  } ${
+                    errors.password
+                      ? "border-red-500 bg-red-50"
+                      : theme === "dark"
+                        ? "border-white/70 focus:ring-white"
+                        : "border-gray-300 focus:ring-black"
                   }`}
                   placeholder={t("register.placeholders.password")}
                 />
@@ -210,8 +300,14 @@ export default function RegisterPage() {
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black ${theme === "dark" ? "bg-black text-white border-white/30" : "bg-white text-black border-black/30"} ${
-                    errors.confirmPassword ? "border-red-500" : "border-gray-300"
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
+                    theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+                  } ${
+                    errors.confirmPassword
+                      ? "border-red-500 bg-red-50"
+                      : theme === "dark"
+                        ? "border-white/70 focus:ring-white"
+                        : "border-gray-300 focus:ring-black"
                   }`}
                   placeholder={t("register.placeholders.confirmPassword")}
                 />
@@ -223,11 +319,30 @@ export default function RegisterPage() {
               )}
             </div>
 
+            <div className="flex justify-center">
+              <ReCAPTCHA
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+                onChange={setRecaptchaToken}
+                theme={theme === "dark" ? "dark" : "light"}
+              />
+            </div>
+            {errors.recaptcha && (
+              <p className="mt-1 text-sm text-red-500 text-center">{errors.recaptcha}</p>
+            )}
+
             <button
               onClick={handleSubmit}
-              className={`w-full ${theme === "dark" ? "bg-white text-black hover:bg-white/80" : "bg-black text-white hover:bg-black/80  "} py-3 rounded-lg font-medium  transition-all shadow-md hover:shadow-lg`}
+              disabled={isLoading}
+              className={`w-full ${theme === "dark" ? "bg-white text-black hover:bg-white/80" : "bg-black text-white hover:bg-black/80  "} py-3 rounded-lg font-medium  transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed`}
             >
-              {t("register.buttons.createAccount")}
+              {isLoading ? (
+                <div className="flex items-center justify-center space-x-2">
+                  <LoadingSpinner size="sm" />
+                  <span>Creating Account...</span>
+                </div>
+              ) : (
+                t("register.buttons.createAccount")
+              )}
             </button>
           </div>
 

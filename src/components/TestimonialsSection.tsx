@@ -242,9 +242,9 @@ const TestimonialsSectionContent: React.FC = () => {
           </button>
 
           {/* Carousel Slide */}
-          <div className="px-12">
+          <div className="px-8 sm:px-12">
             {" "}
-            {/* Padding for navigation buttons */}
+            {/* Padding for navigation buttons - reduced on mobile */}
             <Card className="hover:shadow-medium transition-all duration-300">
               <CardHeader>
                 <div className="flex items-center mb-4">

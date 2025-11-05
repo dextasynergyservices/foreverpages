@@ -355,7 +355,7 @@ export const FuneralPageSection: React.FC = () => {
             {/* View More Button */}
             <div className="text-center mb-12">
               <Link
-                href="/funeral-pages"
+                href="/memorial-pages"
                 className={cn(
                   "inline-flex items-center px-8 py-4 rounded-lg text-lg font-semibold shadow-lg hover:shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-105",
                   theme === "dark"

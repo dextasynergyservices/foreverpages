@@ -17,7 +17,9 @@
       "support": "Contact"
     },
     "buttons": {
-      "signIn": "Se Connecter"
+      "signIn": "Se Connecter",
+      "signOut": "Se déconnecter",
+      "dashboard": "Tableau de Bord"
     }
   },
   "contact": {
@@ -636,10 +638,12 @@
     "subtitle": "Connectez-vous à ForeverPages",
     "form": {
       "email": "Adresse Email",
+      "emailOrPhone": "Email ou Numéro de Téléphone",
       "password": "Mot de Passe"
     },
     "placeholders": {
       "email": "Entrez votre email",
+      "emailOrPhone": "Entrez votre email ou numéro de téléphone",
       "password": "Entrez votre mot de passe"
     },
     "buttons": {
@@ -752,6 +756,32 @@
       "expired": "Le lien de confirmation a expiré",
       "invalid": "Lien de confirmation invalide",
       "network": "Erreur réseau. Veuillez réessayer."
+    }
+  },
+  "offline": {
+    "status": {
+      "online": "En ligne",
+      "offline": "Hors ligne",
+      "syncing": "Synchronisation..."
+    },
+    "pendingActions": "Actions en attente: {count}",
+    "syncProgress": {
+      "synchronizing": "Synchronisation...",
+      "progress": "Progrès: {current}/{total}",
+      "title": "Progrès de Synchronisation",
+      "complete": "Terminé"
+    },
+    "banner": {
+      "offlineMessage": "Vous êtes actuellement hors ligne.",
+      "pendingActions": "Vous avez {count} action{{count !== 1 ? 's' : ''}} en attente qui se synchroniseront lorsque vous serez de nouveau en ligne."
+    },
+    "lastSync": "Dernière synchronisation: {synced} synchronisé{{synced !== 1 ? 's' : ''}}, {failed} échoué{{failed !== 1 ? 's' : ''}}",
+    "loading": {
+      "offline": "Hors ligne",
+      "viewingCached": "Affichage des images mises en cache",
+      "actionsQueued": "{count} action{{count !== 1 ? 's' : ''}} en file d'attente",
+      "willSyncWhenOnline": "se synchronisera en ligne",
+      "savedLocally": "Sera enregistré localement et synchronisé en ligne"
     }
   }
 }

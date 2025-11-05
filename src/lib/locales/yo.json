@@ -17,7 +17,9 @@
       "support": "Pe Wa"
     },
     "buttons": {
-      "signIn": "Wọlé"
+      "signIn": "Wọlé",
+      "signOut": "Jáde",
+      "dashboard": "Dashboard"
     }
   },
   "contact": {
@@ -409,10 +411,12 @@
     "subtitle": "Bọ̀wọ́ si ForeverPages",
     "form": {
       "email": "Adirẹsi Imẹ̀li",
+      "emailOrPhone": "Imẹ̀li tabi Nọ́mbà Fóònù",
       "password": "Ọrọ̀igbaniwọlé"
     },
     "placeholders": {
       "email": "Tẹ adirẹsi imẹ̀li rẹ sii",
+      "emailOrPhone": "Tẹ imẹ̀li tabi nọ́mbà fóònù rẹ sii",
       "password": "Tẹ ọrọ̀igbaniwọlé rẹ sii"
     },
     "buttons": {
@@ -525,6 +529,32 @@
       "expired": "Ìtọ́ka ìjẹrisi ti parí",
       "invalid": "Ìtọ́ka ìjẹrisi kò tọ́",
       "network": "Àṣìṣe nẹ́tíwọ́ọ̀kì. Jọwọ tún gbìyànjú."
+    }
+  },
+  "offline": {
+    "status": {
+      "online": "Lórí ìnternet",
+      "offline": "Kúrò lórí ìnternet",
+      "syncing": "Ń ṣiṣẹ́ pọ̀..."
+    },
+    "pendingActions": "Àwọn iṣẹ́ tí ń dúró: {count}",
+    "syncProgress": {
+      "synchronizing": "Ń ṣiṣẹ́ pọ̀...",
+      "progress": "Ìlọsíwájú: {current}/{total}",
+      "title": "Ìlọsíwájú Ìṣiṣẹ́pọ̀",
+      "complete": "Pari"
+    },
+    "banner": {
+      "offlineMessage": "O kúrò lórí ìnternet ní báyìí.",
+      "pendingActions": "O ní àwọn iṣẹ́ {count} tí ń dúró tí yóò ṣiṣẹ́ pọ̀ nígbà tí o bá padà sí ìnternet."
+    },
+    "lastSync": "Ìṣiṣẹ́pọ̀ tó kẹ́yìn: {synced} ti ṣiṣẹ́ pọ̀, {failed} kùnà",
+    "loading": {
+      "offline": "Kúrò lórí ìnternet",
+      "viewingCached": "Ń wo àwọn àwòrán tí a fi sínú cache",
+      "actionsQueued": "{count} iṣẹ́ nínú ìlà",
+      "willSyncWhenOnline": "yóò ṣiṣẹ́ pọ̀ nígbà tí o bá wà lórí ìnternet",
+      "savedLocally": "A ó fi pamọ́ ní àgbègbè yóò sì ṣiṣẹ́ pọ̀ nígbà tí o bá wà lórí ìnternet"
     }
   }
 }

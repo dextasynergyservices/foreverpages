@@ -9,9 +9,16 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { MessageSquare, Check, X, Clock, Heart, Flag } from "lucide-react";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useTheme } from "@/hooks/useTheme";
+import { TributeCardSkeleton } from "@/components/ui/skeleton";
+import { useTributes } from "@/hooks/useQueries";
+import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
+import { useOfflineTributes } from "@/hooks/useOfflineTributes";
+import { useOfflineStatus } from "@/contexts/OfflineContext";
+import { OfflineBanner, SyncProgress } from "@/components/ui/offline-indicator";
+import { Tribute as OfflineTribute } from "@/lib/offline/db-schema";
 
 interface Tribute {
-  id: number;
+  id: string;
   author: string;
   email: string;
   message: string;
@@ -22,44 +29,37 @@ interface Tribute {
 const Tributes = () => {
   const { t } = useTranslations();
   const { theme } = useTheme();
-  const [tributes, setTributes] = useState<Tribute[]>([
-    {
-      id: 1,
-      author: "Michael Chen",
-      email: "michael@email.com",
-      message:
-        "Sarah was an incredible person who touched so many lives. Her kindness and warmth will never be forgotten. She always had a smile and a helping hand for anyone in need.",
-      date: "2024-01-15",
-      status: "pending",
-    },
-    {
-      id: 2,
-      author: "Emma Rodriguez",
-      email: "emma@email.com",
-      message:
-        "I have so many wonderful memories of Sarah from our college days. She was the friend who would drop everything to help you move, study for exams, or just listen when you needed someone to talk to.",
-      date: "2024-01-14",
-      status: "approved",
-    },
-    {
-      id: 3,
-      author: "David Thompson",
-      email: "david@email.com",
-      message:
-        "Sarah was my mentor at work and became a dear friend. Her guidance helped shape my career, but more importantly, her example taught me how to be a better person.",
-      date: "2024-01-13",
-      status: "approved",
-    },
-    {
-      id: 4,
-      author: "Anonymous User",
-      email: "anonymous@temp.com",
-      message:
-        "This message contains inappropriate content that needs to be reviewed by the moderation team.",
-      date: "2024-01-12",
-      status: "flagged",
-    },
-  ]);
+  const { isOnline } = useOfflineStatus();
+  const { data: tributesData, isLoading, error } = useTributes();
+  const {
+    tributes: offlineTributes,
+    isLoading: offlineLoading,
+    updateTribute,
+  } = useOfflineTributes();
+  const [tributes, setTributes] = useState<Tribute[]>([]);
+
+  // Use offline data when offline, online data when available
+  const isCurrentlyLoading = isOnline ? isLoading : offlineLoading;
+
+  // Convert offline tribute format to local format
+  const convertOfflineTribute = (offlineTribute: OfflineTribute): Tribute => ({
+    id: offlineTribute.id,
+    author: offlineTribute.author.name || "Anonymous",
+    email: offlineTribute.author.email || "",
+    message: offlineTribute.message,
+    date: offlineTribute.createdAt.toISOString().split("T")[0], // Convert to date string
+    status: offlineTribute.status,
+  });
+
+  // Update local state when data loads
+  React.useEffect(() => {
+    if (isOnline && tributesData?.data?.tributes) {
+      setTributes(tributesData.data.tributes);
+    } else if (!isOnline && offlineTributes) {
+      const convertedTributes = offlineTributes.map(convertOfflineTribute);
+      setTributes(convertedTributes);
+    }
+  }, [tributesData, offlineTributes, isOnline]);
 
   const getStatusColor = (status: Tribute["status"]) => {
     switch (status) {
@@ -91,22 +91,44 @@ const Tributes = () => {
     }
   };
 
-  const approveTribute = (id: number) => {
-    setTributes(
-      tributes.map((tribute) => (tribute.id === id ? { ...tribute, status: "approved" } : tribute))
-    );
+  const approveTribute = async (id: string) => {
+    if (isOnline) {
+      // Online: Update local state optimistically
+      setTributes(
+        tributes.map((tribute) =>
+          tribute.id === id ? { ...tribute, status: "approved" } : tribute
+        )
+      );
+    } else {
+      // Offline: Use offline hook
+      await updateTribute(id, { status: "approved" });
+    }
   };
 
-  const rejectTribute = (id: number) => {
-    setTributes(
-      tributes.map((tribute) => (tribute.id === id ? { ...tribute, status: "rejected" } : tribute))
-    );
+  const rejectTribute = async (id: string) => {
+    if (isOnline) {
+      // Online: Update local state optimistically
+      setTributes(
+        tributes.map((tribute) =>
+          tribute.id === id ? { ...tribute, status: "rejected" } : tribute
+        )
+      );
+    } else {
+      // Offline: Use offline hook
+      await updateTribute(id, { status: "rejected" });
+    }
   };
 
-  const flagTribute = (id: number) => {
-    setTributes(
-      tributes.map((tribute) => (tribute.id === id ? { ...tribute, status: "flagged" } : tribute))
-    );
+  const flagTribute = async (id: string) => {
+    if (isOnline) {
+      // Online: Update local state optimistically
+      setTributes(
+        tributes.map((tribute) => (tribute.id === id ? { ...tribute, status: "flagged" } : tribute))
+      );
+    } else {
+      // Offline: Use offline hook
+      await updateTribute(id, { status: "flagged" });
+    }
   };
 
   const pendingCount = tributes.filter((t) => t.status === "pending").length;
@@ -125,6 +147,10 @@ const Tributes = () => {
     <div
       className={`min-h-screen p-4 md:p-8 ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}
     >
+      {/* Offline indicators */}
+      <OfflineBanner />
+      <SyncProgress />
+
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 md:mb-8">
         <div>
           <h1 className="text-2xl md:text-3xl font-serif font-bold">
@@ -186,211 +212,270 @@ const Tributes = () => {
         <div className="h-12 md:hidden" aria-hidden />
 
         <TabsContent value="pending" className="space-y-4">
-          {tributes
-            .filter((t) => t.status === "pending")
-            .map((tribute) => (
-              <Card key={tribute.id} className={`border ${cardBorder} ${cardBg}`}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <Avatar>
-                        <AvatarFallback
-                          className={theme === "dark" ? "bg-white/10" : "bg-gray-100"}
-                        >
-                          {tribute.author
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-semibold">{tribute.author}</h3>
-                          <Badge variant={getStatusColor(tribute.status)}>{tribute.status}</Badge>
+          {isCurrentlyLoading ? (
+            Array.from({ length: 3 }).map((_, i) => <TributeCardSkeleton key={i} />)
+          ) : error && isOnline ? (
+            <QueryErrorBoundary>
+              <div className="text-center py-12">
+                <p className="text-muted-foreground text-lg">
+                  {t("tributes.error", {}, "Unable to load tributes data")}
+                </p>
+              </div>
+            </QueryErrorBoundary>
+          ) : (
+            <>
+              {tributes
+                .filter((t) => t.status === "pending")
+                .map((tribute) => (
+                  <Card key={tribute.id} className={`border ${cardBorder} ${cardBg}`}>
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3">
+                          <Avatar>
+                            <AvatarFallback
+                              className={theme === "dark" ? "bg-white/10" : "bg-gray-100"}
+                            >
+                              {tribute.author
+                                .split(" ")
+                                .map((n) => n[0])
+                                .join("")}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h3 className="font-semibold">{tribute.author}</h3>
+                              <Badge variant={getStatusColor(tribute.status)}>
+                                {tribute.status}
+                              </Badge>
+                            </div>
+                            <p className={`text-sm ${textMuted}`}>
+                              {tribute.email} • {tribute.date}
+                            </p>
+                          </div>
                         </div>
-                        <p className={`text-sm ${textMuted}`}>
-                          {tribute.email} • {tribute.date}
-                        </p>
                       </div>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="leading-relaxed mb-4">{tribute.message}</p>
-                  <div className="flex gap-2 flex-wrap">
-                    <Button variant="memorial" size="sm" onClick={() => approveTribute(tribute.id)}>
-                      <Check className="h-4 w-4 mr-2" />
-                      {t("dashboard.tributes.actions.approve")}
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => rejectTribute(tribute.id)}
-                    >
-                      <X className="h-4 w-4 mr-2" />
-                      {t("dashboard.tributes.actions.reject")}
-                    </Button>
-                    <Button
-                      variant={theme === "dark" ? "memorial-ghost" : "outline"}
-                      size="sm"
-                      onClick={() => flagTribute(tribute.id)}
-                    >
-                      <Flag className="h-4 w-4 mr-2" />
-                      {t("dashboard.tributes.actions.flag")}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          {tributes.filter((t) => t.status === "pending").length === 0 && (
-            <Card className={`border ${cardBorder} ${cardBg}`}>
-              <CardContent className="p-8 text-center">
-                <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-60" />
-                <h3 className="text-lg font-semibold mb-2">
-                  {t("dashboard.tributes.empty.noPending")}
-                </h3>
-                <p className={textMuted}>{t("dashboard.tributes.empty.allReviewed")}</p>
-              </CardContent>
-            </Card>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="leading-relaxed mb-4">{tribute.message}</p>
+                      <div className="flex gap-2 flex-wrap">
+                        <Button
+                          variant="memorial"
+                          size="sm"
+                          onClick={() => approveTribute(tribute.id)}
+                        >
+                          <Check className="h-4 w-4 mr-2" />
+                          {t("dashboard.tributes.actions.approve")}
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => rejectTribute(tribute.id)}
+                        >
+                          <X className="h-4 w-4 mr-2" />
+                          {t("dashboard.tributes.actions.reject")}
+                        </Button>
+                        <Button
+                          variant={theme === "dark" ? "memorial-ghost" : "outline"}
+                          size="sm"
+                          onClick={() => flagTribute(tribute.id)}
+                        >
+                          <Flag className="h-4 w-4 mr-2" />
+                          {t("dashboard.tributes.actions.flag")}
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              {tributes.filter((t) => t.status === "pending").length === 0 && (
+                <Card className={`border ${cardBorder} ${cardBg}`}>
+                  <CardContent className="p-8 text-center">
+                    <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-60" />
+                    <h3 className="text-lg font-semibold mb-2">
+                      {t("dashboard.tributes.empty.noPending")}
+                    </h3>
+                    <p className={textMuted}>{t("dashboard.tributes.empty.allReviewed")}</p>
+                  </CardContent>
+                </Card>
+              )}
+            </>
           )}
         </TabsContent>
 
         <TabsContent value="approved" className="space-y-4">
-          {tributes
-            .filter((t) => t.status === "approved")
-            .map((tribute) => (
-              <Card key={tribute.id} className={`border ${cardBorder} ${cardBg}`}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <Avatar>
-                        <AvatarFallback
-                          className={theme === "dark" ? "bg-white/10" : "bg-gray-100"}
-                        >
-                          {tribute.author
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-semibold">{tribute.author}</h3>
-                          <Badge variant="default">
-                            <Heart className="h-3 w-3 mr-1" />
-                            {t("dashboard.tributes.live")}
-                          </Badge>
+          {isCurrentlyLoading ? (
+            Array.from({ length: 3 }).map((_, i) => <TributeCardSkeleton key={i} />)
+          ) : error && isOnline ? (
+            <QueryErrorBoundary>
+              <div className="text-center py-12">
+                <p className="text-muted-foreground text-lg">
+                  {t("tributes.error", {}, "Unable to load tributes data")}
+                </p>
+              </div>
+            </QueryErrorBoundary>
+          ) : (
+            tributes
+              .filter((t) => t.status === "approved")
+              .map((tribute) => (
+                <Card key={tribute.id} className={`border ${cardBorder} ${cardBg}`}>
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <Avatar>
+                          <AvatarFallback
+                            className={theme === "dark" ? "bg-white/10" : "bg-gray-100"}
+                          >
+                            {tribute.author
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-semibold">{tribute.author}</h3>
+                            <Badge variant="default">
+                              <Heart className="h-3 w-3 mr-1" />
+                              {t("dashboard.tributes.live")}
+                            </Badge>
+                          </div>
+                          <p className={`text-sm ${textMuted}`}>{tribute.date}</p>
                         </div>
-                        <p className={`text-sm ${textMuted}`}>{tribute.date}</p>
                       </div>
+                      <Button variant={theme === "dark" ? "memorial-ghost" : "outline"} size="sm">
+                        <X className="h-4 w-4" />
+                      </Button>
                     </div>
-                    <Button variant={theme === "dark" ? "memorial-ghost" : "outline"} size="sm">
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="leading-relaxed">{tribute.message}</p>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardHeader>
+                  <CardContent>
+                    <p className="leading-relaxed">{tribute.message}</p>
+                  </CardContent>
+                </Card>
+              ))
+          )}
         </TabsContent>
 
         <TabsContent value="flagged" className="space-y-4">
-          {tributes
-            .filter((t) => t.status === "flagged")
-            .map((tribute) => (
-              <Card key={tribute.id} className={`border ${cardBorder} ${cardBg}`}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <Avatar>
-                        <AvatarFallback className="bg-white/10">
-                          {tribute.author
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-semibold">{tribute.author}</h3>
-                          <Badge variant="destructive">
-                            <Flag className="h-3 w-3 mr-1" />
-                            {t("dashboard.tributes.tabs.flagged")}
-                          </Badge>
+          {isCurrentlyLoading ? (
+            Array.from({ length: 3 }).map((_, i) => <TributeCardSkeleton key={i} />)
+          ) : error && isOnline ? (
+            <QueryErrorBoundary>
+              <div className="text-center py-12">
+                <p className="text-muted-foreground text-lg">
+                  {t("tributes.error", {}, "Unable to load tributes data")}
+                </p>
+              </div>
+            </QueryErrorBoundary>
+          ) : (
+            tributes
+              .filter((t) => t.status === "flagged")
+              .map((tribute) => (
+                <Card key={tribute.id} className={`border ${cardBorder} ${cardBg}`}>
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <Avatar>
+                          <AvatarFallback className="bg-white/10">
+                            {tribute.author
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-semibold">{tribute.author}</h3>
+                            <Badge variant="destructive">
+                              <Flag className="h-3 w-3 mr-1" />
+                              {t("dashboard.tributes.tabs.flagged")}
+                            </Badge>
+                          </div>
+                          <p className={`text-sm ${textMuted}`}>
+                            {tribute.email} • {tribute.date}
+                          </p>
                         </div>
-                        <p className={`text-sm ${textMuted}`}>
-                          {tribute.email} • {tribute.date}
-                        </p>
                       </div>
                     </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="leading-relaxed mb-4">{tribute.message}</p>
-                  <div className="flex gap-2 flex-wrap">
-                    <Button variant="memorial" size="sm" onClick={() => approveTribute(tribute.id)}>
-                      <Check className="h-4 w-4 mr-2" />
-                      {t("dashboard.tributes.actions.approve")}
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => rejectTribute(tribute.id)}
-                    >
-                      <X className="h-4 w-4 mr-2" />
-                      {t("dashboard.tributes.actions.reject")}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardHeader>
+                  <CardContent>
+                    <p className="leading-relaxed mb-4">{tribute.message}</p>
+                    <div className="flex gap-2 flex-wrap">
+                      <Button
+                        variant="memorial"
+                        size="sm"
+                        onClick={() => approveTribute(tribute.id)}
+                      >
+                        <Check className="h-4 w-4 mr-2" />
+                        {t("dashboard.tributes.actions.approve")}
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => rejectTribute(tribute.id)}
+                      >
+                        <X className="h-4 w-4 mr-2" />
+                        {t("dashboard.tributes.actions.reject")}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+          )}
         </TabsContent>
 
         <TabsContent value="all" className="space-y-4">
-          {tributes.map((tribute) => {
-            const StatusIcon = getStatusIcon(tribute.status);
-            return (
-              <Card key={tribute.id} className={`border ${cardBorder} ${cardBg}`}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <Avatar>
-                        <AvatarFallback
-                          className={theme === "dark" ? "bg-white/10" : "bg-gray-100"}
-                        >
-                          {tribute.author
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-semibold">{tribute.author}</h3>
-                          <Badge variant={getStatusColor(tribute.status)}>
-                            <StatusIcon className="h-3 w-3 mr-1" />
-                            {tribute.status}
-                          </Badge>
+          {isCurrentlyLoading ? (
+            Array.from({ length: 3 }).map((_, i) => <TributeCardSkeleton key={i} />)
+          ) : error && isOnline ? (
+            <QueryErrorBoundary>
+              <div className="text-center py-12">
+                <p className="text-muted-foreground text-lg">
+                  {t("tributes.error", {}, "Unable to load tributes data")}
+                </p>
+              </div>
+            </QueryErrorBoundary>
+          ) : (
+            tributes.map((tribute) => {
+              const StatusIcon = getStatusIcon(tribute.status);
+              return (
+                <Card key={tribute.id} className={`border ${cardBorder} ${cardBg}`}>
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <Avatar>
+                          <AvatarFallback
+                            className={theme === "dark" ? "bg-white/10" : "bg-gray-100"}
+                          >
+                            {tribute.author
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-semibold">{tribute.author}</h3>
+                            <Badge variant={getStatusColor(tribute.status)}>
+                              <StatusIcon className="h-3 w-3 mr-1" />
+                              {tribute.status}
+                            </Badge>
+                          </div>
+                          <p className={`text-sm ${textMuted}`}>
+                            {tribute.email} • {tribute.date}
+                          </p>
                         </div>
-                        <p className={`text-sm ${textMuted}`}>
-                          {tribute.email} • {tribute.date}
-                        </p>
                       </div>
                     </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="leading-relaxed">{tribute.message}</p>
-                </CardContent>
-              </Card>
-            );
-          })}
+                  </CardHeader>
+                  <CardContent>
+                    <p className="leading-relaxed">{tribute.message}</p>
+                  </CardContent>
+                </Card>
+              );
+            })
+          )}
         </TabsContent>
       </Tabs>
     </div>
   );
 };
-
 export default Tributes;

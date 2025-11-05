@@ -1,9 +1,92 @@
 import type { NextConfig } from "next";
+import withPWA from "next-pwa";
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   // Enable experimental features for better performance
   experimental: {
     optimizePackageImports: ["gsap", "lucide-react"],
+  },
+
+  // Redirect HTTP to HTTPS in production
+  async redirects() {
+    return [
+      {
+        source: "/((?!api/).*)", // Redirect all non-API routes
+        has: [
+          {
+            type: "header",
+            key: "x-forwarded-proto",
+            value: "http",
+          },
+        ],
+        destination: "https://:host:port:path*",
+        permanent: true,
+      },
+    ];
+  },
+
+  // Security headers and CORS
+  async headers() {
+    return [
+      {
+        // Apply to all routes
+        source: "/(.*)",
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://www.recaptcha.net",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "font-src 'self' https://fonts.gstatic.com",
+              "img-src 'self' data: https: blob:",
+              "connect-src 'self' https://www.google.com https://www.gstatic.com https://www.recaptcha.net",
+              "frame-src https://www.google.com https://www.recaptcha.net",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+            ].join("; "),
+          },
+        ],
+      },
+      {
+        // CORS headers for API routes
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "Access-Control-Allow-Origin",
+            value:
+              process.env.NODE_ENV === "production"
+                ? process.env.ALLOWED_ORIGINS || "https://yourdomain.com"
+                : "*",
+          },
+          {
+            key: "Access-Control-Allow-Methods",
+            value: "GET, POST, PUT, DELETE, OPTIONS",
+          },
+          {
+            key: "Access-Control-Allow-Headers",
+            value: "Content-Type, Authorization",
+          },
+          {
+            key: "Access-Control-Max-Age",
+            value: "86400", // 24 hours
+          },
+        ],
+      },
+    ];
   },
 
   // Optimize images
@@ -45,11 +128,18 @@ const nextConfig: NextConfig = {
         },
       };
     }
+
     return config;
   },
 
   // Enable static optimization
   output: "standalone",
-};
+} satisfies NextConfig;
 
-export default nextConfig;
+export default withPWA({
+  dest: "public",
+  register: false, // Disable auto-registration since we handle it manually
+  skipWaiting: false, // We'll handle this in our custom SW
+  disable: process.env.NODE_ENV === "development",
+  runtimeCaching: [], // Disable runtime caching since we handle it in custom SW
+})(nextConfig as unknown as Parameters<typeof withPWA>[0]);

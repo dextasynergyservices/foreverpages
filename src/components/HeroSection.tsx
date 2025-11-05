@@ -80,7 +80,7 @@ export const HeroSection = () => {
   };
 
   const handleViewSample = () => {
-    router.push("/funeral-pages");
+    router.push("/memorial-pages");
   };
 
   return (

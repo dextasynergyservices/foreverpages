@@ -17,7 +17,9 @@
       "support": "Tuntube Mu"
     },
     "buttons": {
-      "signIn": "Shiga"
+      "signIn": "Shiga",
+      "signOut": "Fita",
+      "dashboard": "Dashboard"
     }
   },
   "contact": {
@@ -421,10 +423,12 @@
     "subtitle": "Shiga ForeverPages",
     "form": {
       "email": "Adireshin Imel",
+      "emailOrPhone": "Imel ko Lambar Tarho",
       "password": "Kalmar Sirri"
     },
     "placeholders": {
       "email": "Shigar da imel ɗin ku",
+      "emailOrPhone": "Shigar da imel ko lambar tarho",
       "password": "Shigar da kalmar sirrinka"
     },
     "buttons": {
@@ -537,6 +541,32 @@
       "expired": "Hanyan tabbatarwa ta ƙare",
       "invalid": "Hanyan tabbatarwa ba ta daidai ba",
       "network": "Kuskuren sadarwa. Da fatan za a sake gwadawa."
+    }
+  },
+  "offline": {
+    "status": {
+      "online": "Kan layi",
+      "offline": "Ba a kan layi ba",
+      "syncing": "Ana aiki tare..."
+    },
+    "pendingActions": "Ayyuka masu jiran aiki: {count}",
+    "syncProgress": {
+      "synchronizing": "Ana aiki tare...",
+      "progress": "Ci gaba: {current}/{total}",
+      "title": "Ci gaban Aiki Tare",
+      "complete": "An kammala"
+    },
+    "banner": {
+      "offlineMessage": "A halin yanzu ba kana kan layi ba.",
+      "pendingActions": "Kana da ayyuka {count} masu jiran aiki waɗanda za su aiki tare lokacin da ka sake komawa kan layi."
+    },
+    "lastSync": "Aiki tare na ƙarshe: {synced} an aiki tare, {failed} ya kasa",
+    "loading": {
+      "offline": "Ba a kan layi ba",
+      "viewingCached": "Ana kallon hotuna da aka ajiye",
+      "actionsQueued": "{count} ayyuka a jerin gwano",
+      "willSyncWhenOnline": "zai aiki tare lokacin da aka kan layi",
+      "savedLocally": "Za a ajiye a gida kuma a aiki tare lokacin da aka kan layi"
     }
   }
 }

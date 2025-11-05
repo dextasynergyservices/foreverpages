@@ -19,10 +19,15 @@ import { Separator } from "@radix-ui/react-select";
 import { User, Bell, Shield, Globe, Trash2, Download, LogOut } from "lucide-react";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useTheme } from "@/hooks/useTheme";
+import { useUser } from "@/hooks/useQueries";
+import { useLogout } from "@/hooks/useLogout";
+import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Settings = () => {
   const { t } = useTranslations();
   const { theme } = useTheme();
+  const { data: userData, isLoading, error } = useUser();
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [publicMemorial, setPublicMemorial] = useState(true);
   const [allowTributes, setAllowTributes] = useState(true);
@@ -60,9 +65,7 @@ const Settings = () => {
     console.log("Deleting memorial");
   };
 
-  const handleSignOut = () => {
-    console.log("Signing out");
-  };
+  const { logout: handleSignOut, isLoggingOut } = useLogout();
 
   const handleSendAdminInvitations = () => {
     console.log("Sending admin invitations");
@@ -79,6 +82,49 @@ const Settings = () => {
   const dangerBg = theme === "dark" ? "bg-red-900/20" : "bg-red-50";
   const dangerBorder = theme === "dark" ? "border-red-600/40" : "border-red-200";
   const dangerTitle = theme === "dark" ? "text-red-300" : "text-red-700";
+
+  if (isLoading) {
+    return (
+      <div
+        className={`min-h-screen p-4 md:p-8 ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}
+      >
+        <div className="mb-6 md:mb-8">
+          <Skeleton className="h-8 w-64 mb-2" />
+          <Skeleton className="h-4 w-96" />
+        </div>
+        <div className="w-full lg:max-w-4xl xl:max-w-5xl mx-auto">
+          <Skeleton className="h-12 w-full mb-6" />
+          <Skeleton className="h-96 w-full" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !userData?.data?.user) {
+    return (
+      <QueryErrorBoundary>
+        <div
+          className={`min-h-screen p-4 md:p-8 ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}
+        >
+          <div className="mb-6 md:mb-8">
+            <h1 className="text-2xl md:text-3xl font-serif font-bold">
+              {t("dashboard.settings.title")}
+            </h1>
+            <p className={`mt-2 ${textMuted}`}>{t("dashboard.settings.subtitle")}</p>
+          </div>
+          <div className="w-full lg:max-w-4xl xl:max-w-5xl mx-auto">
+            <div className="text-center py-12">
+              <p className="text-muted-foreground text-lg">
+                {t("settings.error", {}, "Unable to load settings")}
+              </p>
+            </div>
+          </div>
+        </div>
+      </QueryErrorBoundary>
+    );
+  }
+
+  const user = userData.data.user;
 
   return (
     <div
@@ -142,16 +188,19 @@ const Settings = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="first-name">{t("dashboard.settings.profile.firstName")}</Label>
-                    <Input id="first-name" defaultValue="Sarah" />
+                    <Input id="first-name" defaultValue={user.name?.split(" ")[0] || ""} />
                   </div>
                   <div>
                     <Label htmlFor="last-name">{t("dashboard.settings.profile.lastName")}</Label>
-                    <Input id="last-name" defaultValue="Johnson" />
+                    <Input
+                      id="last-name"
+                      defaultValue={user.name?.split(" ").slice(1).join(" ") || ""}
+                    />
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="email">{t("dashboard.settings.profile.email")}</Label>
-                  <Input id="email" type="email" defaultValue="sarah.johnson@email.com" />
+                  <Input id="email" type="email" defaultValue={user.email || ""} />
                 </div>
                 <div>
                   <Label htmlFor="phone">{t("dashboard.settings.profile.phone")}</Label>
@@ -579,9 +628,12 @@ const Settings = () => {
                       variant={theme === "dark" ? "memorial-ghost" : "outline"}
                       className={theme === "dark" ? "hover:bg-white/10" : "hover:bg-gray-100"}
                       onClick={handleSignOut}
+                      disabled={isLoggingOut}
                     >
                       <LogOut className="h-4 w-4 mr-2" />
-                      {t("dashboard.settings.advanced.account.signOut")}
+                      {isLoggingOut
+                        ? "Signing out..."
+                        : t("dashboard.settings.advanced.account.signOut")}
                     </Button>
                   </div>
                 </div>

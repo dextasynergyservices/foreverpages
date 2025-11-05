@@ -17,7 +17,9 @@
       "support": "Contact"
     },
     "buttons": {
-      "signIn": "Sign In"
+      "signIn": "Sign In",
+      "signOut": "Log Out",
+      "dashboard": "Dashboard"
     }
   },
   "contact": {
@@ -636,10 +638,12 @@
     "subtitle": "Login to ForeverPages",
     "form": {
       "email": "Email Address",
+      "emailOrPhone": "Email or Phone Number",
       "password": "Password"
     },
     "placeholders": {
       "email": "Enter your email",
+      "emailOrPhone": "Enter your email or phone number",
       "password": "Enter your password"
     },
     "buttons": {
@@ -752,6 +756,32 @@
       "expired": "Confirmation link has expired",
       "invalid": "Invalid confirmation link",
       "network": "Network error. Please try again."
+    }
+  },
+  "offline": {
+    "status": {
+      "online": "Online",
+      "offline": "Offline",
+      "syncing": "Syncing..."
+    },
+    "pendingActions": "Pending actions: {count}",
+    "syncProgress": {
+      "synchronizing": "Synchronizing...",
+      "progress": "Progress: {current}/{total}",
+      "title": "Sync Progress",
+      "complete": "Complete"
+    },
+    "banner": {
+      "offlineMessage": "You're currently offline.",
+      "pendingActions": "You have {count} pending action{{count !== 1 ? 's' : ''}} that will sync when you're back online."
+    },
+    "lastSync": "Last sync: {synced} synced, {failed} failed",
+    "loading": {
+      "offline": "Offline",
+      "viewingCached": "Viewing cached images",
+      "actionsQueued": "{count} action{{count !== 1 ? 's' : ''}} queued",
+      "willSyncWhenOnline": "will sync when online",
+      "savedLocally": "Will be saved locally and synced when online"
     }
   }
 }
