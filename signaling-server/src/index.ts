@@ -1,11 +1,11 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import http from "http";
 import { Server as IOServer } from "socket.io";
 import cors from "cors";
 import dotenv from "dotenv";
 import { verifyToken } from "./jwt";
 import { createAdapter } from "@socket.io/redis-adapter";
-import Redis from "ioredis";
+import { createClient } from "redis";
 
 dotenv.config();
 
@@ -15,8 +15,8 @@ const JWT_SECRET = process.env.JWT_SECRET || "";
 
 const app = express();
 app.use(cors());
-app.use(express.json()); // Add body parser middleware
-app.get("/api/health", (_req, res) => {
+app.use(express.json());
+app.get("/api/health", (_req: Request, res: Response) => {
   res.json({ status: "ok", ts: Date.now() });
 });
 
@@ -33,11 +33,10 @@ const io = new IOServer(server, {
 if (REDIS_URL) {
   (async () => {
     try {
-      const pubClient = new Redis(REDIS_URL);
+      const pubClient = createClient({ url: REDIS_URL });
       const subClient = pubClient.duplicate();
 
-      // Wait for clients to connect
-      await Promise.all([pubClient.ping(), subClient.ping()]);
+      await Promise.all([pubClient.connect(), subClient.connect()]);
 
       io.adapter(createAdapter(pubClient, subClient));
       console.log("Redis adapter enabled");
