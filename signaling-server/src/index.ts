@@ -15,7 +15,9 @@ const JWT_SECRET = process.env.JWT_SECRET || "";
 
 const app = express();
 app.use(cors());
-app.get("/api/health", (_req, res) => res.json({ status: "ok", ts: Date.now() }));
+app.get("/api/health", (_req: express.Request, res: express.Response) =>
+  res.json({ status: "ok", ts: Date.now() })
+);
 
 const server = http.createServer(app);
 

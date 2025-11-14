@@ -26,7 +26,7 @@ export interface Invitation {
   email: string;
   name: string;
   phone?: string;
-  status: "pending" | "accepted" | "declined" | "expired" | "revoked";
+  status: "pending" | "accepted" | "declined" | "expired" | "revoked" | "sent" | "delivered";
   rsvp: "yes" | "no" | "maybe" | null;
   rsvpStatus?: "ATTENDING" | "NOT_ATTENDING" | "MAYBE" | null;
   rsvpMessage?: string | null;
