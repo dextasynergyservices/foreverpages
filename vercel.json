@@ -5,8 +5,7 @@
   "crons": [
     {
       "path": "/api/cron/check-subscriptions",
-      "schedule": "0 9 * * *",
-      "comment": "Check expiring subscriptions and send reminders - CRITICAL for revenue"
+      "schedule": "0 9 * * *"
     }
   ]
 }
