@@ -15,9 +15,10 @@ const JWT_SECRET = process.env.JWT_SECRET || "";
 
 const app = express();
 app.use(cors());
-app.get("/api/health", (_req: express.Request, res: express.Response) =>
-  res.json({ status: "ok", ts: Date.now() })
-);
+app.use(express.json()); // Add body parser middleware
+app.get("/api/health", (_req, res) => {
+  res.json({ status: "ok", ts: Date.now() });
+});
 
 const server = http.createServer(app);
 
@@ -30,14 +31,20 @@ const io = new IOServer(server, {
 
 // Optional Redis adapter
 if (REDIS_URL) {
-  try {
-    const pubClient = new Redis(REDIS_URL);
-    const subClient = pubClient.duplicate();
-    io.adapter(createAdapter(pubClient, subClient));
-    console.log("Redis adapter enabled");
-  } catch (err) {
-    console.warn("Failed to initialize Redis adapter:", err);
-  }
+  (async () => {
+    try {
+      const pubClient = new Redis(REDIS_URL);
+      const subClient = pubClient.duplicate();
+
+      // Wait for clients to connect
+      await Promise.all([pubClient.ping(), subClient.ping()]);
+
+      io.adapter(createAdapter(pubClient, subClient));
+      console.log("Redis adapter enabled");
+    } catch (err) {
+      console.warn("Failed to initialize Redis adapter:", err);
+    }
+  })();
 }
 
 // Simple auth middleware for socket.io
