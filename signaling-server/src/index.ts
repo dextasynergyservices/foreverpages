@@ -1,11 +1,11 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import http from "http";
 import { Server as IOServer } from "socket.io";
 import cors from "cors";
 import dotenv from "dotenv";
 import { verifyToken } from "./jwt";
 import { createAdapter } from "@socket.io/redis-adapter";
-import { createClient, RedisClientType } from "redis";
+import { createClient } from "redis";
 
 dotenv.config();
 
@@ -17,8 +17,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/api/health", (_req: Request, res: Response) => {
-  return res.json({ status: "ok", ts: Date.now() });
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ status: "ok", ts: Date.now() });
 });
 
 const server = http.createServer(app);
@@ -62,18 +62,12 @@ io.on("connection", (socket) => {
 async function startServer() {
   if (REDIS_URL) {
     try {
-      const pubClient: RedisClientType = createClient({ url: REDIS_URL });
-      const subClient: RedisClientType = pubClient.duplicate();
+      const pubClient = createClient({ url: REDIS_URL });
+      const subClient = pubClient.duplicate();
 
       await Promise.all([pubClient.connect(), subClient.connect()]);
 
-      // Cast to the parameter types expected by createAdapter to avoid using 'any'
-      io.adapter(
-        createAdapter(
-          pubClient as unknown as Parameters<typeof createAdapter>[0],
-          subClient as unknown as Parameters<typeof createAdapter>[1]
-        )
-      );
+      io.adapter(createAdapter(pubClient, subClient));
       console.log("Redis adapter enabled");
     } catch (err) {
       console.warn("Failed to initialize Redis adapter:", err);
