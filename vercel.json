@@ -7,11 +7,6 @@
       "path": "/api/cron/check-subscriptions",
       "schedule": "0 9 * * *",
       "comment": "Check expiring subscriptions and send reminders - CRITICAL for revenue"
-    },
-    {
-      "path": "/api/cron/invitations",
-      "schedule": "0 * * * *",
-      "comment": "Process scheduled invitations and send reminders - runs hourly"
     }
   ]
 }
