@@ -11,16 +11,27 @@ import { Navbar } from "@/components/Navbar";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { LoadingSpinner, AuthFormSkeleton } from "@/components/ui/skeleton";
+import TwoFactorVerification from "./TwoFactorVerification";
+import { useSearchParams } from "next/navigation";
 
 interface RateLimitInfo {
   lockoutUntil: number;
   lockoutDuration: string;
 }
 
+interface TwoFactorData {
+  userId: string;
+  email: string;
+  method: "EMAIL" | "AUTHENTICATOR";
+}
+
 export default function LoginPage() {
   const { theme } = useTheme();
   const { t } = useTranslations();
+  const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
+  const [show2FA, setShow2FA] = useState(false);
+  const [twoFactorData, setTwoFactorData] = useState<TwoFactorData | null>(null);
   const [formData, setFormData] = useState<LoginInput>({
     identifier: "",
     password: "",
@@ -30,6 +41,7 @@ export default function LoginPage() {
     {}
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [rateLimitInfo, setRateLimitInfo] = useState<RateLimitInfo | null>(null);
@@ -148,6 +160,21 @@ export default function LoginPage() {
     return "";
   };
 
+  const handleGoogleLogin = async () => {
+    setIsGoogleLoading(true);
+    try {
+      // Preserve any query parameters (like payment ID) in callback
+      const paymentId = searchParams?.get("payment");
+      const callbackUrl = paymentId ? `/user-dashboard?payment=${paymentId}` : "/user-dashboard";
+
+      await signIn("google", { callbackUrl });
+    } catch (error) {
+      console.error("Google login error:", error);
+      toast.error("Failed to login with Google");
+      setIsGoogleLoading(false);
+    }
+  };
+
   const validateForm = () => {
     const result = loginSchema.safeParse(formData);
     if (!result.success) {
@@ -180,6 +207,37 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
+      // First, check if user has 2FA enabled
+      const check2FAResponse = await fetch("/api/auth/check-2fa", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          identifier: formData.identifier,
+          password: formData.password,
+        }),
+      });
+
+      if (!check2FAResponse.ok) {
+        toast.error("Invalid email/phone or password");
+        setIsLoading(false);
+        return;
+      }
+
+      const check2FAData = await check2FAResponse.json();
+
+      // If 2FA is enabled, show 2FA verification screen
+      if (check2FAData.twoFactorEnabled) {
+        setTwoFactorData({
+          userId: check2FAData.userId,
+          email: check2FAData.email,
+          method: check2FAData.twoFactorMethod,
+        });
+        setShow2FA(true);
+        setIsLoading(false);
+        return;
+      }
+
+      // No 2FA, proceed with normal login
       const result = await signIn("credentials", {
         identifier: formData.identifier,
         password: formData.password,
@@ -225,9 +283,23 @@ export default function LoginPage() {
         setRateLimitInfo(null);
         setRemainingAttempts(null);
 
-        // Wait a bit for session to be established, then redirect
-        setTimeout(() => {
-          window.location.href = "/user-dashboard";
+        // Wait a bit for session to be established, then fetch user role and redirect
+        setTimeout(async () => {
+          try {
+            const response = await fetch("/api/auth/session");
+            const session = await response.json();
+
+            // Redirect based on user role
+            if (session?.user?.role === "ADMIN" || session?.user?.role === "SUPER_ADMIN") {
+              window.location.href = "/admin";
+            } else {
+              window.location.href = "/user-dashboard";
+            }
+          } catch (error) {
+            console.error("Error fetching session:", error);
+            // Fallback to user dashboard
+            window.location.href = "/user-dashboard";
+          }
         }, 1000);
       } else {
         toast.error("Login failed - please try again");
@@ -243,6 +315,17 @@ export default function LoginPage() {
     <>
       {isPageLoading ? (
         <AuthFormSkeleton />
+      ) : show2FA && twoFactorData ? (
+        <TwoFactorVerification
+          userId={twoFactorData.userId}
+          email={twoFactorData.email}
+          method={twoFactorData.method}
+          onBack={() => {
+            setShow2FA(false);
+            setTwoFactorData(null);
+            setIsLoading(false);
+          }}
+        />
       ) : (
         <div
           className={`min-h-screen flex items-center justify-center p-4 ${
@@ -250,7 +333,7 @@ export default function LoginPage() {
           }`}
         >
           <Navbar />
-          <div className="w-full max-w-md">
+          <div className="w-full max-w-md mt-[90px]">
             <div className={`text-center mb-8`}>
               <Link href="/" className="inline-block">
                 <div
@@ -358,12 +441,12 @@ export default function LoginPage() {
 
                 <div className="flex items-center justify-between text-sm">
                   <div></div>
-                  <a
+                  <Link
                     href="/forgot-password"
                     className={`font-medium underline ${theme === "dark" ? "text-white/70 hover:text-white" : "text-black/70 hover:text-black"}`}
                   >
                     {t("login.forgotPassword")}
-                  </a>
+                  </Link>
                 </div>
 
                 <div className="flex justify-center">
@@ -418,18 +501,75 @@ export default function LoginPage() {
                     t("login.buttons.login")
                   )}
                 </button>
+
+                {/* OR Divider */}
+                <div className="relative">
+                  <div className={`absolute inset-0 flex items-center`}>
+                    <div
+                      className={`w-full border-t ${theme === "dark" ? "border-white/20" : "border-gray-300"}`}
+                    ></div>
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span
+                      className={`px-2 ${theme === "dark" ? "bg-black text-white/70" : "bg-white text-gray-500"}`}
+                    >
+                      {t("login.oauth.divider")}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Google OAuth Button */}
+                <button
+                  type="button"
+                  onClick={handleGoogleLogin}
+                  disabled={isGoogleLoading || rateLimitInfo !== null}
+                  className={`w-full flex items-center justify-center gap-3 py-3 px-4 border-2 rounded-lg font-medium transition-all ${
+                    theme === "dark"
+                      ? "border-white/20 hover:border-white/40 hover:bg-white/5"
+                      : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
+                  } disabled:opacity-50 disabled:cursor-not-allowed`}
+                >
+                  {isGoogleLoading ? (
+                    <>
+                      <LoadingSpinner size="sm" />
+                      <span>{t("login.buttons.signingInWithGoogle")}</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-5 h-5" viewBox="0 0 24 24">
+                        <path
+                          fill="#4285F4"
+                          d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                        />
+                        <path
+                          fill="#34A853"
+                          d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                        />
+                        <path
+                          fill="#FBBC05"
+                          d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                        />
+                        <path
+                          fill="#EA4335"
+                          d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                        />
+                      </svg>
+                      <span>{t("login.buttons.signInWithGoogle")}</span>
+                    </>
+                  )}
+                </button>
               </div>
 
               <div
                 className={`mt-6 text-center text-sm text-gray-600 ${theme === "dark" ? "text-white/70 " : "text-black/70"}`}
               >
                 {t("login.noAccount")}{" "}
-                <a
+                <Link
                   href="/packages"
                   className={` font-medium underline ${theme === "dark" ? "text-white hover:text-white/70 " : "text-black hover:text-black/70"}`}
                 >
                   {t("login.buttons.registerHere")}
-                </a>
+                </Link>
               </div>
             </div>
 

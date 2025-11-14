@@ -66,32 +66,50 @@ export const MediaLightbox: React.FC<MediaLightboxProps> = ({
           <DialogTitle className="text-xl font-semibold">{selectedMedia.title}</DialogTitle>
         </DialogHeader>
         <div className="aspect-video relative flex items-center justify-center z-50">
-          {/* Image without overlay elements on top */}
-          <Image
-            src={selectedMedia.url}
-            alt={selectedMedia.title}
-            className="w-full h-full object-contain"
-            width={800}
-            height={600}
-            priority
-          />
+          {/* Render video or image based on type */}
+          {selectedMedia.type === "video" ? (
+            <video
+              key={selectedMedia.url}
+              src={selectedMedia.url}
+              controls
+              autoPlay
+              className="w-full h-full object-contain"
+              controlsList="nodownload"
+              preload="auto"
+            >
+              Your browser does not support the video tag.
+            </video>
+          ) : (
+            <Image
+              src={selectedMedia.url}
+              alt={selectedMedia.title}
+              className="w-full h-full object-contain"
+              width={800}
+              height={600}
+              priority
+            />
+          )}
 
           {/* Previous / Next arrows */}
-          <button
-            aria-label="Previous"
-            onClick={goPrev}
-            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-2 hover:bg-black/60 focus:outline-none"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
+          {hasPhotos && (
+            <>
+              <button
+                aria-label="Previous"
+                onClick={goPrev}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-2 hover:bg-black/60 focus:outline-none z-10"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
 
-          <button
-            aria-label="Next"
-            onClick={goNext}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-2 hover:bg-black/60 focus:outline-none"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
+              <button
+                aria-label="Next"
+                onClick={goNext}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-2 hover:bg-black/60 focus:outline-none z-10"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </>
+          )}
         </div>
       </DialogContent>
     </Dialog>

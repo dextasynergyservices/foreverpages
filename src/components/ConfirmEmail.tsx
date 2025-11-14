@@ -1,50 +1,84 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CheckCircle, XCircle } from "lucide-react";
+
+type VerificationState = "verifying" | "success" | "error" | "invalid";
 
 export default function ConfirmEmailPage() {
   const { theme } = useTheme();
   const { t } = useTranslations();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [progress, setProgress] = useState(0);
-  const [showSuccessToast, setShowSuccessToast] = useState(false);
-  const [showErrorToast] = useState(false);
-  const [errorMessage] = useState("");
-
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [state, setState] = useState<VerificationState>("verifying");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [countdown, setCountdown] = useState(3);
+  const verificationAttemptedRef = React.useRef(false); // Prevent duplicate verification
 
   useEffect(() => {
-    // Simulate a realistic verification process (around 15 seconds total)
-    intervalRef.current = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          if (intervalRef.current) clearInterval(intervalRef.current);
+    const token = searchParams.get("token");
 
-          // Show success toast
-          setShowSuccessToast(true);
+    // If no token in URL, show error
+    if (!token) {
+      setState("invalid");
+      setErrorMessage("No verification token provided. Please use the link from your email.");
+      return;
+    }
 
-          // Redirect after 3 seconds (shorter and smoother UX)
-          setTimeout(() => {
-            router.push("/login");
-          }, 3000);
+    // Prevent duplicate verification attempts
+    if (verificationAttemptedRef.current) {
+      return;
+    }
 
-          return 100;
-        }
-        return prev + 1; // slower progress = smoother loading
+    verificationAttemptedRef.current = true;
+
+    // Verify the token
+    verifyToken(token);
+  }, [searchParams]);
+
+  // Countdown for redirect after success
+  useEffect(() => {
+    if (state === "success" && countdown > 0) {
+      const timer = setTimeout(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+
+    if (state === "success" && countdown === 0) {
+      router.push("/login");
+    }
+  }, [state, countdown, router]);
+
+  const verifyToken = async (token: string) => {
+    try {
+      setState("verifying");
+
+      const response = await fetch(`/api/auth/verify-email-token?token=${token}`, {
+        method: "GET",
       });
-    }, 150); // 100% / (150ms * 100) ≈ 15s total duration
 
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [router]);
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setState("success");
+      } else {
+        setState("error");
+        setErrorMessage(data.error || "Verification failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Verification error:", error);
+      setState("error");
+      setErrorMessage("An error occurred during verification. Please try again.");
+    }
+  };
 
   // Optional error handler (for future actual API logic)
   //   const handleError = (error: string) => {
@@ -66,43 +100,10 @@ export default function ConfirmEmailPage() {
     >
       <Navbar />
 
-      {/* ✅ Success Toast */}
-      {showSuccessToast && (
-        <div
-          className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transform transition-all duration-300 ${
-            theme === "dark"
-              ? "bg-green-900/90 border-green-700 text-white"
-              : "bg-green-100 border-green-300 text-green-900"
-          }`}
-        >
-          <div className="flex items-center space-x-2">
-            <CheckCircle className="w-5 h-5" />
-            <span className="font-medium">{t("confirmEmail.success.toast")}</span>
-          </div>
-          <div className="text-xs mt-1 opacity-80">{t("confirmEmail.success.redirecting")}</div>
-        </div>
-      )}
-
-      {/* ⚠️ Error Toast (placeholder for API failures) */}
-      {showErrorToast && (
-        <div
-          className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transform transition-all duration-300 ${
-            theme === "dark"
-              ? "bg-red-900/90 border-red-700 text-white"
-              : "bg-red-100 border-red-300 text-red-900"
-          }`}
-        >
-          <div className="flex items-center space-x-2">
-            <XCircle className="w-5 h-5" />
-            <span className="font-medium">{errorMessage}</span>
-          </div>
-        </div>
-      )}
-
       {/* Main Content */}
       <main className="flex-1 flex items-center justify-center p-4">
         <div className="w-full max-w-md text-center">
-          <div className="mb-8">
+          <div className="mt-20">
             <h1
               className={`text-3xl font-bold mb-2 ${
                 theme === "dark" ? "text-white" : "text-black"
@@ -120,37 +121,82 @@ export default function ConfirmEmailPage() {
               theme === "dark" ? "bg-black border-white/30" : "bg-white border-black/30"
             }`}
           >
-            {/* Progress Display */}
-            <div className="text-center">
-              <div
-                className={`text-5xl font-light mb-3 font-mono tracking-tighter ${
-                  theme === "dark" ? "text-white" : "text-gray-900"
-                }`}
-              >
-                {Math.round(progress)}%
+            {/* Verifying State */}
+            {state === "verifying" && (
+              <div className="text-center">
+                <div className="mx-auto w-16 h-16 mb-4">
+                  <svg
+                    className="animate-spin h-16 w-16 mx-auto"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                </div>
+                <p
+                  className={`mt-4 text-sm ${theme === "dark" ? "text-white/70" : "text-black/70"}`}
+                >
+                  {t("confirmEmail.verifying")}
+                </p>
               </div>
+            )}
 
-              <div className="w-32 h-0.5 bg-gray-300 rounded-full overflow-hidden mx-auto">
-                <div
-                  className={`h-full transition-all duration-100 ease-out ${
-                    theme === "dark" ? "bg-white" : "bg-black"
-                  }`}
-                  style={{ width: `${progress}%` }}
-                />
+            {/* Success State */}
+            {state === "success" && (
+              <div className="text-center">
+                <div className="mx-auto w-16 h-16 mb-4 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                  <CheckCircle className="h-12 w-12 text-green-600 dark:text-green-400" />
+                </div>
+                <p
+                  className={`text-lg font-semibold ${theme === "dark" ? "text-white" : "text-black"}`}
+                >
+                  Email Verified!
+                </p>
+                <p
+                  className={`mt-2 text-sm ${theme === "dark" ? "text-white/70" : "text-black/70"}`}
+                >
+                  Redirecting to login in {countdown}s...
+                </p>
               </div>
+            )}
 
-              <p className={`mt-4 text-sm ${theme === "dark" ? "text-white/70" : "text-black/70"}`}>
-                {t("confirmEmail.verifying")}
-              </p>
-            </div>
-
-            <div
-              className={`mt-6 text-center text-sm ${
-                theme === "dark" ? "text-white/60" : "text-black/60"
-              }`}
-            >
-              <p>{t("confirmEmail.redirectNotice")}</p>
-            </div>
+            {/* Error/Invalid State */}
+            {(state === "error" || state === "invalid") && (
+              <div className="text-center">
+                <div className="mx-auto w-16 h-16 mb-4 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                  <XCircle className="h-12 w-12 text-red-600 dark:text-red-400" />
+                </div>
+                <p
+                  className={`text-lg font-semibold ${theme === "dark" ? "text-white" : "text-black"}`}
+                >
+                  Verification Failed
+                </p>
+                <p
+                  className={`mt-2 text-sm ${theme === "dark" ? "text-white/70" : "text-black/70"}`}
+                >
+                  {errorMessage}
+                </p>
+                <button
+                  onClick={() => router.push("/login")}
+                  className="mt-6 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                >
+                  Back to Login
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </main>

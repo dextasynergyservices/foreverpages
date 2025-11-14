@@ -18,7 +18,29 @@ export default function EmailVerificationPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [code, setCode] = useState(["", "", "", "", "", ""]);
+  const [userEmail, setUserEmail] = useState<string>("");
+  const [attemptsRemaining, setAttemptsRemaining] = useState<number | null>(null);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const verificationAttemptRef = useRef<string | null>(null); // Prevent duplicate calls
+
+  // Fetch user email on mount
+  useEffect(() => {
+    async function fetchUserEmail() {
+      try {
+        const response = await fetch("/api/auth/user");
+        if (response.ok) {
+          const data = await response.json();
+          if (data.user?.email) {
+            setUserEmail(data.user.email);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch user email:", error);
+      }
+    }
+
+    fetchUserEmail();
+  }, []);
 
   useEffect(() => {
     if (timeLeft <= 0) {
@@ -34,15 +56,29 @@ export default function EmailVerificationPage() {
   }, [timeLeft]);
 
   const handleVerify = useCallback(async () => {
+    const verificationCode = code.join("");
+
+    // Prevent duplicate verification attempts with the same code
+    if (verificationAttemptRef.current === verificationCode) {
+      console.log("Duplicate verification attempt blocked");
+      return;
+    }
+
+    verificationAttemptRef.current = verificationCode;
     setIsVerifying(true);
-    // const verificationCode = code.join('');
 
-    // Simulate API verification with error handling
-    setTimeout(() => {
-      // Simulate random success/failure for demo
-      const isSuccess = Math.random() > 0.3; // 70% success rate for demo
+    try {
+      const response = await fetch("/api/auth/verify-email-code", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code: verificationCode }),
+      });
 
-      if (isSuccess) {
+      const data = await response.json();
+
+      if (response.ok && data.success) {
         setIsVerifying(false);
         toast.success(t("emailVerification.success.toast"));
 
@@ -52,14 +88,24 @@ export default function EmailVerificationPage() {
         }, 2000);
       } else {
         setIsVerifying(false);
-        toast.error(t("emailVerification.error.invalid"));
+        verificationAttemptRef.current = null; // Reset on error for retry
+        toast.error(data.error || t("emailVerification.error.invalid"));
 
         // Clear the code for retry
         setCode(["", "", "", "", "", ""]);
         inputRefs.current[0]?.focus();
       }
-    }, 500);
-  }, [router, t]);
+    } catch (error) {
+      console.error("Verification error:", error);
+      setIsVerifying(false);
+      verificationAttemptRef.current = null; // Reset on error for retry
+      toast.error("An error occurred during verification. Please try again.");
+
+      // Clear the code for retry
+      setCode(["", "", "", "", "", ""]);
+      inputRefs.current[0]?.focus();
+    }
+  }, [code, router, t]);
 
   useEffect(() => {
     // Auto-submit when all digits are filled
@@ -73,17 +119,44 @@ export default function EmailVerificationPage() {
 
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      setTimeLeft(90);
-      setIsResendDisabled(true);
-      setIsLoading(false);
-      toast.success("Verification code sent successfully");
+    try {
+      const response = await fetch("/api/auth/resend-verification", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-      // Clear the current code
-      setCode(["", "", "", "", "", ""]);
-      inputRefs.current[0]?.focus();
-    }, 1000);
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setTimeLeft(90);
+        setIsResendDisabled(true);
+        setIsLoading(false);
+        toast.success("Verification code sent successfully");
+
+        // Update attempts remaining if provided
+        if (data.attemptsRemaining !== undefined) {
+          setAttemptsRemaining(data.attemptsRemaining);
+        }
+
+        // Clear the current code
+        setCode(["", "", "", "", "", ""]);
+        inputRefs.current[0]?.focus();
+      } else {
+        setIsLoading(false);
+        toast.error(data.error || "Failed to resend code. Please try again.");
+
+        // Update attempts if provided in error response
+        if (data.attemptsRemaining !== undefined) {
+          setAttemptsRemaining(data.attemptsRemaining);
+        }
+      }
+    } catch (error) {
+      console.error("Resend error:", error);
+      setIsLoading(false);
+      toast.error("An error occurred. Please try again.");
+    }
   };
 
   const handleChange = (index: number, value: string) => {
@@ -144,7 +217,7 @@ export default function EmailVerificationPage() {
       <Navbar />
 
       <div className="w-full max-w-md">
-        <div className="text-center mb-8">
+        <div className="text-center mt-20">
           <Link href="/" className="inline-block">
             <div
               className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 shadow-lg transition-colors ${
@@ -183,6 +256,20 @@ export default function EmailVerificationPage() {
             {t("emailVerification.enterCode")}
           </h2>
 
+          {/* Display email being verified */}
+          {userEmail && (
+            <div className="mb-4 text-center">
+              <p className={`text-sm ${theme === "dark" ? "text-white/50" : "text-black/50"}`}>
+                Verifying
+              </p>
+              <p
+                className={`text-sm font-medium ${theme === "dark" ? "text-blue-400" : "text-blue-600"}`}
+              >
+                {userEmail}
+              </p>
+            </div>
+          )}
+
           <p className={`mb-6 text-center ${theme === "dark" ? "text-white/70" : "text-black/70"}`}>
             {t("emailVerification.instructions")}
           </p>
@@ -215,6 +302,27 @@ export default function EmailVerificationPage() {
               className={`text-center mb-4 ${theme === "dark" ? "text-white/70" : "text-black/70"}`}
             >
               {t("emailVerification.verifying")}
+            </div>
+          )}
+
+          {/* Attempts warning */}
+          {attemptsRemaining !== null && attemptsRemaining <= 2 && (
+            <div
+              className={`text-center mb-4 p-3 rounded-lg border ${
+                attemptsRemaining === 0
+                  ? theme === "dark"
+                    ? "bg-red-900/20 border-red-500 text-red-200"
+                    : "bg-red-50 border-red-300 text-red-700"
+                  : theme === "dark"
+                    ? "bg-yellow-900/20 border-yellow-500 text-yellow-200"
+                    : "bg-yellow-50 border-yellow-300 text-yellow-700"
+              }`}
+            >
+              <p className="text-sm font-medium">
+                {attemptsRemaining === 0
+                  ? "Maximum attempts reached. Please try again later or contact support."
+                  : `${attemptsRemaining} verification attempt${attemptsRemaining === 1 ? "" : "s"} remaining`}
+              </p>
             </div>
           )}
 

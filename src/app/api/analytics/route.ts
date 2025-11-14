@@ -17,13 +17,54 @@ export async function GET() {
       );
     }
 
-    // Get user's memorials
+    // Get user's owned memorials
     const userMemorials = await prisma.memorial.findMany({
       where: { ownerId: session.user.id },
-      select: { id: true, firstName: true, lastName: true },
+      select: { id: true, firstName: true, lastName: true, ownerId: true },
     });
 
-    const memorialIds = userMemorials.map((m: { id: string }) => m.id);
+    // Get memorials where user is a collaborator (accepted invitations only)
+    // Note: Collaborator invitations have invitedUserId set and rsvpToken is null
+    const collaboratorInvitations = await prisma.invitation.findMany({
+      where: {
+        invitedUserId: session.user.id,
+        status: "ACCEPTED",
+        expiresAt: { gte: new Date() }, // Not expired yet
+      },
+      include: {
+        memorial: {
+          select: { id: true, firstName: true, lastName: true, ownerId: true },
+        },
+      },
+    });
+
+    const collaboratorMemorials = collaboratorInvitations.map((inv) => inv.memorial);
+
+    // Combine owned and collaborator memorials
+    const allMemorials = [...userMemorials, ...collaboratorMemorials];
+    const memorialIds = allMemorials.map((m: { id: string }) => m.id);
+
+    // Check subscription - user's own subscription OR memorial owner's subscription (for collaborators)
+    // Always include the current user's ID so users with subscription but no memorials can access
+    const memorialOwnerIds = [
+      session.user.id, // Current user (most important!)
+      ...new Set([
+        ...userMemorials.map((m) => m.ownerId),
+        ...collaboratorMemorials.map((m) => m.ownerId),
+      ]),
+    ];
+
+    const subscription = await prisma.subscription.findFirst({
+      where: {
+        userId: { in: memorialOwnerIds },
+        status: "ACTIVE",
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    if (!subscription) {
+      return NextResponse.json({ message: "No active subscription found" }, { status: 403 });
+    }
 
     // Calculate stats
     const thirtyDaysAgo = new Date();
@@ -31,7 +72,7 @@ export async function GET() {
 
     // Total visits (page views) - we'll simulate this with memorial view logs
     // For now, we'll use a calculation based on memorials and some randomization
-    const totalVisits = userMemorials.length * 150 + Math.floor(Math.random() * 500);
+    const totalVisits = allMemorials.length * 150 + Math.floor(Math.random() * 500);
 
     // Unique visitors - estimate based on visits
     const uniqueVisitors = Math.floor(totalVisits * 0.5);
@@ -46,7 +87,7 @@ export async function GET() {
     });
 
     // Memorial shares - we'll simulate this for now
-    const memorialShares = userMemorials.length * 8 + Math.floor(Math.random() * 20);
+    const memorialShares = allMemorials.length * 8 + Math.floor(Math.random() * 20);
 
     // Recent activity - get recent tributes, memorials, etc.
     const recentTributes = await prisma.post.findMany({
@@ -72,12 +113,19 @@ export async function GET() {
     // Combine and format recent activity
     const recentActivity = [
       ...recentTributes.map((tribute) => ({
-        action: `New tribute from ${tribute.author?.name || "Anonymous"} on ${tribute.memorial.firstName} ${tribute.memorial.lastName}`,
+        actionKey: "dashboard.analytics.activity.newTribute",
+        actionParams: {
+          author: tribute.author?.name || "Anonymous",
+          memorial: `${tribute.memorial.firstName} ${tribute.memorial.lastName}`,
+        },
         time: formatTimeAgo(tribute.createdAt),
         type: "tribute" as const,
       })),
       ...recentMemorials.map((memorial) => ({
-        action: `Memorial "${memorial.firstName} ${memorial.lastName}" created`,
+        actionKey: "dashboard.analytics.activity.memorialCreated",
+        actionParams: {
+          memorial: `${memorial.firstName} ${memorial.lastName}`,
+        },
         time: formatTimeAgo(memorial.createdAt),
         type: "memorial" as const,
       })),
@@ -87,46 +135,66 @@ export async function GET() {
 
     // Top pages - simulate based on memorial data
     const topPages = [
-      { page: "Memorial Home", views: Math.floor(totalVisits * 0.44), percentage: 44 },
-      { page: "Photo Gallery", views: Math.floor(totalVisits * 0.22), percentage: 22 },
-      { page: "Tribute Wall", views: Math.floor(totalVisits * 0.16), percentage: 16 },
-      { page: "Service Information", views: Math.floor(totalVisits * 0.12), percentage: 12 },
-      { page: "Biography", views: Math.floor(totalVisits * 0.07), percentage: 7 },
+      {
+        pageKey: "dashboard.analytics.pages.memorialHome",
+        views: Math.floor(totalVisits * 0.44),
+        percentage: 44,
+      },
+      {
+        pageKey: "dashboard.analytics.pages.photoGallery",
+        views: Math.floor(totalVisits * 0.22),
+        percentage: 22,
+      },
+      {
+        pageKey: "dashboard.analytics.pages.tributeWall",
+        views: Math.floor(totalVisits * 0.16),
+        percentage: 16,
+      },
+      {
+        pageKey: "dashboard.analytics.pages.serviceInfo",
+        views: Math.floor(totalVisits * 0.12),
+        percentage: 12,
+      },
+      {
+        pageKey: "dashboard.analytics.pages.biography",
+        views: Math.floor(totalVisits * 0.07),
+        percentage: 7,
+      },
     ];
 
     // Calculate percentage changes (simulated)
     const stats = [
       {
-        title: "Total Visits",
+        titleKey: "dashboard.analytics.stats.totalVisits.title",
         value: totalVisits.toLocaleString(),
         change: "+12%",
         trend: "up" as const,
         icon: "Eye",
-        description: "Page views this month",
+        descriptionKey: "dashboard.analytics.stats.totalVisits.description",
       },
       {
-        title: "Unique Visitors",
+        titleKey: "dashboard.analytics.stats.uniqueVisitors.title",
         value: uniqueVisitors.toLocaleString(),
         change: "+8%",
         trend: "up" as const,
         icon: "Users",
-        description: "Individual visitors",
+        descriptionKey: "dashboard.analytics.stats.uniqueVisitors.description",
       },
       {
-        title: "Tribute Messages",
+        titleKey: "dashboard.analytics.stats.tributeMessages.title",
         value: tributeCount.toString(),
         change: "+5",
         trend: "up" as const,
         icon: "Heart",
-        description: "New tributes this week",
+        descriptionKey: "dashboard.analytics.stats.tributeMessages.description",
       },
       {
-        title: "Memorial Shares",
+        titleKey: "dashboard.analytics.stats.memorialShares.title",
         value: memorialShares.toString(),
         change: "+23%",
         trend: "up" as const,
         icon: "TrendingUp",
-        description: "Social media shares",
+        descriptionKey: "dashboard.analytics.stats.memorialShares.description",
       },
     ];
 

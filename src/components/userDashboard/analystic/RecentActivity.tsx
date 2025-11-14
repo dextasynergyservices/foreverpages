@@ -4,9 +4,11 @@ import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Heart, Eye, Users, Calendar, TrendingUp } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
+import { useTranslations } from "@/hooks/useTranslations";
 
 interface ActivityItem {
-  action: string;
+  actionKey: string;
+  actionParams: Record<string, string>;
   time: string;
   type: string;
 }
@@ -24,8 +26,9 @@ interface RecentActivityProps {
   t: (key: string, params?: unknown, fallback?: string) => string;
 }
 
-export const RecentActivity: React.FC<RecentActivityProps> = ({ recentActivity, t }) => {
+export const RecentActivity: React.FC<RecentActivityProps> = ({ recentActivity }) => {
   const { theme } = useTheme();
+  const { t } = useTranslations();
 
   const cardBorder = theme === "dark" ? "border-white" : "border-black";
   const cardBg = theme === "dark" ? "bg-black text-white" : "bg-white text-black";
@@ -71,7 +74,9 @@ export const RecentActivity: React.FC<RecentActivityProps> = ({ recentActivity, 
                   <ActivityIcon className="h-4 w-4" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium">{activity.action}</p>
+                  <p className="text-sm font-medium">
+                    {t(activity.actionKey, activity.actionParams)}
+                  </p>
                   <p className={`text-xs ${textMuted}`}>{activity.time}</p>
                 </div>
               </div>

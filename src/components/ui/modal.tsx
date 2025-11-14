@@ -97,8 +97,9 @@ export default function Modal({
             {showCloseButton && (
               <Button
                 onClick={onClose}
-                className={`p-2 rounded-lg transition-all duration-200 flex items-center justify-center w-8 h-8 ${theme === "dark" ? "text-white hover:bg-white/20" : "text-black hover:bg-black/10"}`}
+                className={`p-2 rounded-lg transition-all duration-200 flex items-center justify-center w-8 h-8 ${theme === "dark" ? "text-white hover:bg-white/20 bg-transparent" : "text-black hover:bg-black/10 bg-transparent"}`}
                 aria-label="close modal"
+                variant="ghost"
               >
                 <X size={20} />
               </Button>
