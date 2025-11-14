@@ -5,7 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { verifyToken } from "./jwt";
 import { createAdapter } from "@socket.io/redis-adapter";
-import { createClient } from "redis";
+import { createClient, RedisClientType } from "redis";
 
 dotenv.config();
 
@@ -16,8 +16,9 @@ const JWT_SECRET = process.env.JWT_SECRET || "";
 const app = express();
 app.use(cors());
 app.use(express.json());
+
 app.get("/api/health", (_req: Request, res: Response) => {
-  res.json({ status: "ok", ts: Date.now() });
+  return res.json({ status: "ok", ts: Date.now() });
 });
 
 const server = http.createServer(app);
@@ -28,23 +29,6 @@ const io = new IOServer(server, {
     origin: process.env.SOCKET_ORIGIN || "*",
   },
 });
-
-// Optional Redis adapter
-if (REDIS_URL) {
-  (async () => {
-    try {
-      const pubClient = createClient({ url: REDIS_URL });
-      const subClient = pubClient.duplicate();
-
-      await Promise.all([pubClient.connect(), subClient.connect()]);
-
-      io.adapter(createAdapter(pubClient, subClient));
-      console.log("Redis adapter enabled");
-    } catch (err) {
-      console.warn("Failed to initialize Redis adapter:", err);
-    }
-  })();
-}
 
 // Simple auth middleware for socket.io
 io.use((socket, next) => {
@@ -74,6 +58,31 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`Signaling server listening on http://localhost:${PORT}`);
-});
+// Start server with optional Redis adapter
+async function startServer() {
+  if (REDIS_URL) {
+    try {
+      const pubClient: RedisClientType = createClient({ url: REDIS_URL });
+      const subClient: RedisClientType = pubClient.duplicate();
+
+      await Promise.all([pubClient.connect(), subClient.connect()]);
+
+      // Cast to the parameter types expected by createAdapter to avoid using 'any'
+      io.adapter(
+        createAdapter(
+          pubClient as unknown as Parameters<typeof createAdapter>[0],
+          subClient as unknown as Parameters<typeof createAdapter>[1]
+        )
+      );
+      console.log("Redis adapter enabled");
+    } catch (err) {
+      console.warn("Failed to initialize Redis adapter:", err);
+    }
+  }
+
+  server.listen(PORT, () => {
+    console.log(`Signaling server listening on http://localhost:${PORT}`);
+  });
+}
+
+startServer();
