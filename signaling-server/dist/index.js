@@ -19,7 +19,10 @@ const JWT_SECRET = process.env.JWT_SECRET || "";
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-app.get("/api/health", (_req, res) => res.json({ status: "ok", ts: Date.now() }));
+app.get("/api/health", (_req, res) => {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ status: "ok", ts: Date.now() }));
+});
 const server = http_1.default.createServer(app);
 const io = new socket_io_1.Server(server, {
     path: "/api/socket",
