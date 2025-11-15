@@ -19,9 +19,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/api/health", (_req: express.Request, res: express.Response) =>
-  res.json({ status: "ok", ts: Date.now() })
-);
+app.get("/api/health", (_req: express.Request, res: http.ServerResponse) => {
+  res.writeHead(200, { "Content-Type": "application/json" });
+  res.end(JSON.stringify({ status: "ok", ts: Date.now() }));
+});
 const server = http.createServer(app);
 
 const io = new IOServer(server, {
