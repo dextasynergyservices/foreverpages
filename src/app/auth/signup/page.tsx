@@ -1,9 +1,12 @@
+import React, { Suspense } from "react";
 import RegisterPage from "@/components/signup";
 
 export default function Page() {
   return (
     <main>
-      <RegisterPage />
+      <Suspense fallback={<div />}>
+        <RegisterPage />
+      </Suspense>
     </main>
   );
 }
