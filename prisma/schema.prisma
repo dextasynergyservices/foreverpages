@@ -75,6 +75,8 @@ model User {
   // Security
   twoFactorEnabled Boolean @default(false)
   twoFactorSecret  String?
+  twoFactorMethod  TwoFactorMethod?
+  backupCodes      String[] // Hashed backup codes for account recovery
 
   // Preferences
   notificationsEnabled Boolean @default(true)
@@ -98,6 +100,10 @@ model User {
   receivedInvites  Invitation[]     @relation("InvitedUser")
   subscriptions    Subscription[]
   activityLogs     ActivityLog[]
+  verificationTokens VerificationToken[]
+  streamViewers  StreamViewer[]
+  streamComments StreamComment[]
+  streamReactions StreamReaction[]
 
   @@index([email])
   @@index([role])
@@ -116,6 +122,11 @@ enum VerificationMethod {
   CODE
 }
 
+enum TwoFactorMethod {
+  EMAIL
+  AUTHENTICATOR
+}
+
 model VerificationToken {
   id         String   @id @default(cuid())
   identifier String   // Usually email address
@@ -125,6 +136,10 @@ model VerificationToken {
   expires    DateTime
   usedAt     DateTime?
 
+  // Add user relationship (optional for backward compatibility)
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -132,6 +147,7 @@ model VerificationToken {
   @@index([identifier])
   @@index([code])
   @@index([expires])
+  @@index([userId])
 }
 
 enum VerificationType {
@@ -139,6 +155,7 @@ enum VerificationType {
   PASSWORD_RESET
   EMAIL_CHANGE
   TWO_FACTOR
+  TWO_FACTOR_SESSION
 }
 
 // ============================================
@@ -204,6 +221,9 @@ model Memorial {
   allowCandles     Boolean            @default(true)
   allowFlowers     Boolean            @default(true)
 
+  // Localization
+  language         String             @default("en") // Language this memorial is written in
+
   // QR Code & Sharing
   qrCodeUrl        String?
   customDomain     String?            @unique
@@ -248,6 +268,7 @@ model Memorial {
   flowers     VirtualFlower[]
   guestbook   GuestbookEntry[]
   tags        MemorialTag[]
+  streams     MemorialStream[]  // Livestreams
 
   @@index([slug])
   @@index([ownerId])
@@ -271,10 +292,45 @@ enum MemorialVisibility {
 model Invitation {
   id          String           @id @default(cuid())
   email       String
+  phone       String?          // WhatsApp phone number with country code
+  name        String?          // Recipient name
   role        MemorialRole
   token       String           @unique
   status      InvitationStatus @default(PENDING)
   message     String?          @db.Text
+  invitationCard String?       // URL to uploaded invitation card/image
+  customSubject  String?       // Custom email subject (overrides default)
+
+  // Delivery channels
+  sentViaEmail    Boolean @default(false)
+  sentViaWhatsApp Boolean @default(false)
+
+  // RSVP System
+  rsvpToken       String?          @unique // Unique token for RSVP page access
+  rsvpStatus      RSVPStatus?      // Guest's RSVP response
+  rsvpMessage     String?          @db.Text // Personal message from guest when RSVPing
+  rsvpAt          DateTime?        // When guest submitted RSVP
+
+  // Guest Management
+  plusOnes            Int?     // Number of additional guests
+  dietaryRestrictions String?  @db.Text // Food preferences, allergies
+  accessibilityNeeds  String?  @db.Text // Wheelchair, interpreter, etc.
+  specialRequests     String?  @db.Text // General notes
+
+  // Email Templates
+  templateId          String?  // Selected template (formal, casual, religious, custom)
+  templateVariables   Json?    // Custom variables for template personalization
+
+  // Scheduling
+  scheduledFor        DateTime? // When to send (null = send immediately)
+  isScheduled         Boolean   @default(false)
+  wasSentScheduled    Boolean   @default(false) // Track if it was sent as scheduled
+
+  // Reminders
+  sendReminders       Boolean   @default(true)  // Enable/disable reminders for this invitation
+  reminderDaysBefore  Int[]     @default([7, 3, 1]) // Days before service to send reminders
+  remindersSent       Json?     // Track which reminders were sent {7: timestamp, 3: timestamp}
+  lastReminderSentAt  DateTime? // Last reminder timestamp
 
   expiresAt   DateTime
   sentAt      DateTime         @default(now())
@@ -292,8 +348,14 @@ model Invitation {
 
   @@index([memorialId])
   @@index([email])
+  @@index([phone])
   @@index([token])
+  @@index([rsvpToken])
+  @@index([rsvpStatus])
   @@index([status])
+  @@index([scheduledFor])
+  @@index([isScheduled])
+  @@index([sendReminders])
 }
 
 enum MemorialRole {
@@ -310,6 +372,12 @@ enum InvitationStatus {
   DECLINED
   EXPIRED
   REVOKED
+}
+
+enum RSVPStatus {
+  ATTENDING
+  NOT_ATTENDING
+  MAYBE
 }
 
 // ============================================
@@ -430,6 +498,9 @@ model Post {
   authorName  String?
   authorEmail String?
 
+  // Localization
+  language    String     @default("en") // Language this post is written in
+
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
@@ -458,13 +529,25 @@ enum PostType {
   ANNOUNCEMENT
 }
 
+enum CommentType {
+  GENERAL
+  CONDOLENCE
+  MEMORY
+  TRIBUTE
+  APPRECIATION
+}
+
 model Comment {
-  id          String   @id @default(cuid())
-  content     String   @db.Text
+  id          String      @id @default(cuid())
+  content     String      @db.Text
+  type        CommentType @default(GENERAL) // Type of comment/message
 
   // Author Info (for non-users)
   authorName  String?
   authorEmail String?
+
+  // Localization
+  language    String   @default("en") // Language this comment is written in
 
   isApproved  Boolean  @default(true)
 
@@ -489,6 +572,7 @@ model Comment {
   @@index([authorId])
   @@index([parentId])
   @@index([createdAt])
+  @@index([type])
 }
 
 model Reaction {
@@ -554,8 +638,12 @@ model Upload {
 
   createdAt    DateTime   @default(now())
 
-  memorialId   String
-  memorial     Memorial   @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+  // Cloudinary public ID for deletion
+  publicId     String?
+
+  // Optional: Can be uploaded to library first, attached to memorial later
+  memorialId   String?
+  memorial     Memorial?  @relation(fields: [memorialId], references: [id], onDelete: Cascade)
 
   uploaderId   String
   uploader     User       @relation(fields: [uploaderId], references: [id], onDelete: Cascade)
@@ -645,39 +733,148 @@ model GuestbookEntry {
 
 model Plan {
   id          String   @id @default(cuid())
-  name        String   @unique
+  name        String   @unique // Default/fallback name
   slug        String   @unique
-  description String?  @db.Text
+  description String?  @db.Text // Default/fallback description
 
-  // Pricing & Duration
-  price       Decimal  @db.Decimal(10, 2)  // Single price
-  currency    String   @default("NGN")
-  durationDays Int     // Number of days the plan is valid for
+  // Pricing & Duration - Multi-currency support
+  priceNGN    Decimal?  @db.Decimal(10, 2)  // Nigerian Naira (primary)
+  priceUSD    Decimal?  @db.Decimal(10, 2)  // US Dollar
+  priceGBP    Decimal?  @db.Decimal(10, 2)  // British Pound
+  priceEUR    Decimal?  @db.Decimal(10, 2)  // Euro
+  currency    String    @default("NGN")      // Default currency indicator
+  durationDays Int      // Number of days the plan is valid for
 
-  // Plan Features
-  maxMemorials        Int      @default(1)
-  maxPhotosPerMemorial Int     @default(50)
-  maxVideosPerMemorial Int     @default(5)
-  maxStorageGB        Int      @default(1)
+  // Plan Features & Limits
+  maxMemorials         Int      @default(1)
+  maxPhotosPerMemorial Int      @default(50)
+  maxVideosPerMemorial Int      @default(5)
+  maxAdmins            Int      @default(1)
+  maxContributors      Int      @default(3)
+  storageQuotaMB       Int      @default(500)
+  prints               String
+
+  // Feature Flags
+  allowRSVP            Boolean  @default(true)  // Can manage RSVP for funeral/memorial services
+  allowGuestbook       Boolean  @default(true)  // Can enable digital guestbook
+  allowVirtualTributes Boolean  @default(true)  // Can receive virtual candles & flowers
 
   // Display & Marketing
   isPopular       Boolean  @default(false)
   isVisible       Boolean  @default(true)
   displayOrder    Int      @default(0)
+  badgeText       String?  // "Most Popular", "Best Value"
+  badgeColor      String?  // For badge styling
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  subscriptions Subscription[]
-  templates     Template[]
-  payments    Payment[]
-  users         User[]         @relation("UserCurrentPlan")
+  subscriptions    Subscription[]
+  templates        Template[]
+  payments         Payment[]
+  users            User[]              @relation("UserCurrentPlan")
+  translations     PlanTranslation[]
 
   @@index([slug])
   @@index([isVisible])
   @@index([displayOrder])
   @@index([durationDays])
 }
+
+model PlanTranslation {
+  id          String   @id @default(cuid())
+  planId      String
+  plan        Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  language    String   // ISO 639-1: "en", "fr", "es", "ig", "yo", "ha"
+
+  // Translated fields
+  name        String
+  description String   @db.Text
+  badgeText   String?
+
+  // Features as JSON for flexibility
+  // {"photos": "Up to 50 photos", "videos": "5 videos", ...}
+  features    Json
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([planId, language])
+  @@index([planId])
+  @@index([language])
+}
+
+model Translation {
+  id        String   @id @default(cuid())
+  key       String   // e.g., "pricing.title", "common.cancel"
+  value     String   @db.Text
+  language  String   // "en", "fr", "es", etc.
+
+  // Organization
+  namespace String   @default("common") // "pricing", "auth", "memorial", etc.
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([key, language, namespace])
+  @@index([namespace, language])
+  @@index([key])
+  @@index([language])
+}
+
+model Renewal {
+  id          String   @id @default(cuid())
+  name        String   @unique // "Forever Access"
+  slug        String   @unique // "forever-access"
+  description String?  @db.Text // Default/fallback description
+
+  // Pricing - Multi-currency support
+  priceNGN    Decimal?  @db.Decimal(10, 2)  // Nigerian Naira (primary)
+  priceUSD    Decimal?  @db.Decimal(10, 2)  // US Dollar
+  priceGBP    Decimal?  @db.Decimal(10, 2)  // British Pound
+  priceEUR    Decimal?  @db.Decimal(10, 2)  // Euro
+  currency    String    @default("NGN")      // Default currency indicator
+
+  // Display & Marketing
+  isActive    Boolean  @default(true)
+  badgeText   String?  // "Lifetime", "Forever"
+  badgeColor  String?  // For badge styling
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  subscriptions    Subscription[]
+  translations     RenewalTranslation[]
+
+  @@index([slug])
+  @@index([isActive])
+}
+
+model RenewalTranslation {
+  id          String   @id @default(cuid())
+  renewalId   String
+  renewal     Renewal  @relation(fields: [renewalId], references: [id], onDelete: Cascade)
+
+  language    String   // ISO 639-1: "en", "fr", "es", "ig", "yo", "ha"
+
+  // Translated fields
+  name        String
+  description String   @db.Text
+  badgeText   String?
+
+  // Features as JSON for flexibility
+  // {"benefit": "Never lose your memories", "access": "Unlimited forever", ...}
+  features    Json?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([renewalId, language])
+  @@index([renewalId])
+  @@index([language])
+}
+
 // ============================================
 // DYNAMIC TEMPLATE SYSTEM (Next.js/React/Tailwind)
 // ============================================
@@ -891,13 +1088,23 @@ model Subscription {
   startDate        DateTime
   expiresAt        DateTime  // When the subscription expires
 
+  // Renewal/Lifetime Access
+  renewalId        String?
+  renewal          Renewal?  @relation(fields: [renewalId], references: [id], onDelete: SetNull)
+  renewedAt        DateTime? // When user upgraded to lifetime
+
   // Payment Info (Paystack)
   paystackReference String?   @unique  // Paystack transaction reference
   paystackCustomerCode String? // Paystack customer code for recurring payments
 
   // Subscription Management
-  autoRenew        Boolean   @default(true)
+  autoRenew        Boolean   @default(false)  // Changed to false - users must manually renew
   canceledAt       DateTime?
+
+  // Grace Period (allows users to renew even after expiration)
+  gracePeriodDays  Int       @default(7)  // 7 days grace period after expiration
+  gracePeriodEndsAt DateTime? // When grace period expires (calculated)
+  inGracePeriod    Boolean   @default(false) // Whether currently in grace period
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -914,6 +1121,7 @@ model Subscription {
   @@index([userId])
   @@index([status])
   @@index([planId])
+  @@index([renewalId])
   @@index([expiresAt])
   @@index([paystackReference])
 }
@@ -923,6 +1131,7 @@ enum SubscriptionStatus {
   EXPIRED
   CANCELED
   PENDING_PAYMENT
+  GRACE_PERIOD
 }
 
 
@@ -930,6 +1139,14 @@ model Payment {
   id                String        @id @default(cuid())
   amount            Decimal       @db.Decimal(10, 2)
   currency          String        @default("NGN")
+
+  // Multi-currency tracking
+  selectedCurrency  String        @default("NGN")  // Currency user selected (NGN, USD, GBP, EUR)
+  exchangeRate      Decimal?      @db.Decimal(10, 6)  // Exchange rate at time of payment
+  amountInNGN       Decimal?      @db.Decimal(10, 2)  // Amount in NGN for reporting
+
+  // Payment Type
+  paymentType       PaymentType   @default(INITIAL)
 
   // Paystack References
   paystackReference String        @unique
@@ -953,8 +1170,8 @@ model Payment {
   subscriptionId String?
   subscription   Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
 
-  userId    String
-  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?
+  user      User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   planId    String
   plan      Plan   @relation(fields: [planId], references: [id])
@@ -963,7 +1180,13 @@ model Payment {
   @@index([subscriptionId])
   @@index([paystackReference])
   @@index([status])
+  @@index([paymentType])
   @@index([createdAt])
+}
+
+enum PaymentType {
+  INITIAL   // Initial subscription payment
+  RENEWAL   // Renewal to lifetime/forever access
 }
 
 enum PaymentStatus {
@@ -1008,6 +1231,7 @@ enum NotificationType {
   MEMORIAL_ANNIVERSARY
   BIRTHDAY_ANNIVERSARY
   EXPIRING_SOON
+  PRIVATE_MESSAGE
   SYSTEM
 }
 
@@ -1070,6 +1294,9 @@ enum ActivityType {
   UPLOADED
   REPORTED
   MODERATED
+  SUBSCRIPTION_REMINDER_7_DAYS
+  SUBSCRIPTION_CRITICAL_ALERT
+  SUBSCRIPTION_EXPIRED
 }
 
 // ============================================
@@ -1232,6 +1459,337 @@ model SavedMemorial {
   @@unique([userId, memorialId])
   @@index([userId])
   @@index([memorialId])
+}
+
+// ============================================
+// LIVESTREAM SYSTEM
+// ============================================
+
+model MemorialStream {
+  id            String       @id @default(cuid())
+  memorialId    String
+  memorial      Memorial     @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+
+  // Stream Information
+  title         String
+  description   String?      @db.Text
+  thumbnailUrl  String?      // Preview image for scheduled streams
+
+  // Scheduling
+  scheduledFor  DateTime?
+  scheduledEnd  DateTime?    // Expected duration
+  reminderSent  Boolean      @default(false)
+  autoStart     Boolean      @default(false) // Automatically start at scheduledFor
+  autoEnd       Boolean      @default(false) // Automatically end at scheduledEnd
+
+  // Stream Status & Lifecycle
+  status        StreamStatus @default(SCHEDULED)
+  startedAt     DateTime?
+  endedAt       DateTime?
+  actualDuration Int?        // In seconds
+
+  // Stream Configuration
+  isPublic      Boolean      @default(true)
+  allowComments Boolean      @default(true)
+  allowAnonymous Boolean     @default(true) // Allow guests to watch
+  recordStream  Boolean      @default(true) // Automatic recording (default ON)
+  streamQuality StreamQuality @default(FULL_HD)  // Default 1080p
+
+  // Technical Details
+  streamType    StreamType   @default(WEBRTC) // WEBRTC, LIVEKIT, YOUTUBE_EMBED
+  streamKey     String?      @unique // For external streaming
+  rtmpUrl       String?      // For OBS/external tools (future)
+
+  // Recording Information
+  recordingUrl      String?   // Cloudinary video URL
+  recordingDuration Int?      // In seconds
+  recordingSize     Int?      // In bytes
+  recordingStatus   RecordingStatus @default(NONE)
+  recordingDeleteAt DateTime? // 6 months from stream end
+  recordingDeleteWarningAt DateTime? // 7 days before deletion
+
+  // LiveKit specific (Phase 2)
+  livekitRoomName   String?   @unique
+  livekitRoomSid    String?
+  livekitRecordingId String?
+
+  // Metrics & Analytics
+  peakViewers      Int       @default(0)
+  totalViews       Int       @default(0)
+  totalComments    Int       @default(0)
+  averageWatchTime Int       @default(0) // In seconds
+  replayViews      Int       @default(0) // Post-stream views
+
+  // Engagement
+  likeCount     Int          @default(0)
+  shareCount    Int          @default(0)
+
+  // Privacy & Access
+  password      String?      // Optional password protection
+  accessToken   String?      @unique // For private stream links
+
+  // Chat Moderation
+  keywordBlacklist  String[]    @default([]) // Auto-hide comments with these words
+  slowModeInterval  Int         @default(0)  // Seconds between messages (0 = disabled)
+  blockedViewers    String[]    @default([]) // User IDs or session IDs of banned users
+
+  // Notifications
+  notificationsSent Boolean   @default(false)
+  emailsSent        Int       @default(0)
+  whatsappSent      Int       @default(0)
+
+  // Metadata
+  tags          String[]     // Searchable tags
+  language      String       @default("en")
+  timezone      String       @default("UTC")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  viewers       StreamViewer[]
+  comments      StreamComment[]
+  reactions     StreamReaction[]
+  recordings    StreamRecording[]  // Multiple recordings (clips, highlights)
+  analytics     StreamAnalytics[]
+
+  @@index([memorialId])
+  @@index([status])
+  @@index([scheduledFor])
+  @@index([streamType])
+  @@index([createdAt])
+  @@index([startedAt])
+  @@index([recordingDeleteAt])
+}
+
+enum StreamStatus {
+  SCHEDULED    // Created but not started
+  STARTING     // Initializing (broadcaster connecting)
+  LIVE         // Currently streaming
+  PAUSED       // Temporarily paused (future feature)
+  ENDING       // Finishing up
+  ENDED        // Stream completed successfully
+  CANCELLED    // Cancelled before starting
+  FAILED       // Technical failure
+}
+
+enum StreamType {
+  WEBRTC        // Phase 1: Direct P2P
+  LIVEKIT       // Phase 2: Media server
+  YOUTUBE_EMBED // Phase 3: External embed
+  FACEBOOK_LIVE // Phase 3: External embed
+}
+
+enum StreamQuality {
+  LOWEST   // 144p
+  LOW      // 240p
+  MEDIUM   // 360p
+  SD       // 480p
+  HD       // 720p
+  FULL_HD  // 1080p (default)
+}
+
+enum RecordingStatus {
+  NONE         // Not recording
+  RECORDING    // Currently recording
+  PROCESSING   // Post-processing after stream
+  READY        // Available for playback
+  FAILED       // Recording failed
+  DELETED      // Deleted by user
+}
+
+model StreamViewer {
+  id          String         @id @default(cuid())
+  streamId    String
+  stream      MemorialStream @relation(fields: [streamId], references: [id], onDelete: Cascade)
+
+  // Viewer Identity
+  userId      String?
+  user        User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  sessionId   String         // Unique per browser session
+
+  // Anonymous Viewer Info
+  guestName   String?        // Self-provided name
+  email       String?        // Optional email for notifications
+
+  // Technical Details
+  ipAddress   String?
+  userAgent   String?        @db.Text
+  deviceType  String?        // mobile, tablet, desktop
+  browser     String?
+  country     String?        // Geo-location
+  city        String?
+
+  // Viewing Behavior
+  joinedAt    DateTime       @default(now())
+  leftAt      DateTime?
+  watchTime   Int            @default(0) // In seconds
+  isActive    Boolean        @default(true)
+
+  // Engagement
+  commented   Boolean        @default(false)
+  reacted     Boolean        @default(false)
+  shared      Boolean        @default(false)
+
+  // Connection Quality
+  connectionQuality String?   // poor, fair, good, excellent
+  bufferingEvents   Int       @default(0)
+
+  // Moderation & Status
+  isPinned    Boolean        @default(false) // Pinned by broadcaster (family members)
+  isVIP       Boolean        @default(false) // VIP badge for special guests
+  isBlocked   Boolean        @default(false) // Blocked/kicked from stream
+  blockedAt   DateTime?      // When viewer was blocked
+  blockedReason String?      // Reason for blocking
+
+  @@index([streamId])
+  @@index([userId])
+  @@index([sessionId])
+  @@index([joinedAt])
+  @@index([isPinned])
+  @@index([isVIP])
+  @@unique([streamId, sessionId])
+}
+
+model StreamComment {
+  id        String         @id @default(cuid())
+  streamId  String
+  stream    MemorialStream @relation(fields: [streamId], references: [id], onDelete: Cascade)
+
+  // Author
+  userId    String?
+  user      User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  authorName String        // Display name (from user or guest)
+  authorEmail String?      // For guests
+
+  // Comment Content
+  content   String         @db.Text
+  timestamp Int?           // Seconds from stream start (for replay)
+
+  // Moderation
+  isApproved Boolean       @default(true)
+  isHidden   Boolean       @default(false)
+  isReported Boolean       @default(false)
+  isPinned   Boolean       @default(false)
+  moderationReason String? // Reason for hide/delete (keyword match, manual, etc.)
+
+  // Engagement
+  likeCount Int            @default(0)
+
+  createdAt DateTime       @default(now())
+
+  @@index([streamId])
+  @@index([userId])
+  @@index([createdAt])
+  @@index([isPinned])
+}
+
+model StreamReaction {
+  id        String         @id @default(cuid())
+  streamId  String
+  stream    MemorialStream @relation(fields: [streamId], references: [id], onDelete: Cascade)
+
+  // Reactor
+  userId    String?
+  user      User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  sessionId String         // For anonymous reactions
+
+  // Reaction Type
+  type      LivestreamReactionType
+  timestamp Int?           // Seconds from stream start
+
+  createdAt DateTime       @default(now())
+
+  @@index([streamId])
+  @@index([userId])
+  @@index([sessionId])
+  @@unique([streamId, sessionId, type]) // One reaction type per viewer
+}
+
+enum LivestreamReactionType {
+  HEART      // ❤️
+  PRAYER     // 🙏
+  CANDLE     // 🕯️
+  FLOWER     // 🌹
+  DOVE       // 🕊️
+  APPLAUSE   // 👏
+}
+
+model StreamRecording {
+  id            String         @id @default(cuid())
+  streamId      String
+  stream        MemorialStream @relation(fields: [streamId], references: [id], onDelete: Cascade)
+
+  // Recording Info
+  title         String         @default("Full Recording")
+  description   String?        @db.Text
+
+  // File Details
+  url           String         // Cloudinary URL
+  duration      Int            // In seconds
+  fileSize      Int            // In bytes
+  format        String         @default("mp4")
+  resolution    String         @default("1920x1080") // Default 1080p
+  quality       StreamQuality  @default(FULL_HD)
+
+  // Timing
+  recordingType RecordingType  @default(FULL)
+  startOffset   Int            @default(0) // For clips/highlights
+  endOffset     Int?
+
+  // Processing
+  status        RecordingStatus @default(PROCESSING)
+  processedAt   DateTime?
+
+  // 6-month Retention
+  deleteAt      DateTime?      // Auto-delete after 6 months
+  deleteWarningAt DateTime?    // Warning 7 days before deletion
+  deleteWarningSent Boolean    @default(false)
+
+  // Metadata
+  thumbnailUrl  String?
+  subtitlesUrl  String?        // VTT/SRT file (future)
+
+  // Stats
+  views         Int            @default(0)
+  downloads     Int            @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([streamId])
+  @@index([status])
+  @@index([deleteAt])
+}
+
+enum RecordingType {
+  FULL       // Complete stream recording
+  CLIP       // User-created clip
+  HIGHLIGHT  // Auto-generated highlight
+}
+
+model StreamAnalytics {
+  id            String         @id @default(cuid())
+  streamId      String
+  stream        MemorialStream @relation(fields: [streamId], references: [id], onDelete: Cascade)
+
+  // Time-series data point
+  timestamp     DateTime       @default(now())
+
+  // Metrics at this point
+  concurrentViewers Int
+  totalViewers      Int
+
+  // Quality metrics
+  averageBitrate    Int?       // kbps
+  bufferRatio       Float?     // % of viewers buffering
+
+  // Engagement at this point
+  commentsCount     Int        @default(0)
+  reactionsCount    Int        @default(0)
+
+  @@index([streamId])
+  @@index([timestamp])
 }
 
 // ============================================

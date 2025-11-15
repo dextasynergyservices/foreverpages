@@ -185,12 +185,60 @@
     }
   },
   "pricing": {
+    "getStarted": "Get Started",
+    "daysOfForever": "days of forever",
     "modal": {
       "plan": "Plan",
       "featuresIncluded": "Features Included:",
       "termsAndConditions": "Terms & Conditions",
       "proceedToPayment": "Proceed to Payment",
       "agreeTermsMessage": "Please agree to the terms and conditions to proceed with payment"
+    },
+    "renewal": {
+      "oneTimePayment": "One-time Payment",
+      "whatYouGet": "What You Get",
+      "upgradeToLifetime": "Upgrade to Lifetime Access",
+      "loading": "Loading..."
+    },
+    "payment": {
+      "initializing": "Initializing...",
+      "securePayment": "🔒 Secure payment powered by Paystack"
+    },
+    "subscription": {
+      "status": {
+        "lifetime": "LIFETIME",
+        "active": "Active",
+        "expiringSoon": "Expiring Soon",
+        "warning": "Expires Soon",
+        "critical": "Urgent",
+        "grace": "Grace Period",
+        "expired": "Expired"
+      },
+      "collaboratorAccess": {
+        "name": "Collaborator Access",
+        "description": "Access granted as a memorial collaborator",
+        "badge": "Active"
+      },
+      "plan": "Your Plan",
+      "description": "Manage your subscription and billing",
+      "daysRemaining": "Days Remaining",
+      "days": "days",
+      "expiresOn": "Expires on",
+      "lifetimeAccess": "Lifetime Access Active",
+      "lifetimeMessage": "You have unlimited access to all features forever. No expiration, no renewals needed.",
+      "loading": "Loading...",
+      "renew": "Renew Now",
+      "upgrade": "Upgrade Plan",
+      "viewPlans": "View Plans",
+      "noActive": "You don't have an active subscription.",
+      "errorTitle": "Unable to load subscription",
+      "errorMessage": "Please refresh the page or contact support.",
+      "alert": {
+        "warning": "Your subscription expires in 7 days. Renew now to avoid service interruption.",
+        "critical": "⚠️ Critical: Your subscription expires in 3 days! Renew immediately to keep access.",
+        "grace": "⏰ Grace Period Active: Your subscription has expired, but you have {days} days to renew without losing access.",
+        "expired": "Your subscription has expired. Renew now to regain access to all features."
+      }
     },
     "title": "Choose Your Plan",
     "subtitle": "Select the perfect plan to create a beautiful memorial website",
@@ -311,8 +359,25 @@
     }
   },
   "dashboard": {
+    "noSubscription": {
+      "title": "Welcome to ForeverPages!",
+      "message": "You have no active subscription. Please purchase a plan to subscribe and enjoy ForeverPages.",
+      "description": "Create beautiful memorial pages, share memories, and honor your loved ones with our premium features.",
+      "button": "Browse Plans & Subscribe"
+    },
+    "accessRevoked": {
+      "title": "Access Revoked",
+      "message": "Your collaborator access has been revoked by the memorial owner.",
+      "description": "Subscribe to create your own memorial and enjoy full access to ForeverPages features.",
+      "button": "View Subscription Plans"
+    },
     "sidebar": {
       "brand": "ForeverPages",
+      "collapse": "Collapse sidebar",
+      "expand": "Expand sidebar",
+      "logout": "Logout",
+      "close": "Close menu",
+      "navLabel": "Dashboard navigation",
       "nav": {
         "analytics": "Analytics",
         "gallery": "Gallery",
@@ -326,6 +391,7 @@
       "title": "Analytics Dashboard",
       "subtitle": "Track engagement and activity on your memorial pages",
       "exportReport": "Export Report",
+      "error": "Unable to load analytics data",
       "timeRanges": {
         "7days": "Last 7 days",
         "30days": "Last 30 days",
@@ -333,6 +399,24 @@
         "1year": "Last year"
       },
       "fromLastPeriod": "from last period",
+      "stats": {
+        "totalVisits": {
+          "title": "Total Visits",
+          "description": "Page views this month"
+        },
+        "uniqueVisitors": {
+          "title": "Unique Visitors",
+          "description": "Individual visitors"
+        },
+        "tributeMessages": {
+          "title": "Tribute Messages",
+          "description": "New tributes this week"
+        },
+        "memorialShares": {
+          "title": "Memorial Shares",
+          "description": "Social media shares"
+        }
+      },
       "visitorTrends": {
         "title": "Visitor Trends",
         "description": "Daily visitors over the past 30 days"
@@ -346,6 +430,17 @@
         "title": "Recent Activity",
         "description": "Latest interactions with your memorial pages"
       },
+      "activity": {
+        "newTribute": "New tribute from {{author}} on {{memorial}}",
+        "memorialCreated": "Memorial \"{{memorial}}\" created"
+      },
+      "pages": {
+        "memorialHome": "Memorial Home",
+        "photoGallery": "Photo Gallery",
+        "tributeWall": "Tribute Wall",
+        "serviceInfo": "Service Information",
+        "biography": "Biography"
+      },
       "memorialSummary": {
         "title": "Memorial Summary",
         "description": "Key information at a glance",
@@ -356,13 +451,49 @@
         "approvedTributes": "Approved Tributes",
         "serviceRsvps": "Service RSVPs",
         "memorialPage": "Memorial Page"
+      },
+      "collaboratorMemorials": {
+        "title": "Memorials You're Helping Manage",
+        "subtitle": "You've been invited to collaborate on these memorials",
+        "ownedBy": "Owned by {{owner}}",
+        "manageMemorial": "Manage Memorial"
       }
     },
     "gallery": {
-      "title": "Photo & Video Gallery",
-      "subtitle": "Manage memories and media for the memorial",
+      "title": "Media Gallery",
+      "subtitle": "View and manage all your uploaded photos and videos",
       "uploadMedia": "Upload Media",
       "uploadDialogTitle": "Upload Photos & Videos",
+      "uploadTitle": "Upload Media",
+      "uploadingSingle": "Uploading {{count}} file...",
+      "uploadingMultiple": "Uploading {{count}} files...",
+      "uploadSuccess": "{{name}} uploaded successfully",
+      "uploadFailed": "Upload failed",
+      "uploadError": "Upload failed",
+      "uploading": "Uploading...",
+      "uploaded": "Uploaded!",
+      "loading": "Loading your media...",
+      "errorTitle": "Failed to load media",
+      "errorDesc": "Please try refreshing the page",
+      "empty": "No media yet",
+      "emptyDesc": "Start uploading photos and videos to your memorial pages",
+      "search": "Search media...",
+      "all": "All",
+      "photo": "Photo",
+      "photos": "Photos",
+      "video": "Video",
+      "videos": "Videos",
+      "view": "View",
+      "delete": "Delete",
+      "deleteTitle": "Delete Media?",
+      "deleteDescription": "This action cannot be undone. This will permanently delete this media from your gallery.",
+      "deleteConfirm": "Delete",
+      "deleting": "Deleting media...",
+      "deleteSuccess": "Media deleted successfully",
+      "deleteFailed": "Failed to delete media",
+      "cancel": "Cancel",
+      "dropHere": "Drop files here...",
+      "dragDropLibrary": "Upload photos & videos to your library",
       "labels": {
         "selectFiles": "Select Files",
         "titleOptional": "Title (Optional)"
@@ -372,7 +503,33 @@
         "addMore": "Click to add more photos & videos",
         "preview": "Preview",
         "delete": "Delete"
-      }
+      },
+      "planLimits": {
+        "planUsage": "Plan Usage",
+        "photos": "Photos",
+        "videos": "Videos",
+        "used": "used",
+        "remaining": "remaining",
+        "storageWarning": "You're running low on storage. Consider upgrading your plan."
+      },
+      "sort": "Sort",
+      "sortDate": "Sort by Date",
+      "sortName": "Sort by Name",
+      "sortType": "Sort by Type",
+      "select": "Select",
+      "selectAll": "Select All",
+      "deselectAll": "Deselect All",
+      "selected": "selected",
+      "deleteSelected": "Delete Selected",
+      "deletingBulk": "Deleting {{count}} items...",
+      "bulkDeleteSingle": "{{count}} item deleted successfully",
+      "bulkDeleteMultiple": "{{count}} items deleted successfully",
+      "bulkDeleteFailed": "Failed to delete selected items",
+      "download": "Download",
+      "downloadSuccess": "Download started",
+      "downloadFailed": "Download failed",
+      "loadingMore": "Loading more...",
+      "allLoaded": "All media loaded"
     },
     "invitations": {
       "title": "Service Invitations",
@@ -380,7 +537,106 @@
       "tabs": {
         "create": "Create Invitation",
         "manage": "Manage Invites",
-        "rsvp": "RSVP Responses"
+        "guests": "Guests",
+        "analytics": "Analytics",
+        "rsvp": "RSVP Responses",
+        "overview": "Overview"
+      },
+      "empty": {
+        "noMemorials": {
+          "title": "No Memorial Pages Yet",
+          "description": "You need to create a memorial page before you can send invitations. Memorial pages honor and celebrate the life of your loved ones.",
+          "action": "Create Memorial Page"
+        },
+        "noInvitations": {
+          "title": "No Invitations Sent Yet",
+          "description": "Start inviting family and friends to view and contribute to your memorial pages. You can send invitations via email or WhatsApp.",
+          "action": "Send Your First Invitation"
+        },
+        "noRecipients": {
+          "title": "No Recipients Added",
+          "description": "Add at least one recipient to send invitations. You can add their email, phone number, or both.",
+          "hint": "Click 'Add Recipient' button above to get started"
+        },
+        "noResults": {
+          "title": "No Results Found",
+          "description": "No invitations match \"{{query}}\". Try adjusting your search or filters.",
+          "action": "Clear Search"
+        }
+      },
+      "wizard": {
+        "step1Title": "Invitation Details",
+        "step2Title": "Add Recipients",
+        "step3Title": "Review & Send",
+        "stepProgress": "Step {{current}} of {{total}}",
+        "step1Info": "Select the memorial page and customize your invitation message. You can add a personal touch with a custom subject line and message.",
+        "step2Info": "Add guests you'd like to invite to the memorial service. They'll receive an invitation to RSVP.",
+        "step3Info": "Review your invitation details below and click Send when ready.",
+        "selectMemorial": "Memorial Page",
+        "selectMemorialPlaceholder": "Choose a memorial page...",
+        "invitingGuests": "Inviting guests to",
+        "memorialPage": "memorial page",
+        "optional": "(Optional)",
+        "characters": "characters",
+        "subjectPlaceholder": "E.g., You're invited to celebrate a life well-lived",
+        "cardDescription": "Upload a custom invitation card image (max 5MB)",
+        "uploadCard": "Upload Image",
+        "back": "Back",
+        "next": "Next",
+        "send": "Send Invitations",
+        "sending": "Sending...",
+        "readyToSend": "Ready to Send!",
+        "professionalEmail": "Professional and widely accessible",
+        "directMessaging": "Direct and personal messaging",
+        "selectDeliveryMethod": "Please select at least one delivery method",
+        "recipientsAddedSingular": "{{count}} recipient added",
+        "recipientsAddedPlural": "{{count}} recipients added",
+        "addOneRecipient": "Add at least one recipient",
+        "recipientNumber": "Recipient #{{number}}",
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "addRecipient": "Add Another Recipient",
+        "invitationDetails": "Invitation Details",
+        "customSubject": "Custom Subject",
+        "personalMessage": "Personal Message",
+        "invitationCard": "Invitation Card",
+        "noCustomDetails": "No custom details added (using default template)",
+        "deliveryMethod": "Delivery Method",
+        "recipientsSummary": "Recipients ({{count}})",
+        "total": "total",
+        "anonymousGuest": "Anonymous Guest",
+        "recipientCountSingular": "Recipient",
+        "recipientCountPlural": "Recipients",
+        "deliveryMethodCountSingular": "Delivery Method",
+        "deliveryMethodCountPlural": "Delivery Methods"
+      },
+      "errors": {
+        "completeRequired": "Please complete all required fields",
+        "selectMemorial": "Please select a memorial page",
+        "addRecipient": "Please add at least one recipient",
+        "selectDeliveryMethod": "Please select at least one delivery method (Email or WhatsApp)",
+        "missingEmail": "{{name}} is missing an email address",
+        "missingPhone": "{{name}} is missing a phone number",
+        "aRecipient": "A recipient"
+      },
+      "success": {
+        "bulkSent": "{{count}} invitation{{plural}} sent successfully",
+        "exported": "{{format}} exported successfully",
+        "deleted": "Invitation to {{name}} deleted",
+        "bulkDeleted": "{{count}} invitations deleted"
+      },
+      "toasts": {
+        "exportSuccess": "Invitations exported as {{format}}",
+        "exportError": "Failed to export as {{format}}",
+        "deleteSuccess": "Invitation to {{name}} deleted",
+        "bulkDeleteSuccess": "{{count}} invitations deleted"
+      },
+      "delete": {
+        "title": "Revoke Invitation?",
+        "description": "This action cannot be undone. The invitation will be revoked and the recipient will no longer be able to accept it.",
+        "cancel": "Cancel",
+        "confirm": "Revoke"
       },
       "create": {
         "invitationDetails": "Invitation Details",
@@ -393,26 +649,446 @@
         "address": "Address",
         "rsvpRequired": "RSVP Required",
         "recipients": "Recipients",
-        "emailAddresses": "Email Addresses"
+        "emailAddresses": "Email Addresses",
+        "recipientName": "Recipient Name",
+        "recipientEmail": "Email Address",
+        "recipientPhone": "Phone Number",
+        "role": "Role",
+        "roles": {
+          "owner": "Owner",
+          "admin": "Admin",
+          "editor": "Editor",
+          "contributor": "Contributor",
+          "viewer": "Viewer"
+        },
+        "deliveryMethod": "Delivery Method",
+        "sendViaEmail": "Send via Email",
+        "sendViaWhatsApp": "Send via WhatsApp",
+        "message": "Personal Message",
+        "messageInfo": "Edit the message below to personalize your invitation",
+        "messagePlaceholder": "Add a personal note to your invitation...",
+        "defaultMessage": "We warmly invite you to join us in honoring the life and memory of {{memorialName}}. Your presence would mean a lot to us as we celebrate their legacy and share cherished memories together.",
+        "invitationCard": "Invitation Card (Optional)",
+        "customSubject": "Custom Email Subject (Optional)",
+        "enableRSVP": "Enable RSVP",
+        "rsvpDescription": "Allow guests to confirm attendance",
+        "submit": "Send Invitation",
+        "sending": "Sending..."
       },
       "actions": {
         "importFromContacts": "Import from Contacts",
         "sendInvitations": "Send Invitations",
         "resend": "Resend",
         "remove": "Remove",
+        "delete": "Delete",
+        "revoke": "Revoke",
         "exportList": "Export List",
-        "addMoreRecipients": "Add More Recipients"
+        "exportCSV": "Export as CSV",
+        "downloadQRCode": "Download QR Code",
+        "addMoreRecipients": "Add More Recipients",
+        "viewDetails": "View Details",
+        "refresh": "Refresh"
       },
       "manage": {
         "sentInvitations": "Sent Invitations",
-        "trackDelivery": "Track delivery status and manage your invitation list"
+        "trackDelivery": "Track delivery status and manage your invitation list",
+        "table": {
+          "guestName": "Guest Name",
+          "email": "Email",
+          "phone": "Phone",
+          "delivery": "Delivery",
+          "rsvp": "RSVP",
+          "sentDate": "Sent Date",
+          "actions": "Actions",
+          "anonymous": "Anonymous",
+          "noInvitations": "No invitations found.",
+          "pending": "Pending",
+          "attending": "Attending",
+          "declined": "Declined",
+          "maybe": "Maybe",
+          "rowSelected": "row selected",
+          "rowsSelected": "rows selected",
+          "resendAll": "Resend All",
+          "deleteAll": "Delete All",
+          "clear": "Clear",
+          "rowsPerPage": "Rows per page:",
+          "page": "Page",
+          "of": "of",
+          "previous": "Previous",
+          "next": "Next",
+          "export": "Export",
+          "exportCSV": "Export as CSV",
+          "exportPDF": "Export as PDF"
+        },
+        "status": {
+          "pending": "Pending",
+          "accepted": "Accepted",
+          "declined": "Declined",
+          "revoked": "Revoked",
+          "expired": "Expired"
+        },
+        "delivery": {
+          "email": "Email",
+          "whatsapp": "WhatsApp",
+          "both": "Email & WhatsApp",
+          "failed": "Failed"
+        },
+        "emptyState": {
+          "title": "No invitations sent yet",
+          "description": "Create your first invitation to get started"
+        }
+      },
+      "search": {
+        "placeholder": "Search by name, email, or phone..."
+      },
+      "filter": {
+        "status": "Status",
+        "delivery": "Delivery Method",
+        "clearFilters": "Clear Filters",
+        "showing": "Showing",
+        "of": "of",
+        "invitation": "invitation",
+        "invitations": "invitations",
+        "matching": "matching",
+        "statusOptions": {
+          "all": "All Statuses",
+          "pending": "Pending",
+          "accepted": "Accepted",
+          "declined": "Declined",
+          "expired": "Expired",
+          "revoked": "Revoked"
+        },
+        "deliveryOptions": {
+          "all": "All Methods",
+          "email": "Email Only",
+          "whatsapp": "WhatsApp Only",
+          "both": "Both"
+        }
       },
       "rsvp": {
         "attending": "Attending",
+        "notAttending": "Not Attending",
+        "maybe": "Maybe",
         "cannotAttend": "Cannot Attend",
         "noResponse": "No Response",
         "responsesTitle": "RSVP Responses",
-        "responsesDescription": "View and manage responses from invitees"
+        "responsesDescription": "View and manage responses from invitees",
+        "metrics": {
+          "total": "Total Invited",
+          "attending": "Attending",
+          "declined": "Declined",
+          "maybe": "Maybe",
+          "pending": "Pending",
+          "responded": "Responded"
+        },
+        "filters": {
+          "all": "All Responses",
+          "attending": "Attending Only",
+          "declined": "Declined Only",
+          "maybe": "Maybe",
+          "pending": "Pending",
+          "withMessages": "With Messages"
+        },
+        "guestDetails": {
+          "plusOnes": "Plus Ones",
+          "dietary": "Dietary Restrictions",
+          "accessibility": "Accessibility Needs",
+          "message": "Message",
+          "respondedOn": "Responded On",
+          "title": "Guest Details",
+          "viewDescription": "View detailed information for this guest",
+          "editDescription": "View and edit detailed information for this guest",
+          "special": "Special Requests/Notes"
+        },
+        "emptyState": {
+          "title": "No RSVP responses yet",
+          "description": "Responses will appear here once guests start responding"
+        }
+      },
+      "guestList": {
+        "title": "Guest List",
+        "description": "Comprehensive view of all guests with dietary and accessibility information",
+        "stats": {
+          "totalGuests": "Total Guests",
+          "plusOnes": "Plus Ones",
+          "dietaryRestrictions": "Dietary Restrictions",
+          "accessibilityNeeds": "Accessibility Needs"
+        },
+        "filters": {
+          "title": "Filters",
+          "searchPlaceholder": "Search by name or email...",
+          "dietaryFilter": {
+            "all": "All Guests",
+            "hasDietary": "Has Dietary Restrictions",
+            "noDietary": "No Dietary Restrictions"
+          },
+          "rsvpFilter": {
+            "all": "All RSVP Status",
+            "accepted": "Accepted",
+            "maybe": "Maybe",
+            "declined": "Declined"
+          },
+          "showing": "Showing",
+          "of": "of",
+          "guests": "guests"
+        },
+        "table": {
+          "title": "Guest Details",
+          "guest": "guest",
+          "guests": "guests",
+          "found": "found",
+          "noResponse": "No Response",
+          "viewDetails": "View Details"
+        },
+        "emptyState": "No guests match your filters",
+        "guestDetailsDialog": {
+          "basicInfo": "Basic Information",
+          "guestInfo": "Guest Information",
+          "name": "Name",
+          "email": "Email",
+          "phone": "Phone",
+          "rsvpStatus": "RSVP Status",
+          "plusOnesLabel": "Additional Guests (+1s)",
+          "plusOnesCount": "{{count}} {{plural}}",
+          "plusOnesPlural": "guests",
+          "plusOnesSingular": "guest",
+          "plusOnesHelp": "Number of additional guests attending",
+          "dietaryLabel": "Dietary Restrictions/Preferences",
+          "dietaryPlaceholder": "e.g., Vegetarian, Vegan, Gluten-free, Allergies...",
+          "dietaryEmpty": "No dietary restrictions specified",
+          "accessibilityLabel": "Accessibility Needs",
+          "accessibilityPlaceholder": "e.g., Wheelchair access, Sign language interpreter, Large print materials...",
+          "accessibilityEmpty": "No accessibility needs specified",
+          "specialLabel": "Special Requests/Notes",
+          "specialPlaceholder": "Any other special requests or notes...",
+          "specialEmpty": "No special requests",
+          "close": "Close",
+          "cancel": "Cancel",
+          "save": "Save Changes"
+        }
+      },
+      "analytics": {
+        "title": "Invitation Analytics",
+        "description": "Track and analyze your invitation performance",
+        "exportData": "Export Data",
+        "exportSuccess": "Analytics exported successfully",
+        "exportError": "Failed to export analytics",
+        "stats": {
+          "totalSent": "Total Sent",
+          "accepted": "Accepted (Yes)",
+          "declined": "Declined (No)",
+          "pending": "Pending",
+          "acceptanceRate": "{{rate}}% acceptance rate",
+          "responseRate": "{{rate}}% response rate"
+        },
+        "deliveryMethods": "Delivery Methods",
+        "deliveryMethodsDescription": "Distribution of delivery channels",
+        "deliveryChannels": {
+          "email": "Email",
+          "whatsapp": "WhatsApp"
+        },
+        "responses": "Response Breakdown",
+        "responsesDescription": "RSVP status distribution",
+        "responseTypes": {
+          "accepted": "Accepted",
+          "maybe": "Maybe",
+          "declined": "Declined",
+          "noResponse": "No Response"
+        },
+        "metrics": {
+          "deliveryRate": "Delivery Rate",
+          "deliveryRateDescription": "{{delivered}} of {{total}} delivered",
+          "avgResponseTime": "Avg. Response Time",
+          "avgResponseTimeDescription": "From send to response",
+          "expiredInvitations": "Expired Invitations",
+          "expiredDescription": "Past expiration date"
+        }
+      },
+      "analyticsCharts": {
+        "stats": {
+          "totalSent": "Total Sent",
+          "allInvitations": "All invitations",
+          "accepted": "Accepted",
+          "acceptanceRate": "{{rate}}% acceptance rate",
+          "responseRate": "Response Rate",
+          "responses": "{{count}} responses",
+          "pending": "Pending",
+          "awaitingResponse": "Awaiting response"
+        },
+        "timeline": {
+          "title": "Invitations Over Time",
+          "description": "Last 30 days activity",
+          "sent": "Sent",
+          "accepted": "Accepted",
+          "declined": "Declined"
+        },
+        "breakdown": {
+          "title": "Response Breakdown",
+          "description": "RSVP status distribution",
+          "accepted": "Accepted",
+          "declined": "Declined",
+          "maybe": "Maybe",
+          "noresponse": "No Response"
+        },
+        "delivery": {
+          "title": "Delivery Methods",
+          "description": "Email vs WhatsApp distribution",
+          "email": "Email",
+          "whatsapp": "WhatsApp",
+          "invitations": "Invitations"
+        },
+        "export": "Export Analytics"
+      },
+      "rsvpTab": {
+        "stats": {
+          "attending": "Attending",
+          "declined": "Declined",
+          "maybe": "Maybe",
+          "pending": "Pending",
+          "responseRate": "Response Rate",
+          "responseRateDescription": "{{responded}} of {{total}} responded",
+          "acceptanceRate": "Acceptance Rate",
+          "acceptanceRateDescription": "{{accepted}} of {{total}} attending"
+        },
+        "filters": {
+          "all": "All",
+          "attending": "Attending",
+          "declined": "Declined",
+          "maybe": "Maybe",
+          "pending": "Pending"
+        },
+        "labels": {
+          "attending": "Attending",
+          "cannotAttend": "Cannot Attend",
+          "maybe": "Maybe",
+          "noResponse": "No Response"
+        },
+        "title": {
+          "allGuests": "All Guests",
+          "guests": "{{label}} Guests"
+        },
+        "guestCount": {
+          "singular": "guest",
+          "plural": "guests"
+        },
+        "emptyState": {
+          "noGuests": "No {{filter}} guests",
+          "allResponded": "All guests have responded to their invitations",
+          "tryDifferentFilter": "Try selecting a different filter"
+        },
+        "guestDetails": {
+          "plusOnes": "Plus ones: {{count}}",
+          "dietary": "Dietary: {{restrictions}}",
+          "accessibility": "Accessibility: {{needs}}"
+        }
+      },
+      "rsvpPage": {
+        "title": "Memorial Service RSVP",
+        "subtitle": "You have been invited to attend the memorial service for",
+        "loading": "Loading invitation...",
+        "error": {
+          "invalidLink": "Invalid RSVP link. Please check the URL and try again.",
+          "expired": "This RSVP link has expired. Please contact the organizer.",
+          "notFound": "Invitation not found.",
+          "loadFailed": "Failed to load invitation details. Please try again later.",
+          "submitFailed": "Failed to submit RSVP. Please try again.",
+          "selectOption": "Please select an RSVP option"
+        },
+        "form": {
+          "title": "Will you be attending?",
+          "options": {
+            "attending": "Yes, I'll be there",
+            "notAttending": "Sorry, I can't make it",
+            "maybe": "Maybe"
+          },
+          "optionalDetails": "Optional Details",
+          "plusOnes": "Number of Additional Guests",
+          "plusOnesPlaceholder": "0",
+          "dietary": "Dietary Restrictions",
+          "dietaryPlaceholder": "e.g., Vegetarian, allergies, etc.",
+          "accessibility": "Accessibility Needs",
+          "accessibilityPlaceholder": "e.g., Wheelchair access, parking, etc.",
+          "message": "Personal Message",
+          "messagePlaceholder": "Share a memory or send your condolences...",
+          "submit": "Submit RSVP",
+          "submitting": "Submitting..."
+        },
+        "success": {
+          "title": "Thank You!",
+          "attending": "We've received your RSVP. Looking forward to seeing you at the service.",
+          "notAttending": "We've received your RSVP. Thank you for letting us know.",
+          "maybe": "We've received your RSVP. Please let us know if your plans change."
+        },
+        "alreadySubmitted": {
+          "title": "Already Responded",
+          "description": "You have already submitted your RSVP.",
+          "status": "Your Response",
+          "attending": "You're attending",
+          "notAttending": "You're not attending",
+          "maybe": "You might attend"
+        },
+        "serviceDetails": {
+          "title": "Service Details",
+          "date": "Date",
+          "time": "Time",
+          "location": "Location",
+          "details": "Details"
+        },
+        "memorial": {
+          "about": "About",
+          "dates": "{{birthDate}} - {{deathDate}}"
+        },
+        "calendar": {
+          "attached": "Calendar invite attached",
+          "description": "Add the memorial service to your calendar"
+        },
+        "qrCode": {
+          "scanToRSVP": "Scan to RSVP",
+          "description": "Scan with your phone camera to quickly RSVP"
+        }
+      },
+      "notifications": {
+        "invitationSent": "Invitation sent successfully",
+        "invitationResent": "Invitation resent successfully",
+        "invitationDeleted": "Invitation deleted successfully",
+        "rsvpReceived": "New RSVP received",
+        "qrCodeDownloaded": "QR code downloaded",
+        "exportComplete": "Export completed successfully",
+        "errors": {
+          "sendFailed": "Failed to send invitation",
+          "resendFailed": "Failed to resend invitation",
+          "deleteFailed": "Failed to delete invitation",
+          "exportFailed": "Failed to export data",
+          "qrCodeFailed": "Failed to download QR code"
+        }
+      },
+      "emails": {
+        "subject": {
+          "invitation": "{{inviterName}} invited you to {{memorialName}}'s memorial service",
+          "rsvpNotification": "New RSVP: {{guestName}} responded to {{memorialName}}'s memorial invitation"
+        },
+        "invitation": {
+          "header": "Memorial Service Invitation",
+          "subheader": "You're invited to remember and celebrate a life",
+          "greeting": "Hello {{recipientName}}",
+          "invitedBy": "{{inviterName}} has invited you to attend the memorial service for {{memorialName}}.",
+          "rsvpPrompt": "Please let us know if you'll be attending.",
+          "acceptButton": "Accept Invitation",
+          "declineButton": "Decline",
+          "expiresOn": "This invitation will expire on {{date}}",
+          "footer": "If you didn't expect this invitation, you can safely ignore this email."
+        },
+        "rsvpNotification": {
+          "header": "New RSVP",
+          "greeting": "Hi {{organizerName}}",
+          "body": "{{guestName}} has responded to your memorial service invitation.",
+          "viewButton": "View All Responses",
+          "footer": "ForeverPages - Preserve memories, forever."
+        }
+      },
+      "whatsapp": {
+        "serviceInvitation": "You're invited to {{memorialName}}'s memorial service. RSVP here:",
+        "invitationMessage": "{{inviterName}} has invited you to attend the memorial service for {{memorialName}}. Please RSVP to let us know if you'll be attending."
       }
     },
     "pageBuilder": {
@@ -603,26 +1279,44 @@
     "form": {
       "name": "Full Name",
       "email": "Email Address",
+      "phone": "Phone Number",
       "password": "Password",
       "confirmPassword": "Confirm Password"
     },
     "placeholders": {
       "name": "Enter your full name",
       "email": "Enter your email",
+      "phone": "WhatsApp number",
       "password": "Enter your password",
       "confirmPassword": "Confirm your password"
     },
     "buttons": {
       "createAccount": "Create Account",
-      "loginHere": "Login here"
+      "creatingAccount": "Creating Account...",
+      "loginHere": "Login here",
+      "continueWithGoogle": "Continue with Google",
+      "signingUpWithGoogle": "Signing up with Google..."
+    },
+    "oauth": {
+      "divider": "OR"
     },
     "errors": {
       "nameRequired": "Name is required",
       "emailRequired": "Email is required",
       "invalidEmail": "Please enter a valid email",
+      "phoneRequired": "Phone number is required",
       "passwordRequired": "Password is required",
       "passwordLength": "Password must be at least 8 characters",
-      "passwordsDontMatch": "Passwords do not match"
+      "passwordsDontMatch": "Passwords do not match",
+      "recaptchaRequired": "Please complete the reCAPTCHA verification",
+      "paymentRequired": "Payment required. Please complete payment first.",
+      "paymentVerificationFailed": "Payment verification failed. Please complete payment first.",
+      "paymentVerificationError": "Failed to verify payment. Please try again.",
+      "registrationFailed": "Registration failed",
+      "registrationError": "An error occurred during registration"
+    },
+    "success": {
+      "accountCreated": "Account created successfully! Please verify your email."
     },
     "alreadyHaveAccount": "Already have an account?",
     "terms": {
@@ -648,7 +1342,12 @@
     },
     "buttons": {
       "login": "Login",
-      "registerHere": "Register here"
+      "registerHere": "Register here",
+      "signInWithGoogle": "Sign in with Google",
+      "signingInWithGoogle": "Signing in with Google..."
+    },
+    "oauth": {
+      "divider": "OR"
     },
     "errors": {
       "emailRequired": "Email is required",
@@ -658,7 +1357,8 @@
     "rememberMe": "Remember me",
     "forgotPassword": "Forgot password?",
     "noAccount": "Don't have an account?",
-    "tagline": "A place to honor and remember those we love"
+    "tagline": "A place to honor and remember those we love",
+    "loggingOut": "Logging out..."
   },
   "forgotPassword": {
     "title": "Forgot Password",
@@ -682,7 +1382,7 @@
       "title": "Check Your Email",
       "subtitle": "We've sent you a password reset link",
       "checkEmail": "Check Your Email",
-      "instructions": "We've sent a password reset link to {email}. Please check your inbox and follow the instructions to reset your password.",
+      "instructions": "We've sent a password reset link to {{email}}. Please check your inbox and follow the instructions to reset your password.",
       "tryAgain": "Try Another Email",
       "backToLogin": "Back to Login"
     },
@@ -719,6 +1419,13 @@
     "tagline": "A place to honor and remember those we love"
   },
   "emailVerification": {
+    "banner": {
+      "title": "Email Verification Required",
+      "description": "Please verify your email address to unlock all features and receive important updates.",
+      "verifyNow": "Verify Now",
+      "resendEmail": "Resend Email",
+      "sending": "Sending..."
+    },
     "title": "Verify Your Email",
     "subtitle": "Enter the 6-digit code sent to your email",
     "enterCode": "Enter Verification Code",
@@ -767,7 +1474,7 @@
     "pendingActions": "Pending actions: {count}",
     "syncProgress": {
       "synchronizing": "Synchronizing...",
-      "progress": "Progress: {current}/{total}",
+      "progress": "Progress: {{current}}/{{total}}",
       "title": "Sync Progress",
       "complete": "Complete"
     },
@@ -775,13 +1482,607 @@
       "offlineMessage": "You're currently offline.",
       "pendingActions": "You have {count} pending action{{count !== 1 ? 's' : ''}} that will sync when you're back online."
     },
-    "lastSync": "Last sync: {synced} synced, {failed} failed",
+    "lastSync": "Last sync: {{synced}} synced, {{failed}} failed",
     "loading": {
       "offline": "Offline",
       "viewingCached": "Viewing cached images",
       "actionsQueued": "{count} action{{count !== 1 ? 's' : ''}} queued",
       "willSyncWhenOnline": "will sync when online",
       "savedLocally": "Will be saved locally and synced when online"
+    }
+  },
+  "twoFactor": {
+    "banner": {
+      "title": "Two-Factor Authentication Recommended",
+      "description": "Add an extra layer of security to your account by enabling two-factor authentication (2FA). This helps protect your memorial pages and personal information.",
+      "enable": "Enable 2FA"
+    },
+    "verification": {
+      "title": "Two-Factor Authentication",
+      "subtitle": {
+        "email": "Enter the code sent to your email",
+        "authenticator": "Enter the code from your authenticator app"
+      },
+      "enterCode": "Enter Verification Code",
+      "instructions": {
+        "email": "Code sent to {{email}}",
+        "authenticator": "Open your authenticator app"
+      },
+      "verifying": "Verifying...",
+      "resendCode": "Resend code",
+      "useBackupCode": "Use backup code instead",
+      "backupCode": {
+        "title": "Enter Backup Code",
+        "subtitle": "Enter one of your saved backup codes",
+        "placeholder": "XXXX-XXXX",
+        "verify": "Verify Backup Code",
+        "useVerificationCode": "Use verification code instead"
+      },
+      "backToLogin": "Back to login",
+      "success": "Verification successful!",
+      "error": {
+        "invalidCode": "Invalid verification code",
+        "failed": "Failed to complete login"
+      }
+    },
+    "settings": {
+      "title": "Two-Factor Authentication",
+      "description": "Add an extra layer of security to your account",
+      "status": {
+        "enabled": "2FA Enabled",
+        "disabled": "2FA Disabled",
+        "method": {
+          "email": "Email",
+          "authenticator": "Authenticator App"
+        }
+      },
+      "enable": {
+        "title": "Enable Two-Factor Authentication",
+        "selectMethod": "Select Authentication Method",
+        "methods": {
+          "email": {
+            "title": "Email Authentication",
+            "description": "Receive a verification code via email whenever you sign in"
+          },
+          "authenticator": {
+            "title": "Authenticator App",
+            "description": "Use an authenticator app like Google Authenticator or Authy"
+          }
+        }
+      },
+      "email": {
+        "title": "Email Two-Factor Authentication",
+        "description": "You'll receive a verification code via email when signing in.",
+        "howItWorks": "How it works:",
+        "steps": {
+          "step1": "Sign in with your password",
+          "step2": "Receive a code via email",
+          "step3": "Enter the code to complete login"
+        },
+        "buttons": {
+          "enable": "Enable Email 2FA",
+          "enabling": "Enabling...",
+          "disable": "Disable 2FA",
+          "disabling": "Disabling..."
+        }
+      },
+      "authenticator": {
+        "title": "Authenticator App Setup",
+        "description": "Use an authenticator app for more secure verification.",
+        "step1": {
+          "title": "Step 1: Install an Authenticator App",
+          "description": "Download an authenticator app if you don't have one:",
+          "apps": {
+            "googleAuth": "Google Authenticator",
+            "authy": "Authy",
+            "msAuth": "Microsoft Authenticator"
+          }
+        },
+        "step2": {
+          "title": "Step 2: Scan QR Code",
+          "description": "Open your authenticator app and scan this QR code:",
+          "manualEntry": "Can't scan? Enter this code manually:",
+          "copy": "Copy",
+          "copied": "Copied!"
+        },
+        "step3": {
+          "title": "Step 3: Verify Setup",
+          "description": "Enter the 6-digit code from your authenticator app:",
+          "placeholder": "Enter 6-digit code",
+          "verify": "Verify & Enable",
+          "verifying": "Verifying..."
+        },
+        "buttons": {
+          "cancel": "Cancel",
+          "disable": "Disable Authenticator 2FA",
+          "disabling": "Disabling..."
+        }
+      },
+      "backupCodes": {
+        "title": "Backup Codes",
+        "description": "Save these backup codes in a secure place. Each code can only be used once.",
+        "warning": "Warning: Only {{count}} backup code(s) remaining. Generate new ones in Settings.",
+        "remaining": "{{count}} codes remaining",
+        "buttons": {
+          "download": "Download Codes",
+          "copy": "Copy All Codes",
+          "copied": "Copied to clipboard!",
+          "regenerate": "Regenerate Codes",
+          "regenerating": "Regenerating..."
+        },
+        "regenerateWarning": {
+          "title": "Regenerate Backup Codes?",
+          "message": "This will invalidate all existing backup codes. Make sure you've saved your current codes before proceeding.",
+          "confirm": "Regenerate",
+          "cancel": "Cancel"
+        }
+      },
+      "disable": {
+        "warning": {
+          "title": "Disable Two-Factor Authentication?",
+          "message": "Your account will be less secure without 2FA. Are you sure you want to disable it?",
+          "confirm": "Yes, Disable 2FA",
+          "cancel": "Cancel"
+        }
+      },
+      "success": {
+        "enabled": "Two-factor authentication enabled successfully!",
+        "disabled": "Two-factor authentication disabled",
+        "codesRegenerated": "Backup codes regenerated successfully"
+      },
+      "error": {
+        "loadFailed": "Failed to load 2FA settings",
+        "enableFailed": "Failed to enable 2FA",
+        "disableFailed": "Failed to disable 2FA",
+        "verifyFailed": "Failed to verify code",
+        "regenerateFailed": "Failed to regenerate backup codes"
+      }
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "bellButton": "Notifications",
+    "markAllRead": "Mark all as read",
+    "clearAll": "Clear all",
+    "loading": "Loading notifications...",
+    "empty": "No notifications yet",
+    "markedAsRead": "Marked as read",
+    "markAsReadError": "Failed to mark as read",
+    "allMarkedAsRead": "All notifications marked as read",
+    "markAllAsReadError": "Failed to mark all as read",
+    "allCleared": "All notifications cleared",
+    "clearAllError": "Failed to clear notifications",
+    "types": {
+      "NEW_TRIBUTE": "New Tribute",
+      "NEW_COMMENT": "New Comment",
+      "NEW_PHOTO": "New Photo",
+      "NEW_CANDLE": "New Candle",
+      "NEW_FLOWER": "New Flower",
+      "INVITATION": "Invitation",
+      "MEMORIAL_ANNIVERSARY": "Memorial Anniversary",
+      "BIRTHDAY_ANNIVERSARY": "Birthday Anniversary",
+      "EXPIRING_SOON": "Expiring Soon",
+      "SYSTEM": "System Notification"
+    }
+  },
+  "collaborators": {
+    "title": "Memorial Collaborators",
+    "subtitle": "Invite team members who can help manage and maintain this memorial page. For event guests, use the Invitations tab.",
+    "invite": "Invite Collaborator",
+    "sendInvitation": "Send Invitation",
+    "noCollaborators": "No collaborators yet",
+    "noCollaboratorsDescription": "Invite team members to help manage this memorial page",
+    "accessRestricted": {
+      "title": "Access Restricted",
+      "description": "Only the memorial owner can manage collaborators."
+    },
+    "roleRestriction": {
+      "title": "Access Restricted",
+      "description": "Your role ({{role}}) does not have permission to access this section.",
+      "contactOwner": "Please contact the memorial owner if you believe this is an error."
+    },
+    "form": {
+      "emails": {
+        "label": "Email Addresses",
+        "placeholder": "email1@example.com, email2@example.com",
+        "hint": "Separate multiple emails with commas"
+      },
+      "role": {
+        "label": "Role",
+        "placeholder": "Select a role"
+      },
+      "message": {
+        "label": "Personal Message (Optional)",
+        "placeholder": "Add a personal message to the invitation..."
+      },
+      "whatsapp": {
+        "label": "Also send via WhatsApp",
+        "phones": {
+          "label": "Phone Numbers (with country code)",
+          "placeholder": "+1234567890, +0987654321",
+          "hint": "Include country code (e.g., +1 for US, +234 for Nigeria)"
+        }
+      },
+      "cancel": "Cancel",
+      "send": "Send Invitation",
+      "sending": "Sending..."
+    },
+    "roles": {
+      "ADMIN": {
+        "name": "Admin",
+        "short": "Administrator",
+        "description": "Full control - manage settings, approve content, invite others",
+        "longDescription": "Full control over the memorial page",
+        "permissions": {
+          "title": "What you can do:",
+          "list": [
+            "Manage all content (photos, stories, tributes)",
+            "Edit memorial settings and information",
+            "Invite and manage other collaborators",
+            "Approve or reject contributions",
+            "Access analytics and visitor statistics"
+          ]
+        }
+      },
+      "EDITOR": {
+        "name": "Editor",
+        "description": "Edit content - add/edit photos, stories, and tributes",
+        "longDescription": "Edit and manage memorial content",
+        "permissions": {
+          "title": "What you can do:",
+          "list": [
+            "Add and edit photos, stories, and tributes",
+            "Update memorial information and biography",
+            "Moderate comments and guest contributions",
+            "Manage the memorial timeline"
+          ]
+        }
+      },
+      "CONTRIBUTOR": {
+        "name": "Contributor",
+        "description": "Add content - post tributes and photos (requires approval)",
+        "longDescription": "Add content to the memorial",
+        "permissions": {
+          "title": "What you can do:",
+          "list": [
+            "Post tributes and condolences",
+            "Upload photos and videos",
+            "Share stories and memories",
+            "Comment on posts"
+          ]
+        }
+      }
+    },
+    "roleRestrictions": {
+      "ADMIN": "You have full management access except billing settings.",
+      "EDITOR": "You can edit content and manage media.",
+      "CONTRIBUTOR": "You can add stories, photos, and tributes.",
+      "VIEWER": "You have read-only access to this memorial."
+    },
+    "status": {
+      "accepted": "Accepted",
+      "pending": "Pending",
+      "declined": "Declined"
+    },
+    "table": {
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "invitedAt": "Invited",
+      "acceptedAt": "Accepted",
+      "actions": "Actions"
+    },
+    "actions": {
+      "changeRole": "Change Role",
+      "remove": "Remove",
+      "resendInvitation": "Resend Invitation"
+    },
+    "dialogs": {
+      "changeRole": {
+        "title": "Change Collaborator Role",
+        "description": "Are you sure you want to change {{email}}'s role from {{currentRole}} to {{newRole}}?",
+        "confirm": "Confirm Change",
+        "cancel": "Cancel",
+        "success": "Role updated successfully",
+        "error": "Failed to update role"
+      },
+      "remove": {
+        "title": "Remove Collaborator",
+        "description": "Are you sure you want to remove {{email}} as a collaborator? They will lose access to this memorial immediately.",
+        "confirm": "Remove",
+        "cancel": "Cancel",
+        "success": "Collaborator removed successfully",
+        "error": "Failed to remove collaborator"
+      },
+      "resend": {
+        "success": "Invitation resent successfully",
+        "error": "Failed to resend invitation"
+      }
+    },
+    "validation": {
+      "emailRequired": "Please enter at least one email address",
+      "phoneRequired": "Please enter at least one phone number for WhatsApp",
+      "invalidEmail": "Please enter valid email addresses",
+      "invalidPhone": "Please enter valid phone numbers with country codes"
+    },
+    "email": {
+      "subject": "You've been invited to collaborate on {memorialName}'s memorial",
+      "greeting": "Hello {recipientName},",
+      "invitation": "{inviterName} has invited you to be a {role} for {deceasedName}'s memorial page.",
+      "customMessage": "Personal message from {inviterName}:",
+      "role": "Your Role: {role}",
+      "permissions": "What you can do:",
+      "accept": "Accept Invitation",
+      "copyLink": "Or copy and paste this link:",
+      "important": "Important:",
+      "expiryNote": "This invitation will expire on {date}",
+      "accountNote": "You'll need to sign in or create a ForeverPages account to accept",
+      "accessNote": "After accepting, you'll have immediate access to the memorial page",
+      "footer": "As a collaborator, you'll be helping to preserve and honor the memory of {memorialName}. Thank you for being part of this meaningful work.",
+      "ignoreNote": "If you didn't expect this invitation, you can safely ignore this email.",
+      "copyright": "© {year} ForeverPages. All rights reserved.",
+      "securityNote": "This is a secure invitation link. For your security, do not share this email with others."
+    },
+    "whatsapp": {
+      "greeting": "👋 Hi!",
+      "inviteMessage": "*{inviterName}* has invited you to collaborate on the memorial page for *{memorialName}*",
+      "roleTitle": "Your Role: {roleEmoji} {role}",
+      "permissions": "What you can do:",
+      "acceptPrompt": "Accept this invitation:",
+      "expiryNote": "⏰ This invitation expires on {date}",
+      "securityNote": "🔒 Please keep this link secure and do not share it.",
+      "roleEmojis": {
+        "ADMIN": "👑",
+        "EDITOR": "✏️",
+        "CONTRIBUTOR": "📝"
+      }
+    }
+  },
+  "livestream": {
+    "broadcaster": {
+      "title": "Start Livestream",
+      "subtitle": "Broadcast a memorial service or celebration of life",
+      "setup": {
+        "title": "Stream Setup",
+        "streamTitle": "Stream Title",
+        "streamTitlePlaceholder": "Enter a title for your livestream",
+        "streamDescription": "Description (Optional)",
+        "streamDescriptionPlaceholder": "Add details about the stream",
+        "scheduleStream": "Schedule Stream",
+        "scheduledFor": "Scheduled For",
+        "privateStream": "Private Stream",
+        "privateStreamDescription": "Require password to view",
+        "password": "Stream Password",
+        "passwordPlaceholder": "Enter a password (optional)",
+        "recordStream": "Record Stream",
+        "recordStreamDescription": "Save recording for 6 months"
+      },
+      "mediaPreview": {
+        "title": "Camera & Microphone",
+        "selectCamera": "Select Camera",
+        "selectMicrophone": "Select Microphone",
+        "selectQuality": "Stream Quality",
+        "testDevices": "Test Your Devices",
+        "noCamera": "No camera detected",
+        "noMicrophone": "No microphone detected",
+        "permissionDenied": "Camera/microphone permission denied",
+        "quality": {
+          "LOWEST": "Lowest (144p) - Very slow connection",
+          "LOW": "Low (240p) - Slow connection",
+          "MEDIUM": "Medium (360p) - Mobile data",
+          "SD": "SD (480p) - Standard",
+          "HD": "HD (720p) - Recommended",
+          "FULL_HD": "Full HD (1080p) - Best quality"
+        }
+      },
+      "controls": {
+        "startStream": "Start Stream",
+        "pauseStream": "Pause Stream",
+        "resumeStream": "Resume Stream",
+        "endStream": "End Stream",
+        "viewers": "Viewers",
+        "duration": "Duration",
+        "confirmEnd": "Are you sure you want to end this stream?",
+        "confirmEndDescription": "This action cannot be undone. The stream will end for all viewers.",
+        "cancel": "Cancel",
+        "endNow": "End Stream"
+      },
+      "status": {
+        "connecting": "Connecting...",
+        "connected": "Connected",
+        "live": "LIVE",
+        "paused": "PAUSED",
+        "ended": "ENDED",
+        "error": "Connection Error"
+      },
+      "chat": {
+        "title": "Live Chat",
+        "viewers": "Viewers",
+        "reactions": "Reactions",
+        "noMessages": "No messages yet",
+        "firstMessage": "Be the first to share a memory"
+      }
+    },
+    "viewer": {
+      "title": "Memorial Livestream",
+      "status": {
+        "live": "LIVE",
+        "paused": "PAUSED",
+        "ended": "Stream Ended",
+        "scheduled": "Scheduled",
+        "private": "Private Stream",
+        "recording": "Recording"
+      },
+      "info": {
+        "viewers": "viewers watching",
+        "viewerCount": "{count} viewer",
+        "viewerCountPlural": "{count} viewers",
+        "startedAt": "Started {time} ago",
+        "scheduledFor": "Scheduled for {date}",
+        "duration": "Duration: {duration}"
+      },
+      "quality": {
+        "title": "Quality",
+        "current": "Current: {quality}",
+        "change": "Change Quality",
+        "auto": "Auto",
+        "LOWEST": "144p (Saves data)",
+        "LOW": "240p",
+        "MEDIUM": "360p",
+        "SD": "480p",
+        "HD": "720p",
+        "FULL_HD": "1080p"
+      },
+      "password": {
+        "title": "Private Stream",
+        "description": "This stream is password protected",
+        "placeholder": "Enter password",
+        "submit": "Unlock Stream",
+        "error": "Incorrect password. Please try again.",
+        "help": "Contact the memorial organizer if you need the password"
+      },
+      "chat": {
+        "title": "Live Chat",
+        "sendMessage": "Send message",
+        "messagePlaceholder": "Share your memories of {name}...",
+        "reactions": {
+          "heart": "Heart",
+          "prayer": "Prayer",
+          "candle": "Candle",
+          "flower": "Flower",
+          "dove": "Dove",
+          "applause": "Applause"
+        },
+        "locked": "Enter password to participate in chat",
+        "noMessages": "No messages yet. Be the first to share a memory.",
+        "justNow": "Just now",
+        "minutesAgo": "{count}m ago",
+        "hoursAgo": "{count}h ago",
+        "characterLimit": "{current}/{max} characters"
+      },
+      "errors": {
+        "connectionLost": "Connection lost. Trying to reconnect...",
+        "loadFailed": "Failed to load stream",
+        "notFound": "Stream not found",
+        "ended": "This stream has ended",
+        "retry": "Retry"
+      },
+      "recording": {
+        "title": "Watch Recording",
+        "available": "Recording available",
+        "processing": "Recording is being processed...",
+        "expiresOn": "Available until {date}",
+        "download": "Download Recording",
+        "downloadSize": "Size: {size}",
+        "expired": "This recording has expired"
+      }
+    },
+    "notifications": {
+      "streamScheduled": {
+        "title": "Livestream Scheduled",
+        "message": "A memorial livestream has been scheduled for {memorial}",
+        "when": "When: {date}",
+        "action": "Add to Calendar"
+      },
+      "streamLive": {
+        "title": "LIVE NOW: {memorial}",
+        "message": "The livestream is starting now!",
+        "action": "Watch Live Stream",
+        "urgent": "Don't miss it - the stream is happening right now!"
+      },
+      "streamEnded": {
+        "title": "Stream Ended",
+        "message": "Thank you for joining us",
+        "stats": "Stream Statistics",
+        "duration": "Duration: {duration}",
+        "peakViewers": "Peak Viewers: {count}",
+        "totalComments": "Comments: {count}",
+        "recordingInfo": "The recording will be available soon"
+      },
+      "recordingReady": {
+        "title": "Recording Ready",
+        "message": "The memorial livestream recording is now available",
+        "availableUntil": "Available until: {date}",
+        "action": "Watch Recording",
+        "download": "Download Recording",
+        "warning": "This recording will be automatically deleted on {date}"
+      },
+      "recordingExpiring": {
+        "title": "Recording Expiring Soon",
+        "message": "Action required! The recording will be deleted in {days} days",
+        "action": "Download Now",
+        "urgent": "Once deleted, this recording cannot be recovered"
+      },
+      "recordingDeleted": {
+        "title": "Recording Deleted",
+        "message": "The recording has been automatically deleted as scheduled",
+        "deletedOn": "Deleted on: {date}",
+        "info": "The memorial page remains active with all other content preserved"
+      }
+    },
+    "email": {
+      "streamScheduled": {
+        "subject": "Livestream Scheduled: {memorial}",
+        "greeting": "Hello {name},",
+        "intro": "A memorial livestream has been scheduled for {memorial}.",
+        "details": "Stream Details",
+        "title": "Title",
+        "when": "When",
+        "reminder": "You'll receive another email when the stream goes live.",
+        "action": "Add to Calendar",
+        "tip": "Tip: Make sure you have a stable internet connection for the best viewing experience."
+      },
+      "streamLive": {
+        "subject": "🔴 LIVE NOW: {memorial}",
+        "heading": "LIVE NOW",
+        "intro": "The livestream is starting now!",
+        "action": "Watch Live Stream",
+        "urgent": "Don't miss it! The stream is happening right now."
+      },
+      "streamEnded": {
+        "subject": "Stream Ended: {memorial}",
+        "greeting": "Thank you for joining us",
+        "intro": "The memorial livestream for {memorial} has ended.",
+        "stats": "Stream Statistics",
+        "duration": "Duration",
+        "peakViewers": "Peak Viewers",
+        "comments": "Comments",
+        "recordingInfo": "The recording is being processed and will be available soon.",
+        "recordingAvailability": "Recording: The recording will be available for 6 months and can be downloaded anytime."
+      },
+      "recordingReady": {
+        "subject": "Recording Ready: {memorial}",
+        "greeting": "Good news, {name}!",
+        "intro": "The recording of the memorial livestream for {memorial} is now available.",
+        "availableUntil": "Available until",
+        "watchAction": "Watch Recording",
+        "downloadAction": "Download Recording",
+        "warning": "Important: This recording will be automatically deleted on {date}. Download it if you want to keep it permanently."
+      },
+      "recordingExpiring": {
+        "subject": "⚠️ Recording Expiring Soon: {memorial}",
+        "heading": "Recording Expiring Soon",
+        "intro": "Action Required: Download Your Recording",
+        "countdown": "{days} Days Remaining",
+        "message": "The recording will be deleted on {date}",
+        "detail": "The memorial livestream recording for {memorial} will be automatically deleted in {days} days.",
+        "action": "Download Now (Don't Lose This!)",
+        "urgent": "Important: Once deleted, this recording cannot be recovered. Download it now to preserve these precious memories forever.",
+        "help": "If you need more time, please contact us or extend your recording retention in your dashboard."
+      },
+      "recordingDeleted": {
+        "subject": "Recording Deleted: {memorial}",
+        "heading": "Recording Deleted",
+        "intro": "Recording Retention Period Ended",
+        "message": "The memorial livestream recording for {memorial} has been automatically deleted as scheduled.",
+        "deletedOn": "Deleted on",
+        "note": "Note: This was part of our standard 6-month retention policy. We hope you had the opportunity to download the recording if needed.",
+        "info": "The memorial page remains active with all other content (photos, tributes, and memories) preserved."
+      },
+      "footer": {
+        "youreReceiving": "You're receiving this because you're connected to {memorial} memorial page.",
+        "copyright": "© {year} ForeverPages. All rights reserved."
+      }
     }
   }
 }

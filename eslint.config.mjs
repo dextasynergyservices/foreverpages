@@ -30,6 +30,8 @@ const eslintConfig = [
       "public/**",
       "coverage/**",
       "src/generated/**",
+      // Ignore compiled artifacts from the signaling server
+      "signaling-server/dist/**",
     ],
   },
 

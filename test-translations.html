@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Translation Test</title>
+  </head>
+  <body>
+    <h1>Translation Files Test</h1>
+    <p>Open Browser Console (F12) to see results</p>
+
+    <script>
+      // Test if translations are loaded correctly
+      async function testTranslations() {
+        console.log("=== TESTING TRANSLATIONS ===");
+
+        // Test English
+        const enResponse = await fetch("/src/lib/locales/en.json");
+        const enData = await enResponse.json();
+        console.log("English - subscription.status.active:", enData.subscription.status.active);
+        console.log(
+          "English - subscription.collaboratorAccess.name:",
+          enData.subscription.collaboratorAccess.name
+        );
+        console.log(
+          "English - dashboard.sidebar.nav.analytics:",
+          enData.dashboard.sidebar.nav.analytics
+        );
+
+        // Test Spanish
+        const esResponse = await fetch("/src/lib/locales/es.json");
+        const esData = await esResponse.json();
+        console.log("\nSpanish - subscription.status.active:", esData.subscription.status.active);
+        console.log(
+          "Spanish - subscription.collaboratorAccess.name:",
+          esData.subscription.collaboratorAccess.name
+        );
+        console.log(
+          "Spanish - dashboard.sidebar.nav.analytics:",
+          esData.dashboard.sidebar.nav.analytics
+        );
+        console.log(
+          "Spanish - dashboard.collaboratorMemorials.title:",
+          esData.dashboard.collaboratorMemorials.title
+        );
+
+        // Check localStorage
+        console.log("\n=== LOCALSTORAGE ===");
+        console.log("Current locale:", localStorage.getItem("locale"));
+        console.log("Preferred language:", localStorage.getItem("preferredLanguage"));
+      }
+
+      testTranslations();
+    </script>
+  </body>
+</html>

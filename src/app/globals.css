@@ -1,9 +1,7 @@
-@import "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
 
 @plugin "tailwindcss-animate";
-
-/* ForeverPages Design System - Compassionate Memorial Platform */
 
 @custom-variant dark (&:is(.dark *));
 
@@ -162,5 +160,15 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Shimmer animation for skeleton loaders */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
   }
 }

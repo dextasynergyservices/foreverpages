@@ -69,7 +69,13 @@ export function useMemorial(id: string) {
 export function useUser() {
   return useQuery({
     queryKey: ["user"],
-    queryFn: () => apiFetch<{ user: User }>("/api/user/profile"),
+    queryFn: async () => {
+      const response = await fetch("/api/user/profile");
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      }
+      return response.json() as Promise<{ message: string; user: User }>;
+    },
     staleTime: 30 * 60 * 1000, // 30 minutes
   });
 }
@@ -116,20 +122,21 @@ export function useAnalytics() {
     queryFn: () =>
       apiFetch<{
         stats: Array<{
-          title: string;
+          titleKey: string;
           value: string;
           change: string;
           trend: "up" | "down";
           icon: string;
-          description: string;
+          descriptionKey: string;
         }>;
         recentActivity: Array<{
-          action: string;
+          actionKey: string;
+          actionParams: Record<string, string>;
           time: string;
           type: "tribute" | "memorial";
         }>;
         topPages: Array<{
-          page: string;
+          pageKey: string;
           views: number;
           percentage: number;
         }>;
@@ -143,10 +150,22 @@ export interface Invitation {
   id: string;
   email: string;
   name: string;
-  status: "sent" | "pending" | "delivered";
+  phone?: string;
+  status: "pending" | "accepted" | "declined" | "expired" | "revoked";
   rsvp: "yes" | "no" | "maybe" | null;
-  createdAt: string;
-  updatedAt: string;
+  rsvpStatus?: "ATTENDING" | "NOT_ATTENDING" | "MAYBE" | null;
+  rsvpMessage?: string | null;
+  rsvpAt?: string | null;
+  message?: string | null;
+  expiresAt?: string;
+  sentViaEmail?: boolean;
+  sentViaWhatsApp?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  plusOnes?: number;
+  dietaryRestrictions?: string;
+  accessibilityNeeds?: string;
+  specialRequests?: string;
 }
 
 export function useInvitations() {
@@ -156,7 +175,10 @@ export function useInvitations() {
       apiFetch<{
         invitations: Invitation[];
       }>("/api/invitations"),
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 10 * 1000, // 10 seconds - refetch more frequently for RSVP updates
+    refetchInterval: 15 * 1000, // Auto-refetch every 15 seconds
+    refetchOnWindowFocus: true, // Refetch when user returns to tab
+    refetchOnMount: true, // Refetch when component mounts
   });
 }
 

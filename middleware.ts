@@ -22,6 +22,41 @@ import { rateLimitMiddleware } from "@/lib/rate-limit";
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
+  // === PAYMENT GUARD: Protect signup routes ===
+  // Signup pages don't require authentication, but may require payment verification
+  if (pathname === "/signup" || pathname === "/auth/signup") {
+    const typeParam = req.nextUrl.searchParams.get("type");
+    const invitationParam = req.nextUrl.searchParams.get("invitation");
+
+    console.log("🔍 Signup route hit:", { pathname, typeParam, invitationParam });
+
+    // Allow collaborators to signup without payment
+    if (typeParam === "collaborator" && invitationParam) {
+      console.log("✅ Collaborator signup - allowing access");
+      return NextResponse.next();
+    }
+
+    // Check if payment reference exists in cookies or query params
+    const paymentParam = req.nextUrl.searchParams.get("payment");
+    const paymentCookie = req.cookies.get("paymentId")?.value;
+
+    console.log("💳 Payment check:", { paymentParam, paymentCookie });
+
+    // Allow access if payment exists in either location
+    if (!paymentParam && !paymentCookie) {
+      // No payment found - redirect to packages page
+      console.log("❌ No payment found - redirecting to packages");
+      const packagesUrl = new URL("/packages", req.url);
+      const response = NextResponse.redirect(packagesUrl);
+      response.headers.set("X-Redirect-Reason", "payment-required");
+      return response;
+    }
+
+    // Payment verified or collaborator - allow signup
+    console.log("✅ Payment verified - allowing signup");
+    return NextResponse.next();
+  }
+
   // Add no-cache headers for auth-related routes
   const noCacheRoutes = ["/api/auth", "/api/user/profile", "/login", "/logout", "/signup"];
 
@@ -40,10 +75,16 @@ export async function middleware(req: NextRequest) {
     return rateLimitResult;
   }
 
-  // Get the JWT token from the request
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  // Skip authentication check for certain public routes that are in the matcher
+  const publicRoutes = ["/signup", "/auth/signup"];
+  const isPublicRoute = publicRoutes.includes(pathname);
 
-  if (!token) {
+  // Get the JWT token from the request (skip for public routes)
+  const token = !isPublicRoute
+    ? await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+    : null;
+
+  if (!token && !isPublicRoute) {
     const url = req.nextUrl.clone();
     url.pathname = "/auth/login";
     url.searchParams.set("redirect", pathname);
@@ -51,11 +92,24 @@ export async function middleware(req: NextRequest) {
   }
 
   // Special handling for admin routes - only admin role can access
-  if (pathname.startsWith("/api/admin/")) {
-    const userRole = (token.role as string) || "user";
+  if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin/")) {
+    if (!token) {
+      const url = req.nextUrl.clone();
+      url.pathname = "/auth/login";
+      url.searchParams.set("redirect", pathname);
+      return NextResponse.redirect(url);
+    }
+    const userRole = (token.role as string)?.toUpperCase() || "USER";
 
-    if (userRole !== "admin") {
-      return NextResponse.json({ message: "Forbidden - Admin access required" }, { status: 403 });
+    if (userRole !== "ADMIN" && userRole !== "SUPER_ADMIN") {
+      // For API routes, return 403
+      if (pathname.startsWith("/api/admin/")) {
+        return NextResponse.json({ message: "Forbidden - Admin access required" }, { status: 403 });
+      }
+      // For admin pages, redirect to user dashboard
+      const url = req.nextUrl.clone();
+      url.pathname = "/user-dashboard";
+      return NextResponse.redirect(url);
     }
     // Admin has full access, skip further checks
     return NextResponse.next();
@@ -71,6 +125,12 @@ export async function middleware(req: NextRequest) {
     pathname.startsWith("/api/gallery/") ||
     pathname.startsWith("/api/analytics/")
   ) {
+    if (!token) {
+      const url = req.nextUrl.clone();
+      url.pathname = "/auth/login";
+      url.searchParams.set("redirect", pathname);
+      return NextResponse.redirect(url);
+    }
     // Check if user has required role (default to 'user' role)
     const userRole = (token.role as string) || "user";
 
@@ -120,7 +180,10 @@ export async function middleware(req: NextRequest) {
 // This includes dashboard routes and all user-related API endpoints.
 export const config = {
   matcher: [
+    "/signup", // Payment guard protection
+    "/auth/signup", // Actual signup page (after redirect)
     "/user-dashboard/:path*",
+    "/admin/:path*",
     "/api/user/:path*",
     "/api/auth/:path*",
     "/api/memorials/:path*",

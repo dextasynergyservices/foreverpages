@@ -5,7 +5,11 @@ const nextConfig = {
   // Enable experimental features for better performance
   experimental: {
     optimizePackageImports: ["gsap", "lucide-react"],
+    // Next.js 15 - Turbopack is stable, no longer experimental
   },
+
+  // Faster refreshes in development
+  reactStrictMode: true,
 
   // Redirect HTTP to HTTPS in production
   async redirects() {
@@ -48,12 +52,13 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://www.recaptcha.net",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https:",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: https: blob:",
-              "connect-src 'self' https://www.google.com https://www.gstatic.com https://www.recaptcha.net",
-              "frame-src https://www.google.com https://www.recaptcha.net",
+              "media-src 'self' https://res.cloudinary.com blob:",
+              "connect-src 'self' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https:",
+              "frame-src https://www.google.com https://www.recaptcha.net https:",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
@@ -102,6 +107,12 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 
@@ -110,8 +121,17 @@ const nextConfig = {
 
   // Optimize bundle
   webpack: (config, { dev, isServer }) => {
+    // Speed up development builds
+    if (dev) {
+      config.watchOptions = {
+        poll: 1000, // Check for changes every second
+        aggregateTimeout: 300, // Delay before rebuilding
+        ignored: /node_modules/,
+      };
+    }
+
     if (!dev && !isServer) {
-      // Optimize for production
+      // Optimize for production only
       config.optimization.splitChunks = {
         chunks: "all",
         cacheGroups: {

@@ -2,9 +2,10 @@ import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3 } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
+import { useTranslations } from "@/hooks/useTranslations";
 
 interface TopPage {
-  page: string;
+  pageKey: string;
   views: number;
   percentage: number;
 }
@@ -14,8 +15,9 @@ interface ChartsSectionProps {
   t: (key: string, params?: unknown, fallback?: string) => string;
 }
 
-export const ChartsSection: React.FC<ChartsSectionProps> = ({ topPages, t }) => {
+export const ChartsSection: React.FC<ChartsSectionProps> = ({ topPages }) => {
   const { theme } = useTheme();
+  const { t } = useTranslations();
 
   // Invert card/background/text color intentionally per request:
   // - On light theme: card background should be black with white text
@@ -67,8 +69,10 @@ export const ChartsSection: React.FC<ChartsSectionProps> = ({ topPages, t }) => 
               <div key={index} className="flex items-center justify-between">
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium">{page.page}</span>
-                    <span className={`text-sm ${textMuted}`}>{page.views} views</span>
+                    <span className="text-sm font-medium">{t(page.pageKey)}</span>
+                    <span className={`text-sm ${textMuted}`}>
+                      {page.views} {t("dashboard.analytics.mostVisited.views")}
+                    </span>
                   </div>
                   <div className={`w-full rounded-full h-2 ${bgMuted}`}>
                     <div

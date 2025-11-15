@@ -99,6 +99,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check if user has active subscription
+    const subscription = await prisma.subscription.findFirst({
+      where: {
+        userId: session.user.id,
+        status: "ACTIVE",
+      },
+    });
+
+    if (!subscription) {
+      return NextResponse.json(
+        { message: "Active subscription required to create a memorial" },
+        { status: 403 }
+      );
+    }
+
     // Generate slug from name
     const slug = `${firstName.toLowerCase()}-${lastName.toLowerCase()}-${Date.now()}`;
 

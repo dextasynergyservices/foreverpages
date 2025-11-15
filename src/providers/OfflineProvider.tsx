@@ -9,7 +9,7 @@ interface OfflineProviderProps {
 
 // Dynamically import the actual OfflineProvider to avoid SSR issues
 const BaseOfflineProvider = dynamic(
-  () => import("@/contexts/OfflineContext").then((mod) => mod.OfflineProvider),
+  () => import("@/contexts/OfflineContext").then((mod) => ({ default: mod.OfflineProvider })),
   {
     ssr: false,
     loading: () => null,

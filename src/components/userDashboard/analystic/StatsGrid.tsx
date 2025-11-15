@@ -4,14 +4,15 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Eye, Users, Heart, TrendingUp } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
+import { useTranslations } from "@/hooks/useTranslations";
 
 interface Stat {
-  title: string;
+  titleKey: string;
   value: string;
   change: string;
   trend: string;
   icon: string;
-  description: string;
+  descriptionKey: string;
 }
 
 interface ThemeClasses {
@@ -28,6 +29,7 @@ interface StatsGridProps {
 
 export const StatsGrid: React.FC<StatsGridProps> = ({ stats }) => {
   const { theme } = useTheme();
+  const { t } = useTranslations();
 
   // Use hook-derived classes so component can respond at runtime
   const cardBorder = theme === "dark" ? "border-white" : "border-black";
@@ -59,11 +61,13 @@ export const StatsGrid: React.FC<StatsGridProps> = ({ stats }) => {
             <CardContent className="p-4 md:p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className={`text-sm ${textMuted}`}>{stat.title}</p>
+                  <p className={`text-sm ${textMuted}`}>{t(stat.titleKey)}</p>
                   <p className="text-2xl md:text-3xl font-semibold leading-none tracking-tight">
                     {stat.value}
                   </p>
-                  <p className={`text-sm mt-1 ${textMuted}`}>{stat.change} from last period</p>
+                  <p className={`text-sm mt-1 ${textMuted}`}>
+                    {stat.change} {t("dashboard.analytics.fromLastPeriod")}
+                  </p>
                 </div>
                 <div className={`p-3 rounded-full ${bgMuted}`}>
                   <IconComponent className="h-6 w-6" />

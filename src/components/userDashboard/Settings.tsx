@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -23,52 +24,219 @@ import { useUser } from "@/hooks/useQueries";
 import { useLogout } from "@/hooks/useLogout";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { Skeleton } from "@/components/ui/skeleton";
+import SecurityTab from "./SecurityTab";
+import CollaboratorsTab from "./CollaboratorsTab";
+import toastNotification from "@/lib/toastNotifications";
 
-const Settings = () => {
+const SettingsContent = () => {
   const { t } = useTranslations();
   const { theme } = useTheme();
   const { data: userData, isLoading, error } = useUser();
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState<string>("profile");
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [publicMemorial, setPublicMemorial] = useState(true);
   const [allowTributes, setAllowTributes] = useState(true);
   const [moderateTributes, setModerateTributes] = useState(true);
+  const [adminEmails, setAdminEmails] = useState("");
+  const [phoneNumbers, setPhoneNumbers] = useState("");
+  const [selectedRole, setSelectedRole] = useState<string>("VIEWER");
+  const [personalMessage, setPersonalMessage] = useState("");
+  const [sendViaWhatsApp, setSendViaWhatsApp] = useState(false);
+  const [isSendingInvites, setIsSendingInvites] = useState(false);
+  const [userMemorialId, setUserMemorialId] = useState<string | null>(null);
+
+  // Fetch user's memorial ID on mount
+  useEffect(() => {
+    const fetchUserMemorial = async () => {
+      try {
+        const response = await fetch("/api/memorials");
+        if (response.ok) {
+          const data = await response.json();
+          if (data.data?.memorials && data.data.memorials.length > 0) {
+            // Get the first memorial (user's primary memorial)
+            setUserMemorialId(data.data.memorials[0].id);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch user memorial:", error);
+      }
+    };
+    fetchUserMemorial();
+  }, []);
+
+  // Set active tab from URL parameter on mount
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (
+      tab &&
+      [
+        "profile",
+        "security",
+        "memorial",
+        "collaborators",
+        "privacy",
+        "notifications",
+        "advanced",
+      ].includes(tab)
+    ) {
+      setActiveTab(tab);
+    }
+  }, [searchParams]);
 
   const handleSaveProfile = () => {
-    console.log("Saving profile changes");
+    toastNotification.info("Profile settings save functionality coming soon");
   };
 
   const handleSaveMemorialSettings = () => {
-    console.log("Saving memorial settings");
+    toastNotification.info("Memorial settings save functionality coming soon");
   };
 
   const handleSavePrivacySettings = () => {
-    console.log("Saving privacy settings");
+    toastNotification.info("Privacy settings save functionality coming soon");
   };
 
   const handleSaveNotificationSettings = () => {
-    console.log("Saving notification settings");
+    toastNotification.info("Notification settings save functionality coming soon");
   };
 
   const handleExportData = () => {
-    console.log("Exporting memorial data");
+    toastNotification.info("Data export functionality coming soon");
   };
 
   const handleConnectDomain = () => {
-    console.log("Connecting domain");
+    toastNotification.info("Custom domain connection functionality coming soon");
   };
 
   const handleArchiveMemorial = () => {
-    console.log("Archiving memorial");
+    toastNotification.info("Memorial archive functionality coming soon");
   };
 
   const handleDeleteMemorial = () => {
-    console.log("Deleting memorial");
+    toastNotification.info("Memorial deletion functionality coming soon");
   };
 
   const { logout: handleSignOut, isLoggingOut } = useLogout();
 
-  const handleSendAdminInvitations = () => {
-    console.log("Sending admin invitations");
+  const handleSendAdminInvitations = async () => {
+    // Validate at least one contact method
+    if (!adminEmails.trim() && !phoneNumbers.trim()) {
+      toastNotification.error("Please enter at least one email address or phone number");
+      return;
+    }
+
+    if (!userMemorialId) {
+      toastNotification.error("Memorial not found. Please create a memorial first.");
+      return;
+    }
+
+    setIsSendingInvites(true);
+
+    // Parse email addresses (comma, semicolon, or newline separated)
+    const emailList = adminEmails
+      .split(/[,;\n]/)
+      .map((email) => email.trim())
+      .filter((email) => email.length > 0);
+
+    // Parse phone numbers
+    const phoneList = phoneNumbers
+      .split(/[,;\n]/)
+      .map((phone) => phone.trim())
+      .filter((phone) => phone.length > 0);
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const invalidEmails = emailList.filter((email) => !emailRegex.test(email));
+
+    if (invalidEmails.length > 0) {
+      toastNotification.error(
+        `Invalid email address${invalidEmails.length > 1 ? "es" : ""}: ${invalidEmails.join(", ")}`
+      );
+      setIsSendingInvites(false);
+      return;
+    }
+
+    // Basic phone validation (must start with +)
+    const phoneRegex = /^\+\d{10,15}$/;
+    const invalidPhones = phoneList.filter((phone) => !phoneRegex.test(phone));
+
+    if (invalidPhones.length > 0) {
+      toastNotification.error(
+        `Invalid phone number${invalidPhones.length > 1 ? "s" : ""}: ${invalidPhones.join(", ")}. Phone numbers must include country code (e.g., +234XXXXXXXXXX)`
+      );
+      setIsSendingInvites(false);
+      return;
+    }
+
+    try {
+      const invitations: Array<{
+        email?: string;
+        phone?: string;
+      }> = [];
+
+      // Combine emails and phones (emails take priority)
+      const maxLength = Math.max(emailList.length, phoneList.length);
+      for (let i = 0; i < maxLength; i++) {
+        const invitation: { email?: string; phone?: string } = {};
+        if (emailList[i]) invitation.email = emailList[i];
+        if (phoneList[i]) invitation.phone = phoneList[i];
+        if (invitation.email || invitation.phone) {
+          invitations.push(invitation);
+        }
+      }
+
+      // Send invitations
+      const results = await Promise.allSettled(
+        invitations.map(async (invitation) => {
+          const response = await fetch("/api/invitations", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: invitation.email,
+              phone: invitation.phone,
+              role: selectedRole,
+              memorialId: userMemorialId,
+              sendViaEmail: !!invitation.email,
+              sendViaWhatsApp: sendViaWhatsApp && !!invitation.phone,
+              message: personalMessage || "You've been invited to help manage this memorial page.",
+            }),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Failed to send invitation");
+          }
+
+          return response.json();
+        })
+      );
+
+      const successful = results.filter((r) => r.status === "fulfilled").length;
+      const failed = results.filter((r) => r.status === "rejected").length;
+
+      if (successful > 0 && failed === 0) {
+        toastNotification.success(
+          `Successfully sent ${successful} invitation${successful > 1 ? "s" : ""}!`
+        );
+        // Clear form on success
+        setAdminEmails("");
+        setPhoneNumbers("");
+        setPersonalMessage("");
+      } else if (successful > 0 && failed > 0) {
+        toastNotification.info(
+          `Sent ${successful} invitation${successful > 1 ? "s" : ""}, but ${failed} failed. Please try again for the failed ones.`
+        );
+      } else {
+        toastNotification.error("Failed to send invitations. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error sending invitations:", error);
+      toastNotification.error("An error occurred while sending invitations. Please try again.");
+    } finally {
+      setIsSendingInvites(false);
+    }
   };
 
   const cardBorder = theme === "dark" ? "border-white" : "border-black";
@@ -100,7 +268,7 @@ const Settings = () => {
     );
   }
 
-  if (error || !userData?.data?.user) {
+  if (error) {
     return (
       <QueryErrorBoundary>
         <div
@@ -124,7 +292,25 @@ const Settings = () => {
     );
   }
 
-  const user = userData.data.user;
+  // API returns { message, user } directly (not wrapped in data)
+  if (!userData?.user) {
+    return (
+      <div
+        className={`min-h-screen p-4 md:p-8 ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}
+      >
+        <div className="mb-6 md:mb-8">
+          <Skeleton className="h-8 w-64 mb-2" />
+          <Skeleton className="h-4 w-96" />
+        </div>
+        <div className="w-full lg:max-w-4xl xl:max-w-5xl mx-auto">
+          <Skeleton className="h-12 w-full mb-6" />
+          <Skeleton className="h-96 w-full" />
+        </div>
+      </div>
+    );
+  }
+
+  const user = userData.user;
 
   return (
     <div
@@ -138,8 +324,8 @@ const Settings = () => {
       </div>
 
       <div className="w-full lg:max-w-4xl xl:max-w-5xl mx-auto">
-        <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 gap-2 md:grid-cols-5">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3 gap-2 md:grid-cols-7">
             <TabsTrigger
               value="profile"
               className={`px-3 py-2 text-sm md:text-base whitespace-nowrap ${activeTabClasses}`}
@@ -147,10 +333,22 @@ const Settings = () => {
               {t("dashboard.settings.tabs.profile")}
             </TabsTrigger>
             <TabsTrigger
+              value="security"
+              className={`px-3 py-2 text-sm md:text-base whitespace-nowrap ${activeTabClasses}`}
+            >
+              Security
+            </TabsTrigger>
+            <TabsTrigger
               value="memorial"
               className={`px-3 py-2 text-sm md:text-base whitespace-nowrap ${activeTabClasses}`}
             >
               {t("dashboard.settings.tabs.memorial")}
+            </TabsTrigger>
+            <TabsTrigger
+              value="collaborators"
+              className={`px-3 py-2 text-sm md:text-base whitespace-nowrap ${activeTabClasses}`}
+            >
+              Collaborators
             </TabsTrigger>
             <TabsTrigger
               value="privacy"
@@ -236,6 +434,10 @@ const Settings = () => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="security" className="space-y-6">
+            <SecurityTab />
+          </TabsContent>
+
           <TabsContent value="memorial" className="space-y-6">
             <Card className={`border ${cardBorder} ${cardBg}`}>
               <CardHeader>
@@ -258,7 +460,7 @@ const Settings = () => {
                     <span
                       className={`inline-flex items-center px-3 rounded-l-md border border-r-0 text-sm ${theme === "dark" ? "border-white/20 bg-white/10 text-white/70" : "border-gray-200 bg-gray-100 text-gray-600"}`}
                     >
-                      foreverpages.com/
+                      foreverpages.online/
                     </span>
                     <Input
                       id="memorial-url"
@@ -344,6 +546,16 @@ const Settings = () => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="collaborators" className="space-y-6">
+            <CollaboratorsTab
+              memorialId={userMemorialId || ""}
+              textMuted={textMuted}
+              cardBorder={cardBorder}
+              cardBg={cardBg}
+              isOwner={true}
+            />
+          </TabsContent>
+
           <TabsContent value="privacy" className="space-y-6">
             <Card className={`border ${cardBorder} ${cardBg}`}>
               <CardHeader>
@@ -392,22 +604,126 @@ const Settings = () => {
                   <h4 className="font-semibold mb-3">
                     {t("dashboard.settings.privacy.access.title")}
                   </h4>
-                  <div className="space-y-3">
+                  <div className="space-y-4">
+                    {/* Role Selection */}
+                    <div>
+                      <Label htmlFor="invitation-role">
+                        Role <span className="text-red-500">*</span>
+                      </Label>
+                      <Select value={selectedRole} onValueChange={setSelectedRole}>
+                        <SelectTrigger id="invitation-role">
+                          <SelectValue placeholder="Select a role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="ADMIN">
+                            <div className="flex flex-col items-start">
+                              <span className="font-semibold">Admin</span>
+                              <span className="text-xs text-gray-500">
+                                Full control - manage settings, approve content, invite others
+                              </span>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="EDITOR">
+                            <div className="flex flex-col items-start">
+                              <span className="font-semibold">Editor</span>
+                              <span className="text-xs text-gray-500">
+                                Edit content, approve tributes, manage gallery
+                              </span>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="CONTRIBUTOR">
+                            <div className="flex flex-col items-start">
+                              <span className="font-semibold">Contributor</span>
+                              <span className="text-xs text-gray-500">
+                                Add photos, videos, and tributes
+                              </span>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="VIEWER">
+                            <div className="flex flex-col items-start">
+                              <span className="font-semibold">Viewer</span>
+                              <span className="text-xs text-gray-500">
+                                Read-only access to memorial content
+                              </span>
+                            </div>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className={`text-xs mt-1 ${textMuted}`}>
+                        Choose the level of access for invited collaborators
+                      </p>
+                    </div>
+
+                    {/* Email Addresses */}
                     <div>
                       <Label htmlFor="admin-emails">
-                        {t("dashboard.settings.privacy.access.additionalAdmins")}
+                        Email Addresses <span className="text-red-500">*</span>
                       </Label>
                       <Textarea
                         id="admin-emails"
-                        placeholder="Enter email addresses of people who can help manage this memorial"
+                        placeholder="Enter email addresses separated by commas or new lines"
                         rows={3}
+                        value={adminEmails}
+                        onChange={(e) => setAdminEmails(e.target.value)}
                       />
+                      <p className={`text-xs mt-1 ${textMuted}`}>
+                        Example: admin@example.com, manager@example.com
+                      </p>
                     </div>
+
+                    {/* WhatsApp Toggle */}
+                    <div className="flex items-center space-x-2">
+                      <Switch
+                        id="send-whatsapp"
+                        checked={sendViaWhatsApp}
+                        onCheckedChange={setSendViaWhatsApp}
+                      />
+                      <Label htmlFor="send-whatsapp" className="cursor-pointer">
+                        Also send via WhatsApp
+                      </Label>
+                    </div>
+
+                    {/* Phone Numbers (conditional) */}
+                    {sendViaWhatsApp && (
+                      <div>
+                        <Label htmlFor="phone-numbers">Phone Numbers (with country code)</Label>
+                        <Textarea
+                          id="phone-numbers"
+                          placeholder="Enter phone numbers with country code (e.g., +234XXXXXXXXXX)"
+                          rows={2}
+                          value={phoneNumbers}
+                          onChange={(e) => setPhoneNumbers(e.target.value)}
+                        />
+                        <p className={`text-xs mt-1 ${textMuted}`}>
+                          Example: +234XXXXXXXXXX, +1XXXXXXXXXX
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Personal Message */}
+                    <div>
+                      <Label htmlFor="personal-message">Personal Message (Optional)</Label>
+                      <Textarea
+                        id="personal-message"
+                        placeholder="Add a personal message to your invitation..."
+                        rows={3}
+                        value={personalMessage}
+                        onChange={(e) => setPersonalMessage(e.target.value)}
+                      />
+                      <p className={`text-xs mt-1 ${textMuted}`}>
+                        This message will be included in the invitation
+                      </p>
+                    </div>
+
+                    {/* Send Button */}
                     <Button
                       variant={theme === "dark" ? "memorial-outline" : "outline"}
                       onClick={handleSendAdminInvitations}
+                      disabled={isSendingInvites || !adminEmails.trim()}
                     >
-                      {t("dashboard.settings.privacy.access.sendAdminInvites")}
+                      {isSendingInvites
+                        ? "Sending..."
+                        : t("dashboard.settings.privacy.access.sendAdminInvites")}
                     </Button>
                   </div>
                 </div>
@@ -646,4 +962,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default SettingsContent;

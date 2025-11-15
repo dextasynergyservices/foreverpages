@@ -2,23 +2,27 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Heart, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
+import { Heart, Mail, Lock, User, Eye, EyeOff, Phone } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Navbar } from "@/components/Navbar";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { registerSchema, type RegisterInput } from "@/lib/validation";
 import ReCAPTCHA from "react-google-recaptcha";
 import toast from "react-hot-toast";
 import { LoadingSpinner, AuthFormSkeleton } from "@/components/ui/skeleton";
+import { signIn } from "next-auth/react";
 
 export default function RegisterPage() {
   const { theme } = useTheme();
   const { t } = useTranslations();
+  const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<RegisterInput>({
     name: "",
     email: "",
+    phone: "",
     password: "",
     confirmPassword: "",
   });
@@ -29,17 +33,94 @@ export default function RegisterPage() {
     Partial<Record<keyof RegisterInput | "recaptcha", boolean>>
   >({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [paymentId, setPaymentId] = useState<string | null>(null);
+  const [paymentVerified, setPaymentVerified] = useState(false);
+  const [isCollaborator, setIsCollaborator] = useState(false);
+  const [collaboratorInfo, setCollaboratorInfo] = useState<{
+    memorial: string;
+    invitation: string;
+  } | null>(null);
 
-  // Load form data from localStorage on component mount
+  // Load payment ID and verify payment OR check for collaborator signup
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsPageLoading(false);
-    }, 1500); // Simulate loading time
+    async function verifyPayment() {
+      // Check if this is a collaborator signup (no payment required)
+      const type = searchParams?.get("type");
+      const memorial = searchParams?.get("memorial");
+      const invitation = searchParams?.get("invitation");
+      const prefillEmail = searchParams?.get("email");
 
-    return () => clearTimeout(timer);
-  }, []);
+      if (type === "collaborator" && memorial && invitation) {
+        // Collaborator signup - no payment required
+        setIsCollaborator(true);
+        setCollaboratorInfo({ memorial, invitation });
+        setPaymentVerified(true); // Skip payment verification
+        if (prefillEmail) {
+          setFormData((prev) => ({ ...prev, email: prefillEmail }));
+        }
+        setIsPageLoading(false);
+        return;
+      }
+
+      // Regular signup - require payment
+      const urlPaymentId = searchParams?.get("payment");
+      const storedPaymentId = localStorage.getItem("paymentId");
+      const storedReference = localStorage.getItem("paymentReference");
+
+      const finalPaymentId = urlPaymentId || storedPaymentId;
+
+      if (!finalPaymentId) {
+        toast.error(t("register.errors.paymentRequired"));
+        setTimeout(() => {
+          window.location.href = "/packages";
+        }, 2000);
+        return;
+      }
+
+      // Verify payment status with backend
+      if (storedReference) {
+        try {
+          const response = await fetch(`/api/payment/verify?reference=${storedReference}`);
+          const data = await response.json();
+
+          if (response.ok && data.success && data.data.status === "SUCCESS") {
+            setPaymentId(finalPaymentId);
+            setPaymentVerified(true);
+
+            // Pre-fill email from payment data if available
+            const paymentEmail = localStorage.getItem("paymentEmail");
+            if (paymentEmail) {
+              setFormData((prev) => ({ ...prev, email: paymentEmail }));
+            }
+
+            setIsPageLoading(false);
+          } else {
+            toast.error(t("register.errors.paymentVerificationFailed"));
+            setTimeout(() => {
+              window.location.href = "/packages";
+            }, 2000);
+          }
+        } catch (error) {
+          console.error("Payment verification error:", error);
+          toast.error(t("register.errors.paymentVerificationError"));
+          setTimeout(() => {
+            window.location.href = "/packages";
+          }, 2000);
+        }
+      } else {
+        // No reference stored, assume payment is valid (backward compatibility)
+        setPaymentId(finalPaymentId);
+        setPaymentVerified(true);
+        setIsPageLoading(false);
+      }
+    }
+
+    verifyPayment();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -75,6 +156,20 @@ export default function RegisterPage() {
     return "";
   };
 
+  const handleGoogleSignup = async () => {
+    setIsGoogleLoading(true);
+    try {
+      // Preserve payment ID in URL if it exists
+      const callbackUrl = paymentId ? `/user-dashboard?payment=${paymentId}` : "/user-dashboard";
+
+      await signIn("google", { callbackUrl });
+    } catch (error) {
+      console.error("Google sign-up error:", error);
+      toast.error("Failed to sign up with Google");
+      setIsGoogleLoading(false);
+    }
+  };
+
   const validateForm = () => {
     const result = registerSchema.safeParse(formData);
     if (!result.success) {
@@ -91,8 +186,8 @@ export default function RegisterPage() {
     }
 
     if (!recaptchaToken) {
-      setErrors({ recaptcha: "Please complete the reCAPTCHA verification" });
-      toast.error("Please complete the reCAPTCHA verification");
+      setErrors({ recaptcha: t("register.errors.recaptchaRequired") });
+      toast.error(t("register.errors.recaptchaRequired"));
       return false;
     }
 
@@ -104,6 +199,12 @@ export default function RegisterPage() {
     e.preventDefault();
     if (!validateForm()) return;
 
+    // For collaborators, skip payment verification
+    if (!isCollaborator && (!paymentId || !paymentVerified)) {
+      toast.error(t("register.errors.paymentRequired"));
+      return;
+    }
+
     setIsLoading(true);
     try {
       const response = await fetch("/api/auth/register", {
@@ -114,23 +215,49 @@ export default function RegisterPage() {
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
+          phone: formData.phone,
           password: formData.password,
+          confirmPassword: formData.confirmPassword,
+          paymentId: isCollaborator ? null : paymentId, // No payment for collaborators
           recaptchaToken,
+          isCollaborator,
+          invitationToken: isCollaborator ? collaboratorInfo?.invitation : null,
         }),
       });
 
       if (response.ok) {
-        toast.success("Account created successfully! Please log in.");
-        // Clear saved form data on successful registration
+        toast.success(t("register.success.accountCreated"));
+        // Clear saved form data and payment ID on successful registration
         localStorage.removeItem("signupFormData");
-        // Registration successful, redirect to login
-        window.location.href = "/login";
+        localStorage.removeItem("paymentId");
+        localStorage.removeItem("paymentReference");
+
+        // Redirect based on account type
+        if (isCollaborator && collaboratorInfo) {
+          // Collaborator: redirect to memorial or dashboard
+          window.location.href = `/user-dashboard?message=collaborator_account_created&memorial=${collaboratorInfo.memorial}`;
+        } else {
+          // Regular user: redirect to email verification
+          window.location.href = "/email-verification-code";
+        }
       } else {
         const errorData = await response.json();
-        toast.error(errorData.message || "Registration failed");
+        console.error("Registration error:", errorData);
+
+        // Show detailed validation errors if available
+        if (errorData.errors && Array.isArray(errorData.errors)) {
+          errorData.errors.forEach((err: { message: string; path: string[] }) => {
+            toast.error(`${err.path.join(".")}: ${err.message}`);
+          });
+        } else {
+          toast.error(
+            errorData.error || errorData.message || t("register.errors.registrationFailed")
+          );
+        }
       }
-    } catch {
-      toast.error("An error occurred during registration");
+    } catch (error) {
+      console.error("Registration exception:", error);
+      toast.error(t("register.errors.registrationError"));
     } finally {
       setIsLoading(false);
     }
@@ -159,10 +286,12 @@ export default function RegisterPage() {
           <h1
             className={`text-3xl font-bold mb-2 ${theme === "dark" ? "text-white" : "text-black"}`}
           >
-            {t("register.welcome")}
+            {isCollaborator ? "Create Your Free Account" : t("register.welcome")}
           </h1>
           <p className={`${theme === "dark" ? "text-white/70" : "text-black/70"}`}>
-            {t("register.subtitle")}
+            {isCollaborator
+              ? "You've been invited to help manage a memorial. Create a free account to get started."
+              : t("register.subtitle")}
           </p>
         </div>
 
@@ -242,6 +371,41 @@ export default function RegisterPage() {
                 />
               </div>
               {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
+            </div>
+
+            <div>
+              <label
+                htmlFor="phone"
+                className={`block text-sm font-medium ${theme === "dark" ? "text-white" : "text-black"} mb-1`}
+              >
+                {t("register.form.phone")}
+              </label>
+              <div className="relative">
+                <Phone
+                  className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${theme === "dark" ? "text-white" : "text-black"}`}
+                />
+                <input
+                  id="phone"
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  onBlur={() => handleBlur("phone")}
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
+                    theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+                  } ${
+                    getFieldStatus("phone") === "error"
+                      ? "border-red-500 bg-red-50"
+                      : getFieldStatus("phone") === "success"
+                        ? "border-green-500 bg-green-50"
+                        : theme === "dark"
+                          ? "border-white/70 focus:ring-white"
+                          : "border-gray-300 focus:ring-black"
+                  }`}
+                  placeholder={t("register.placeholders.phone")}
+                />
+              </div>
+              {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone}</p>}
             </div>
 
             <div>
@@ -338,10 +502,67 @@ export default function RegisterPage() {
               {isLoading ? (
                 <div className="flex items-center justify-center space-x-2">
                   <LoadingSpinner size="sm" />
-                  <span>Creating Account...</span>
+                  <span>{t("register.buttons.creatingAccount")}</span>
                 </div>
               ) : (
                 t("register.buttons.createAccount")
+              )}
+            </button>
+
+            {/* OR Divider */}
+            <div className="relative">
+              <div className={`absolute inset-0 flex items-center`}>
+                <div
+                  className={`w-full border-t ${theme === "dark" ? "border-white/20" : "border-gray-300"}`}
+                ></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span
+                  className={`px-2 ${theme === "dark" ? "bg-black text-white/70" : "bg-white text-gray-500"}`}
+                >
+                  {t("register.oauth.divider")}
+                </span>
+              </div>
+            </div>
+
+            {/* Google OAuth Button */}
+            <button
+              type="button"
+              onClick={handleGoogleSignup}
+              disabled={isGoogleLoading || !paymentVerified}
+              className={`w-full flex items-center justify-center gap-3 py-3 px-4 border-2 rounded-lg font-medium transition-all ${
+                theme === "dark"
+                  ? "border-white/20 hover:border-white/40 hover:bg-white/5"
+                  : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
+              } disabled:opacity-50 disabled:cursor-not-allowed`}
+            >
+              {isGoogleLoading ? (
+                <>
+                  <LoadingSpinner size="sm" />
+                  <span>{t("register.buttons.signingUpWithGoogle")}</span>
+                </>
+              ) : (
+                <>
+                  <svg className="w-5 h-5" viewBox="0 0 24 24">
+                    <path
+                      fill="#4285F4"
+                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                    />
+                    <path
+                      fill="#34A853"
+                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    />
+                    <path
+                      fill="#FBBC05"
+                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                    />
+                    <path
+                      fill="#EA4335"
+                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                    />
+                  </svg>
+                  <span>{t("register.buttons.continueWithGoogle")}</span>
+                </>
               )}
             </button>
           </div>
@@ -350,28 +571,28 @@ export default function RegisterPage() {
             className={`mt-6 text-center text-sm text-gray-600 ${theme === "dark" ? "text-white" : "text-black"}`}
           >
             {t("register.alreadyHaveAccount")}{" "}
-            <a
+            <Link
               href="/login"
               className={`${theme === "dark" ? "text-white" : "text-black"} hover:text-gray-700 font-medium underline`}
             >
               {t("register.buttons.loginHere")}
-            </a>
+            </Link>
           </div>
 
           <p
             className={`mt-4 text-xs text-gray-500 text-center ${theme === "dark" ? "text-white" : "text-black"}`}
           >
             {t("register.terms.byRegistering")}{" "}
-            <a
+            <Link
               href="/terms"
               className={`underline hover:text-gray-700 ${theme === "dark" ? "text-white" : "text-black"}`}
             >
               {t("register.terms.termsOfService")}
-            </a>{" "}
+            </Link>{" "}
             {t("register.terms.and")}{" "}
-            <a href="/privacy" className="underline hover:text-gray-700">
+            <Link href="/privacy" className="underline hover:text-gray-700">
               {t("register.terms.privacyPolicy")}
-            </a>
+            </Link>
           </p>
         </div>
 

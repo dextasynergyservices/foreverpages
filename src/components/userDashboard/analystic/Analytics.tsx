@@ -15,6 +15,8 @@ import {
   ActivityItemSkeleton,
   Skeleton,
 } from "@/components/ui/skeleton";
+import { SubscriptionCard } from "@/components/userDashboard/SubscriptionCard";
+import { CollaboratorMemorials } from "@/components/userDashboard/CollaboratorMemorials";
 
 const Analytics = () => {
   const { t } = useTranslations();
@@ -79,7 +81,7 @@ const Analytics = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="text-center py-12">
               <p className="text-muted-foreground text-lg">
-                {t("analytics.error", {}, "Unable to load analytics data")}
+                {t("dashboard.analytics.error", {}, "Unable to load analytics data")}
               </p>
             </div>
           </div>
@@ -95,6 +97,16 @@ const Analytics = () => {
       className={`min-h-screen ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}
     >
       <AnalyticsHeader theme={theme} t={safeT} />
+
+      {/* Subscription Status Card - First thing users see */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <SubscriptionCard />
+      </div>
+
+      {/* Collaborator Memorials - Show memorials user is invited to manage */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
+        <CollaboratorMemorials />
+      </div>
 
       <StatsGrid stats={stats} themeClasses={themeClasses} />
 

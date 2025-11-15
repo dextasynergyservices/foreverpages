@@ -34,3 +34,34 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Dev & Deployment (Socket.io / WebRTC)
+
+This project uses a custom Node server to attach Socket.io to the raw HTTP server so WebSocket connections and WebRTC signaling work reliably with the App Router.
+
+Local development (PowerShell):
+
+```powershell
+# Install dependencies once
+pnpm install
+
+# Start the custom TypeScript server (dev)
+npx tsx server.ts
+```
+
+Production (example):
+
+```powershell
+# Build Next
+pnpm build
+
+# Start server in production mode (use a process manager or containerize)
+$env:NODE_ENV = "production"
+npx tsx server.ts
+```
+
+Important notes:
+
+- Do NOT deploy to Vercel if you require long-lived WebSocket connections (Socket.io). Use Render, Railway, DigitalOcean, AWS, or any Node host that supports persistent sockets.
+- Set `NEXT_PUBLIC_SOCKET_URL` to the public origin of your site if your frontend and backend are separated.
+- For scaling across multiple instances, configure Socket.io with a Redis adapter and use a sticky-session/load-balancer configuration.

@@ -31,10 +31,10 @@ export const AnalyticsHeader: React.FC<AnalyticsHeaderProps> = ({ theme, t }) =>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="7days">Last 7 days</SelectItem>
-            <SelectItem value="30days">Last 30 days</SelectItem>
-            <SelectItem value="90days">Last 90 days</SelectItem>
-            <SelectItem value="1year">Last year</SelectItem>
+            <SelectItem value="7days">{t("dashboard.analytics.timeRanges.7days")}</SelectItem>
+            <SelectItem value="30days">{t("dashboard.analytics.timeRanges.30days")}</SelectItem>
+            <SelectItem value="90days">{t("dashboard.analytics.timeRanges.90days")}</SelectItem>
+            <SelectItem value="1year">{t("dashboard.analytics.timeRanges.1year")}</SelectItem>
           </SelectContent>
         </Select>
         <Button variant={theme === "dark" ? "memorial-outline" : "outline"}>
