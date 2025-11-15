@@ -8,7 +8,6 @@ import { createAdapter } from "@socket.io/redis-adapter";
 
 // Local lightweight AdapterConstructor alias to avoid depending on separate types in CI
 import { createClient } from "redis";
-import { Request, Response } from "express";
 
 dotenv.config();
 
@@ -20,7 +19,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/api/health", (_req: Request, res: Response) =>
+app.get("/api/health", (_req: express.Request, res: express.Response) =>
   res.json({ status: "ok", ts: Date.now() })
 );
 const server = http.createServer(app);
