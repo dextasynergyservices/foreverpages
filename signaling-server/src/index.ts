@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type Request, type Response } from "express";
 import http from "http";
 import { Server as IOServer } from "socket.io";
 import cors from "cors";
@@ -20,19 +20,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/api/health", (_req: express.Request, res: http.ServerResponse) => {
-  res.writeHead(200, { "Content-Type": "application/json" });
-  res.end(JSON.stringify({ status: "ok", ts: Date.now() }));
+app.get("/api/health", (_req: Request, res: Response) => {
+  // Use Express response helpers for simplicity
+  res.status(200).json({ status: "ok", ts: Date.now() });
 });
 // Dev/admin endpoint to push stream metadata changes into the socket room.
 // This is intended for the backend process that updates DB records (e.g. when
 // a recording becomes available or status changes). It requires a simple
 // secret via X-ADMIN-SECRET header to avoid accidental exposure. In production
 // you should secure this with mutual TLS or internal networking only.
-app.post("/api/streams/:id/metadata", async (req: express.Request, res: express.Response) => {
-  const streamId = req.params.id;
+app.post("/api/streams/:id/metadata", async (req: Request, res: Response) => {
+  const streamId = (req.params as { id?: string }).id;
   const adminSecret = process.env.SOCKET_ADMIN_SECRET || "";
-  const provided = req.header("x-admin-secret") || "";
+  const provided = (req.get && req.get("x-admin-secret")) || "";
 
   if (!adminSecret || provided !== adminSecret) {
     return res.status(401).json({ error: "unauthorized" });
