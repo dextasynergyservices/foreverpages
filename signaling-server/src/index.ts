@@ -20,13 +20,16 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/api/health", (_req: express.Request, res: express.Response) => {
-  // Use Express response helpers for simplicity
-  res.status(200).json({ status: "ok", ts: Date.now() });
+  // Use Express response helpers for simplicity. Default 200 is fine for health.
+  res.json({ status: "ok", ts: Date.now() });
 });
 
 app.post(
   "/api/streams/:id/metadata",
-  async (req: express.Request<{ id?: string }>, res: express.Response) => {
+  async (
+    req: express.Request<{ id?: string }>,
+    res: express.Response<Record<string, unknown>, Record<string, unknown>>
+  ) => {
     const streamId = req.params?.id;
     const adminSecret = process.env.SOCKET_ADMIN_SECRET || "";
     const provided = (req.get("x-admin-secret") as string) || "";
