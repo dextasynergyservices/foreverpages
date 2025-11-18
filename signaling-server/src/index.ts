@@ -1,14 +1,13 @@
-import express from "express";
+// signaling-server/src/index.ts
+import express, { Request, Response } from "express";
 import http from "http";
-import { Server as IOServer } from "socket.io";
+import { Server as IOServer, Socket } from "socket.io";
 import cors from "cors";
 import dotenv from "dotenv";
 import { verifyToken, verifyAccessToken } from "./jwt";
 import jwt from "jsonwebtoken";
 import { createAdapter } from "@socket.io/redis-adapter";
-
-// Local lightweight AdapterConstructor alias to avoid depending on separate types in CI
-import { createClient } from "redis";
+import { createClient, RedisClientType } from "redis";
 
 dotenv.config();
 
@@ -20,16 +19,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/api/health", (_req: express.Request, res: express.Response) => {
+app.get("/api/health", (_req: Request, res: Response) => {
   // Use Express response helpers for simplicity
   res.status(200).json({ status: "ok", ts: Date.now() });
 });
+
 // Dev/admin endpoint to push stream metadata changes into the socket room.
-// This is intended for the backend process that updates DB records (e.g. when
-// a recording becomes available or status changes). It requires a simple
-// secret via X-ADMIN-SECRET header to avoid accidental exposure. In production
-// you should secure this with mutual TLS or internal networking only.
-app.post("/api/streams/:id/metadata", async (req: express.Request, res: express.Response) => {
+// Secured via X-ADMIN-SECRET header (consider stronger protections in prod).
+app.post("/api/streams/:id/metadata", async (req: Request<{ id?: string }>, res: Response) => {
   const streamId = (req.params as { id?: string }).id;
   const adminSecret = process.env.SOCKET_ADMIN_SECRET || "";
   const provided = req.get?.("x-admin-secret") || "";
@@ -58,6 +55,7 @@ app.post("/api/streams/:id/metadata", async (req: express.Request, res: express.
     return res.status(500).json({ error: "emit_failed" });
   }
 });
+
 const server = http.createServer(app);
 
 const io = new IOServer(server, {
@@ -76,12 +74,12 @@ const streamViewers = new Map<string, Set<string>>();
 const isProd = process.env.NODE_ENV === "production";
 
 // Create a small Redis client for revocation checks when REDIS_URL is available
-let revocationClient: unknown | null = null;
-async function getRevocationClient() {
+let revocationClient: RedisClientType | null = null;
+async function getRevocationClient(): Promise<RedisClientType | null> {
   if (revocationClient) return revocationClient;
   if (!REDIS_URL) return null;
   try {
-    const c = createClient({ url: REDIS_URL });
+    const c: RedisClientType = createClient({ url: REDIS_URL });
     await c.connect();
     revocationClient = c;
     return revocationClient;
@@ -95,9 +93,8 @@ async function isJtiRevokedInRedis(jti: string) {
   try {
     const client = await getRevocationClient();
     if (!client) return false;
-    const exists = await (client as unknown as { exists: (k: string) => Promise<number> }).exists(
-      `revoked_jti:${jti}`
-    );
+    // `exists` returns 1 if key exists, 0 if not
+    const exists = await client.exists(`revoked_jti:${jti}`);
     return exists === 1;
   } catch (err) {
     if (process.env.NODE_ENV !== "production") console.warn("jti revocation check failed", err);
@@ -106,17 +103,17 @@ async function isJtiRevokedInRedis(jti: string) {
 }
 
 // Simple auth middleware for socket.io
-io.use(async (socket, next) => {
+io.use(async (socket: Socket, next) => {
   // Accept token via handshake auth or query param for debugging
   const token =
     (socket.handshake.auth?.token as string | undefined) ||
     (socket.handshake.query?.token as string | undefined);
 
   // Reduce noise in production
-  const isProd = process.env.NODE_ENV === "production";
+  const isProdLocal = process.env.NODE_ENV === "production";
 
   if (!JWT_SECRET) {
-    if (!isProd) console.log("[socket auth] JWT_SECRET not set; skipping handshake auth");
+    if (!isProdLocal) console.log("[socket auth] JWT_SECRET not set; skipping handshake auth");
     return next();
   }
 
@@ -124,12 +121,12 @@ io.use(async (socket, next) => {
   if (token) {
     const result = verifyToken(token, JWT_SECRET);
     if (result.payload) {
-      if (!isProd) console.log("[socket auth] handshake token verified");
+      if (!isProdLocal) console.log("[socket auth] handshake token verified");
       socket.data.user = result.payload;
       return next();
     }
 
-    if (!isProd) {
+    if (!isProdLocal) {
       const decoded = jwt.decode(token);
       console.warn("[socket auth] handshake token verification failed", {
         error: result.error,
@@ -138,8 +135,7 @@ io.use(async (socket, next) => {
     }
   }
 
-  // If handshake token missing/invalid, allow clients to present a direct stream-access
-  // token (useful for private streams where client has performed password verification).
+  // If handshake token missing/invalid, allow clients to present a direct stream-access token
   const streamAccess = socket.handshake.auth?.streamAccess || socket.handshake.query?.streamAccess;
   if (streamAccess) {
     const accessResult = verifyAccessToken(streamAccess as string);
@@ -150,34 +146,43 @@ io.use(async (socket, next) => {
         if (jti) {
           const revoked = await isJtiRevokedInRedis(jti);
           if (revoked) {
-            if (!isProd) console.warn("[socket auth] access token jti revoked", jti);
+            if (!isProdLocal) console.warn("[socket auth] access token jti revoked", jti);
             return next(new Error("invalid token"));
           }
         }
       } catch (err) {
-        if (!isProd) console.warn("[socket auth] jti revocation check failed", err);
+        if (!isProdLocal) console.warn("[socket auth] jti revocation check failed", err);
         // proceed (favor availability)
       }
 
-      if (!isProd) console.log("[socket auth] stream-access token verified");
+      if (!isProdLocal) console.log("[socket auth] stream-access token verified");
       socket.data.user = accessResult.payload;
       return next();
     }
 
-    if (!isProd) console.warn("[socket auth] stream-access token invalid", accessResult.error);
+    if (!isProdLocal) console.warn("[socket auth] stream-access token invalid", accessResult.error);
   }
 
   // Nothing verified — allow anonymous socket and enforce privacy later at join time
-  if (!isProd) console.warn("[socket auth] allowing anonymous socket (will enforce on join)");
+  if (!isProdLocal) console.warn("[socket auth] allowing anonymous socket (will enforce on join)");
   socket.data.user = { anonymous: true } as { anonymous: boolean };
   return next();
 });
 
-io.on("connection", (socket) => {
-  console.log("socket connected", socket.id, socket.data?.user?.userId || "anonymous");
+interface SocketUserData {
+  user?: {
+    userId?: string;
+    anonymous?: boolean;
+    [key: string]: unknown;
+  };
+  streamId?: string;
+  [key: string]: unknown;
+}
+
+io.on("connection", (socket: Socket & { data: SocketUserData }) => {
+  console.log("socket connected", socket.id, socket.data.user?.userId || "anonymous");
 
   // use module-scoped maps (shared in this process)
-  // streamBroadcasters and streamViewers are declared at module scope above
 
   // Join a stream as broadcaster or viewer
   socket.on("join-stream", async (data: { streamId: string; role?: string; quality?: string }) => {
@@ -189,7 +194,7 @@ io.on("connection", (socket) => {
     // If anonymous and joining as viewer, verify the stream is public by querying the app
     try {
       const user = socket.data.user as { anonymous?: boolean } | undefined;
-      // Treat missing role as implicit viewer for public memorial pages
+      // Treat missing role as implicit viewer for public pages
       if (user?.anonymous && (role === "viewer" || !role)) {
         const appBase =
           process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "http://localhost:3000";
@@ -322,8 +327,8 @@ io.on("connection", (socket) => {
 async function startServer() {
   if (REDIS_URL) {
     try {
-      const pubClient = createClient({ url: REDIS_URL });
-      const subClient = pubClient.duplicate();
+      const pubClient: RedisClientType = createClient({ url: REDIS_URL });
+      const subClient: RedisClientType = pubClient.duplicate();
 
       await Promise.all([pubClient.connect(), subClient.connect()]);
 
