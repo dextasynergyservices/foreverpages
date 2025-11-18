@@ -19,12 +19,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/api/health", (_req, res) => {
-  // Use Express response helpers for simplicity. Default 200 is fine for health.
+// Health and admin endpoints
+const healthHandler: express.RequestHandler = (_req, res) => {
   res.json({ status: "ok", ts: Date.now() });
-});
+};
 
-app.post("/api/streams/:id/metadata", async (req, res) => {
+const metadataHandler: express.RequestHandler = async (req, res) => {
   const streamId = (req.params && (req.params.id as string)) || undefined;
   const adminSecret = process.env.SOCKET_ADMIN_SECRET || "";
   const provided = (req.get && (req.get("x-admin-secret") as string)) || "";
@@ -34,8 +34,6 @@ app.post("/api/streams/:id/metadata", async (req, res) => {
   }
 
   const payload = req.body || {};
-
-  // Accept only a subset of safe fields
   const metadata: Record<string, unknown> = {};
   if (typeof payload.status === "string") metadata.status = payload.status;
   if (typeof payload.recordingUrl === "string") metadata.recordingUrl = payload.recordingUrl;
@@ -44,7 +42,6 @@ app.post("/api/streams/:id/metadata", async (req, res) => {
   if (typeof payload.streamQuality === "string") metadata.streamQuality = payload.streamQuality;
   if (typeof payload.viewers === "number") metadata.viewers = payload.viewers;
 
-  // Emit to the stream room so connected clients can update their caches
   try {
     io.to(`stream:${streamId}`).emit("stream-metadata-updated", { streamId, metadata });
     return res.status(200).json({ ok: true, streamId, metadata });
@@ -52,7 +49,10 @@ app.post("/api/streams/:id/metadata", async (req, res) => {
     console.error("Failed to emit stream-metadata-updated", err);
     return res.status(500).json({ error: "emit_failed" });
   }
-});
+};
+
+app.get("/api/health", healthHandler);
+app.post("/api/streams/:id/metadata", metadataHandler);
 
 const server = http.createServer(app);
 
@@ -91,7 +91,6 @@ async function isJtiRevokedInRedis(jti: string) {
   try {
     const client = await getRevocationClient();
     if (!client) return false;
-    // `exists` returns 1 if key exists, 0 if not
     const exists = await client.exists(`revoked_jti:${jti}`);
     return exists === 1;
   } catch (err) {
@@ -102,12 +101,10 @@ async function isJtiRevokedInRedis(jti: string) {
 
 // Simple auth middleware for socket.io
 io.use(async (socket: Socket, next) => {
-  // Accept token via handshake auth or query param for debugging
   const token =
     (socket.handshake.auth?.token as string | undefined) ||
     (socket.handshake.query?.token as string | undefined);
 
-  // Reduce noise in production
   const isProdLocal = process.env.NODE_ENV === "production";
 
   if (!JWT_SECRET) {
@@ -115,7 +112,6 @@ io.use(async (socket: Socket, next) => {
     return next();
   }
 
-  // First try verifying the handshake token (signed by JWT_SECRET)
   if (token) {
     const result = verifyToken(token, JWT_SECRET);
     if (result.payload) {
@@ -133,12 +129,10 @@ io.use(async (socket: Socket, next) => {
     }
   }
 
-  // If handshake token missing/invalid, allow clients to present a direct stream-access token
   const streamAccess = socket.handshake.auth?.streamAccess || socket.handshake.query?.streamAccess;
   if (streamAccess) {
     const accessResult = verifyAccessToken(streamAccess as string);
     if (accessResult.payload) {
-      // Check jti revocation in Redis (if available)
       try {
         const jti = accessResult.payload.jti as string | undefined;
         if (jti) {
@@ -150,7 +144,6 @@ io.use(async (socket: Socket, next) => {
         }
       } catch (err) {
         if (!isProdLocal) console.warn("[socket auth] jti revocation check failed", err);
-        // proceed (favor availability)
       }
 
       if (!isProdLocal) console.log("[socket auth] stream-access token verified");
@@ -161,7 +154,6 @@ io.use(async (socket: Socket, next) => {
     if (!isProdLocal) console.warn("[socket auth] stream-access token invalid", accessResult.error);
   }
 
-  // Nothing verified — allow anonymous socket and enforce privacy later at join time
   if (!isProdLocal) console.warn("[socket auth] allowing anonymous socket (will enforce on join)");
   socket.data.user = { anonymous: true } as { anonymous: boolean };
   return next();
@@ -180,19 +172,14 @@ interface SocketUserData {
 io.on("connection", (socket: Socket & { data: SocketUserData }) => {
   console.log("socket connected", socket.id, socket.data.user?.userId || "anonymous");
 
-  // use module-scoped maps (shared in this process)
-
   // Join a stream as broadcaster or viewer
   socket.on("join-stream", async (data: { streamId: string; role?: string; quality?: string }) => {
     const { streamId, role } = data;
     socket.data.streamId = streamId;
-    // Join a namespaced room so room naming matches in-app socketServer (`stream:<id>`)
     const room = `stream:${streamId}`;
 
-    // If anonymous and joining as viewer, verify the stream is public by querying the app
     try {
       const user = socket.data.user as { anonymous?: boolean } | undefined;
-      // Treat missing role as implicit viewer for public pages
       if (user?.anonymous && (role === "viewer" || !role)) {
         const appBase =
           process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "http://localhost:3000";
@@ -208,8 +195,9 @@ io.on("connection", (socket: Socket & { data: SocketUserData }) => {
         const body = await res.json().catch(() => null);
         const isPublic = !!body?.stream?.isPublic;
         if (!isPublic) {
-          if (!isProd)
+          if (!isProd) {
             console.warn("[socket auth] anonymous viewer denied for private stream", streamId);
+          }
           socket.emit("error", { message: "unauthorized: private stream" });
           socket.disconnect();
           return;
@@ -222,16 +210,13 @@ io.on("connection", (socket: Socket & { data: SocketUserData }) => {
       return;
     }
 
-    // All checks passed or not needed — join the room and proceed
     socket.join(room);
 
     if (role === "broadcaster") {
       streamBroadcasters.set(streamId, socket.id);
       console.log(`broadcaster joined stream=${streamId} id=${socket.id}`);
-      // notify room that stream started
       io.to(room).emit("stream-started", { streamId });
     } else {
-      // viewer
       const viewers = streamViewers.get(streamId) || new Set<string>();
       viewers.add(socket.id);
       streamViewers.set(streamId, viewers);
@@ -241,16 +226,13 @@ io.on("connection", (socket: Socket & { data: SocketUserData }) => {
 
       const broadcasterId = streamBroadcasters.get(streamId);
       if (broadcasterId) {
-        // Ask broadcaster to create a peer for this viewer (broadcaster initiates)
         io.to(broadcasterId).emit("viewer-joined", { viewerId: socket.id, viewerCount });
       }
 
-      // Broadcast viewer count to the room
       io.to(room).emit("viewer-count", { count: viewerCount });
     }
   });
 
-  // A viewer (or client) may request a quality change; forward the request to the broadcaster
   socket.on(
     "change-quality-request",
     ({ streamId, quality }: { streamId: string; quality: string }) => {
@@ -264,14 +246,12 @@ io.on("connection", (socket: Socket & { data: SocketUserData }) => {
     }
   );
 
-  // Broadcaster acknowledges/applies a quality change and notifies viewers
   socket.on("quality-applied", ({ streamId, quality }: { streamId: string; quality: string }) => {
     const room = `stream:${streamId}`;
     console.log(`✅ Quality applied for stream ${streamId}:`, quality);
     io.to(room).emit("quality-applied", { quality });
   });
 
-  // Handle leaving a stream
   socket.on("leave-stream", (data: { streamId: string }) => {
     const { streamId } = data;
     const room = `stream:${streamId}`;
@@ -282,14 +262,13 @@ io.on("connection", (socket: Socket & { data: SocketUserData }) => {
       const viewerCount = viewers.size;
       streamViewers.set(streamId, viewers);
       const broadcasterId = streamBroadcasters.get(streamId);
-      if (broadcasterId)
+      if (broadcasterId) {
         io.to(broadcasterId).emit("viewer-left", { viewerId: socket.id, viewerCount });
+      }
       io.to(room).emit("viewer-count", { count: viewerCount });
     }
-    // If broadcaster left, end stream
     if (streamBroadcasters.get(streamId) === socket.id) {
       streamBroadcasters.delete(streamId);
-      // notify viewers
       io.to(room).emit("stream-ended", { streamId });
       streamViewers.delete(streamId);
     }
@@ -298,7 +277,6 @@ io.on("connection", (socket: Socket & { data: SocketUserData }) => {
   socket.on("disconnect", (reason) => {
     console.log("socket disconnected", socket.id, reason);
 
-    // Cleanup any viewer or broadcaster state
     const streamId = socket.data.streamId as string | undefined;
     if (streamId) {
       const room = `stream:${streamId}`;
@@ -308,8 +286,9 @@ io.on("connection", (socket: Socket & { data: SocketUserData }) => {
         const viewerCount = viewers.size;
         streamViewers.set(streamId, viewers);
         const broadcasterId = streamBroadcasters.get(streamId);
-        if (broadcasterId)
+        if (broadcasterId) {
           io.to(broadcasterId).emit("viewer-left", { viewerId: socket.id, viewerCount });
+        }
         io.to(room).emit("viewer-count", { count: viewerCount });
       }
       if (streamBroadcasters.get(streamId) === socket.id) {
