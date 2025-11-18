@@ -1,5 +1,5 @@
 // signaling-server/src/index.ts
-import express, { Request, Response } from "express";
+import express from "express";
 import http from "http";
 import { Server as IOServer, Socket } from "socket.io";
 import cors from "cors";
@@ -19,42 +19,43 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/api/health", (_req: Request, res: Response) => {
+app.get("/api/health", (_req: express.Request, res: express.Response) => {
   // Use Express response helpers for simplicity
   res.status(200).json({ status: "ok", ts: Date.now() });
 });
 
-// Dev/admin endpoint to push stream metadata changes into the socket room.
-// Secured via X-ADMIN-SECRET header (consider stronger protections in prod).
-app.post("/api/streams/:id/metadata", async (req: Request<{ id?: string }>, res: Response) => {
-  const streamId = (req.params as { id?: string }).id;
-  const adminSecret = process.env.SOCKET_ADMIN_SECRET || "";
-  const provided = req.get?.("x-admin-secret") || "";
+app.post(
+  "/api/streams/:id/metadata",
+  async (req: express.Request<{ id?: string }>, res: express.Response) => {
+    const streamId = req.params?.id;
+    const adminSecret = process.env.SOCKET_ADMIN_SECRET || "";
+    const provided = (req.get("x-admin-secret") as string) || "";
 
-  if (!adminSecret || provided !== adminSecret) {
-    return res.status(401).json({ error: "unauthorized" });
+    if (!adminSecret || provided !== adminSecret) {
+      return res.status(401).json({ error: "unauthorized" });
+    }
+
+    const payload = req.body || {};
+
+    // Accept only a subset of safe fields
+    const metadata: Record<string, unknown> = {};
+    if (typeof payload.status === "string") metadata.status = payload.status;
+    if (typeof payload.recordingUrl === "string") metadata.recordingUrl = payload.recordingUrl;
+    if (typeof payload.startedAt === "string") metadata.startedAt = payload.startedAt;
+    if (typeof payload.endedAt === "string") metadata.endedAt = payload.endedAt;
+    if (typeof payload.streamQuality === "string") metadata.streamQuality = payload.streamQuality;
+    if (typeof payload.viewers === "number") metadata.viewers = payload.viewers;
+
+    // Emit to the stream room so connected clients can update their caches
+    try {
+      io.to(`stream:${streamId}`).emit("stream-metadata-updated", { streamId, metadata });
+      return res.status(200).json({ ok: true, streamId, metadata });
+    } catch (err) {
+      console.error("Failed to emit stream-metadata-updated", err);
+      return res.status(500).json({ error: "emit_failed" });
+    }
   }
-
-  const payload = req.body || {};
-
-  // Accept only a subset of safe fields
-  const metadata: Record<string, unknown> = {};
-  if (typeof payload.status === "string") metadata.status = payload.status;
-  if (typeof payload.recordingUrl === "string") metadata.recordingUrl = payload.recordingUrl;
-  if (typeof payload.startedAt === "string") metadata.startedAt = payload.startedAt;
-  if (typeof payload.endedAt === "string") metadata.endedAt = payload.endedAt;
-  if (typeof payload.streamQuality === "string") metadata.streamQuality = payload.streamQuality;
-  if (typeof payload.viewers === "number") metadata.viewers = payload.viewers;
-
-  // Emit to the stream room so connected clients can update their caches
-  try {
-    io.to(`stream:${streamId}`).emit("stream-metadata-updated", { streamId, metadata });
-    return res.status(200).json({ ok: true, streamId, metadata });
-  } catch (err) {
-    console.error("Failed to emit stream-metadata-updated", err);
-    return res.status(500).json({ error: "emit_failed" });
-  }
-});
+);
 
 const server = http.createServer(app);
 
