@@ -47,3 +47,6 @@ next-env.d.ts
 
 # Documentation (internal use only)
 /docs
+
+# Secrets (internal use only)
+/secrets

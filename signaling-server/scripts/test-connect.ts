@@ -2,10 +2,14 @@ import { signToken } from "../src/jwt";
 import { io as Client } from "socket.io-client";
 import dotenv from "dotenv";
 
-dotenv.config({ path: "../.env" });
+// Prefer an explicit TEST_ override (useful for CI/local runs). By default load the
+// `.env` next to the signaling-server package (when executed from the signaling-server folder).
+dotenv.config({ path: process.env.TEST_DOTENV_PATH || "./.env" });
 
-const SERVER_URL = process.env.TEST_SERVER_URL || "http://localhost:3000";
-const JWT_SECRET = process.env.JWT_SECRET || "test-secret";
+const SERVER_URL =
+  process.env.TEST_SERVER_URL || process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:8080";
+
+const JWT_SECRET = process.env.TEST_JWT_SECRET || process.env.JWT_SECRET || "test-secret";
 
 async function main() {
   const token = signToken({ userId: "test-user" }, JWT_SECRET, { expiresIn: "10m" });

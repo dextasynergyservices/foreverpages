@@ -47,6 +47,17 @@ export default function PasswordProtectionModal({
 
       if (response.ok) {
         setIsOpen(false);
+        const data = await response.json().catch(() => null);
+        // If server returned an accessToken, persist it locally for subsequent token requests
+        const accessToken = data?.accessToken ?? null;
+        try {
+          if (accessToken && typeof window !== "undefined") {
+            localStorage.setItem(`streamAccess:${streamId}`, accessToken);
+          }
+        } catch {
+          // ignore localStorage errors
+        }
+
         onSuccess();
       } else {
         const data = await response.json();

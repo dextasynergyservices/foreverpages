@@ -4,13 +4,18 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import { StreamStatus } from "@/generated/prisma";
 import bcrypt from "bcryptjs";
+import { notifySignalingMetadataUpdate } from "@/lib/signaling";
 
 /**
  * GET /api/streams/[id]
  * Get a single stream by ID
  */
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, context: { params?: { id?: string } }) {
   try {
+    const { params } = context || {};
+    if (!params?.id) {
+      return NextResponse.json({ error: "Missing stream id" }, { status: 400 });
+    }
     const session = await getServerSession(authOptions);
     const streamId = params.id;
 
@@ -72,10 +77,12 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     const isOwner = session?.user?.id === memorial.ownerId;
     const isPasswordProtected = !stream.isPublic && stream.password;
 
-    // Hide sensitive data for non-owners
+    // Hide sensitive data for non-owners. Recording URLs must never be exposed
+    // via the public stream endpoint; recordings are available only in the
+    // user dashboard where the owner is authenticated.
     if (!isOwner) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, streamKey, accessToken, ...publicStream } = stream;
+      const { password, streamKey, accessToken, recordingUrl, ...publicStream } = stream;
 
       // If password protected and not verified, return limited info
       if (isPasswordProtected) {
@@ -105,8 +112,12 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
  * Update a stream
  * Body: Partial stream fields
  */
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, context: { params?: { id?: string } }) {
   try {
+    const { params } = context || {};
+    if (!params?.id) {
+      return NextResponse.json({ error: "Missing stream id" }, { status: 400 });
+    }
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -184,6 +195,14 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       },
     });
 
+    // If we changed status or added a recordingUrl, notify signaling server
+    const notifyPayload: Record<string, unknown> = {};
+    if (updateData.status) notifyPayload.status = updateData.status;
+    if (updateData.recordingUrl) notifyPayload.recordingUrl = updateData.recordingUrl;
+    if (Object.keys(notifyPayload).length > 0) {
+      notifySignalingMetadataUpdate(streamId, notifyPayload).catch(() => {});
+    }
+
     return NextResponse.json({ stream: updatedStream });
   } catch (error) {
     console.error("Error updating stream:", error);
@@ -195,8 +214,12 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
  * DELETE /api/streams/[id]
  * Delete a stream
  */
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context: { params?: { id?: string } }) {
   try {
+    const { params } = context || {};
+    if (!params?.id) {
+      return NextResponse.json({ error: "Missing stream id" }, { status: 400 });
+    }
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

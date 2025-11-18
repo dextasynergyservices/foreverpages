@@ -9,10 +9,10 @@ import { LivestreamReactionType } from "@/generated/prisma";
  * Add a reaction to a stream
  * Body: { type: LivestreamReactionType, anonymousName?: string }
  */
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
-    const streamId = params.id;
+    const { id: streamId } = await params;
     const body = await req.json();
     const { type } = body;
 
@@ -62,6 +62,12 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     return NextResponse.json({ reaction }, { status: 201 });
   } catch (error) {
     console.error("Error adding reaction:", error);
+    if (process.env.NODE_ENV !== "production") {
+      return NextResponse.json(
+        { error: "Failed to add reaction", details: String(error) },
+        { status: 500 }
+      );
+    }
     return NextResponse.json({ error: "Failed to add reaction" }, { status: 500 });
   }
 }
@@ -70,9 +76,9 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
  * GET /api/streams/[id]/reactions
  * Get reactions for a stream
  */
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const streamId = params.id;
+    const { id: streamId } = await params;
 
     // Get reaction counts by type
     const reactionCounts = await prisma.streamReaction.groupBy({
@@ -107,6 +113,12 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     });
   } catch (error) {
     console.error("Error fetching reactions:", error);
+    if (process.env.NODE_ENV !== "production") {
+      return NextResponse.json(
+        { error: "Failed to fetch reactions", details: String(error) },
+        { status: 500 }
+      );
+    }
     return NextResponse.json({ error: "Failed to fetch reactions" }, { status: 500 });
   }
 }

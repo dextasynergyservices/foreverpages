@@ -4,6 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import { RecordingStatus } from "@/generated/prisma";
 import { uploadStreamRecording } from "@/lib/cloudinary/videoUpload";
+import { notifySignalingMetadataUpdate } from "@/lib/signaling";
 
 /**
  * POST /api/streams/[id]/upload-recording
@@ -64,6 +65,12 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         },
       });
 
+      // Notify signaling server
+      notifySignalingMetadataUpdate(streamId, {
+        recordingUrl: updatedStream.recordingUrl,
+        recordingStatus: updatedStream.recordingStatus,
+      }).catch(() => {});
+
       return NextResponse.json({ stream: updatedStream });
     }
 
@@ -97,6 +104,12 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
           recordingStatus: RecordingStatus.READY,
         },
       });
+
+      // Notify signaling server
+      notifySignalingMetadataUpdate(streamId, {
+        recordingUrl: updatedStream.recordingUrl,
+        recordingStatus: updatedStream.recordingStatus,
+      }).catch(() => {});
 
       return NextResponse.json({ stream: updatedStream });
     }

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { StreamStatus, StreamQuality } from "@/generated/prisma";
 import { Lock, Users, Wifi, WifiOff } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -8,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import ViewerChat from "./ViewerChat";
 import VideoPlayer from "@/components/livestream/viewer/VideoPlayer";
 import { useWebRTCViewer } from "@/hooks/useWebRTCViewer";
+import { useStreamMetadata } from "@/hooks/useStreamMetadata";
 
 interface Memorial {
   id: string;
@@ -47,25 +49,41 @@ export default function LivestreamViewer({
   stream: initialStream,
   isLocked = false,
 }: LivestreamViewerProps) {
-  const [viewerCount, setViewerCount] = useState(initialStream.totalViews);
+  // uniqueViews: total unique views for the memorial stream (persistent)
+  // stored on the server; display this value in the header
+  const [uniqueViews] = useState(initialStream.totalViews);
+  // active viewers reported by the signaling server (current concurrent viewers)
+  const [activeViewerCount, setActiveViewerCount] = useState<number>(0);
   const [selectedQuality, setSelectedQuality] = useState<StreamQuality>(
     initialStream.streamQuality
   );
   const [error, setError] = useState<string | null>(null);
   const [streamStatus, setStreamStatus] = useState(initialStream.status);
+  const [playRecording, setPlayRecording] = useState(false);
+  const [connectingTimeoutExceeded, setConnectingTimeoutExceeded] = useState(false);
 
   const fullName = `${memorial.firstName} ${memorial.middleName ? memorial.middleName + " " : ""}${memorial.lastName}`;
 
-  // Determine if this is a live stream or recording based on current status
-  const isLive = (streamStatus === "LIVE" || streamStatus === "PAUSED") && !isLocked;
-  const isRecording = streamStatus === "ENDED" && initialStream.recordingUrl;
+  // NextAuth session to detect whether visitor is authenticated
+  const { data: session } = useSession();
+
+  // Derive authoritative stream metadata via TanStack Query when available
+  const { data: streamData } = useStreamMetadata(initialStream.id);
+
+  // Determine if this is a live stream or recording based on query data (fallback to initial props)
+  const effectiveStatus = streamData?.status ?? streamStatus;
+  const recordingUrl = streamData?.recordingUrl ?? initialStream.recordingUrl;
+  const isLive = effectiveStatus === "LIVE" && !isLocked;
+  const isRecording = effectiveStatus === "ENDED" && !!recordingUrl;
+  // Only allow recording playback for authenticated users — anonymous visitors see live only
+  const canPlayRecording = !!session?.user && isRecording;
 
   // WebRTC hook for live streams
-  const { isConnected, remoteStream } = useWebRTCViewer({
+  const { isConnected, remoteStream, reconnect, isReconnecting } = useWebRTCViewer({
     streamId: initialStream.id,
     isLive: isLive,
     quality: selectedQuality,
-    onViewerCountChange: setViewerCount,
+    onViewerCountChange: setActiveViewerCount,
     onError: (errorMessage) => {
       setError(errorMessage);
       // If the error indicates stream ended, update status
@@ -74,6 +92,44 @@ export default function LivestreamViewer({
       }
     },
   });
+
+  // Some signaling flows may provide a MediaStream object that has no tracks
+  // yet (or whose tracks are ended). Treat streams with zero live tracks as
+  // effectively "no stream" so the UI keeps showing the connecting placeholder
+  // until a playable stream is available.
+  const hasRemoteStream = !!remoteStream && (remoteStream.getTracks?.().length ?? 0) > 0;
+
+  // Show a friendly timeout message if still not connected after 20 seconds
+  useEffect(() => {
+    if (!isLive) return;
+    setConnectingTimeoutExceeded(false);
+    const t = setTimeout(() => {
+      // consider zero-track streams as not connected yet
+      if (!isConnected && !hasRemoteStream) {
+        setConnectingTimeoutExceeded(true);
+      }
+    }, 20000);
+    return () => clearTimeout(t);
+  }, [isLive, isConnected, remoteStream, hasRemoteStream]);
+
+  // If a live remoteStream appears, cancel any pending recording playback
+  // Use effect to avoid updating state during render
+  useEffect(() => {
+    if (hasRemoteStream && playRecording) {
+      setPlayRecording(false);
+    }
+  }, [hasRemoteStream, playRecording]);
+
+  // Sync local state with live metadata so controls reflect the latest values
+  useEffect(() => {
+    if (!streamData) return;
+    if (streamData.status && streamData.status !== streamStatus) {
+      setStreamStatus(streamData.status as StreamStatus);
+    }
+    if (streamData.streamQuality && streamData.streamQuality !== selectedQuality) {
+      setSelectedQuality(streamData.streamQuality as StreamQuality);
+    }
+  }, [streamData, selectedQuality, streamStatus]);
 
   // Stream and recording handling is now done by VideoPlayer component
 
@@ -114,10 +170,15 @@ export default function LivestreamViewer({
                 </Badge>
               )}
 
-              {/* Viewer Count */}
+              {/* Unique viewer count (total unique views) and active viewers */}
               <div className="flex items-center gap-2 text-white bg-white/10 rounded-full px-3 py-1">
                 <Users className="h-4 w-4" />
-                <span className="text-sm font-medium">{viewerCount}</span>
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium">{uniqueViews}</span>
+                  <span className="text-xs text-gray-300">unique views</span>
+                </div>
+                {/* Active viewers badge (concurrent) */}
+                <div className="ml-3 text-xs text-gray-300">{activeViewerCount} live</div>
               </div>
 
               {/* Connection Status (for live streams) */}
@@ -156,15 +217,35 @@ export default function LivestreamViewer({
               ) : (
                 <>
                   {/* Enhanced Video Player with PiP and Quality Controls */}
-                  {(remoteStream || isRecording) && (
+                  {/* Prefer live stream. Only play a recording if the user explicitly requests it. */}
+                  {(hasRemoteStream || playRecording) && (
                     <VideoPlayer
                       stream={remoteStream}
-                      videoUrl={isRecording ? initialStream.recordingUrl || undefined : undefined}
+                      videoUrl={
+                        !remoteStream && playRecording ? recordingUrl || undefined : undefined
+                      }
                       isLive={isLive}
                       currentQuality={selectedQuality}
                       onQualityChange={setSelectedQuality}
                       className="w-full h-full"
                     />
+                  )}
+
+                  {/* Play Recording CTA when there's a recording but no live stream currently */}
+                  {/* Only show Play Recording CTA to authenticated users */}
+                  {!hasRemoteStream && canPlayRecording && !playRecording && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-900/70 to-black/70 z-10">
+                      <div className="text-center">
+                        <h3 className="text-white text-xl mb-2">This event has a recording</h3>
+                        <p className="text-gray-300 mb-4">Click to play the recorded stream.</p>
+                        <button
+                          className="px-4 py-2 bg-white text-black rounded"
+                          onClick={() => setPlayRecording(true)}
+                        >
+                          Play recording
+                        </button>
+                      </div>
+                    </div>
                   )}
 
                   {/* Error Banner */}
@@ -177,9 +258,26 @@ export default function LivestreamViewer({
                   {/* No Stream Placeholder */}
                   {!remoteStream && isLive && !isLocked && (
                     <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
-                      <div className="text-center text-white">
+                      <div className="text-center text-white px-6">
                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
                         <p className="text-lg">Connecting to stream...</p>
+                        {connectingTimeoutExceeded && (
+                          <div className="mt-4 text-sm text-gray-300">
+                            <p>Still connecting. It might be a temporary network issue.</p>
+                            <p className="mt-2">You can try to reconnect or come back shortly.</p>
+                            <div className="mt-3">
+                              <button
+                                className={`px-3 py-1 bg-white text-black rounded ${
+                                  isReconnecting ? "opacity-60 cursor-not-allowed" : ""
+                                }`}
+                                onClick={() => reconnect?.()}
+                                disabled={!!isReconnecting}
+                              >
+                                {isReconnecting ? "Reconnecting..." : "Reconnect"}
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}

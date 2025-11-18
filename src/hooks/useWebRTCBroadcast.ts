@@ -43,144 +43,238 @@ export function useWebRTCBroadcast({
 
     console.log("🔌 Connecting to Socket.io server...");
 
-    const socketInstance = io(getSocketUrl(), {
-      path: "/api/socket",
-      reconnection: true,
-      reconnectionDelay: 500,
-      reconnectionAttempts: 10,
-      timeout: 10000,
-      transports: ["websocket", "polling"],
-      forceNew: false,
-      upgrade: true,
-    });
+    let socketInstance: Socket | null = null;
+    let connectionTimeout: ReturnType<typeof setTimeout> | null = null;
 
-    // Connection timeout handler
-    const connectionTimeout = setTimeout(() => {
-      if (!isConnected) {
-        console.error("⏰ Socket connection timeout");
-        onError("Connection timeout. Please check your internet connection and try again.");
+    const start = async () => {
+      // Fetch short-lived signaling token
+      let token: string | null = null;
+      try {
+        console.log("[broadcast hook] requesting /api/signaling/token (sending credentials)");
+        const res = await fetch("/api/signaling/token", { credentials: "include" });
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          console.warn("[broadcast hook] token endpoint error body:", body, "status", res.status);
+          throw new Error(body?.error || `token endpoint returned ${res.status}`);
+        }
+        const b = await res.json();
+        token = b.token;
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        console.error("❌ Failed to fetch signaling token:", message);
+        onError("Failed to obtain signaling token. Please ensure you're signed in.");
+        return;
+      }
+
+      if (!token) return;
+
+      socketInstance = io(getSocketUrl(), {
+        path: "/api/socket",
+        auth: { token },
+        reconnection: true,
+        reconnectionDelay: 500,
+        reconnectionAttempts: 10,
+        timeout: 10000,
+        transports: ["websocket", "polling"],
+        forceNew: false,
+        upgrade: true,
+      });
+
+      // Connection timeout handler
+      connectionTimeout = setTimeout(() => {
+        if (!isConnected) {
+          console.error("⏰ Socket connection timeout");
+          onError("Connection timeout. Please check your internet connection and try again.");
+          setIsConnected(false);
+          onConnectionChange(false);
+        }
+      }, 15000); // 15 second timeout
+
+      // Connection events
+      socketInstance.on("connect", () => {
+        console.log("✅ Socket connected:", socketInstance!.id);
+        if (connectionTimeout) clearTimeout(connectionTimeout);
+        setIsConnected(true);
+        onConnectionChange(true);
+
+        // Join stream as broadcaster
+        socketInstance!.emit("join-stream", {
+          streamId,
+          role: "broadcaster",
+        });
+      });
+
+      socketInstance.on("disconnect", (reason) => {
+        console.log("🔌 Socket disconnected:", reason);
         setIsConnected(false);
         onConnectionChange(false);
-      }
-    }, 15000); // 15 second timeout
 
-    // Connection events
-    socketInstance.on("connect", () => {
-      console.log("✅ Socket connected:", socketInstance.id);
-      clearTimeout(connectionTimeout);
-      setIsConnected(true);
-      onConnectionChange(true);
-
-      // Join stream as broadcaster
-      socketInstance.emit("join-stream", {
-        streamId,
-        role: "broadcaster",
+        // If disconnected due to error, show user-friendly message
+        if (reason === "io server disconnect" || reason === "io client disconnect") {
+          onError("Connection lost. Attempting to reconnect...");
+        }
       });
-    });
 
-    socketInstance.on("disconnect", (reason) => {
-      console.log("🔌 Socket disconnected:", reason);
-      setIsConnected(false);
-      onConnectionChange(false);
-
-      // If disconnected due to error, show user-friendly message
-      if (reason === "io server disconnect" || reason === "io client disconnect") {
-        onError("Connection lost. Attempting to reconnect...");
-      }
-    });
-
-    socketInstance.on("connect_error", (error) => {
-      console.error("❌ Socket connection error:", error);
-      clearTimeout(connectionTimeout);
-      onError(`Connection failed: ${error.message}. Please check your internet connection.`);
-      setIsConnected(false);
-      onConnectionChange(false);
-    });
-
-    socketInstance.on("reconnect", (attemptNumber) => {
-      console.log(`🔄 Socket reconnected after ${attemptNumber} attempts`);
-      setIsConnected(true);
-      onConnectionChange(true);
-      onError(""); // Clear any previous errors
-    });
-
-    socketInstance.on("reconnect_error", (error) => {
-      console.error("❌ Socket reconnection error:", error);
-      onError(`Reconnection failed: ${error.message}`);
-    });
-
-    socketInstance.on("reconnect_failed", () => {
-      console.error("❌ Socket reconnection failed completely");
-      onError("Unable to reconnect. Please refresh the page and try again.");
-    });
-
-    // Viewer joined - create peer connection
-    socketInstance.on("viewer-joined", (data) => {
-      console.log("👤 Viewer joined:", data.viewerId);
-      onViewerCountChange(data.viewerCount);
-
-      // Create peer connection for this viewer
-      createPeerConnection(data.viewerId, socketInstance);
-    });
-
-    // Viewer left
-    socketInstance.on("viewer-left", (data) => {
-      console.log("👤 Viewer left:", data.viewerId);
-      onViewerCountChange(data.viewerCount);
-
-      // Remove peer connection
-      removePeerConnection(data.viewerId);
-    });
-
-    // Viewer count update
-    socketInstance.on("viewer-count", (data) => {
-      onViewerCountChange(data.count);
-    });
-
-    // Handle answer from viewer
-    socketInstance.on("answer", (data) => {
-      console.log("📡 Received answer from:", data.viewerId);
-      const peer = peersRef.current.get(data.viewerId);
-      if (peer) {
-        peer.peerConnection.signal(data.answer);
-      }
-    });
-
-    // Handle ICE candidate from viewer
-    socketInstance.on("ice-candidate", (data) => {
-      console.log("🧊 Received ICE candidate from:", data.senderId);
-      const peer = peersRef.current.get(data.senderId);
-      if (peer) {
-        peer.peerConnection.signal({
-          type: "candidate",
-          candidate: data.candidate,
-        });
-      }
-    });
-
-    // Error from server
-    socketInstance.on("error", (data) => {
-      console.error("❌ Server error:", data.message);
-      onError(data.message);
-    });
-
-    // Handle stream ended notification
-    socketInstance.on("stream-ended", (data) => {
-      console.log("📡 Stream ended notification received:", data.streamId);
-      // Cleanup all peer connections
-      peersRef.current.forEach((peer) => {
-        peer.peerConnection.destroy();
+      socketInstance.on("connect_error", (error) => {
+        console.error("❌ Socket connection error:", error);
+        if (connectionTimeout) clearTimeout(connectionTimeout);
+        onError(`Connection failed: ${error.message}. Please check your internet connection.`);
+        setIsConnected(false);
+        onConnectionChange(false);
       });
-      peersRef.current.clear();
-      setPeers(new Map());
-      setIsConnected(false);
-      onConnectionChange(false);
-    });
 
-    // Handle stream status changed
-    socketInstance.on("stream-status-changed", (data) => {
-      console.log("📡 Stream status changed:", data.streamId, data.status);
-      if (data.status === "ENDED") {
+      socketInstance.on("reconnect", (attemptNumber) => {
+        console.log(`🔄 Socket reconnected after ${attemptNumber} attempts`);
+        setIsConnected(true);
+        onConnectionChange(true);
+        onError(""); // Clear any previous errors
+      });
+
+      socketInstance.on("reconnect_error", (error) => {
+        console.error("❌ Socket reconnection error:", error);
+        onError(`Reconnection failed: ${error.message}`);
+      });
+
+      socketInstance.on("reconnect_failed", () => {
+        console.error("❌ Socket reconnection failed completely");
+        onError("Unable to reconnect. Please refresh the page and try again.");
+      });
+
+      // Viewer joined - create peer connection
+      socketInstance.on("viewer-joined", (data) => {
+        console.log("👤 Viewer joined:", data.viewerId);
+        onViewerCountChange(data.viewerCount);
+
+        // Create peer connection for this viewer
+        createPeerConnection(data.viewerId, socketInstance!);
+      });
+
+      // Fallback: viewer indicates readiness to receive an offer (in case server missed forwarding)
+      socketInstance.on("viewer-ready", (data) => {
+        console.log("📣 Viewer ready received (fallback):", data.viewerId);
+        // If we don't already have a peer for this viewer, create one
+        if (!peersRef.current.has(data.viewerId)) {
+          createPeerConnection(data.viewerId, socketInstance!);
+        }
+      });
+
+      // Handle explicit quality change requests from viewers
+      socketInstance.on(
+        "change-quality-request",
+        async (data: { quality: string; requesterId?: string }) => {
+          console.log("🔔 Received quality change request:", data.quality);
+
+          // Map quality to approximate constraints
+          const qualityMap: Record<string, MediaTrackConstraints> = {
+            FULL_HD: { width: { ideal: 1920 }, height: { ideal: 1080 } },
+            HD: { width: { ideal: 1280 }, height: { ideal: 720 } },
+            SD: { width: { ideal: 854 }, height: { ideal: 480 } },
+            MEDIUM: { width: { ideal: 640 }, height: { ideal: 360 } },
+            LOW: { width: { ideal: 426 }, height: { ideal: 240 } },
+            LOWEST: { width: { ideal: 256 }, height: { ideal: 144 } },
+          };
+
+          const constraints = qualityMap[data.quality] || qualityMap.FULL_HD;
+
+          try {
+            if (localStream) {
+              const tracks = localStream.getVideoTracks();
+              for (const track of tracks) {
+                try {
+                  await track.applyConstraints(constraints);
+                } catch (err) {
+                  console.warn("⚠️ Failed to apply constraints on track:", err);
+                }
+              }
+
+              // Notify viewers that quality has been applied
+              socketInstance?.emit("quality-applied", { streamId, quality: data.quality });
+              console.log("✅ Emitted quality-applied to viewers", data.quality);
+            }
+          } catch (err) {
+            console.warn("Error handling quality request:", err);
+          }
+        }
+      );
+
+      // Viewer left
+      socketInstance.on("viewer-left", (data) => {
+        console.log("👤 Viewer left:", data.viewerId);
+        onViewerCountChange(data.viewerCount);
+
+        // Remove peer connection
+        removePeerConnection(data.viewerId);
+      });
+
+      // Viewer count update
+      socketInstance.on("viewer-count", (data) => {
+        onViewerCountChange(data.count);
+      });
+
+      // Handle answer from viewer
+      socketInstance.on("answer", (data) => {
+        console.log("📡 Received answer from:", data.viewerId);
+        const peer = peersRef.current.get(data.viewerId);
+        if (peer) {
+          peer.peerConnection.signal(data.answer);
+        }
+      });
+
+      // Handle ICE candidate from viewer
+      socketInstance.on("ice-candidate", (data) => {
+        console.log("🧊 Received ICE candidate from:", data.senderId);
+        const peer = peersRef.current.get(data.senderId);
+        if (peer) {
+          peer.peerConnection.signal({
+            type: "candidate",
+            candidate: data.candidate,
+          });
+        }
+      });
+
+      // Error from server
+      socketInstance.on("error", (data) => {
+        console.error("❌ Server error:", data.message);
+        onError(data.message);
+      });
+
+      // Handle quality change requests from viewers
+      socketInstance.on("quality-changed", async (data: { quality: string }) => {
+        console.log("🔁 Received quality change request:", data.quality);
+
+        // Map quality to approximate resolution constraints
+        const qualityMap: Record<string, MediaTrackConstraints> = {
+          FULL_HD: { width: { ideal: 1920 }, height: { ideal: 1080 } },
+          HD: { width: { ideal: 1280 }, height: { ideal: 720 } },
+          SD: { width: { ideal: 854 }, height: { ideal: 480 } },
+          MEDIUM: { width: { ideal: 640 }, height: { ideal: 360 } },
+          LOW: { width: { ideal: 426 }, height: { ideal: 240 } },
+          LOWEST: { width: { ideal: 256 }, height: { ideal: 144 } },
+        };
+
+        const constraints = qualityMap[data.quality] || qualityMap.FULL_HD;
+
+        try {
+          if (localStream) {
+            // Attempt to apply constraints to existing tracks
+            localStream.getVideoTracks().forEach(async (track) => {
+              // applyConstraints may not be supported by all browsers; try-catch
+              try {
+                await track.applyConstraints(constraints);
+                console.log("✅ Applied new constraints to local track", constraints);
+              } catch (err) {
+                console.warn("⚠️ Failed to apply constraints to track:", err);
+              }
+            });
+          }
+        } catch (err) {
+          console.warn("Error changing quality:", err);
+        }
+      });
+
+      // Handle stream ended notification
+      socketInstance.on("stream-ended", (data) => {
+        console.log("📡 Stream ended notification received:", data.streamId);
         // Cleanup all peer connections
         peersRef.current.forEach((peer) => {
           peer.peerConnection.destroy();
@@ -189,21 +283,41 @@ export function useWebRTCBroadcast({
         setPeers(new Map());
         setIsConnected(false);
         onConnectionChange(false);
-      }
-    });
+      });
 
-    setSocket(socketInstance);
+      // Handle stream status changed
+      socketInstance.on("stream-status-changed", (data) => {
+        console.log("📡 Stream status changed:", data.streamId, data.status);
+        if (data.status === "ENDED") {
+          // Cleanup all peer connections
+          peersRef.current.forEach((peer) => {
+            peer.peerConnection.destroy();
+          });
+          peersRef.current.clear();
+          setPeers(new Map());
+          setIsConnected(false);
+          onConnectionChange(false);
+        }
+      });
+
+      setSocket(socketInstance);
+    };
+
+    start();
 
     return () => {
       console.log("🔌 Cleaning up socket connection...");
-      socketInstance.emit("leave-stream", { streamId });
-      socketInstance.disconnect();
+      if (socketInstance) {
+        socketInstance.emit("leave-stream", { streamId });
+        socketInstance.disconnect();
+      }
 
       // Cleanup all peer connections
       peersRef.current.forEach((peer) => {
         peer.peerConnection.destroy();
       });
       peersRef.current.clear();
+      if (connectionTimeout) clearTimeout(connectionTimeout);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLive, streamId]);

@@ -42,6 +42,7 @@ interface Stream {
   peakViewers: number;
   hasPassword: boolean;
   recordingUrl: string | null;
+  recordingStatus?: string | null;
   createdAt: string;
   quality: StreamQuality;
   enableRecording: boolean;
@@ -289,17 +290,18 @@ const StreamList: React.FC<StreamListProps> = ({ memorialId, refreshKey }) => {
 
               <CardFooter className="flex gap-2">
                 {/* Download Recording Button */}
-                {stream.recordingUrl && stream.status === "ENDED" && (
-                  <Button
-                    size="sm"
-                    variant="default"
-                    className="flex-1"
-                    onClick={() => handleDownloadRecording(stream.recordingUrl!, stream.title)}
-                  >
-                    <Download className="h-4 w-4 mr-1" />
-                    Download
-                  </Button>
-                )}
+                {stream.recordingUrl &&
+                  (stream.recordingStatus === "READY" || stream.status === "ENDED") && (
+                    <Button
+                      size="sm"
+                      variant="default"
+                      className="flex-1"
+                      onClick={() => handleDownloadRecording(stream.recordingUrl!, stream.title)}
+                    >
+                      <Download className="h-4 w-4 mr-1" />
+                      Download
+                    </Button>
+                  )}
 
                 {/* Start/Join Button for LIVE streams */}
                 {stream.status === "LIVE" && (

@@ -5,19 +5,20 @@ import { prisma } from "@/lib/prisma";
 import { StreamStatus } from "@/generated/prisma";
 import { sendStreamLiveEmail } from "@/lib/livestream-email-service";
 import { getGlobalSocketServer, notifyStreamStarted } from "@/lib/socket/socketServer";
+import { notifySignalingMetadataUpdate } from "@/lib/signaling";
 
 /**
  * POST /api/streams/[id]/start
  * Start a stream (change status to LIVE)
  */
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const streamId = params.id;
+    const { id: streamId } = await params;
 
     // Check if stream exists and user owns it
     const stream = await prisma.memorialStream.findUnique({
@@ -72,6 +73,12 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       if (io) {
         notifyStreamStarted(streamId, io);
       }
+      // Also notify external signaling server (if configured) so other processes
+      // and clients can react in real time. This is best-effort.
+      notifySignalingMetadataUpdate(streamId, {
+        status: "LIVE",
+        startedAt: updatedStream.startedAt?.toISOString?.() ?? null,
+      }).catch(() => {});
     } catch (error) {
       console.error("Failed to notify viewers of stream start:", error);
       // Don't fail the request if notification fails

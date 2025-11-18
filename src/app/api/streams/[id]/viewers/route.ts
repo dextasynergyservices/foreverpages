@@ -17,6 +17,21 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     const body = await req.json();
     const { anonymousName, connectionQuality = "good" } = body;
 
+    // Try cookie-based dedupe: check for stream_session cookie
+    const cookieHeader = req.headers.get("cookie") || "";
+    const cookies = Object.fromEntries(
+      cookieHeader.split(";").map((c) => {
+        const [k, ...v] = c.split("=");
+        return [k?.trim(), decodeURIComponent((v || []).join("=").trim())];
+      })
+    );
+
+    let sessionId = cookies["stream_session"];
+    if (!sessionId) {
+      // Generate a persistent session id and instruct client to store it via Set-Cookie
+      sessionId = `${Date.now()}-${Math.random().toString(36).substring(7)}`;
+    }
+
     // Check if stream exists and is accessible
     const stream = await prisma.memorialStream.findUnique({
       where: { id: streamId },
@@ -43,8 +58,6 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
     // Create or update viewer record
     const isAnonymous = !session?.user;
-    const sessionId = `${Date.now()}-${Math.random().toString(36).substring(7)}`;
-
     const viewer = await prisma.streamViewer.create({
       data: {
         streamId,
@@ -65,15 +78,21 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       },
     });
 
-    // Update total views count
-    await prisma.memorialStream.update({
-      where: { id: streamId },
-      data: {
-        totalViews: {
-          increment: 1,
-        },
-      },
+    // Update total views count only if this session hasn't been seen for this stream
+    const existing = await prisma.streamViewer.findFirst({
+      where: { streamId, sessionId },
     });
+
+    if (!existing) {
+      await prisma.memorialStream.update({
+        where: { id: streamId },
+        data: {
+          totalViews: {
+            increment: 1,
+          },
+        },
+      });
+    }
 
     // Get current viewer count
     const viewerCount = await prisma.streamViewer.count({
@@ -96,10 +115,20 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       },
     });
 
-    return NextResponse.json({
+    const res = NextResponse.json({
       viewer,
       viewerCount,
     });
+
+    // If we created a new session id (cookie not present), set a cookie for dedupe (1 year)
+    if (!cookies["stream_session"]) {
+      res.headers.append(
+        "Set-Cookie",
+        `stream_session=${encodeURIComponent(sessionId)}; Path=/; Max-Age=${60 * 60 * 24 * 365}; HttpOnly`
+      );
+    }
+
+    return res;
   } catch (error) {
     console.error("Error joining stream:", error);
     return NextResponse.json({ error: "Failed to join stream" }, { status: 500 });

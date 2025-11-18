@@ -20,7 +20,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { StreamQuality } from "@/generated/prisma";
-import toast from "react-hot-toast";
 
 interface VideoPlayerProps {
   stream: MediaStream | null;
@@ -51,7 +50,8 @@ export default function VideoPlayer({
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(false);
+  // Mute live streams by default so autoplay is allowed by browsers
+  const [isMuted, setIsMuted] = useState<boolean>(() => (isLive ? true : false));
   const [volume, setVolume] = useState(100);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showControls, setShowControls] = useState(false);
@@ -60,14 +60,104 @@ export default function VideoPlayer({
 
   // Attach stream/source to video element
   useEffect(() => {
-    if (videoRef.current) {
-      if (stream) {
-        videoRef.current.srcObject = stream;
-      } else if (videoUrl) {
-        videoRef.current.src = videoUrl;
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Debug: remember previous stream id for tracing
+    const prevStreamId = (video.srcObject as MediaStream | null)?.id ?? null;
+
+    if (stream) {
+      try {
+        // Force reattach to ensure we always play the latest MediaStream.
+        const current = video.srcObject as MediaStream | null;
+        if (!current || current.id !== stream.id) {
+          console.log(
+            "[VideoPlayer] reattaching MediaStream (prev -> new):",
+            prevStreamId,
+            "->",
+            stream.id
+          );
+
+          // Stop tracks of previous stream if present to avoid the video element reusing old frames
+          if (current) {
+            try {
+              current.getTracks().forEach((t) => {
+                try {
+                  t.stop();
+                } catch {}
+              });
+            } catch {}
+          }
+
+          // detach previous and attach new stream
+          try {
+            video.srcObject = null;
+          } catch {}
+          // Clone tracks into a fresh MediaStream to avoid shared references keeping old frames
+          try {
+            const cloned = new MediaStream(stream.getTracks().map((t) => t.clone()));
+            video.srcObject = cloned;
+          } catch {
+            // Fallback: attach original
+            video.srcObject = stream;
+          }
+        } else {
+          // already attached same stream id
+          console.log("[VideoPlayer] MediaStream already attached, id:", stream.id);
+        }
+        console.log(
+          "[VideoPlayer] attached MediaStream, tracks:",
+          stream.getTracks().map((t) => `${t.kind}:${t.readyState}`)
+        );
+        // Attempt to play to surface autoplay permission errors
+        video
+          .play()
+          .then(() => {
+            console.log("[VideoPlayer] autoplay succeeded for MediaStream");
+            setIsPlaying(true);
+          })
+          .catch((err) => {
+            console.warn("[VideoPlayer] autoplay failed for MediaStream:", err);
+            setIsPlaying(false);
+          });
+      } catch (err) {
+        console.error("[VideoPlayer] failed to attach MediaStream:", err);
+      }
+    } else if (videoUrl) {
+      try {
+        video.srcObject = null;
+        // When attaching a recording URL, clear any previous MediaStream to avoid conflicts
+        if (video.srcObject) {
+          try {
+            video.srcObject = null;
+          } catch {}
+        }
+        video.src = videoUrl;
+        console.log("[VideoPlayer] attached videoUrl:", videoUrl);
+        video
+          .play()
+          .then(() => {
+            console.log("[VideoPlayer] autoplay succeeded for videoUrl");
+            setIsPlaying(true);
+          })
+          .catch((err) => console.warn("[VideoPlayer] autoplay failed for videoUrl:", err));
+      } catch (err) {
+        console.error("[VideoPlayer] failed to attach videoUrl:", err);
+      }
+    } else {
+      // No source
+      try {
+        video.srcObject = null;
+        video.removeAttribute("src");
+        console.log("[VideoPlayer] cleared source (no stream/videoUrl)");
+      } catch {
+        // ignore
       }
     }
   }, [stream, videoUrl]);
+
+  // Dev-only overlay showing current stream metadata to help debugging old vs new streams
+  const isDev = process.env.NODE_ENV !== "production";
 
   // Handle fullscreen changes
   useEffect(() => {
@@ -126,6 +216,38 @@ export default function VideoPlayer({
     }
   };
 
+  // Keep the underlying video element's muted property in sync
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
+
+  // Track play/pause/waiting events to keep isPlaying accurate so overlays
+  // (spinner / play button) only show when the player is truly not producing frames.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handlePlaying = () => setIsPlaying(true);
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    const handleWaiting = () => setIsPlaying(false);
+
+    video.addEventListener("playing", handlePlaying);
+    video.addEventListener("play", handlePlay);
+    video.addEventListener("pause", handlePause);
+    video.addEventListener("waiting", handleWaiting);
+
+    return () => {
+      video.removeEventListener("playing", handlePlaying);
+      video.removeEventListener("play", handlePlay);
+      video.removeEventListener("pause", handlePause);
+      video.removeEventListener("waiting", handleWaiting);
+    };
+    // Re-run if the ref changes
+  }, []);
+
   const handleVolumeChange = (value: number[]) => {
     const newVolume = value[0];
     setVolume(newVolume);
@@ -172,7 +294,7 @@ export default function VideoPlayer({
   return (
     <div
       ref={containerRef}
-      className={`relative bg-black group ${className}`}
+      className={`relative bg-black group ${className} flex items-center justify-center`}
       onMouseMove={handleMouseMove}
       onMouseLeave={() => {
         if (isPlaying && !isPiP) {
@@ -186,13 +308,21 @@ export default function VideoPlayer({
         autoPlay
         playsInline
         muted={isMuted}
-        className="w-full h-full object-contain"
+        // Use object-cover to fill the player while keeping center crop
+        className="w-full h-full object-cover bg-black z-0"
       />
+
+      {/* Buffering overlay to avoid black flash when no frame yet */}
+      {!isPlaying && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="w-12 h-12 border-4 border-white/40 rounded-full animate-spin" />
+        </div>
+      )}
 
       {/* Controls Overlay */}
       <div
-        className={`absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent transition-opacity duration-300 ${
-          showControls || !isPlaying ? "opacity-100" : "opacity-0"
+        className={`absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent transition-opacity duration-300 z-20 pointer-events-none ${
+          showControls || !isPlaying ? "opacity-100 pointer-events-auto" : "opacity-0"
         }`}
       >
         {/* Top Bar - Quality Selector */}
@@ -210,73 +340,37 @@ export default function VideoPlayer({
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-gray-900 border-gray-700 text-white">
               <DropdownMenuItem
-                onClick={() => {
-                  onQualityChange("FULL_HD");
-                  toast(
-                    "Quality selection is not yet fully implemented in P2P streaming. This will be available in future updates.",
-                    { duration: 4000 }
-                  );
-                }}
+                onClick={() => onQualityChange("FULL_HD")}
                 className={currentQuality === "FULL_HD" ? "bg-gray-700" : ""}
               >
                 1080p (Full HD)
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => {
-                  onQualityChange("HD");
-                  toast(
-                    "Quality selection is not yet fully implemented in P2P streaming. This will be available in future updates.",
-                    { duration: 4000 }
-                  );
-                }}
+                onClick={() => onQualityChange("HD")}
                 className={currentQuality === "HD" ? "bg-gray-700" : ""}
               >
                 720p (HD)
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => {
-                  onQualityChange("SD");
-                  toast(
-                    "Quality selection is not yet fully implemented in P2P streaming. This will be available in future updates.",
-                    { duration: 4000 }
-                  );
-                }}
+                onClick={() => onQualityChange("SD")}
                 className={currentQuality === "SD" ? "bg-gray-700" : ""}
               >
                 480p (SD)
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => {
-                  onQualityChange("MEDIUM");
-                  toast(
-                    "Quality selection is not yet fully implemented in P2P streaming. This will be available in future updates.",
-                    { duration: 4000 }
-                  );
-                }}
+                onClick={() => onQualityChange("MEDIUM")}
                 className={currentQuality === "MEDIUM" ? "bg-gray-700" : ""}
               >
                 360p (Medium)
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => {
-                  onQualityChange("LOW");
-                  toast(
-                    "Quality selection is not yet fully implemented in P2P streaming. This will be available in future updates.",
-                    { duration: 4000 }
-                  );
-                }}
+                onClick={() => onQualityChange("LOW")}
                 className={currentQuality === "LOW" ? "bg-gray-700" : ""}
               >
                 240p (Low)
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => {
-                  onQualityChange("LOWEST");
-                  toast(
-                    "Quality selection is not yet fully implemented in P2P streaming. This will be available in future updates.",
-                    { duration: 4000 }
-                  );
-                }}
+                onClick={() => onQualityChange("LOWEST")}
                 className={currentQuality === "LOWEST" ? "bg-gray-700" : ""}
               >
                 144p (Lowest)
@@ -358,22 +452,35 @@ export default function VideoPlayer({
               {isFullscreen ? <FaCompress className="h-4 w-4" /> : <FaExpand className="h-4 w-4" />}
             </Button>
           </div>
-        </div>
 
-        {/* Center Play Button (when paused) */}
-        {!isPlaying && !isLive && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <Button
-              variant="ghost"
-              size="lg"
-              onClick={togglePlayPause}
-              className="w-20 h-20 rounded-full bg-white/20 hover:bg-white/30 text-white"
-            >
-              <FaPlay className="h-8 w-8 ml-1" />
-            </Button>
-          </div>
-        )}
+          {/* Center Play Button (when paused or autoplay blocked) */}
+          {!isPlaying && (
+            <div className="absolute inset-0 flex items-center justify-center z-30 pointer-events-auto">
+              <Button
+                variant="ghost"
+                size="lg"
+                onClick={() => {
+                  if (videoRef.current) {
+                    videoRef.current
+                      .play()
+                      .then(() => setIsPlaying(true))
+                      .catch((err) => console.warn("Play attempt failed:", err));
+                  }
+                }}
+                className="w-20 h-20 rounded-full bg-white/20 hover:bg-white/30 text-white"
+              >
+                <FaPlay className="h-8 w-8 ml-1" />
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
+      {isDev && (
+        <div className="absolute top-2 left-2 bg-black/60 text-xs text-white p-2 rounded z-40">
+          <div>streamId: {stream?.id ?? "(none)"}</div>
+          <div>tracks: {stream ? stream.getTracks().length : 0}</div>
+        </div>
+      )}
     </div>
   );
 }

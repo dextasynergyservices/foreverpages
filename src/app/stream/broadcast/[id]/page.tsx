@@ -17,15 +17,19 @@ interface BroadcastPageProps {
 }
 
 export default async function BroadcastPage({ params }: BroadcastPageProps) {
+  // Await params before accessing properties (Next dynamic route requirement)
+  const awaitedParams = (await params) as { id: string };
+  const id = awaitedParams.id;
+
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
-    redirect("/login?callbackUrl=/stream/broadcast/" + params.id);
+    redirect("/login?callbackUrl=/stream/broadcast/" + id);
   }
 
   // Fetch stream and verify ownership
   const stream = await prisma.memorialStream.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       memorial: {
         select: {

@@ -9,6 +9,7 @@ import {
   CreditCard,
   Mail,
   Activity,
+  Shield,
   Settings,
   LogOut,
   Menu,
@@ -157,6 +158,14 @@ export default function AdminLayoutClient({
               collapsed={sidebarCollapsed}
             >
               Activity Logs
+            </NavLink>
+            <NavLink
+              href="/admin/revoke"
+              icon={<Shield className="h-5 w-5" />}
+              active={pathname === "/admin/revoke"}
+              collapsed={sidebarCollapsed}
+            >
+              Revocations
             </NavLink>
             <NavLink
               href="/admin/settings"

@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { StreamStatus } from "@/generated/prisma";
 import { sendStreamEndedEmail } from "@/lib/livestream-email-service";
 import { getGlobalSocketServer, notifyStreamEnded } from "@/lib/socket/socketServer";
+import { notifySignalingMetadataUpdate } from "@/lib/signaling";
 
 /**
  * POST /api/streams/[id]/end
@@ -103,6 +104,11 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         );
         // TODO: Implement alternative notification mechanism (e.g., database polling)
       }
+      // Also notify external signaling server about status change
+      notifySignalingMetadataUpdate(streamId, {
+        status: "ENDED",
+        endedAt: updatedStream.endedAt?.toISOString?.() ?? null,
+      }).catch(() => {});
     } catch (error) {
       console.error("Failed to notify viewers of stream end:", error);
       // Don't fail the request if notification fails
