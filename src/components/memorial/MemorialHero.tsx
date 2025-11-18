@@ -104,7 +104,7 @@ export default function MemorialHero({
   }, [activeStream, memorial.id, queryClient]);
 
   // Effect B: if there is an SSR activeStream id, fetch its freshest metadata
-  // to seed the query cache (and sanitize recordingUrl for public pages).
+  // to seed the query cache (and sanitize recordingUrl for public pages) yes.
   useEffect(() => {
     if (!activeStream?.id) return;
     let cancelled = false;
