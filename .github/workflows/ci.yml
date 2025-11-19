@@ -109,7 +109,7 @@ jobs:
         run: pnpm -C signaling-server run build
 
       - name: Type checking
-        run: pnpm typecheck
+        run: pnpm exec tsc -p tsconfig.app.json --noEmit
 
   build:
     name: Build
@@ -147,7 +147,7 @@ jobs:
         run: pnpm -C signaling-server run build
 
       - name: Type checking
-        run: pnpm typecheck
+        run: pnpm exec tsc -p tsconfig.app.json --noEmit
 
       - name: Build
         run: pnpm build

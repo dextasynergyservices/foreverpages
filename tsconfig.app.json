@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "middleware.ts",
+    "next.config.ts",
+    "postcss.config.mjs",
+    "tailwind.config.ts",
+    "prettier.config.mjs",
+    "eslint.config.mjs",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "prisma/seed.ts",
+    ".next",
+    "signaling-server",
+    "signaling-server/**"
+  ]
+}
