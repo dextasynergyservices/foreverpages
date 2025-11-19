@@ -311,9 +311,8 @@ async function startServer() {
       await Promise.all([pubClient.connect(), subClient.connect()]);
 
       // Type mismatch between installed adapter types and socket.io's expected AdapterConstructor
-      // The adapter returned by createAdapter is runtime-compatible; suppress the type-check here.
-      // @ts-expect-error - runtime adapter is compatible even if types differ between packages
-      io.adapter(createAdapter(pubClient, subClient) as unknown);
+      // The adapter returned by createAdapter is runtime-compatible.
+      io.adapter(createAdapter(pubClient, subClient));
     } catch (err) {
       console.warn("Failed to initialize Redis adapter:", err);
     }
