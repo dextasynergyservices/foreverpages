@@ -20,11 +20,11 @@ app.use(cors());
 app.use(express.json());
 
 // Health and admin endpoints
-const healthHandler: express.RequestHandler = (_req, res) => {
+const healthHandler = (_req: express.Request, res: express.Response) => {
   res.json({ status: "ok", ts: Date.now() });
 };
 
-const metadataHandler: express.RequestHandler = async (req, res) => {
+const metadataHandler = async (req: express.Request<{ id?: string }>, res: express.Response) => {
   const streamId = (req.params && (req.params.id as string)) || undefined;
   const adminSecret = process.env.SOCKET_ADMIN_SECRET || "";
   const provided = (req.get && (req.get("x-admin-secret") as string)) || "";
