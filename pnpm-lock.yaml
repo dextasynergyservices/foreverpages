@@ -226,7 +226,7 @@ importers:
         specifier: ^5.6.9
         version: 5.6.9(@babel/core@7.28.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@types/node':
-        specifier: ^20
+        specifier: ^20.9.0
         version: 20.19.19
       '@types/qrcode':
         specifier: ^1.5.6

@@ -121,6 +121,9 @@ jobs:
           head -n 200 signaling-server-tsc-trace.txt || true
           echo "=== END tsc --traceResolution ==="
 
+      - name: Install signaling-server devDependencies
+        run: pnpm -C signaling-server install
+
       - name: Build signaling-server
         run: pnpm exec tsc -p signaling-server/tsconfig.json
 
@@ -160,7 +163,7 @@ jobs:
         run: pnpm prisma generate
 
       - name: Build signaling-server
-        run: pnpm exec tsc -p signaling-server/tsconfig.json
+        run: pnpm -C signaling-server install && pnpm exec tsc -p signaling-server/tsconfig.json
 
       - name: Type checking
         run: pnpm exec tsc -p tsconfig.app.json --noEmit
