@@ -57,7 +57,7 @@ type VerificationState = "verifying" | "success" | "failed";
 export default function PaymentSuccess() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const reference = searchParams.get("reference");
+  const reference = (searchParams?.get("reference") as string | null) || null;
 
   const [state, setState] = useState<VerificationState>("verifying");
   const [paymentData, setPaymentData] = useState<PaymentVerificationResponse["data"] | null>(null);

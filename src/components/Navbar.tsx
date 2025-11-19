@@ -229,7 +229,7 @@ export const Navbar: React.FC = () => {
                     ? "border-white/50 bg-transparent text-white hover:bg-white/10"
                     : "border-gray-900/50 bg-transparent text-gray-900 hover:bg-gray-900/10"
               }`}
-              href="/login"
+              href="/auth/login"
             >
               {t("navbar.buttons.signIn")}
             </Link>
@@ -262,11 +262,16 @@ export const Navbar: React.FC = () => {
                       ? "border-white bg-transparent text-white hover:bg-white"
                       : "border-black bg-transparent text-black hover:bg-black/80"
                 }`}
+                // Provide a stable aria-controls/id pairing to avoid Radix auto-id
+                // mismatches between server and client during hydration.
+                aria-controls="mobile-sheet-content"
               >
                 <Menu className="h-4 w-4" />
               </button>
             </SheetTrigger>
             <SheetContent
+              // Explicit stable id for sheet content so aria-controls is deterministic
+              id="mobile-sheet-content"
               side="right"
               className={`w-[300px] sm:w-[400px] transition-colors ${
                 displayTheme === "dark"
@@ -358,7 +363,7 @@ export const Navbar: React.FC = () => {
                   </div>
                 ) : (
                   <Button variant="memorial-outline" size="xs" className="w-full" asChild>
-                    <Link href="/login" onClick={() => setIsOpen(false)}>
+                    <Link href="/auth/login" onClick={() => setIsOpen(false)}>
                       {t("navbar.buttons.signIn")}
                     </Link>
                   </Button>

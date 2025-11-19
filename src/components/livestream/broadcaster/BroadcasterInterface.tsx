@@ -483,12 +483,12 @@ const BroadcasterInterface: React.FC<BroadcasterInterfaceProps> = ({
       {/* Header */}
       <header className="border-b border-gray-800 bg-black/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <div>
-              <h1 className="text-xl font-bold">{streamTitle}</h1>
+              <h1 className="text-lg md:text-xl font-bold">{streamTitle}</h1>
               <p className="text-sm text-gray-400">{memorialName}</p>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3">
               <RecordingIndicator
                 isRecording={isRecording}
                 isPaused={isPaused}

@@ -8,10 +8,10 @@ import { prisma } from "@/lib/prisma";
  * Add a comment to a stream
  * Body: { content: string, anonymousName?: string }
  */
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
-    const streamId = params.id;
+    const { id: streamId } = await params;
     const body = await req.json();
     const { content, anonymousName } = body;
 
@@ -138,6 +138,12 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     return NextResponse.json({ comment }, { status: 201 });
   } catch (error) {
     console.error("Error adding comment:", error);
+    if (process.env.NODE_ENV !== "production") {
+      return NextResponse.json(
+        { error: "Failed to add comment", details: String(error) },
+        { status: 500 }
+      );
+    }
     return NextResponse.json({ error: "Failed to add comment" }, { status: 500 });
   }
 }
@@ -147,9 +153,9 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
  * Get comments for a stream
  * Query params: limit (default 100), offset (default 0)
  */
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const streamId = params.id;
+    const { id: streamId } = await params;
     const { searchParams } = new URL(req.url);
     const limit = parseInt(searchParams.get("limit") || "100");
     const offset = parseInt(searchParams.get("offset") || "0");
@@ -190,6 +196,12 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     });
   } catch (error) {
     console.error("Error fetching comments:", error);
+    if (process.env.NODE_ENV !== "production") {
+      return NextResponse.json(
+        { error: "Failed to fetch comments", details: String(error) },
+        { status: 500 }
+      );
+    }
     return NextResponse.json({ error: "Failed to fetch comments" }, { status: 500 });
   }
 }

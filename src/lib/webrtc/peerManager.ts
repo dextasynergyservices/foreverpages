@@ -19,6 +19,7 @@ export class PeerConnectionManager {
   private remoteStream: MediaStream | null = null;
   private connectionTimeout: NodeJS.Timeout | null = null;
   private isConnected = false;
+  private localStreamAttached = false;
 
   constructor(
     private isBroadcaster: boolean,
@@ -58,6 +59,7 @@ export class PeerConnectionManager {
           .replace(/a=maxptime:60\r\n/g, "a=maxptime:20\r\n"); // Reduce max packet time for lower latency
       },
     });
+    this.localStreamAttached = !!this.localStream;
 
     // Set connection timeout (60 seconds - increased for better reliability)
     this.connectionTimeout = setTimeout(() => {
@@ -124,9 +126,63 @@ export class PeerConnectionManager {
    */
   setLocalStream(stream: MediaStream): void {
     this.localStream = stream;
-    if (this.peer) {
-      this.peer.addStream(stream);
+    if (!this.peer) return;
+
+    // Prefer replacing tracks on existing RTCPeerConnection to avoid
+    // calling addStream repeatedly which leads to "Track has already been added"
+    const pc = this.peer._pc;
+    if (pc) {
+      try {
+        const senders = pc.getSenders();
+
+        // For each track in the new stream, replace an existing sender's track
+        // of the same kind if present, otherwise add the track to the connection.
+        stream.getTracks().forEach((track) => {
+          const existing = senders.find((s) => s.track && s.track.kind === track.kind);
+          if (existing && typeof existing.replaceTrack === "function") {
+            try {
+              existing.replaceTrack(track);
+            } catch (_e) {
+              console.warn("Failed to replace track, attempting to add track:", _e);
+              // If replaceTrack fails, attempt to add track (addTrack will throw if duplicate)
+              try {
+                pc.addTrack(track, stream);
+              } catch (_e) {
+                console.warn("Failed to replace or add track:", _e);
+              }
+            }
+          } else {
+            try {
+              pc.addTrack(track, stream);
+            } catch (_e) {
+              // Ignore failures adding duplicate tracks
+              console.warn("Failed to add track to RTCPeerConnection:", _e);
+            }
+          }
+        });
+      } catch (e) {
+        console.warn("Error updating RTCPeerConnection senders:", e);
+      }
+      return;
     }
+
+    // If the RTCPeerConnection isn't ready yet but the peer exists, add the
+    // stream once using peer.addStream — but guard against duplicates using
+    // localStreamAttached flag.
+    if (!pc) {
+      if (!this.localStreamAttached) {
+        try {
+          this.peer.addStream(stream);
+          this.localStreamAttached = true;
+        } catch (e) {
+          console.warn("peer.addStream failed (likely duplicate):", e);
+        }
+      }
+      return;
+    }
+
+    // If we successfully used pc to add/replace tracks above, mark attached
+    this.localStreamAttached = true;
   }
 
   /**
@@ -181,5 +237,6 @@ export class PeerConnectionManager {
     }
     this.remoteStream = null;
     this.isConnected = false;
+    this.localStreamAttached = false;
   }
 }

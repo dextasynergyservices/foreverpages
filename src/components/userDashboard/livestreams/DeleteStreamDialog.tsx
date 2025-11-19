@@ -41,6 +41,16 @@ const DeleteStreamDialog: React.FC<DeleteStreamDialogProps> = ({
       setLoading(true);
       setError(null);
 
+      // If the stream is currently live, end it first so the server allows deletion.
+      const isLive = stream.status === "LIVE" || stream.status === "live";
+      if (isLive) {
+        const endRes = await fetch(`/api/streams/${stream.id}/end`, { method: "POST" });
+        if (!endRes.ok) {
+          const err = await endRes.json().catch(() => ({}));
+          throw new Error(err?.error || "Failed to end live stream before deletion");
+        }
+      }
+
       const response = await fetch(`/api/streams/${stream.id}`, {
         method: "DELETE",
       });

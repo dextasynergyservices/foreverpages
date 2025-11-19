@@ -57,7 +57,9 @@ const nextConfig = {
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: https: blob:",
               "media-src 'self' https://res.cloudinary.com blob:",
-              "connect-src 'self' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https:",
+              // Allow websocket schemes (ws/wss) and required origins. In dev this
+              // enables ws://localhost:8080; in production wss will be permitted.
+              "connect-src 'self' ws: wss: https://www.google.com https://www.gstatic.com https://www.recaptcha.net https:",
               "frame-src https://www.google.com https://www.recaptcha.net https:",
               "object-src 'none'",
               "base-uri 'self'",

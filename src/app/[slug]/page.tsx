@@ -34,7 +34,7 @@ const RESERVED_ROUTES = [
 ];
 
 export default async function MemorialPage({ params }: MemorialPageProps) {
-  const { slug } = params;
+  const { slug } = await params;
 
   // Check if slug is a reserved route
   if (RESERVED_ROUTES.includes(slug)) {
@@ -143,7 +143,8 @@ export default async function MemorialPage({ params }: MemorialPageProps) {
               scheduledFor: activeStream.scheduledFor?.toISOString() || null,
               startedAt: activeStream.startedAt?.toISOString() || null,
               endedAt: activeStream.endedAt?.toISOString() || null,
-              recordingUrl: activeStream.recordingUrl,
+              // recordingUrl intentionally omitted for public memorial pages
+              recordingUrl: null,
               password: activeStream.password,
               peakViewers: activeStream.peakViewers,
               totalViews: activeStream.totalViews,
@@ -156,7 +157,7 @@ export default async function MemorialPage({ params }: MemorialPageProps) {
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: MemorialPageProps) {
-  const { slug } = params;
+  const { slug } = await params;
 
   // Skip metadata for reserved routes
   if (RESERVED_ROUTES.includes(slug)) {

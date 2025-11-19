@@ -367,12 +367,20 @@ const StreamAnalyticsDialog: React.FC<StreamAnalyticsDialogProps> = ({
                         : "N/A"}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Recording</span>
-                    <Badge variant={displayStream.recordingUrl ? "default" : "secondary"}>
-                      {displayStream.recordingUrl ? "Available" : "Not Available"}
-                    </Badge>
-                  </div>
+                  {(() => {
+                    const hasRecording =
+                      !!displayStream.recordingUrl ||
+                      (displayStream as unknown as { recordingStatus?: string })
+                        ?.recordingStatus === "READY";
+                    return (
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">Recording</span>
+                        <Badge variant={hasRecording ? "default" : "secondary"}>
+                          {hasRecording ? "Available" : "Not Available"}
+                        </Badge>
+                      </div>
+                    );
+                  })()}
                 </CardContent>
               </Card>
             </TabsContent>

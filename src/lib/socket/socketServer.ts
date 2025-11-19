@@ -34,13 +34,21 @@ export interface ServerToClientEvents {
   // Stream quality
   "quality-changed": (data: { quality: string }) => void;
 
+  // Viewer fallback: server (or broadcaster) may emit this to indicate a viewer is ready
+  "viewer-ready": (data: { viewerId: string }) => void;
+
   // Errors
   error: (data: { message: string }) => void;
 }
 
 export interface ClientToServerEvents {
   // Join/leave stream
-  "join-stream": (data: { streamId: string; role: "broadcaster" | "viewer" }) => void;
+  // role is optional so public memorial visitors don't need to send a role
+  "join-stream": (data: {
+    streamId: string;
+    role?: "broadcaster" | "viewer";
+    quality?: string;
+  }) => void;
   "leave-stream": (data: { streamId: string }) => void;
 
   // WebRTC signaling
@@ -51,6 +59,9 @@ export interface ClientToServerEvents {
     candidate: RTCIceCandidateInit;
     targetId?: string;
   }) => void;
+
+  // Viewer indicates readiness to receive an offer (fallback for race conditions)
+  "viewer-ready": (data: { streamId: string; viewerId?: string }) => void;
 
   // Chat & reactions
   "chat-message": (data: {
@@ -128,6 +139,20 @@ export function initializeSocketServer(httpServer: HTTPServer): SocketIOServer {
       if (role === "broadcaster") {
         socket.join(`stream:${streamId}:broadcaster`);
         console.log(`📡 Broadcaster set for stream ${streamId}`);
+        // If viewers already exist for this stream (they joined before the broadcaster),
+        // notify the broadcaster about each existing viewer so the broadcaster can
+        // create peer connections. This handles the race where viewers connect
+        // before the broadcaster and would otherwise never get an offer.
+        const existing = viewerCounts.get(streamId);
+        if (existing && existing.size > 0) {
+          const viewerCount = existing.size;
+          console.log(`📣 Notifying newly-joined broadcaster of ${viewerCount} existing viewers`);
+          for (const vid of existing) {
+            // Send a viewer-joined event directly to the broadcaster socket so it
+            // can create a peer connection for that viewer.
+            io.to(socket.id).emit("viewer-joined", { viewerId: vid, viewerCount });
+          }
+        }
       } else {
         // Track viewers
         if (!viewerCounts.has(streamId)) {
@@ -158,11 +183,24 @@ export function initializeSocketServer(httpServer: HTTPServer): SocketIOServer {
       console.log(`📤 Offer received for stream ${streamId}`);
 
       if (targetId) {
-        // Send to specific viewer
-        io.to(targetId).emit("offer", {
-          broadcasterId: socket.id,
-          offer,
-        });
+        // Lookup the target socket in the Socket.IO internal Map. If it's not
+        // present, fall back to broadcasting to the stream room so a reconnected
+        // viewer can still receive the offer.
+        const targetSocket = io.sockets.sockets.get(targetId);
+        if (targetSocket) {
+          io.to(targetId).emit("offer", {
+            broadcasterId: socket.id,
+            offer,
+          });
+        } else {
+          console.warn(
+            `⚠️ Target socket ${targetId} not found — falling back to room broadcast for stream ${streamId}`
+          );
+          socket.to(`stream:${streamId}`).emit("offer", {
+            broadcasterId: socket.id,
+            offer,
+          });
+        }
       } else {
         // Broadcast to all viewers
         socket.to(`stream:${streamId}`).emit("offer", {
@@ -172,24 +210,65 @@ export function initializeSocketServer(httpServer: HTTPServer): SocketIOServer {
       }
     });
 
+    // Viewer-ready fallback: some viewers emit this to request the broadcaster
+    // create an offer (useful when the initial viewer-joined forwarding was missed).
+    socket.on("viewer-ready", ({ streamId, viewerId }: { streamId: string; viewerId?: string }) => {
+      const vid = viewerId || socket.id;
+      console.log(`📣 Viewer-ready received for stream ${streamId} from ${vid}`);
+      // Forward to broadcaster room specifically so only broadcasters handle it
+      io.to(`stream:${streamId}:broadcaster`).emit("viewer-ready", { viewerId: vid });
+    });
+
     // WebRTC Signaling: Answer
     socket.on("answer", ({ streamId, answer, targetId }) => {
       console.log(`📤 Answer received for stream ${streamId}`);
 
-      io.to(targetId).emit("answer", {
-        viewerId: socket.id,
-        answer,
-      });
+      if (targetId) {
+        const targetSocket = io.sockets.sockets.get(targetId);
+        if (targetSocket) {
+          io.to(targetId).emit("answer", {
+            viewerId: socket.id,
+            answer,
+          });
+        } else {
+          console.warn(
+            `⚠️ Answer target ${targetId} not found — forwarding to broadcaster room for stream ${streamId}`
+          );
+          // As a fallback, forward answer to broadcaster room
+          io.to(`stream:${streamId}:broadcaster`).emit("answer", {
+            viewerId: socket.id,
+            answer,
+          });
+        }
+      } else {
+        // No target specified - forward to broadcaster room
+        io.to(`stream:${streamId}:broadcaster`).emit("answer", {
+          viewerId: socket.id,
+          answer,
+        });
+      }
     });
 
     // WebRTC Signaling: ICE Candidate
     socket.on("ice-candidate", ({ streamId, candidate, targetId }) => {
       if (targetId) {
-        // Send to specific peer
-        io.to(targetId).emit("ice-candidate", {
-          senderId: socket.id,
-          candidate,
-        });
+        const targetSocket = io.sockets.sockets.get(targetId);
+        if (targetSocket) {
+          // Send to specific peer
+          io.to(targetId).emit("ice-candidate", {
+            senderId: socket.id,
+            candidate,
+          });
+        } else {
+          console.warn(
+            `⚠️ ICE target ${targetId} not found — falling back to room broadcast for stream ${streamId}`
+          );
+          // Broadcast to all in stream
+          socket.to(`stream:${streamId}`).emit("ice-candidate", {
+            senderId: socket.id,
+            candidate,
+          });
+        }
       } else {
         // Broadcast to all in stream
         socket.to(`stream:${streamId}`).emit("ice-candidate", {
