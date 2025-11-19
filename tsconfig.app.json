@@ -15,11 +15,5 @@
     "src/**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "prisma/seed.ts",
-    ".next",
-    "signaling-server",
-    "signaling-server/**"
-  ]
+  "exclude": ["node_modules", "prisma/seed.ts", ".next", "signaling-server", "signaling-server/**"]
 }

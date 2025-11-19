@@ -71,6 +71,14 @@ jobs:
       - name: Generate Prisma Client
         run: pnpm prisma generate
 
+      - name: Trace TypeScript resolution for signaling-server (debug)
+        run: |
+          echo "=== START tsc --traceResolution ==="
+          pnpm exec tsc -p signaling-server/tsconfig.json --traceResolution > signaling-server-tsc-trace.txt || true
+          echo "--- tsc trace (first 200 lines) ---"
+          head -n 200 signaling-server-tsc-trace.txt || true
+          echo "=== END tsc --traceResolution ==="
+
       - name: Run Lint
         run: pnpm lint
 
@@ -104,6 +112,14 @@ jobs:
 
       - name: Generate Prisma Client
         run: pnpm prisma generate
+
+      - name: Trace TypeScript resolution for signaling-server (debug)
+        run: |
+          echo "=== START tsc --traceResolution ==="
+          pnpm exec tsc -p signaling-server/tsconfig.json --traceResolution > signaling-server-tsc-trace.txt || true
+          echo "--- tsc trace (first 200 lines) ---"
+          head -n 200 signaling-server-tsc-trace.txt || true
+          echo "=== END tsc --traceResolution ==="
 
       - name: Build signaling-server
         run: pnpm exec tsc -p signaling-server/tsconfig.json
