@@ -106,7 +106,7 @@ jobs:
         run: pnpm prisma generate
 
       - name: Build signaling-server
-        run: pnpm -C signaling-server run build
+        run: pnpm exec tsc -p signaling-server/tsconfig.json
 
       - name: Type checking
         run: pnpm exec tsc -p tsconfig.app.json --noEmit
@@ -144,7 +144,7 @@ jobs:
         run: pnpm prisma generate
 
       - name: Build signaling-server
-        run: pnpm -C signaling-server run build
+        run: pnpm exec tsc -p signaling-server/tsconfig.json
 
       - name: Type checking
         run: pnpm exec tsc -p tsconfig.app.json --noEmit
