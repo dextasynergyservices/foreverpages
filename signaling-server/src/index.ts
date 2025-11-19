@@ -59,9 +59,6 @@ const server = http.createServer(app);
 // Cast server/options to unknown to avoid Socket.IO type mismatches across environments
 const io = new IOServer(server as unknown as never, {
   path: "/api/socket",
-  cors: {
-    origin: process.env.SOCKET_ORIGIN || "*",
-  },
 });
 
 // Stream state stored at module scope (single-process). For multi-process
