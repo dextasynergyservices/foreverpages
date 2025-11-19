@@ -67,7 +67,7 @@ const SettingsContent = () => {
 
   // Set active tab from URL parameter on mount
   useEffect(() => {
-    const tab = searchParams.get("tab");
+    const tab = (searchParams?.get("tab") as string | null) || null;
     if (
       tab &&
       [

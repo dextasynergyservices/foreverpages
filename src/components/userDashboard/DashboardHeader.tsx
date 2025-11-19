@@ -26,7 +26,7 @@ export default function DashboardHeader({ isCollapsed, onToggleCollapse }: Dashb
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const activeSection = searchParams.get("section") || "analytics";
+  const activeSection = (searchParams?.get("section") as string | null) || "analytics";
 
   // Get page title based on active section
   const getPageTitle = () => {

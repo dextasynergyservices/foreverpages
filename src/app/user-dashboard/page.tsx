@@ -6,7 +6,7 @@ import { Suspense } from "react";
 
 function UserDashboardContent() {
   const searchParams = useSearchParams();
-  const activeSection = searchParams.get("section") || "analytics";
+  const activeSection = (searchParams?.get("section") as string | null) || "analytics";
 
   return <Dashboard activeSection={activeSection} />;
 }

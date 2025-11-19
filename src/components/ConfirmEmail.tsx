@@ -22,7 +22,7 @@ export default function ConfirmEmailPage() {
   const verificationAttemptedRef = React.useRef(false); // Prevent duplicate verification
 
   useEffect(() => {
-    const token = searchParams.get("token");
+    const token = (searchParams?.get("token") as string | null) || null;
 
     // If no token in URL, show error
     if (!token) {

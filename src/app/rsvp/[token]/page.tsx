@@ -28,7 +28,7 @@ interface MemorialData {
 export default function RSVPPage() {
   const params = useParams();
   const router = useRouter();
-  const token = params.token as string;
+  const token = (params?.token as string | undefined) || undefined;
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -49,6 +49,13 @@ export default function RSVPPage() {
 
   useEffect(() => {
     async function fetchInvitation() {
+      // Ensure token is present
+      if (!token) {
+        setError("Invalid RSVP link. Missing token.");
+        setLoading(false);
+        return;
+      }
+
       // Validate token format
       if (!isValidRSVPTokenFormat(token)) {
         setError("Invalid RSVP link. Please check the URL and try again.");

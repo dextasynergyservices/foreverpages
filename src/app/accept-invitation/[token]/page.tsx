@@ -94,7 +94,7 @@ const getRolePermissions = (role: string) => {
 export default function AcceptInvitationPage() {
   const params = useParams();
   const router = useRouter();
-  const token = params.token as string;
+  const token = (params?.token as string | undefined) || undefined;
 
   const [invitation, setInvitation] = useState<InvitationData | null>(null);
   const [loading, setLoading] = useState(true);

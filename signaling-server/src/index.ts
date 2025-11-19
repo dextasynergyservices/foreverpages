@@ -1,5 +1,5 @@
 // signaling-server/src/index.ts
-import express from "express";
+import express, { Request, Response } from "express";
 import http from "http";
 import { Server as IOServer, Socket } from "socket.io";
 import cors from "cors";
@@ -20,11 +20,11 @@ app.use(cors());
 app.use(express.json());
 
 // Health and admin endpoints
-const healthHandler = (_req: express.Request, res: express.Response) => {
-  res.json({ status: "ok", ts: Date.now() });
+const healthHandler = (_req: Request, res: Response) => {
+  return res.json({ status: "ok", ts: Date.now() });
 };
 
-const metadataHandler = async (req: express.Request<{ id?: string }>, res: express.Response) => {
+const metadataHandler = async (req: Request, res: Response) => {
   const streamId = (req.params && (req.params.id as string)) || undefined;
   const adminSecret = process.env.SOCKET_ADMIN_SECRET || "";
   const provided = (req.get && (req.get("x-admin-secret") as string)) || "";
@@ -56,7 +56,8 @@ app.post("/api/streams/:id/metadata", metadataHandler);
 
 const server = http.createServer(app);
 
-const io = new IOServer(server, {
+// Cast server/options to unknown to avoid Socket.IO type mismatches across environments
+const io = new IOServer(server as unknown as never, {
   path: "/api/socket",
   cors: {
     origin: process.env.SOCKET_ORIGIN || "*",

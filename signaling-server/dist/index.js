@@ -22,7 +22,7 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 // Health and admin endpoints
 const healthHandler = (_req, res) => {
-    res.json({ status: "ok", ts: Date.now() });
+    return res.json({ status: "ok", ts: Date.now() });
 };
 const metadataHandler = async (req, res) => {
     const streamId = (req.params && req.params.id) || undefined;
@@ -57,6 +57,7 @@ const metadataHandler = async (req, res) => {
 app.get("/api/health", healthHandler);
 app.post("/api/streams/:id/metadata", metadataHandler);
 const server = http_1.default.createServer(app);
+// Cast server/options to unknown to avoid Socket.IO type mismatches across environments
 const io = new socket_io_1.Server(server, {
     path: "/api/socket",
     cors: {
