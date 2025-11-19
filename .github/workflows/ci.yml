@@ -105,6 +105,9 @@ jobs:
       - name: Generate Prisma Client
         run: pnpm prisma generate
 
+      - name: Build signaling-server
+        run: pnpm -C signaling-server run build
+
       - name: Type checking
         run: pnpm typecheck
 
@@ -134,12 +137,14 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
-
       - name: Cleanup previous builds
         run: rm -rf .next
 
       - name: Generate Prisma Client
         run: pnpm prisma generate
+
+      - name: Build signaling-server
+        run: pnpm -C signaling-server run build
 
       - name: Type checking
         run: pnpm typecheck
