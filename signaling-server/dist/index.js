@@ -60,9 +60,6 @@ const server = http_1.default.createServer(app);
 // Cast server/options to unknown to avoid Socket.IO type mismatches across environments
 const io = new socket_io_1.Server(server, {
     path: "/api/socket",
-    cors: {
-        origin: process.env.SOCKET_ORIGIN || "*",
-    },
 });
 // Stream state stored at module scope (single-process). For multi-process
 // deployments use the Redis adapter to synchronize state across instances.
@@ -286,8 +283,7 @@ async function startServer() {
             const subClient = pubClient.duplicate();
             await Promise.all([pubClient.connect(), subClient.connect()]);
             // Type mismatch between installed adapter types and socket.io's expected AdapterConstructor
-            // The adapter returned by createAdapter is runtime-compatible; suppress the type-check here.
-            // @ts-expect-error - runtime adapter is compatible even if types differ between packages
+            // The adapter returned by createAdapter is runtime-compatible.
             io.adapter((0, redis_adapter_1.createAdapter)(pubClient, subClient));
         }
         catch (err) {
