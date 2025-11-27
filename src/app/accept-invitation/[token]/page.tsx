@@ -3,6 +3,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -99,6 +106,7 @@ export default function AcceptInvitationPage() {
   const [invitation, setInvitation] = useState<InvitationData | null>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
+  const [showDeclineDialog, setShowDeclineDialog] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -187,10 +195,6 @@ export default function AcceptInvitationPage() {
   };
 
   const handleDecline = async () => {
-    if (!confirm("Are you sure you want to decline this invitation?")) {
-      return;
-    }
-
     try {
       setProcessing(true);
       const response = await fetch("/api/invitations/decline", {
@@ -455,9 +459,42 @@ export default function AcceptInvitationPage() {
               >
                 {processing ? "Processing..." : "Accept Invitation"}
               </Button>
-              <Button onClick={handleDecline} disabled={processing} variant="outline" size="lg">
-                Decline
-              </Button>
+              <Dialog open={showDeclineDialog} onOpenChange={setShowDeclineDialog}>
+                <DialogTrigger asChild>
+                  <Button
+                    onClick={() => setShowDeclineDialog(true)}
+                    disabled={processing}
+                    variant="outline"
+                    size="lg"
+                  >
+                    Decline
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle className="dark:text-white">Confirm Decline</DialogTitle>
+                  </DialogHeader>
+                  <div className="p-2 dark:text-white">
+                    Are you sure you want to decline the invitation to manage the memorial for
+                    {` ${invitation.memorial.firstName} ${invitation.memorial.lastName}`}?
+                  </div>
+                  <div className="flex justify-end space-x-2 mt-4">
+                    <Button variant="outline" onClick={() => setShowDeclineDialog(false)}>
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      onClick={() => {
+                        setShowDeclineDialog(false);
+                        handleDecline();
+                      }}
+                      disabled={processing}
+                    >
+                      Decline
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
 
             <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-4">

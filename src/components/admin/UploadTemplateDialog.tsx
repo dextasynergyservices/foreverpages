@@ -1,0 +1,806 @@
+"use client";
+import React, { useState, useEffect, useRef } from "react";
+import { useMutation } from "@tanstack/react-query";
+import JSZip from "jszip";
+import * as Dialog from "@radix-ui/react-dialog";
+import toast from "react-hot-toast";
+
+type Plan = { id: string; name: string };
+type Category = { id: string; name: string };
+type StepStatus = "idle" | "running" | "done" | "error";
+type PreviewManifest = Record<string, unknown> | null;
+type UploadResponse = {
+  message?: string;
+  data?: {
+    templateId?: string;
+    manifest?: Record<string, unknown>;
+    generatedManifest?: Record<string, unknown>;
+    generatedNotes?: string[];
+    uploaded?: Record<string, unknown>;
+  };
+} | null;
+
+function usePollingStatus(templateId: string | null) {
+  const [status, setStatus] = useState<string | null>(null);
+  useEffect(() => {
+    if (!templateId) return;
+    let mounted = true;
+    const poll = async () => {
+      try {
+        const res = await fetch(`/api/admin/templates/${templateId}/status`);
+        if (!res.ok) return;
+        const j = (await parseJsonOrNull(res)) as Record<string, unknown> | null;
+        if (!mounted || !j) return;
+        setStatus((j.status as string) || null);
+        if ((j.status as string) === "PROCESSING") setTimeout(poll, 2000);
+      } catch {
+        // ignore transient errors
+        setTimeout(poll, 3000);
+      }
+    };
+    poll();
+    return () => {
+      mounted = false;
+    };
+  }, [templateId]);
+  return status;
+}
+
+// Safe JSON parse helper for this module
+async function parseJsonOrNull(res: Response) {
+  const text = await res.text();
+  if (!text) return null;
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
+}
+
+export default function UploadTemplateDialog({
+  plans = [],
+  categories = [],
+  templateIdToReplace = null,
+  open: controlledOpen,
+  onOpenChange,
+  hideTrigger = false,
+}: {
+  plans?: Plan[];
+  categories?: Category[];
+  templateIdToReplace?: string | null;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  hideTrigger?: boolean;
+}) {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const [selectedPlanIds, setSelectedPlanIds] = useState<string[]>([]);
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
+  const [primaryCategoryId, setPrimaryCategoryId] = useState<string | null>(null);
+  const [planQuery, setPlanQuery] = useState("");
+  const [categoryQuery, setCategoryQuery] = useState("");
+  const [uploadedTemplateId, setUploadedTemplateId] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const [previewManifest, setPreviewManifest] = useState<PreviewManifest>(null);
+  const [preValidationErrors, setPreValidationErrors] = useState<string[]>([]);
+  const [preValidationWarnings, setPreValidationWarnings] = useState<string[]>([]);
+  type Steps = { extract: StepStatus; validate: StepStatus };
+  const initialPreSteps: Steps = { extract: "idle", validate: "idle" };
+  const [preSteps, setPreSteps] = useState<Steps>(initialPreSteps);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+  const xhrRef = useRef<XMLHttpRequest | null>(null);
+  const [processStep, setProcessStep] = useState<StepStatus>("idle");
+  const [uploadStep, setUploadStep] = useState<StepStatus>("idle");
+
+  const getManifestString = (m: PreviewManifest, key: string): string | undefined => {
+    if (!m) return undefined;
+    const val = m[key];
+    return typeof val === "string" ? val : undefined;
+  };
+
+  const mutation = useMutation<UploadResponse, Error, File>({
+    mutationFn: (file: File) =>
+      new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        const url = "/api/admin/templates/upload";
+        const form = new FormData();
+        form.append("file", file);
+        if (templateIdToReplace) form.append("replaceTemplateId", templateIdToReplace);
+        form.append("planIds", JSON.stringify(selectedPlanIds));
+        form.append("categoryIds", JSON.stringify(selectedCategoryIds));
+        if (primaryCategoryId) form.append("primaryCategoryId", primaryCategoryId);
+        // Debug: log form contents and start
+        try {
+          const entries = Array.from(form.entries()).map((e) => [String(e[0]), e[1]]);
+          console.debug("Upload: preparing XHR", {
+            url,
+            fileName: file.name,
+            fileSize: file.size,
+            entries,
+          });
+        } catch (e) {
+          console.debug("Upload: failed to enumerate form entries", e);
+        }
+
+        xhr.open("POST", url);
+        xhrRef.current = xhr;
+
+        xhr.upload.onprogress = (e: ProgressEvent<EventTarget>) => {
+          if (e.lengthComputable) setUploadProgress(Math.round((e.loaded / e.total) * 100));
+        };
+
+        xhr.onload = () => {
+          const text = xhr.responseText || "";
+          let parsed: UploadResponse = null;
+          try {
+            parsed = text ? (JSON.parse(text) as UploadResponse) : null;
+          } catch {
+            setUploadStep("error");
+            console.error("Upload: failed to parse server response", { status: xhr.status, text });
+            reject(new Error("Failed to parse upload response"));
+            return;
+          }
+
+          if (xhr.status >= 200 && xhr.status < 300) {
+            setUploadStep("done");
+            setUploadProgress(100);
+            resolve(parsed);
+          } else {
+            setUploadStep("error");
+            console.error("Upload failed", { status: xhr.status, response: parsed || text });
+            try {
+              if (parsed && typeof parsed === "object")
+                console.error("Upload response (full):", JSON.stringify(parsed, null, 2));
+              else console.error("Upload response (text):", text);
+            } catch (ee) {
+              console.error("Failed to stringify server response", ee);
+            }
+            reject(parsed || new Error("Upload failed"));
+          }
+        };
+
+        xhr.onabort = () => {
+          setUploadStep("idle");
+          setUploadProgress(null);
+          reject(new Error("Upload aborted"));
+        };
+
+        xhr.onerror = () => {
+          setUploadStep("error");
+          reject(new Error("Upload failed"));
+        };
+
+        xhr.send(form);
+      }),
+  });
+
+  // Derive boolean flags from `mutation.status` for type-safe checks.
+  const isLoading = mutation.status === "pending";
+  const isSuccess = mutation.status === "success";
+  const isError = mutation.status === "error";
+
+  const [planError, setPlanError] = useState<string | null>(null);
+  const [categoryError, setCategoryError] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
+
+  const status = usePollingStatus(uploadedTemplateId);
+  const [logs, setLogs] = useState<string | null>(null);
+  const [packageUrl, setPackageUrl] = useState<string | null>(null);
+  const [logsUrl, setLogsUrl] = useState<string | null>(null);
+  const [generatedManifest, setGeneratedManifest] = useState<Record<string, unknown> | null>(null);
+  const [generatedNotes, setGeneratedNotes] = useState<string[] | null>(null);
+
+  const isControlled = typeof controlledOpen === "boolean";
+  const openState = isControlled ? controlledOpen! : internalOpen;
+  const setOpenState = React.useCallback(
+    (v: boolean) => {
+      if (isControlled) onOpenChange?.(v);
+      else setInternalOpen(v);
+    },
+    [isControlled, onOpenChange]
+  );
+
+  useEffect(() => {
+    if (status && status !== "PROCESSING") {
+      // processing finished (VALIDATED, ERROR, PUBLISHED)
+      if (status === "VALIDATED" || status === "PUBLISHED") {
+        toast.success(`Template ${status.toLowerCase()}`);
+        // close dialog after a short delay so admin can see success briefly
+        setTimeout(() => setOpenState(false), 1200);
+      } else if (status === "ERROR") {
+        toast.error("Template processing failed. Check logs for details.");
+      } else {
+        toast(`Template status: ${status}`);
+      }
+    }
+  }, [status, setOpenState]);
+
+  useEffect(() => {
+    if (openState && fileInputRef.current) {
+      // focus the file input when dialog opens for keyboard users
+      fileInputRef.current.focus();
+    }
+  }, [openState]);
+
+  // Simple focus trap for dialog (keeps focus inside while open)
+  useEffect(() => {
+    if (!openState || !dialogRef.current) return;
+    const root = dialogRef.current;
+    const focusable = root.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+    );
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    function onKey(e: Event) {
+      const ke = e as KeyboardEvent;
+      if (ke.key !== "Tab") return;
+      if (ke.shiftKey) {
+        if (document.activeElement === first) {
+          ke.preventDefault();
+          (last as HTMLElement).focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          ke.preventDefault();
+          (first as HTMLElement).focus();
+        }
+      }
+    }
+    root.addEventListener("keydown", onKey as EventListener);
+    return () => root.removeEventListener("keydown", onKey as EventListener);
+  }, [openState]);
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0] || null;
+    setSelectedFile(f);
+    setApiError(null);
+    setPreviewManifest(null);
+    setPreValidationErrors([]);
+    setPreValidationWarnings([]);
+    setPreSteps({ extract: "idle", validate: "idle" });
+    setUploadProgress(null);
+    // clear previous validation hints when file changes
+    setPlanError(null);
+    setCategoryError(null);
+
+    if (!f) return;
+
+    // Client-side preview and lightweight validation
+    (async () => {
+      try {
+        setPreSteps({ extract: "running", validate: "idle" });
+        const zip = await JSZip.loadAsync(f as Blob);
+        setPreSteps({ extract: "done", validate: "running" });
+
+        const names = Object.keys(zip.files || {});
+        const required = ["config.json", "MemorialTemplate.tsx", "preview.png", "thumbnail.png"];
+        const errors: string[] = [];
+        const warnings: string[] = [];
+        for (const r of required)
+          if (!names.some((n) => n.endsWith(r))) errors.push(`Missing ${r}`);
+
+        // Try to read config.json if present
+        const cfgEntry = names.find((n) => n.toLowerCase().endsWith("config.json"));
+        if (cfgEntry) {
+          try {
+            const txt = await zip.files[cfgEntry].async("text");
+            const parsed = JSON.parse(txt);
+            setPreviewManifest(parsed);
+            if (!parsed.name) warnings.push("Manifest missing `name`");
+            if (!parsed.slug) warnings.push("Manifest missing `slug`");
+          } catch {
+            errors.push("Failed to parse config.json");
+          }
+        } else {
+          errors.push("Missing config.json");
+        }
+
+        setPreValidationErrors(errors);
+        setPreValidationWarnings(warnings);
+        setPreSteps((s) => ({ ...s, validate: errors.length ? "error" : "done" }));
+      } catch {
+        setPreSteps({ extract: "error", validate: "idle" });
+        setPreValidationErrors(["Failed to extract ZIP"]);
+      }
+    })();
+  }
+  function handleUpload() {
+    if (!selectedFile) {
+      setApiError("Please choose a template ZIP file to upload.");
+      return;
+    }
+    setApiError(null);
+    if (!selectedPlanIds.length) {
+      setPlanError("Please select at least one plan.");
+    }
+    if (!selectedCategoryIds.length) {
+      setCategoryError("Please select at least one category.");
+    }
+    if (!selectedPlanIds.length || !selectedCategoryIds.length) return;
+
+    setPlanError(null);
+    setCategoryError(null);
+
+    mutation.mutate(selectedFile as File, {
+      onSuccess(data) {
+        setUploadedTemplateId(data?.data?.templateId || null);
+        setUploadStep("done");
+        // capture generated manifest from server response if present
+        try {
+          const gm = data?.data?.generatedManifest as Record<string, unknown> | undefined;
+          const gn = data?.data?.generatedNotes as string[] | undefined;
+          if (gm) setGeneratedManifest(gm);
+          if (gn) setGeneratedNotes(gn || null);
+        } catch {}
+        // when server acknowledges upload, start processing step
+        setProcessStep("running");
+      },
+      onError(err: unknown) {
+        if (err && typeof err === "object") {
+          const obj = err as Record<string, unknown>;
+          const missingPlanIds = obj["missingPlanIds"] as string[] | undefined;
+          const missingCategoryIds = obj["missingCategoryIds"] as string[] | undefined;
+          if (missingPlanIds || missingCategoryIds) {
+            const parts: string[] = [];
+            if (missingPlanIds) parts.push(`Missing plans: ${missingPlanIds.join(", ")}`);
+            if (missingCategoryIds)
+              parts.push(`Missing categories: ${missingCategoryIds.join(", ")}`);
+            setApiError(parts.join("; "));
+            return;
+          }
+          const message = obj["message"] as string | undefined;
+          if (message) setApiError(message);
+          else setApiError(JSON.stringify(obj));
+        } else if (err && typeof err === "string") {
+          setApiError(err as string);
+        } else {
+          setApiError("Upload failed");
+        }
+        setUploadStep("error");
+      },
+    });
+  }
+
+  function cancelUpload() {
+    if (xhrRef.current) {
+      try {
+        xhrRef.current.abort();
+      } catch {}
+    }
+    setApiError("Upload cancelled");
+    setUploadProgress(null);
+    setUploadStep("idle");
+    try {
+      mutation.reset();
+    } catch {}
+  }
+
+  async function fetchStatusAndLogs() {
+    if (!uploadedTemplateId) return;
+    try {
+      const res = await fetch(`/api/admin/templates/${uploadedTemplateId}/status`);
+      if (!res.ok) return;
+      const j = (await parseJsonOrNull(res)) as Record<string, unknown> | null;
+      setLogs((j && (j.logs as string)) || null);
+      setPackageUrl((j && (j.packageUrl as string)) || null);
+      setLogsUrl((j && (j.logsUrl as string)) || null);
+      // Map server processing status to UI steps
+      const s = j?.status as string | undefined;
+      if (s === "PROCESSING") {
+        setProcessStep("running");
+      } else if (s === "VALIDATED") {
+        setProcessStep("done");
+      } else if (s === "ERROR") {
+        setProcessStep("error");
+      } else if (s === "PUBLISHED") {
+        setProcessStep("done");
+      }
+      // Inspect logs for obvious errors
+      const logsText = ((j && (j.logs as string)) || "").toString().toLowerCase();
+      if (logsText.includes("error") || logsText.includes("failed")) setProcessStep("error");
+    } catch {
+      setLogs("Failed to fetch logs");
+    }
+  }
+
+  return (
+    <Dialog.Root open={openState} onOpenChange={setOpenState}>
+      {!hideTrigger && <Dialog.Trigger className="btn">Upload Template</Dialog.Trigger>}
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 bg-black/40" />
+        <Dialog.Content
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          className="fixed left-1/2 top-1/2 w-[90vw] max-w-2xl max-h-[85vh] overflow-auto -translate-x-1/2 -translate-y-1/2 rounded bg-white p-6 shadow-lg dark:bg-gray-800"
+        >
+          <Dialog.Title className="text-lg font-semibold">Upload Template ZIP</Dialog.Title>
+          <Dialog.Description className="text-sm text-muted-foreground">
+            Upload a template package with a manifest (config.json).
+          </Dialog.Description>
+
+          <div className="mt-4">
+            <label className="block mb-2">Plans</label>
+            <input
+              placeholder="Search plans..."
+              value={planQuery}
+              onChange={(e) => setPlanQuery(e.target.value)}
+              className="w-full border p-2 mb-2"
+            />
+            <div className="max-h-44 overflow-auto rounded border bg-white">
+              {plans
+                .filter((p) => p.name.toLowerCase().includes(planQuery.toLowerCase()))
+                .map((p: Plan) => {
+                  const checked = selectedPlanIds.includes(p.id);
+                  return (
+                    <label key={p.id} className="flex items-center gap-2 px-3 py-2">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={(e) => {
+                          if (e.target.checked) setSelectedPlanIds((s) => [...s, p.id]);
+                          else setSelectedPlanIds((s) => s.filter((id) => id !== p.id));
+                        }}
+                      />
+                      <span>{p.name}</span>
+                    </label>
+                  );
+                })}
+            </div>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {selectedPlanIds.map((id) => {
+                const p = plans.find((x) => x.id === id);
+                if (!p) return null;
+                return (
+                  <span
+                    key={id}
+                    className="inline-flex items-center gap-2 rounded bg-slate-100 px-2 py-1 text-sm"
+                  >
+                    {p.name}
+                    <button
+                      aria-label={`Remove plan ${p.name}`}
+                      onClick={() => setSelectedPlanIds((s) => s.filter((x) => x !== id))}
+                      className="ml-1 text-xs"
+                    >
+                      ×
+                    </button>
+                  </span>
+                );
+              })}
+            </div>
+            {planError && <div className="text-red-600 mt-2">{planError}</div>}
+          </div>
+
+          <div className="mt-4">
+            <label className="block mb-2">Categories</label>
+            <input
+              placeholder="Search categories..."
+              value={categoryQuery}
+              onChange={(e) => setCategoryQuery(e.target.value)}
+              className="w-full border p-2 mb-2"
+            />
+            <div className="max-h-44 overflow-auto rounded border bg-white">
+              {categories
+                .filter((c) => c.name.toLowerCase().includes(categoryQuery.toLowerCase()))
+                .map((c: Category) => {
+                  const checked = selectedCategoryIds.includes(c.id);
+                  const isPrimary = primaryCategoryId === c.id;
+                  return (
+                    <label key={c.id} className="flex items-center gap-2 px-3 py-2">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedCategoryIds((s) => {
+                              const next = [...s, c.id];
+                              if (!primaryCategoryId) setPrimaryCategoryId(c.id);
+                              return next;
+                            });
+                          } else {
+                            setSelectedCategoryIds((s) => s.filter((id) => id !== c.id));
+                            if (primaryCategoryId === c.id) setPrimaryCategoryId(null);
+                          }
+                        }}
+                      />
+                      <span className="flex-1">{c.name}</span>
+                      <label className="ml-2 flex items-center gap-1 text-xs">
+                        <input
+                          type="radio"
+                          name="primaryCategory"
+                          checked={isPrimary}
+                          onChange={() => setPrimaryCategoryId(c.id)}
+                          disabled={!checked}
+                        />
+                        <span className="text-muted-foreground">Primary</span>
+                      </label>
+                    </label>
+                  );
+                })}
+            </div>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {selectedCategoryIds.map((id) => {
+                const c = categories.find((x) => x.id === id);
+                if (!c) return null;
+                const isPrimary = primaryCategoryId === id;
+                return (
+                  <span
+                    key={id}
+                    className="inline-flex items-center gap-2 rounded bg-slate-100 px-2 py-1 text-sm"
+                  >
+                    <strong className={isPrimary ? "text-blue-600" : ""}>{c.name}</strong>
+                    <button
+                      aria-label={`Remove category ${c.name}`}
+                      onClick={() => {
+                        setSelectedCategoryIds((s) => s.filter((x) => x !== id));
+                        if (primaryCategoryId === id) setPrimaryCategoryId(null);
+                      }}
+                      className="ml-1 text-xs"
+                    >
+                      ×
+                    </button>
+                  </span>
+                );
+              })}
+            </div>
+            {categoryError && <div className="text-red-600 mt-2">{categoryError}</div>}
+          </div>
+
+          <div className="mt-4">
+            <label htmlFor="template-zip" className="block mb-2">
+              Template ZIP
+            </label>
+            <input
+              id="template-zip"
+              ref={fileInputRef}
+              type="file"
+              accept=".zip"
+              onChange={handleFileChange}
+              aria-describedby="template-zip-help"
+              aria-label="Template ZIP file"
+              disabled={isLoading}
+              className="border p-1"
+            />
+            <div id="template-zip-help" className="text-xs text-muted-foreground mt-1">
+              Upload a ZIP containing a `config.json` manifest and assets.
+            </div>
+            {/* Preview / validation feedback */}
+            <div className="mt-3">
+              <div className="text-sm font-medium">Preview</div>
+              {preSteps.extract === "running" && <div className="text-xs">Extracting ZIP...</div>}
+              {preSteps.validate === "running" && (
+                <div className="text-xs">Running quick validation...</div>
+              )}
+              {preValidationErrors.length > 0 && (
+                <ul className="text-red-600 text-xs mt-2 list-disc list-inside">
+                  {preValidationErrors.map((e, i) => (
+                    <li key={i}>{e}</li>
+                  ))}
+                </ul>
+              )}
+              {preValidationWarnings.length > 0 && (
+                <ul className="text-yellow-700 text-xs mt-2 list-disc list-inside">
+                  {preValidationWarnings.map((w, i) => (
+                    <li key={i}>{w}</li>
+                  ))}
+                </ul>
+              )}
+              {previewManifest && (
+                <div className="mt-2 rounded border p-2 text-sm bg-slate-50">
+                  <div>
+                    <strong>
+                      {getManifestString(previewManifest, "name") ||
+                        getManifestString(previewManifest, "slug") ||
+                        "Unnamed"}
+                    </strong>
+                  </div>
+                  {getManifestString(previewManifest, "description") && (
+                    <div>{getManifestString(previewManifest, "description")}</div>
+                  )}
+                  <div className="text-xs mt-1">
+                    Version: {getManifestString(previewManifest, "version") || "1.0.0"}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-4 flex gap-2">
+            <button className="btn" onClick={() => setOpenState(false)}>
+              Close
+            </button>
+            <div className="ml-auto flex items-center gap-2">
+              <div className="flex items-center gap-2">
+                <button
+                  className="btn"
+                  onClick={() => handleUpload()}
+                  disabled={
+                    !(
+                      selectedFile &&
+                      selectedPlanIds.length > 0 &&
+                      selectedCategoryIds.length > 0
+                    ) || isLoading
+                  }
+                  aria-disabled={isLoading}
+                  aria-label="Upload template"
+                >
+                  {isLoading ? (
+                    <span className="inline-flex items-center gap-2">
+                      <svg
+                        className="animate-spin h-4 w-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        aria-hidden
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                        />
+                      </svg>
+                      Uploading...
+                    </span>
+                  ) : (
+                    "Upload"
+                  )}
+                </button>
+                {isLoading && (
+                  <button className="btn-ghost text-sm" onClick={() => cancelUpload()}>
+                    Cancel
+                  </button>
+                )}
+                {isError && <span className="text-red-600">Upload failed</span>}
+              </div>
+            </div>
+          </div>
+
+          {/* Multi-step progress */}
+          <div className="mt-3">
+            <div className="text-sm font-medium">Processing Steps</div>
+            <div className="mt-2 flex flex-col gap-1 text-sm">
+              <div>1. Extract: {preSteps.extract}</div>
+              <div>2. Validate: {preSteps.validate}</div>
+              <div>3. Process: {processStep}</div>
+              {(() => {
+                const uploadDisplay =
+                  uploadStep === "running" || isLoading
+                    ? uploadProgress !== null
+                      ? `${uploadProgress}%`
+                      : "starting"
+                    : uploadStep;
+                return <div>4. Upload: {uploadDisplay}</div>;
+              })()}
+              <div>
+                5. Complete: {status === "PUBLISHED" || processStep === "done" ? "done" : "pending"}
+              </div>
+            </div>
+            {uploadProgress !== null && (
+              <div className="w-full bg-slate-200 rounded h-2 mt-2">
+                <div className="bg-blue-600 h-2 rounded" style={{ width: `${uploadProgress}%` }} />
+              </div>
+            )}
+          </div>
+
+          {apiError && <div className="mt-3 text-sm text-red-600">{apiError}</div>}
+
+          {/* Live region for status updates to assistive tech */}
+          <div aria-live="polite" aria-atomic="true" className="sr-only">
+            {isLoading && "Uploading template..."}
+            {isSuccess && "Upload complete, processing started."}
+            {isError && (apiError || "Upload failed")}
+            {status && status !== "PROCESSING" && `Processing status: ${status}`}
+          </div>
+
+          {uploadedTemplateId && (
+            <div className="mt-4">
+              <div>Template ID: {uploadedTemplateId}</div>
+              <div>Status: {status || "Unknown"}</div>
+              <div className="mt-2 flex gap-2">
+                {status === "ERROR" && (
+                  <>
+                    <button className="btn-outline" onClick={() => fetchStatusAndLogs()}>
+                      Show logs
+                    </button>
+                    {logsUrl && (
+                      <a className="btn-outline" href={logsUrl} target="_blank" rel="noreferrer">
+                        View full logs
+                      </a>
+                    )}
+                  </>
+                )}
+                {packageUrl && (
+                  <a className="btn" href={packageUrl} target="_blank" rel="noreferrer">
+                    Download package
+                  </a>
+                )}
+                {uploadedTemplateId && (
+                  <button
+                    className="btn-ghost"
+                    onClick={async () => {
+                      try {
+                        const res = await fetch(
+                          `/api/admin/templates/${uploadedTemplateId}/rebuild`,
+                          {
+                            method: "POST",
+                          }
+                        );
+                        if (!res.ok) throw new Error("Failed to trigger rebuild");
+                        toast.success("Rebuild dispatched");
+                      } catch (e) {
+                        console.error(e);
+                        toast.error("Failed to dispatch rebuild");
+                      }
+                    }}
+                  >
+                    Re-run CI
+                  </button>
+                )}
+              </div>
+              {logs && (
+                <pre className="mt-3 max-h-48 overflow-auto whitespace-pre-wrap bg-slate-50 p-3 text-sm">
+                  {logs}
+                </pre>
+              )}
+              {/* Generated manifest preview and apply */}
+              {generatedManifest && (
+                <div className="mt-4 rounded border p-3 bg-slate-50">
+                  <div className="flex items-center justify-between">
+                    <strong>Generated config.json (candidate)</strong>
+                    <small className="text-xs text-muted-foreground">
+                      {generatedNotes ? generatedNotes.join("; ") : ""}
+                    </small>
+                  </div>
+                  <pre className="mt-2 max-h-56 overflow-auto whitespace-pre-wrap text-sm">
+                    {JSON.stringify(generatedManifest, null, 2)}
+                  </pre>
+                  <div className="mt-2 flex gap-2">
+                    <button
+                      className="btn"
+                      onClick={async () => {
+                        if (!uploadedTemplateId) return;
+                        try {
+                          const res = await fetch(`/api/admin/templates/${uploadedTemplateId}`, {
+                            method: "PATCH",
+                            headers: { "content-type": "application/json" },
+                            body: JSON.stringify({ manifest: generatedManifest }),
+                          });
+                          if (!res.ok) throw new Error("Failed to apply generated manifest");
+                          toast.success("Applied generated manifest");
+                        } catch (e) {
+                          console.error(e);
+                          toast.error("Failed to apply generated manifest");
+                        }
+                      }}
+                    >
+                      Apply generated config
+                    </button>
+                    <button
+                      className="btn-outline"
+                      onClick={() => {
+                        setGeneratedManifest(null);
+                        setGeneratedNotes(null);
+                      }}
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+}

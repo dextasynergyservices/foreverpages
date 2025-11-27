@@ -63,6 +63,20 @@ export const TemplateSelection: React.FC<TemplateSelectionProps> = ({
                     </div>
                   ))}
                 </div>
+                {/* If this is a marketplace template, show a Use button */}
+                {template.id?.toString().startsWith("marketplace:") && (
+                  <div className="mt-4">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedTemplate(template.id);
+                      }}
+                      className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md text-sm"
+                    >
+                      Use this template
+                    </button>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

@@ -1,4 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
+import { PassThrough } from "stream";
 
 // Configure Cloudinary
 cloudinary.config({
@@ -71,20 +72,53 @@ export async function uploadToCloudinary(
       eager_async: true,
     };
 
-    const result = await cloudinary.uploader.upload(file as string, uploadOptions);
+    type CloudinaryUploadResponse = {
+      public_id?: string;
+      secure_url?: string;
+      url?: string;
+      format?: string;
+      resource_type?: string;
+      bytes?: number;
+      width?: number;
+      height?: number;
+      duration?: number;
+      eager?: Array<{ secure_url?: string }>;
+      created_at?: string;
+    };
+
+    let result: CloudinaryUploadResponse | undefined;
+    if (Buffer.isBuffer(file)) {
+      result = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          uploadOptions,
+          (err: unknown, res: CloudinaryUploadResponse | undefined) => {
+            if (err) return reject(err);
+            resolve(res);
+          }
+        );
+        const pass = new PassThrough();
+        pass.end(file);
+        pass.pipe(stream);
+      });
+    } else {
+      result = (await cloudinary.uploader.upload(
+        file as string,
+        uploadOptions
+      )) as CloudinaryUploadResponse;
+    }
 
     return {
-      public_id: result.public_id,
-      secure_url: result.secure_url,
-      url: result.url,
-      format: result.format,
-      resource_type: result.resource_type,
-      bytes: result.bytes,
-      width: result.width,
-      height: result.height,
-      duration: result.duration,
-      thumbnail_url: result.eager?.[0]?.secure_url || result.secure_url,
-      created_at: result.created_at,
+      public_id: result?.public_id || "",
+      secure_url: result?.secure_url || "",
+      url: result?.url || "",
+      format: result?.format || "",
+      resource_type: result?.resource_type || "",
+      bytes: result?.bytes || 0,
+      width: result?.width,
+      height: result?.height,
+      duration: result?.duration,
+      thumbnail_url: result?.eager?.[0]?.secure_url || result?.secure_url || "",
+      created_at: result?.created_at || new Date().toISOString(),
     };
   } catch (error) {
     console.error("Cloudinary upload error:", error);

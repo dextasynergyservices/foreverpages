@@ -104,6 +104,8 @@ model User {
   streamViewers  StreamViewer[]
   streamComments StreamComment[]
   streamReactions StreamReaction[]
+  // Template versioning: versions created by this user
+  createdTemplateVersions TemplateVersion[]
 
   @@index([email])
   @@index([role])
@@ -879,17 +881,50 @@ model RenewalTranslation {
 // DYNAMIC TEMPLATE SYSTEM (Next.js/React/Tailwind)
 // ============================================
 
+model TemplateCategory {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?  @db.Text
+  icon        String?
+  color       String?
+  displayOrder Int     @default(0)
+  isActive    Boolean  @default(true)
+
+  templateCategories TemplateCategoryRelation[]
+  templates            Template[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@index([isActive])
+  @@index([displayOrder])
+}
+
+model TemplateCategoryRelation {
+  id         String   @id @default(cuid())
+  templateId String
+  template   Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  categoryId String
+  category   TemplateCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([templateId, categoryId])
+  @@index([templateId])
+  @@index([categoryId])
+}
+
 model Template {
   id          String   @id @default(cuid())
   name        String
   slug        String   @unique
   description String?  @db.Text
-  category    String   @default("general")
   version     String   @default("1.0.0")
 
   // Template Assets
   previewImage   String
   thumbnailImage String
+  categoryId   String?
 
   // React Component Configuration
   componentPath  String  // Path to main React component (e.g., "templates/classic/MemorialTemplate")
@@ -899,14 +934,37 @@ model Template {
   supportedSections TemplateSectionType[]
   layoutType     TemplateLayout @default(FLEXIBLE)
 
+  // Preview mode override: AUTO (use manifest), IFRAME (embed), STATIC (serve built html)
+  previewMode     PreviewMode? @default(AUTO)
+
   // Design System Configuration
   designTokens   Json?   // Tailwind classes, colors, typography, etc.
   defaultConfig  Json?   // Default settings for new memorials
+
+  // Navigation & Header Configuration
+  navigationConfig Json? // Custom nav structure per template
+  headerConfig     Json? // Header styling and content
 
   // Status & Organization
   isActive       Boolean  @default(true)
   isFeatured     Boolean  @default(false)
   displayOrder   Int      @default(0)
+
+  // Processing & Storage
+  processingStatus TemplateProcessingStatus @default(PROCESSING)
+  storagePath      String?
+  // Stored manifest.json uploaded with the template (validated)
+  manifest         Json?
+  buildCachePath   String?
+  typesPath        String?
+  processingLogs   String? @db.Text
+  packageUrl       String?
+  // Map of relative asset paths => uploaded public URLs (e.g., index.html, assets/*)
+  artifactAssets   Json?
+  processingLogsUrl String?
+  // GitHub PR metadata (Phase 3)
+  prNumber String?
+  prUrl    String?
 
   // Usage Statistics
   usageCount     Int      @default(0)
@@ -915,15 +973,49 @@ model Template {
   updatedAt DateTime @updatedAt
 
   // Relations
-  userTemplates  UserTemplate[]
-  sections       TemplateSection[]
-  plans       Plan[]
+  templateCategories TemplateCategoryRelation[]
+  category     TemplateCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  userTemplates UserTemplate[]
+  sections      TemplateSection[]
+  plans         Plan[]
+  // Historical versions for this template
+  templateVersions TemplateVersion[]
 
   @@index([slug])
-  @@index([category])
   @@index([isActive])
   @@index([isFeatured])
   @@index([displayOrder])
+}
+
+// Stores historical snapshots of templates when they are replaced/updated
+model TemplateVersion {
+  id             String   @id @default(cuid())
+  templateId     String
+  template       Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  // Snapshot fields
+  name           String
+  slug           String
+  description    String?  @db.Text
+  version        String
+  previewImage   String?
+  thumbnailImage String?
+  componentPath  String?
+  designTokens   Json?
+  defaultConfig  Json?
+  manifest       Json?
+  packageUrl     String?
+  artifactAssets  Json?
+  storagePath    String?
+
+  // Who created this version (admin user id)
+  createdById    String?
+  createdBy      User?    @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+
+  @@index([templateId])
+  @@index([createdAt])
 }
 
 model TemplateSection {
@@ -1019,6 +1111,13 @@ enum TemplateSectionLayout {
   STATISTICS
   TESTIMONIAL_SLIDER
   QUOTE_CAROUSEL
+}
+
+enum TemplateProcessingStatus {
+  PROCESSING
+  VALIDATED
+  PUBLISHED
+  ERROR
 }
 
 enum TemplateContentType {
@@ -1845,4 +1944,10 @@ enum AnnouncementType {
   WARNING
   ERROR
   MAINTENANCE
+}
+
+enum PreviewMode {
+  AUTO
+  IFRAME
+  STATIC
 }

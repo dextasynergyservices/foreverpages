@@ -380,6 +380,7 @@
       "nav": {
         "analytics": "Analytique",
         "gallery": "Galerie",
+        "templates": "Modèles",
         "builder": "Constructeur de Funérailles",
         "invitations": "Invitations",
         "tributes": "Hommages",
@@ -529,6 +530,60 @@
       "downloadFailed": "Échec du téléchargement",
       "loadingMore": "Chargement...",
       "allLoaded": "Tous les médias chargés"
+    },
+    "templates": {
+      "title": "Modèles Personnalisés",
+      "subtitle": "Gérer vos modèles de mémorial personnalisés",
+      "createTemplate": "Créer un Modèle",
+      "createDialog": {
+        "title": "Créer un Nouveau Modèle",
+        "description": "Sauvegardez votre configuration actuelle comme modèle réutilisable",
+        "form": {
+          "name": {
+            "label": "Nom du Modèle",
+            "placeholder": "Entrez un nom pour votre modèle"
+          },
+          "description": {
+            "label": "Description (Optionnel)",
+            "placeholder": "Décrivez ce modèle..."
+          }
+        },
+        "actions": {
+          "create": "Créer le Modèle",
+          "creating": "Création...",
+          "cancel": "Annuler"
+        }
+      },
+      "list": {
+        "empty": {
+          "title": "Aucun modèle personnalisé",
+          "description": "Créez votre premier modèle personnalisé pour réutiliser vos configurations préférées"
+        },
+        "item": {
+          "created": "Créé le {{date}}",
+          "lastUsed": "Dernière utilisation: {{date}}",
+          "actions": {
+            "use": "Utiliser ce Modèle",
+            "edit": "Modifier",
+            "delete": "Supprimer"
+          }
+        }
+      },
+      "deleteDialog": {
+        "title": "Supprimer le Modèle",
+        "description": "Êtes-vous sûr de vouloir supprimer ce modèle? Cette action ne peut pas être annulée.",
+        "actions": {
+          "delete": "Supprimer",
+          "cancel": "Annuler"
+        }
+      },
+      "actions": {
+        "createSuccess": "Modèle créé avec succès",
+        "createError": "Échec de la création du modèle",
+        "deleteSuccess": "Modèle supprimé avec succès",
+        "deleteError": "Échec de la suppression du modèle",
+        "loadError": "Échec du chargement des modèles"
+      }
     },
     "invitations": {
       "title": "Invitations au Service",
@@ -1092,31 +1147,198 @@
     },
     "pageBuilder": {
       "header": {
-        "title": "Create Memorial",
-        "cancel": "Cancel"
+        "title": "Créer un Mémorial",
+        "cancel": "Annuler"
       },
       "steps": {
         "chooseTemplate": {
-          "title": "Choose Template",
-          "description": "Select a design that honors your loved one"
+          "title": "Choisir un Modèle",
+          "description": "Sélectionnez un design qui honore votre être cher"
         },
         "basicInfo": {
-          "title": "Basic Information",
-          "description": "Tell us about your loved one"
+          "title": "Informations de Base",
+          "description": "Parlez-nous de votre être cher"
         },
         "details": {
-          "title": "Memorial Details",
-          "description": "Add photos and memories"
+          "title": "Détails du Mémorial",
+          "description": "Ajoutez des photos et des souvenirs"
         },
         "review": {
-          "title": "Review",
-          "description": "Review and create your memorial"
+          "title": "Révision",
+          "description": "Réviser et créer votre mémorial"
         }
       },
       "buttons": {
-        "previous": "Previous",
-        "next": "Next",
-        "create": "Create Memorial"
+        "previous": "Précédent",
+        "next": "Suivant",
+        "create": "Créer un Mémorial",
+        "creating": "Création en cours..."
+      },
+      "sidebar": {
+        "title": "Étapes de construction",
+        "hint1": "Astuce: sauvegardez fréquemment",
+        "hint2": "Astuce: prévisualisez sur différents appareils"
+      },
+      "basicInfo": {
+        "firstName": {
+          "label": "Prénom",
+          "placeholder": "Entrez le prénom"
+        },
+        "lastName": {
+          "label": "Nom de Famille",
+          "placeholder": "Entrez le nom de famille"
+        },
+        "birthDate": {
+          "label": "Date de Naissance",
+          "placeholder": "JJ/MM/AAAA"
+        },
+        "deathDate": {
+          "label": "Date de Décès",
+          "placeholder": "JJ/MM/AAAA"
+        },
+        "relationship": {
+          "label": "Relation avec le Défunt",
+          "placeholder": "Par exemple: fils, fille, épouse, ami...",
+          "options": {
+            "spouse": "Conjoint(e)",
+            "child": "Enfant",
+            "parent": "Parent",
+            "sibling": "Frère/Sœur",
+            "grandparent": "Grand-parent",
+            "grandchild": "Petit-enfant",
+            "friend": "Ami(e)",
+            "colleague": "Collègue",
+            "other": "Autre"
+          }
+        },
+        "location": {
+          "label": "Lieu (Ville, Pays)",
+          "placeholder": "Ville, Pays"
+        },
+        "nationality": {
+          "label": "Nationalité",
+          "placeholder": "Nationalité"
+        },
+        "autoSaved": "Sauvegardé automatiquement"
+      },
+      "memorialDetails": {
+        "saving": "Sauvegarde en cours...",
+        "autoSaved": "Sauvegardé automatiquement",
+        "profilePhoto": {
+          "label": "Photo de Profil",
+          "helpText": "Téléchargez une belle photo qui représente la personne"
+        },
+        "backgroundImage": {
+          "label": "Image d'Arrière-Plan (Optionnel)",
+          "helpText": "Un lieu ou un souvenir significatif"
+        },
+        "memorialMessage": {
+          "label": "Message du Mémorial",
+          "placeholder": "Un message spécial ou une citation qui capture son esprit..."
+        },
+        "privacySetting": {
+          "label": "Paramètre de Confidentialité",
+          "options": {
+            "public": "Public - Tout le monde peut voir",
+            "unlisted": "Non répertorié - Seulement avec le lien",
+            "private": "Privé - Invités seulement"
+          }
+        }
+      },
+      "templates": {
+        "classic": {
+          "name": "Mémorial Classique",
+          "description": "Design traditionnel et élégant avec chronologie et mise en page formelle",
+          "features": [
+            "Section biographie",
+            "Chronologie photo",
+            "Mur d'hommage",
+            "Informations sur le service"
+          ]
+        },
+        "modern": {
+          "name": "Hommage Moderne",
+          "description": "Mise en page propre et contemporaine avec focus sur les photos et design minimaliste",
+          "features": [
+            "Grande galerie photo",
+            "Typographie propre",
+            "Hommages interactifs",
+            "Partage social"
+          ]
+        },
+        "garden": {
+          "name": "Jardin des Souvenirs",
+          "description": "Thème inspiré de la nature avec couleurs douces et éléments organiques",
+          "features": [
+            "Arrière-plans naturels",
+            "Palette de couleurs douces",
+            "Jardin des souvenirs",
+            "Design paisible"
+          ]
+        },
+        "celebration": {
+          "name": "Célébration de la Vie",
+          "description": "Design lumineux et stimulant pour un souvenir joyeux et une célébration",
+          "features": [
+            "Couleurs vives",
+            "Focus sur la célébration",
+            "Souvenirs heureux",
+            "Ton stimulant"
+          ]
+        }
+      },
+      "review": {
+        "title": "Réviser Votre Mémorial",
+        "subtitle": "Vérifiez tous les détails avant de créer votre mémorial",
+        "sections": {
+          "template": "Modèle",
+          "basicInfo": "Informations de Base",
+          "memorialDetails": "Détails du Mémorial"
+        },
+        "messages": {
+          "templateSelected": "Modèle sélectionné avec succès",
+          "basicInfoComplete": "Informations de base complétées",
+          "memorialDetailsComplete": "Détails du mémorial complétés",
+          "readyToCreate": "Votre mémorial est prêt à être créé",
+          "creatingMemorial": "Création de votre mémorial...",
+          "memorialCreated": "Mémorial créé avec succès!",
+          "redirecting": "Redirection vers votre tableau de bord..."
+        },
+        "actions": {
+          "edit": "Modifier",
+          "createMemorial": "Créer le Mémorial"
+        }
+      }
+    },
+    "content": {
+      "biography": {
+        "title": "Biographie"
+      },
+      "epitaph": {
+        "title": "Épitaphe",
+        "default": "En mémoire affectueuse"
+      },
+      "tributes": {
+        "title": "Hommages et Souvenirs",
+        "legacy": "Héritage",
+        "lifeStory": "Histoire de Vie"
+      },
+      "timeline": {
+        "title": "Chronologie de la Vie",
+        "born": "Né(e)",
+        "passedAway": "Décédé(e)"
+      },
+      "gallery": {
+        "title": "Galerie Photo"
+      },
+      "familyTree": {
+        "title": "Arbre Généalogique"
+      },
+      "condolences": {
+        "title": "Condoléances"
+      },
+      "support": {
+        "title": "Soutien et Dons"
       }
     },
     "settings": {
@@ -1231,6 +1453,261 @@
         "allReviewed": "All tributes have been reviewed"
       },
       "live": "Live"
+    },
+    "templates": {
+      "title": "Mes Modèles",
+      "subtitle": "Créez et gérez vos modèles personnalisés de mémorial",
+      "createButton": "Créer un Modèle",
+      "createButtonShort": "Créer",
+      "createDialog": {
+        "title": "Créer un Nouveau Modèle",
+        "description": "Choisissez un modèle de base et personnalisez-le pour votre mémorial"
+      },
+      "form": {
+        "name": {
+          "label": "Nom du Modèle",
+          "placeholder": "Entrez le nom du modèle"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Description optionnelle"
+        },
+        "baseTemplate": {
+          "label": "Modèle de Base"
+        },
+        "creating": "Création en cours..."
+      },
+      "list": {
+        "title": "Vos Modèles ({count})",
+        "subtitle": "Modèles que vous avez créés et personnalisés"
+      },
+      "error": {
+        "title": "Erreur de Chargement des Modèles"
+      },
+      "failedToLoadBaseTemplates": "Erreur lors du chargement des modèles de base",
+      "empty": {
+        "title": "Aucun Modèle Encore",
+        "description": "Créez votre premier modèle personnalisé pour commencer",
+        "createButton": "Créer le Premier Modèle"
+      },
+      "actions": {
+        "preview": "Aperçu",
+        "edit": "Modifier",
+        "duplicate": "Dupliquer",
+        "delete": "Supprimer"
+      },
+      "deleteDialog": {
+        "title": "Supprimer le Modèle",
+        "description": "Êtes-vous sûr de vouloir supprimer \"{name}\"? Cette action ne peut pas être annulée.",
+        "deleting": "Suppression en cours...",
+        "confirm": "Supprimer le Modèle"
+      },
+      "createSuccess": "Modèle créé avec succès",
+      "createError": "Erreur lors de la création du modèle",
+      "deleteSuccess": "Modèle supprimé avec succès",
+      "deleteError": "Erreur lors de la suppression du modèle",
+      "validationError": "Veuillez entrer un nom de modèle et sélectionner un modèle de base",
+      "validation": {
+        "nameRequired": "Le nom du modèle est obligatoire",
+        "nameTooShort": "Le nom du modèle doit contenir au moins 3 caractères",
+        "nameTooLong": "Le nom du modèle ne peut pas dépasser 100 caractères",
+        "nameInvalidChars": "Le nom du modèle contient des caractères invalides",
+        "descriptionTooLong": "La description ne peut pas dépasser 500 caractères",
+        "descriptionInvalidChars": "La description contient des caractères invalides",
+        "searchQueryRequired": "La requête de recherche est obligatoire",
+        "searchQueryTooShort": "La requête de recherche doit contenir au moins 2 caractères",
+        "searchQueryInvalidChars": "La requête de recherche contient des caractères invalides",
+        "colorInvalid": "Format de couleur invalide",
+        "fontSizeInvalid": "La taille de police doit être entre 8px et 72px",
+        "spacingInvalid": "L'espacement doit être entre 0px et 100px",
+        "borderRadiusInvalid": "Le rayon de bordure doit être entre 0px et 50px",
+        "maxWidthInvalid": "La largeur maximale doit être entre 200px et 2000px",
+        "lineHeightInvalid": "La hauteur de ligne doit être entre 0.8 et 3.0",
+        "customizationInvalid": "La personnalisation du modèle contient des valeurs invalides",
+        "importInvalidFormat": "Format de fichier d'importation invalide",
+        "importInvalidData": "Les données d'importation contiennent une configuration de modèle invalide",
+        "importFileTooLarge": "Le fichier d'importation est trop volumineux (maximum 5MB)"
+      }
+    },
+    "marketplace": {
+      "title": "Marché des Modèles",
+      "subtitle": "Découvrez des modèles premium pour améliorer vos mémoriaux",
+      "search": {
+        "placeholder": "Rechercher des modèles...",
+        "noResults": "Aucun modèle trouvé correspondant à votre recherche"
+      },
+      "filters": {
+        "all": "Tous les Modèles",
+        "free": "Gratuit",
+        "premium": "Premium",
+        "categories": {
+          "traditional": "Traditionnel",
+          "modern": "Moderne",
+          "nature": "Nature",
+          "religious": "Religieux",
+          "military": "Militaire",
+          "sports": "Sports",
+          "music": "Musique",
+          "artistic": "Artistique"
+        },
+        "sort": {
+          "popular": "Plus Populaire",
+          "newest": "Plus Récent",
+          "rating": "Mieux Noté",
+          "priceLow": "Prix: Croissant",
+          "priceHigh": "Prix: Décroissant"
+        }
+      },
+      "template": {
+        "preview": "Aperçu",
+        "download": "Télécharger",
+        "purchased": "Acheté",
+        "price": "Prix",
+        "category": "Catégorie",
+        "downloads": "Téléchargements",
+        "rating": "Note",
+        "features": "Fonctionnalités"
+      },
+      "purchase": {
+        "dialog": {
+          "title": "Acheter le Modèle",
+          "description": "Vous êtes sur le point d'acheter \"{name}\" pour {price}",
+          "confirm": "Confirmer l'Achat",
+          "cancel": "Annuler",
+          "processing": "Traitement en cours..."
+        },
+        "success": "Modèle acheté avec succès!",
+        "error": "Erreur lors de l'achat du modèle"
+      },
+      "download": {
+        "success": "Modèle téléchargé avec succès!",
+        "error": "Erreur lors du téléchargement du modèle"
+      },
+      "loading": "Chargement des modèles...",
+      "error": "Erreur de chargement des modèles"
+    },
+    "analytics": {
+      "title": "Analyses des Modèles",
+      "subtitle": "Suivez les performances et l'utilisation de vos modèles",
+      "metrics": {
+        "totalTemplates": "Total des Modèles",
+        "totalDownloads": "Total des Téléchargements",
+        "totalRevenue": "Revenus Totaux",
+        "averageRating": "Note Moyenne",
+        "totalViews": "Vues Totales",
+        "uniqueVisitors": "Visiteurs Uniques",
+        "averageTime": "Temps Moyen sur la Page",
+        "conversionRate": "Taux de Conversion",
+        "popularTemplates": "Modèles Populaires",
+        "usageTrends": "Tendances d'Utilisation"
+      },
+      "charts": {
+        "viewsOverTime": "Vues dans le Temps",
+        "templateUsage": "Distribution d'Utilisation des Modèles",
+        "visitorDemographics": "Démographie des Visiteurs",
+        "performanceMetrics": "Métriques de Performance"
+      },
+      "periods": {
+        "7days": "7 Derniers Jours",
+        "30days": "30 Derniers Jours",
+        "90days": "90 Derniers Jours",
+        "1year": "Dernière Année"
+      },
+      "loading": "Chargement des analyses...",
+      "error": "Erreur de chargement des analyses",
+      "noData": "Aucune donnée d'analyse disponible pour le moment"
+    },
+    "customization": {
+      "title": "Personnalisation Avancée",
+      "subtitle": "Ajustez chaque aspect de votre modèle avec des contrôles avancés",
+      "sections": {
+        "colors": "Couleurs",
+        "typography": "Typographie",
+        "layout": "Mise en Page",
+        "code": "Code Personnalisé"
+      },
+      "colors": {
+        "primary": "Couleur Principale",
+        "secondary": "Couleur Secondaire",
+        "accent": "Couleur d'Accente",
+        "background": "Couleur de Fond",
+        "text": "Couleur du Texte",
+        "reset": "Réinitialiser par Défaut"
+      },
+      "typography": {
+        "fontFamily": "Famille de Polices",
+        "fontSize": "Taille de Police",
+        "lineHeight": "Hauteur de Ligne",
+        "fontWeight": "Épaisseur de Police",
+        "textAlign": "Alignement du Texte"
+      },
+      "layout": {
+        "containerWidth": "Largeur du Conteneur",
+        "spacing": "Espacement",
+        "borderRadius": "Rayon de Bordure",
+        "shadows": "Ombres"
+      },
+      "code": {
+        "css": "CSS Personnalisé",
+        "javascript": "JavaScript Personnalisé",
+        "html": "HTML Personnalisé",
+        "warning": "Avertissement: Le code personnalisé peut casser votre modèle. Utilisez-le avec précaution."
+      },
+      "preview": {
+        "title": "Aperçu en Direct",
+        "mobile": "Mobile",
+        "tablet": "Tablette",
+        "desktop": "Bureau",
+        "fullscreen": "Plein Écran"
+      },
+      "actions": {
+        "save": "Enregistrer les Modifications",
+        "reset": "Tout Réinitialiser",
+        "export": "Exporter la Configuration",
+        "import": "Importer la Configuration",
+        "saving": "Enregistrement en cours...",
+        "resetting": "Réinitialisation en cours..."
+      },
+      "import": {
+        "dialog": {
+          "title": "Importer la Configuration de Personnalisation",
+          "description": "Collez votre configuration exportée ci-dessous",
+          "placeholder": "Collez le JSON de configuration ici...",
+          "import": "Importer",
+          "cancel": "Annuler"
+        },
+        "success": "Configuration importée avec succès!",
+        "error": "Erreur lors de l'importation de la configuration. Veuillez vérifier le format."
+      },
+      "export": {
+        "success": "Configuration exportée vers le presse-papiers!",
+        "error": "Erreur lors de l'exportation de la configuration"
+      },
+      "save": {
+        "success": "Personnalisation enregistrée avec succès!",
+        "error": "Erreur lors de l'enregistrement de la personnalisation"
+      },
+      "reset": {
+        "confirm": {
+          "title": "Réinitialiser Toute la Personnalisation?",
+          "description": "Cela restaurera tous les paramètres à leurs valeurs par défaut. Cette action ne peut pas être annulée.",
+          "confirm": "Tout Réinitialiser",
+          "cancel": "Annuler"
+        },
+        "success": "Toute la personnalisation réinitialisée avec succès!",
+        "error": "Erreur lors de la réinitialisation de la personnalisation"
+      },
+      "validation": {
+        "invalidCss": "Syntaxe CSS invalide",
+        "invalidJs": "Syntaxe JavaScript invalide",
+        "invalidHtml": "Syntaxe HTML invalide"
+      }
+    },
+    "tabs": {
+      "myTemplates": "Mes Modèles",
+      "marketplace": "Marché",
+      "analytics": "Analyses",
+      "customization": "Personnalisation"
     }
   },
   "termsAndConditions": {

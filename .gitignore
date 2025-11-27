@@ -50,3 +50,11 @@ next-env.d.ts
 
 # Secrets (internal use only)
 /secrets
+
+# Local template integration/cache folders
+.template-build-cache
+.template-test
+
+# Local starter templates (do not push to production)
+templates/fp-template-init/
+scripts/template-to-fix/

@@ -380,6 +380,7 @@
       "nav": {
         "analytics": "Bincike",
         "gallery": "Gallery",
+        "templates": "Samfura",
         "builder": "Mai Gina Jana'iza",
         "invitations": "Gayyata",
         "tributes": "Girmamawa",
@@ -529,6 +530,60 @@
       "downloadFailed": "Saukewa ya gaza",
       "loadingMore": "Ana loda ƙari...",
       "allLoaded": "An loda dukkan kafofin watsa labarai"
+    },
+    "templates": {
+      "title": "Samfura na Musamman",
+      "subtitle": "Sarrafa samfuran memorial na musamman",
+      "createTemplate": "Ƙirƙiri Samfuri",
+      "createDialog": {
+        "title": "Ƙirƙiri Sabon Samfuri",
+        "description": "Ajiye saitinka na yanzu azaman samfuri mai sake amfani",
+        "form": {
+          "name": {
+            "label": "Sunan Samfuri",
+            "placeholder": "Shigar da suna don samfurin ku"
+          },
+          "description": {
+            "label": "Bayanai (Na zaɓi)",
+            "placeholder": "Bayyana wannan samfuri..."
+          }
+        },
+        "actions": {
+          "create": "Ƙirƙiri Samfuri",
+          "creating": "Ana ƙirƙira...",
+          "cancel": "Soke"
+        }
+      },
+      "list": {
+        "empty": {
+          "title": "Babu samfuran musamman",
+          "description": "Ƙirƙiri samfurin musamman na farko don sake amfani da saitinka da kuka fi so"
+        },
+        "item": {
+          "created": "An ƙirƙiri a {{date}}",
+          "lastUsed": "Amfani na ƙarshe: {{date}}",
+          "actions": {
+            "use": "Yi amfani da wannan Samfuri",
+            "edit": "Shirya",
+            "delete": "Goge"
+          }
+        }
+      },
+      "deleteDialog": {
+        "title": "Goge Samfuri",
+        "description": "Shin kun tabbata kuna son goge wannan samfuri? Ba za a iya soke wannan aikin ba.",
+        "actions": {
+          "delete": "Goge",
+          "cancel": "Soke"
+        }
+      },
+      "actions": {
+        "createSuccess": "An ƙirƙiri samfuri cikin nasara",
+        "createError": "An kasa ƙirƙiri samfuri",
+        "deleteSuccess": "An goge samfuri cikin nasara",
+        "deleteError": "An kasa goge samfuri",
+        "loadError": "An kasa loda samfura"
+      }
     },
     "invitations": {
       "title": "Gayyatar Hidima",
@@ -1092,31 +1147,193 @@
     },
     "pageBuilder": {
       "header": {
-        "title": "Create Memorial",
-        "cancel": "Cancel"
+        "title": "Ƙirƙiri Tunawa",
+        "cancel": "Soke"
       },
       "steps": {
         "chooseTemplate": {
-          "title": "Choose Template",
-          "description": "Select a design that honors your loved one"
+          "title": "Zaɓi Samfuri",
+          "description": "Zaɓi tsari wanda zai girmama mutumin da kuka rasa"
         },
         "basicInfo": {
-          "title": "Basic Information",
-          "description": "Tell us about your loved one"
+          "title": "Bayanai na Asali",
+          "description": "Gaya mana game da mutumin da kuka rasa"
         },
         "details": {
-          "title": "Memorial Details",
-          "description": "Add photos and memories"
+          "title": "Cikakkun Bayanai na Tunawa",
+          "description": "Ƙara hotuna da abubuwan tunawa"
         },
         "review": {
-          "title": "Review",
-          "description": "Review and create your memorial"
+          "title": "Bita",
+          "description": "Bita kuma ƙirƙiri tunawa ku"
         }
       },
       "buttons": {
-        "previous": "Previous",
-        "next": "Next",
-        "create": "Create Memorial"
+        "previous": "Na baya",
+        "next": "Na gaba",
+        "create": "Ƙirƙiri Tunawa",
+        "creating": "Ana ƙirƙira..."
+      },
+      "sidebar": {
+        "title": "Matakan ƙirƙira",
+        "hint1": "Shawarar: ajiye koyaushe",
+        "hint2": "Shawarar: duba akan na'urori daban-daban"
+      },
+      "basicInfo": {
+        "firstName": {
+          "label": "Sunan Farko",
+          "placeholder": "Shigar da sunan farko"
+        },
+        "lastName": {
+          "label": "Sunan Iyali",
+          "placeholder": "Shigar da sunan iyali"
+        },
+        "birthDate": {
+          "label": "Ranar Haihuwa",
+          "placeholder": "Rana/Wata/Shekara"
+        },
+        "deathDate": {
+          "label": "Ranar Mutuwa",
+          "placeholder": "Rana/Wata/Shekara"
+        },
+        "relationship": {
+          "label": "Dangantaka da Mai Mutuwa",
+          "placeholder": "Misali: ɗa, ya, mata, aboki...",
+          "options": {
+            "spouse": "Miji/Mata",
+            "child": "Ɗa/Ya",
+            "parent": "Uwa",
+            "sibling": "Ɗan'uwa",
+            "grandparent": "Kaka",
+            "grandchild": "Jika",
+            "friend": "Aboki",
+            "colleague": "Abokin aiki",
+            "other": "Sauran"
+          }
+        },
+        "location": {
+          "label": "Wuri (Gari, Ƙasa)",
+          "placeholder": "Gari, Ƙasa"
+        },
+        "nationality": {
+          "label": "Ƙasa",
+          "placeholder": "Ƙasa"
+        },
+        "autoSaved": "An ajiye ta atomatik"
+      },
+      "memorialDetails": {
+        "saving": "Ana Ajiyewa...",
+        "autoSaved": "An ajiye ta atomatik",
+        "profilePhoto": {
+          "label": "Hoton Prọfaịlụ",
+          "helpText": "Loda kyakkyawan hoto wanda zai wakilce shi"
+        },
+        "backgroundImage": {
+          "label": "Hoton Baya (Na zaɓi)",
+          "helpText": "Wuri mai mahimmanci ko abin tunawa"
+        },
+        "memorialMessage": {
+          "label": "Saƙon Tunawa",
+          "placeholder": "Saƙo mai mahimmanci ko kalma wanda zai wakilce ruhinsa..."
+        },
+        "privacySetting": {
+          "label": "Saitin Sirri",
+          "options": {
+            "public": "Jama'a - Kowa zai iya gani",
+            "unlisted": "Ba a lissafa ba - Ta hanyar hanya kawai",
+            "private": "Sirri - Wanda aka gayyata kawai"
+          }
+        }
+      },
+      "templates": {
+        "classic": {
+          "name": "Tunawa na Gargajiya",
+          "description": "Tsari na gargajiya kuma na kyau tare da jerin tarihi na tsari",
+          "features": [
+            "Sashen tarihin rayuwa",
+            "Jerin hotuna",
+            "Bangon girmamawa",
+            "Bayanai na hidima"
+          ]
+        },
+        "modern": {
+          "name": "Girmamawa na Zamani",
+          "description": "Tsari mai tsafta kuma na zamani tare da mayar da hankali ga hotuna da tsari mara ado",
+          "features": [
+            "Babban jerin hotuna",
+            "Rubutun tsafta",
+            "Girmamawa masu hulɗa",
+            "Raba akan intanet"
+          ]
+        },
+        "garden": {
+          "name": "Gonar Abubuwan Tunawa",
+          "description": "Jigo mai asali tare da launuka masu laushi da abubuwa masu ƙarfi",
+          "features": ["Bayan asali", "Launuka masu laushi", "Gonak tunawa", "Tsari mai laushi"]
+        },
+        "celebration": {
+          "name": "Bikin Rayuwa",
+          "description": "Tsari mai haske kuma mai ba da rai don tunawa da bikin da ke faranta rai",
+          "features": [
+            "Launuka masu haske",
+            "Mayar da hankali ga biki",
+            "Abubuwan tunawa masu farin ciki",
+            "Tọ́n mai ba da rai"
+          ]
+        }
+      },
+      "review": {
+        "title": "Bita Tunawa Ku",
+        "subtitle": "Duba duk bayanai kafin ku ƙirƙiri tunawa ku",
+        "sections": {
+          "template": "Samfuri",
+          "basicInfo": "Bayanai na Asali",
+          "memorialDetails": "Cikakkun Bayanai na Tunawa"
+        },
+        "messages": {
+          "templateSelected": "An zaɓi samfuri cikin nasara",
+          "basicInfoComplete": "An cika bayanai na asali",
+          "memorialDetailsComplete": "An cika cikakkun bayanai na tunawa",
+          "readyToCreate": "Tunawa ku yana shirye don ƙirƙira",
+          "creatingMemorial": "Ana ƙirƙira tunawa ku...",
+          "memorialCreated": "An ƙirƙiri tunawa cikin nasara!",
+          "redirecting": "Ana jagorantar ku zuwa dashboard ku..."
+        },
+        "actions": {
+          "edit": "Shirya",
+          "createMemorial": "Ƙirƙiri Tunawa"
+        }
+      }
+    },
+    "content": {
+      "biography": {
+        "title": "Tarihin Rayuwa"
+      },
+      "epitaph": {
+        "title": "Rubutun Karshe",
+        "default": "Cikin tunawa mai ƙauna"
+      },
+      "tributes": {
+        "title": "Girmamawa da Abubuwan Tunawa",
+        "legacy": "Gado",
+        "lifeStory": "Labarin Rayuwa"
+      },
+      "timeline": {
+        "title": "Jerin Lokutan Rayuwa",
+        "born": "An Haifa",
+        "passedAway": "Ya Rasu"
+      },
+      "gallery": {
+        "title": "Jerin Hotuna"
+      },
+      "familyTree": {
+        "title": "Bishiyar Iyali"
+      },
+      "condolences": {
+        "title": "Takaitawa"
+      },
+      "support": {
+        "title": "Taimako da Gudummawa"
       }
     },
     "settings": {
@@ -2082,6 +2299,261 @@
         "youreReceiving": "Kuna karɓar wannan saboda kuna haɗe da shafin tunawa na {memorial}.",
         "copyright": "© {year} ForeverPages. Duk haƙƙoƙin rajista."
       }
+    },
+    "templates": {
+      "title": "Samfurorina",
+      "subtitle": "Ƙirƙira kuma sarrafa samfurorinku na musamman na tunawa",
+      "createButton": "Ƙirƙiri Samfuri",
+      "createButtonShort": "Ƙirƙiri",
+      "createDialog": {
+        "title": "Ƙirƙiri Sabon Samfuri",
+        "description": "Zaɓi samfurin tushe kuma keɓance shi don tunawarku"
+      },
+      "form": {
+        "name": {
+          "label": "Sunan Samfuri",
+          "placeholder": "Shigar da sunan samfuri"
+        },
+        "description": {
+          "label": "Bayanai",
+          "placeholder": "Bayanai na zaɓi"
+        },
+        "baseTemplate": {
+          "label": "Samfurin Tushe"
+        },
+        "creating": "Ana ƙirƙira..."
+      },
+      "list": {
+        "title": "Samfurorinku ({count})",
+        "subtitle": "Samfurori da kuka ƙirƙira kuma keɓance"
+      },
+      "error": {
+        "title": "Kuskure wajen Loda Samfurori"
+      },
+      "empty": {
+        "title": "Babu Samfurori Har Yanzu",
+        "description": "Ƙirƙiri samfurinku na farko na musamman don farawa",
+        "createButton": "Ƙirƙiri Samfurin Farko"
+      },
+      "actions": {
+        "preview": "Dubawa",
+        "edit": "Shirya",
+        "duplicate": "Kwafi",
+        "delete": "Share"
+      },
+      "deleteDialog": {
+        "title": "Share Samfuri",
+        "description": "Shin kun tabbata kuna son share \"{name}\"? Wannan aiki ba za a iya komawa ba.",
+        "deleting": "Ana sharewa...",
+        "confirm": "Share Samfuri"
+      },
+      "createSuccess": "An ƙirƙiri samfuri cikin nasara",
+      "createError": "Kuskure wajen ƙirƙiri samfuri",
+      "deleteSuccess": "An share samfuri cikin nasara",
+      "deleteError": "Kuskure wajen share samfuri",
+      "validationError": "Don Allah shigar da sunan samfuri kuma zaɓi samfurin tushe",
+      "validation": {
+        "nameRequired": "Ana buƙatar sunan samfuri",
+        "nameTooShort": "Sunan samfuri dole ne ya ƙunshi aƙalla haruffa 3",
+        "nameTooLong": "Sunan samfuri ba zai iya wuce haruffa 100 ba",
+        "nameInvalidChars": "Sunan samfuri yana ɗauke da haruffa marasa inganci",
+        "descriptionTooLong": "Bayanai ba za su iya wuce haruffa 500 ba",
+        "descriptionInvalidChars": "Bayanai suna ɗauke da haruffa marasa inganci",
+        "searchQueryRequired": "Ana buƙatar tambayar bincike",
+        "searchQueryTooShort": "Tambayar bincike dole ne ta ƙunshi aƙalla haruffa 2",
+        "searchQueryInvalidChars": "Tambayar bincike tana ɗauke da haruffa marasa inganci",
+        "colorInvalid": "Tsarin launi mara inganci",
+        "fontSizeInvalid": "Girman rubutu dole ne ya kasance tsakanin 8px da 72px",
+        "spacingInvalid": "Tashi dole ne ya kasance tsakanin 0px da 100px",
+        "borderRadiusInvalid": "Radius na iya dole ne ya kasance tsakanin 0px da 50px",
+        "maxWidthInvalid": "Matsakaicin faɗi dole ne ya kasance tsakanin 200px da 2000px",
+        "lineHeightInvalid": "Tsayin layi dole ne ya kasance tsakanin 0.8 da 3.0",
+        "customizationInvalid": "Keɓancewar samfuri tana ɗauke da ƙima marasa inganci",
+        "importInvalidFormat": "Tsarin fayil na shigo mara inganci",
+        "importInvalidData": "Bayanai na shigo suna ɗauke da tsarin samfuri mara inganci",
+        "importFileTooLarge": "Fayil na shigo yana da girma sosai (matsakaici 5MB)"
+      },
+      "failedToLoadBaseTemplates": "Kuskuren loda tushen samfurori"
+    },
+    "marketplace": {
+      "title": "Kasuwar Samfurori",
+      "subtitle": "Gano samfurori na premium don inganta tunawarku",
+      "search": {
+        "placeholder": "Bincika samfurori...",
+        "noResults": "Ba a sami samfurori da suka dace da binciken ku ba"
+      },
+      "filters": {
+        "all": "Duk Samfurori",
+        "free": "Kyauta",
+        "premium": "Premium",
+        "categories": {
+          "traditional": "Na Gargajiya",
+          "modern": "Na Zamani",
+          "nature": "Yanayi",
+          "religious": "Na Addini",
+          "military": "Na Soja",
+          "sports": "Wasanni",
+          "music": "Kiɗa",
+          "artistic": "Na Fasaha"
+        },
+        "sort": {
+          "popular": "Mafi Shahada",
+          "newest": "Mafi Sabuwa",
+          "rating": "Mafi Kyawun Ƙima",
+          "priceLow": "Farashi: Ƙarami zuwa Babba",
+          "priceHigh": "Farashi: Babba zuwa Ƙarami"
+        }
+      },
+      "template": {
+        "preview": "Dubawa",
+        "download": "Zazzage",
+        "purchased": "An Saya",
+        "price": "Farashi",
+        "category": "Rukuni",
+        "downloads": "Zazzagewa",
+        "rating": "Ƙima",
+        "features": "Fasali"
+      },
+      "purchase": {
+        "dialog": {
+          "title": "Saya Samfuri",
+          "description": "Kuna kan sayan \"{name}\" da {price}",
+          "confirm": "Tabbatar da Saya",
+          "cancel": "Soke",
+          "processing": "Ana aiki..."
+        },
+        "success": "An saya samfuri cikin nasara!",
+        "error": "Kuskure wajen sayan samfuri"
+      },
+      "download": {
+        "success": "An zazzage samfuri cikin nasara!",
+        "error": "Kuskure wajen zazzage samfuri"
+      },
+      "loading": "Ana loda samfurori...",
+      "error": "Kuskure wajen loda samfurori"
+    },
+    "analytics": {
+      "title": "Binciken Samfurori",
+      "subtitle": "Lura da ayyuka da amfani da samfurorinku",
+      "metrics": {
+        "totalTemplates": "Jimlar Samfurori",
+        "totalDownloads": "Jimlar Zazzagewa",
+        "totalRevenue": "Jimlar Kuɗi",
+        "averageRating": "Matsakaicin Ƙima",
+        "totalViews": "Jimlar Dubawa",
+        "uniqueVisitors": "Baƙi na Musamman",
+        "averageTime": "Matsakaicin Lokaci akan Shafi",
+        "conversionRate": "Adadin Juyawa",
+        "popularTemplates": "Samfurori Mashahuri",
+        "usageTrends": "Abubuwan Amfani"
+      },
+      "charts": {
+        "viewsOverTime": "Dubawa a cikin Lokaci",
+        "templateUsage": "Rarraba Amfani da Samfurori",
+        "visitorDemographics": "Halayen Baƙi",
+        "performanceMetrics": "Ayyukan Ayyuka"
+      },
+      "periods": {
+        "7days": "Kwanaki 7 da Su Ka Wuce",
+        "30days": "Kwanaki 30 da Su Ka Wuce",
+        "90days": "Kwanaki 90 da Su Ka Wuce",
+        "1year": "Shekara 1 da Ta Wuce"
+      },
+      "loading": "Ana loda bincike...",
+      "error": "Kuskure wajen loda bincike",
+      "noData": "Babu bayanan bincike har yanzu"
+    },
+    "customization": {
+      "title": "Keɓancewa na Musamman",
+      "subtitle": "Keɓance kowane bangare na samfurinku tare da sarari na musamman",
+      "sections": {
+        "colors": "Launuka",
+        "typography": "Rubutu",
+        "layout": "Tsari",
+        "code": "Lambar Musamman"
+      },
+      "colors": {
+        "primary": "Launin Farko",
+        "secondary": "Launin Na Biyu",
+        "accent": "Launin Ƙarfafawa",
+        "background": "Launin Bango",
+        "text": "Launin Rubutu",
+        "reset": "Sake Saitawa zuwa Asali"
+      },
+      "typography": {
+        "fontFamily": "Iyalin Rubutu",
+        "fontSize": "Girman Rubutu",
+        "lineHeight": "Tsayin Layi",
+        "fontWeight": "Nauyin Rubutu",
+        "textAlign": "Daida Rubutu"
+      },
+      "layout": {
+        "containerWidth": "Faɗin Kwandon",
+        "spacing": "Tashi",
+        "borderRadius": "Radius na Iya",
+        "shadows": "Inuwa"
+      },
+      "code": {
+        "css": "CSS na Musamman",
+        "javascript": "JavaScript na Musamman",
+        "html": "HTML na Musamman",
+        "warning": "Gargadi: Lambar musamman na iya karya samfurinku. Yi amfani da shi tare da hankali."
+      },
+      "preview": {
+        "title": "Dubawa Kai Tsaye",
+        "mobile": "Wayar Hannu",
+        "tablet": "Tablet",
+        "desktop": "Kwamfuta",
+        "fullscreen": "Cikakken Allo"
+      },
+      "actions": {
+        "save": "Ajiye Canje-canje",
+        "reset": "Sake Saitawa Duka",
+        "export": "Fitarda Saiti",
+        "import": "Shigo da Saiti",
+        "saving": "Ana ajiyewa...",
+        "resetting": "Ana sake saita..."
+      },
+      "import": {
+        "dialog": {
+          "title": "Shigo da Saitin Keɓancewa",
+          "description": "Manna saitin fitarda ku a ƙasa",
+          "placeholder": "Manna JSON na saiti a nan...",
+          "import": "Shigo",
+          "cancel": "Soke"
+        },
+        "success": "An shigo da saiti cikin nasara!",
+        "error": "Kuskure wajen shigo da saiti. Don Allah duba tsari."
+      },
+      "export": {
+        "success": "An fitarda saiti zuwa allo!",
+        "error": "Kuskure wajen fitarda saiti"
+      },
+      "save": {
+        "success": "An ajiye keɓancewa cikin nasara!",
+        "error": "Kuskure wajen ajiye keɓancewa"
+      },
+      "reset": {
+        "confirm": {
+          "title": "Sake Saitawa Duk Keɓancewa?",
+          "description": "Wannan zai maido da duk saituna zuwa tsoffin su. Wannan aiki ba za a iya komawa ba.",
+          "confirm": "Sake Saitawa Duka",
+          "cancel": "Soke"
+        },
+        "success": "An sake saita duk keɓancewa cikin nasara!",
+        "error": "Kuskure wajen sake saita keɓancewa"
+      },
+      "validation": {
+        "invalidCss": "Tsarin CSS mara inganci",
+        "invalidJs": "Tsarin JavaScript mara inganci",
+        "invalidHtml": "Tsarin HTML mara inganci"
+      }
+    },
+    "tabs": {
+      "myTemplates": "Samfurorina",
+      "marketplace": "Kasuwa",
+      "analytics": "Bincike",
+      "customization": "Keɓancewa"
     }
   }
 }

@@ -1,0 +1,21 @@
+{
+  "name": "Classic Memorial (Sample)",
+  "slug": "classic-memorial-sample",
+  "version": "1.0.0",
+  "description": "Sample template used for testing uploads.",
+  "author": "ForeverPages Test",
+  "main": "MemorialTemplate.tsx",
+  "preview": "preview.png",
+  "thumbnail": "thumbnail.png",
+  "layoutType": "FLEXIBLE",
+  "supportedSections": ["overview", "biography", "gallery", "guestbook"],
+  "designTokens": {
+    "colors": {
+      "primary": "#1f2937",
+      "accent": "#2563eb"
+    }
+  },
+  "defaultConfig": {
+    "showGallery": true
+  }
+}

@@ -1,3 +1,25 @@
+Phase3 E2E test
+
+This script (`phase3-e2e-test.js`) performs an end-to-end exercise of Phase 3:
+
+- create a Template DB row
+- create a branch and open a PR in `develop`
+- send a signed `pull_request` webhook to your app
+- merge the PR via GitHub API and mark the template as `PUBLISHED`
+
+Prerequisites:
+
+- `GITHUB_TOKEN`, `GITHUB_REPOSITORY`, and `GITHUB_WEBHOOK_SECRET` set in your environment
+- Your app running locally and reachable at `WEBHOOK_URL` (default `http://localhost:3000/api/github/webhooks/pulls`) or set `WEBHOOK_URL` env var
+
+Run:
+
+```bash
+GITHUB_TOKEN=... GITHUB_REPOSITORY=owner/repo GITHUB_WEBHOOK_SECRET=... WEBHOOK_URL=http://localhost:3000/api/github/webhooks/pulls node scripts/phase3-e2e-test.js
+```
+
+After the script runs it prints the template DB state and PR URL.
+
 # Text Extraction Scripts
 
 This directory contains scripts for automatically extracting inline text from React components and adding corresponding keys to all locale files.

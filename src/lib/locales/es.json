@@ -383,6 +383,7 @@
         "builder": "Constructor de Funerales",
         "invitations": "Invitaciones",
         "tributes": "Tributos",
+        "templates": "Plantillas",
         "settings": "Configuración"
       }
     },
@@ -1092,31 +1093,198 @@
     },
     "pageBuilder": {
       "header": {
-        "title": "Create Memorial",
-        "cancel": "Cancel"
+        "title": "Crear Memorial",
+        "cancel": "Cancelar"
       },
       "steps": {
         "chooseTemplate": {
-          "title": "Choose Template",
-          "description": "Select a design that honors your loved one"
+          "title": "Elegir Plantilla",
+          "description": "Selecciona un diseño que honre a tu ser querido"
         },
         "basicInfo": {
-          "title": "Basic Information",
-          "description": "Tell us about your loved one"
+          "title": "Información Básica",
+          "description": "Háblanos de tu ser querido"
         },
         "details": {
-          "title": "Memorial Details",
-          "description": "Add photos and memories"
+          "title": "Detalles del Memorial",
+          "description": "Agrega fotos y recuerdos"
         },
         "review": {
-          "title": "Review",
-          "description": "Review and create your memorial"
+          "title": "Revisar",
+          "description": "Revisa y crea tu memorial"
         }
       },
       "buttons": {
-        "previous": "Previous",
-        "next": "Next",
-        "create": "Create Memorial"
+        "previous": "Anterior",
+        "next": "Siguiente",
+        "create": "Crear Memorial",
+        "creating": "Creando..."
+      },
+      "sidebar": {
+        "title": "Pasos de construcción",
+        "hint1": "Consejo: guarda frecuentemente",
+        "hint2": "Consejo: previsualiza en diferentes dispositivos"
+      },
+      "basicInfo": {
+        "firstName": {
+          "label": "Nombre",
+          "placeholder": "Ingresa el nombre"
+        },
+        "lastName": {
+          "label": "Apellido",
+          "placeholder": "Ingresa el apellido"
+        },
+        "birthDate": {
+          "label": "Fecha de Nacimiento",
+          "placeholder": "DD/MM/AAAA"
+        },
+        "deathDate": {
+          "label": "Fecha de Fallecimiento",
+          "placeholder": "DD/MM/AAAA"
+        },
+        "relationship": {
+          "label": "Relación con el Difunto",
+          "placeholder": "Por ejemplo: hijo, hija, esposa, amigo...",
+          "options": {
+            "spouse": "Cónyuge",
+            "child": "Hijo/a",
+            "parent": "Padre/Madre",
+            "sibling": "Hermano/a",
+            "grandparent": "Abuelo/a",
+            "grandchild": "Nieto/a",
+            "friend": "Amigo/a",
+            "colleague": "Colega",
+            "other": "Otro"
+          }
+        },
+        "location": {
+          "label": "Ubicación (Ciudad, País)",
+          "placeholder": "Ciudad, País"
+        },
+        "nationality": {
+          "label": "Nacionalidad",
+          "placeholder": "Nacionalidad"
+        },
+        "autoSaved": "Guardado automáticamente"
+      },
+      "memorialDetails": {
+        "saving": "Guardando...",
+        "autoSaved": "Guardado automáticamente",
+        "profilePhoto": {
+          "label": "Foto de Perfil",
+          "helpText": "Sube una hermosa foto que lo represente"
+        },
+        "backgroundImage": {
+          "label": "Imagen de Fondo (Opcional)",
+          "helpText": "Un lugar o recuerdo significativo"
+        },
+        "memorialMessage": {
+          "label": "Mensaje del Memorial",
+          "placeholder": "Un mensaje especial o cita que capture su espíritu..."
+        },
+        "privacySetting": {
+          "label": "Configuración de Privacidad",
+          "options": {
+            "public": "Público - Cualquiera puede ver",
+            "unlisted": "No listado - Solo con enlace",
+            "private": "Privado - Solo invitados"
+          }
+        }
+      },
+      "templates": {
+        "classic": {
+          "name": "Memorial Clásico",
+          "description": "Diseño tradicional y elegante con cronología y formato formal",
+          "features": [
+            "Sección biográfica",
+            "Cronología de fotos",
+            "Muro de homenaje",
+            "Información del servicio"
+          ]
+        },
+        "modern": {
+          "name": "Homenaje Moderno",
+          "description": "Diseño limpio y contemporáneo con enfoque en fotos y diseño minimalista",
+          "features": [
+            "Gran galería de fotos",
+            "Tipografía limpia",
+            "Homenajes interactivos",
+            "Compartir en redes sociales"
+          ]
+        },
+        "garden": {
+          "name": "Jardín de Recuerdos",
+          "description": "Tema inspirado en la naturaleza con colores suaves y elementos orgánicos",
+          "features": [
+            "Fondos naturales",
+            "Paleta de colores suaves",
+            "Jardín de recuerdos",
+            "Diseño pacífico"
+          ]
+        },
+        "celebration": {
+          "name": "Celebración de la Vida",
+          "description": "Diseño brillante y estimulante para recordar y celebrar alegremente",
+          "features": [
+            "Colores vibrantes",
+            "Enfoque en celebración",
+            "Recuerdos felices",
+            "Tono estimulante"
+          ]
+        }
+      },
+      "review": {
+        "title": "Revisar Tu Memorial",
+        "subtitle": "Verifica todos los detalles antes de crear tu memorial",
+        "sections": {
+          "template": "Plantilla",
+          "basicInfo": "Información Básica",
+          "memorialDetails": "Detalles del Memorial"
+        },
+        "messages": {
+          "templateSelected": "Plantilla seleccionada exitosamente",
+          "basicInfoComplete": "Información básica completada",
+          "memorialDetailsComplete": "Detalles del memorial completados",
+          "readyToCreate": "Tu memorial está listo para ser creado",
+          "creatingMemorial": "Creando tu memorial...",
+          "memorialCreated": "Memorial creado exitosamente!",
+          "redirecting": "Redirigiendo a tu panel..."
+        },
+        "actions": {
+          "edit": "Editar",
+          "createMemorial": "Crear Memorial"
+        }
+      }
+    },
+    "content": {
+      "biography": {
+        "title": "Biografía"
+      },
+      "epitaph": {
+        "title": "Epitafio",
+        "default": "En memoria afectuosa"
+      },
+      "tributes": {
+        "title": "Homenajes y Recuerdos",
+        "legacy": "Legado",
+        "lifeStory": "Historia de Vida"
+      },
+      "timeline": {
+        "title": "Cronología de la Vida",
+        "born": "Nacido(a)",
+        "passedAway": "Fallecido(a)"
+      },
+      "gallery": {
+        "title": "Galería de Fotos"
+      },
+      "familyTree": {
+        "title": "Árbol Genealógico"
+      },
+      "condolences": {
+        "title": "Condolencias"
+      },
+      "support": {
+        "title": "Apoyo y Donaciones"
       }
     },
     "settings": {
@@ -1231,6 +1399,261 @@
         "allReviewed": "All tributes have been reviewed"
       },
       "live": "Live"
+    },
+    "templates": {
+      "title": "Mis Plantillas",
+      "subtitle": "Crea y administra tus plantillas personalizadas de memorial",
+      "createButton": "Crear Plantilla",
+      "createButtonShort": "Crear",
+      "createDialog": {
+        "title": "Crear Nueva Plantilla",
+        "description": "Elige una plantilla base y personalízala para tu memorial"
+      },
+      "form": {
+        "name": {
+          "label": "Nombre de Plantilla",
+          "placeholder": "Ingresa el nombre de la plantilla"
+        },
+        "description": {
+          "label": "Descripción",
+          "placeholder": "Descripción opcional"
+        },
+        "baseTemplate": {
+          "label": "Plantilla Base"
+        },
+        "creating": "Creando..."
+      },
+      "list": {
+        "title": "Tus Plantillas ({count})",
+        "subtitle": "Plantillas que has creado y personalizado"
+      },
+      "error": {
+        "title": "Error al Cargar Plantillas"
+      },
+      "failedToLoadBaseTemplates": "Error al cargar plantillas base",
+      "empty": {
+        "title": "Aún No Hay Plantillas",
+        "description": "Crea tu primera plantilla personalizada para comenzar",
+        "createButton": "Crear Primera Plantilla"
+      },
+      "actions": {
+        "preview": "Vista Previa",
+        "edit": "Editar",
+        "duplicate": "Duplicar",
+        "delete": "Eliminar"
+      },
+      "deleteDialog": {
+        "title": "Eliminar Plantilla",
+        "description": "¿Estás seguro de que quieres eliminar \"{name}\"? Esta acción no se puede deshacer.",
+        "deleting": "Eliminando...",
+        "confirm": "Eliminar Plantilla"
+      },
+      "createSuccess": "Plantilla creada exitosamente",
+      "createError": "Error al crear plantilla",
+      "deleteSuccess": "Plantilla eliminada exitosamente",
+      "deleteError": "Error al eliminar plantilla",
+      "validationError": "Por favor ingresa un nombre de plantilla y selecciona una plantilla base",
+      "validation": {
+        "nameRequired": "El nombre de la plantilla es obligatorio",
+        "nameTooShort": "El nombre de la plantilla debe tener al menos 3 caracteres",
+        "nameTooLong": "El nombre de la plantilla no puede exceder 100 caracteres",
+        "nameInvalidChars": "El nombre de la plantilla contiene caracteres inválidos",
+        "descriptionTooLong": "La descripción no puede exceder 500 caracteres",
+        "descriptionInvalidChars": "La descripción contiene caracteres inválidos",
+        "searchQueryRequired": "La consulta de búsqueda es obligatoria",
+        "searchQueryTooShort": "La consulta de búsqueda debe tener al menos 2 caracteres",
+        "searchQueryInvalidChars": "La consulta de búsqueda contiene caracteres inválidos",
+        "colorInvalid": "Formato de color inválido",
+        "fontSizeInvalid": "El tamaño de fuente debe estar entre 8px y 72px",
+        "spacingInvalid": "El espaciado debe estar entre 0px y 100px",
+        "borderRadiusInvalid": "El radio del borde debe estar entre 0px y 50px",
+        "maxWidthInvalid": "El ancho máximo debe estar entre 200px y 2000px",
+        "lineHeightInvalid": "La altura de línea debe estar entre 0.8 y 3.0",
+        "customizationInvalid": "La personalización de la plantilla contiene valores inválidos",
+        "importInvalidFormat": "Formato de archivo de importación inválido",
+        "importInvalidData": "Los datos de importación contienen configuración de plantilla inválida",
+        "importFileTooLarge": "El archivo de importación es demasiado grande (máximo 5MB)"
+      }
+    },
+    "marketplace": {
+      "title": "Mercado de Plantillas",
+      "subtitle": "Descubre plantillas premium para mejorar tus memoriales",
+      "search": {
+        "placeholder": "Buscar plantillas...",
+        "noResults": "No se encontraron plantillas que coincidan con tu búsqueda"
+      },
+      "filters": {
+        "all": "Todas las Plantillas",
+        "free": "Gratis",
+        "premium": "Premium",
+        "categories": {
+          "traditional": "Tradicional",
+          "modern": "Moderno",
+          "nature": "Naturaleza",
+          "religious": "Religioso",
+          "military": "Militar",
+          "sports": "Deportes",
+          "music": "Música",
+          "artistic": "Artístico"
+        },
+        "sort": {
+          "popular": "Más Popular",
+          "newest": "Más Nuevo",
+          "rating": "Mejor Calificado",
+          "priceLow": "Precio: Menor a Mayor",
+          "priceHigh": "Precio: Mayor a Menor"
+        }
+      },
+      "template": {
+        "preview": "Vista Previa",
+        "download": "Descargar",
+        "purchased": "Comprado",
+        "price": "Precio",
+        "category": "Categoría",
+        "downloads": "Descargas",
+        "rating": "Calificación",
+        "features": "Características"
+      },
+      "purchase": {
+        "dialog": {
+          "title": "Comprar Plantilla",
+          "description": "Estás a punto de comprar \"{name}\" por {price}",
+          "confirm": "Confirmar Compra",
+          "cancel": "Cancelar",
+          "processing": "Procesando..."
+        },
+        "success": "¡Plantilla comprada exitosamente!",
+        "error": "Error al comprar plantilla"
+      },
+      "download": {
+        "success": "¡Plantilla descargada exitosamente!",
+        "error": "Error al descargar plantilla"
+      },
+      "loading": "Cargando plantillas...",
+      "error": "Error al cargar plantillas"
+    },
+    "analytics": {
+      "title": "Análisis de Plantillas",
+      "subtitle": "Rastrea el rendimiento y uso de tus plantillas",
+      "metrics": {
+        "totalTemplates": "Total de Plantillas",
+        "totalDownloads": "Total de Descargas",
+        "totalRevenue": "Ingresos Totales",
+        "averageRating": "Calificación Promedio",
+        "totalViews": "Vistas Totales",
+        "uniqueVisitors": "Visitantes Únicos",
+        "averageTime": "Tiempo Promedio en Página",
+        "conversionRate": "Tasa de Conversión",
+        "popularTemplates": "Plantillas Populares",
+        "usageTrends": "Tendencias de Uso"
+      },
+      "charts": {
+        "viewsOverTime": "Vistas a lo Largo del Tiempo",
+        "templateUsage": "Distribución de Uso de Plantillas",
+        "visitorDemographics": "Demografía de Visitantes",
+        "performanceMetrics": "Métricas de Rendimiento"
+      },
+      "periods": {
+        "7days": "Últimos 7 Días",
+        "30days": "Últimos 30 Días",
+        "90days": "Últimos 90 Días",
+        "1year": "Último Año"
+      },
+      "loading": "Cargando análisis...",
+      "error": "Error al cargar análisis",
+      "noData": "Aún no hay datos de análisis disponibles"
+    },
+    "customization": {
+      "title": "Personalización Avanzada",
+      "subtitle": "Ajusta cada aspecto de tu plantilla con controles avanzados",
+      "sections": {
+        "colors": "Colores",
+        "typography": "Tipografía",
+        "layout": "Diseño",
+        "code": "Código Personalizado"
+      },
+      "colors": {
+        "primary": "Color Primario",
+        "secondary": "Color Secundario",
+        "accent": "Color de Acento",
+        "background": "Color de Fondo",
+        "text": "Color de Texto",
+        "reset": "Restablecer a Predeterminado"
+      },
+      "typography": {
+        "fontFamily": "Familia de Fuentes",
+        "fontSize": "Tamaño de Fuente",
+        "lineHeight": "Altura de Línea",
+        "fontWeight": "Peso de Fuente",
+        "textAlign": "Alineación de Texto"
+      },
+      "layout": {
+        "containerWidth": "Ancho del Contenedor",
+        "spacing": "Espaciado",
+        "borderRadius": "Radio del Borde",
+        "shadows": "Sombras"
+      },
+      "code": {
+        "css": "CSS Personalizado",
+        "javascript": "JavaScript Personalizado",
+        "html": "HTML Personalizado",
+        "warning": "Advertencia: El código personalizado puede romper tu plantilla. Úsalo con precaución."
+      },
+      "preview": {
+        "title": "Vista Previa en Vivo",
+        "mobile": "Móvil",
+        "tablet": "Tablet",
+        "desktop": "Escritorio",
+        "fullscreen": "Pantalla Completa"
+      },
+      "actions": {
+        "save": "Guardar Cambios",
+        "reset": "Restablecer Todo",
+        "export": "Exportar Configuración",
+        "import": "Importar Configuración",
+        "saving": "Guardando...",
+        "resetting": "Restableciendo..."
+      },
+      "import": {
+        "dialog": {
+          "title": "Importar Configuración de Personalización",
+          "description": "Pega tu configuración exportada a continuación",
+          "placeholder": "Pega el JSON de configuración aquí...",
+          "import": "Importar",
+          "cancel": "Cancelar"
+        },
+        "success": "¡Configuración importada exitosamente!",
+        "error": "Error al importar configuración. Por favor verifica el formato."
+      },
+      "export": {
+        "success": "¡Configuración exportada al portapapeles!",
+        "error": "Error al exportar configuración"
+      },
+      "save": {
+        "success": "¡Personalización guardada exitosamente!",
+        "error": "Error al guardar personalización"
+      },
+      "reset": {
+        "confirm": {
+          "title": "¿Restablecer Toda la Personalización?",
+          "description": "Esto restaurará toda la configuración a sus valores predeterminados. Esta acción no se puede deshacer.",
+          "confirm": "Restablecer Todo",
+          "cancel": "Cancelar"
+        },
+        "success": "¡Toda la personalización restablecida exitosamente!",
+        "error": "Error al restablecer personalización"
+      },
+      "validation": {
+        "invalidCss": "Sintaxis CSS inválida",
+        "invalidJs": "Sintaxis JavaScript inválida",
+        "invalidHtml": "Sintaxis HTML inválida"
+      }
+    },
+    "tabs": {
+      "myTemplates": "Mis Plantillas",
+      "marketplace": "Mercado",
+      "analytics": "Análisis",
+      "customization": "Personalización"
     }
   },
   "termsAndConditions": {

@@ -9,7 +9,11 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const streamId = params.id;
+    const { id } = (await params) as { id?: string };
+    if (!id) {
+      return NextResponse.json({ error: "Missing stream id" }, { status: 400 });
+    }
+    const streamId = id;
 
     const stream = await prisma.memorialStream.findUnique({
       where: { id: streamId },

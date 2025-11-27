@@ -12,6 +12,7 @@ import {
   BarChart3,
   Video,
   X,
+  // Palette,
 } from "lucide-react";
 import { NotificationBell } from "@/components/NotificationBell";
 import { useTranslations } from "@/hooks/useTranslations";
@@ -102,6 +103,7 @@ function DashboardNavbarContent({ isOpen, onClose, isCollapsed }: DashboardNavba
   const allNavigation = [
     { name: t("dashboard.sidebar.nav.analytics"), href: "analytics", icon: BarChart3 },
     { name: t("dashboard.sidebar.nav.gallery"), href: "gallery", icon: Images },
+    // { name: t("dashboard.sidebar.nav.templates"), href: "templates", icon: Palette },
     { name: t("dashboard.sidebar.nav.builder"), href: "funeral-builder", icon: FileText },
     { name: t("dashboard.sidebar.nav.invitations"), href: "invitations", icon: Mail },
     { name: t("dashboard.sidebar.nav.tributes"), href: "tributes", icon: MessageSquare },

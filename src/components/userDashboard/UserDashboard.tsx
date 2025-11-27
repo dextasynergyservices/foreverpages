@@ -10,6 +10,7 @@ import Invitations from "@/components/userDashboard/invitations/Invitations";
 import Tributes from "@/components/userDashboard/Tribute";
 import Livestreams from "@/components/userDashboard/livestreams/Livestreams";
 import Settings from "@/components/userDashboard/Settings";
+import TemplatesTab from "@/components/userDashboard/templates/TemplatesTab";
 import EmailVerificationBanner from "@/components/userDashboard/EmailVerificationBanner";
 import TwoFactorBanner from "@/components/userDashboard/TwoFactorBanner";
 import { useTranslations } from "@/hooks/useTranslations";
@@ -207,6 +208,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ activeSection }) => {
         return <Analytics />;
       case "gallery":
         return <Gallery />;
+      case "templates":
+        return <TemplatesTab />;
       case "funeral-builder":
         return <CreateMemorial />;
       case "invitations":

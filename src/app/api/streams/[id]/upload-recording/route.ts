@@ -11,14 +11,18 @@ import { notifySignalingMetadataUpdate } from "@/lib/signaling";
  * Upload stream recording to Cloudinary
  * Body: FormData with video file or { url: string, duration: number, size: number }
  */
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, context: { params: { id: string } }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const streamId = params.id;
+    const { id } = context.params || {};
+    if (!id) {
+      return NextResponse.json({ error: "Missing stream id" }, { status: 400 });
+    }
+    const streamId = id;
 
     // Check if stream exists and user owns it
     const stream = await prisma.memorialStream.findUnique({

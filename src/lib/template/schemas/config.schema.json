@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Template Manifest",
+  "type": "object",
+  "required": ["name", "slug", "version", "main", "preview", "thumbnail"],
+  "properties": {
+    "name": { "type": "string" },
+    "slug": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "author": { "type": "string" },
+    "main": { "type": "string" },
+    "preview": { "type": "string" },
+    "thumbnail": { "type": "string" },
+    "layoutType": { "type": "string" },
+    "supportedSections": { "type": "array", "items": { "type": "string" } },
+    "designTokens": { "type": "object" },
+    "defaultConfig": { "type": "object" },
+    "requirements": { "type": "object" }
+  }
+}

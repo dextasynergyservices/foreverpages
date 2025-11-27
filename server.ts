@@ -1,12 +1,15 @@
 import http from "http";
 import next from "next";
 import { initializeSocketServer } from "./src/lib/socket/socketServer";
+import { runStartupChecks } from "./src/lib/template/startupWarnings";
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = process.env.HOSTNAME || "localhost";
 const port = parseInt(process.env.PORT || "3000", 10);
 
 async function start() {
+  // Run early startup checks related to template sandboxing
+  runStartupChecks();
   const app = next({ dev, hostname, port });
   const handle = app.getRequestHandler();
 

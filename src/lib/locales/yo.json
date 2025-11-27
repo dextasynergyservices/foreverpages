@@ -383,6 +383,7 @@
         "builder": "Olutunu Isinku",
         "invitations": "Awọn Ifiwepe",
         "tributes": "Awọn Ọwọ",
+        "templates": "Àwọn Àdàkọ",
         "settings": "Awọn Eto"
       }
     },
@@ -1092,31 +1093,167 @@
     },
     "pageBuilder": {
       "header": {
-        "title": "Create Memorial",
-        "cancel": "Cancel"
+        "title": "Ṣẹ̀dá Ìrántí",
+        "cancel": "Fagìlé"
       },
       "steps": {
         "chooseTemplate": {
-          "title": "Choose Template",
-          "description": "Select a design that honors your loved one"
+          "title": "Yan Àdàkọ",
+          "description": "Yan ìrísí kan tí yóò bọlá fún ẹni tí o ti lọ"
         },
         "basicInfo": {
-          "title": "Basic Information",
-          "description": "Tell us about your loved one"
+          "title": "Àlàyé Ìpìlẹ̀",
+          "description": "Sọ nípa ẹni tí o ti lọ fún wa"
         },
         "details": {
-          "title": "Memorial Details",
-          "description": "Add photos and memories"
+          "title": "Àwọn Àlàyé Ìrántí",
+          "description": "Fi àwọn fọ́tò àti àwọn ìrántí kún"
         },
         "review": {
-          "title": "Review",
-          "description": "Review and create your memorial"
+          "title": "Àtúnyẹ̀wò",
+          "description": "Àtúnyẹ̀wò àti ṣẹ̀dá ìrántí rẹ"
         }
       },
       "buttons": {
-        "previous": "Previous",
-        "next": "Next",
-        "create": "Create Memorial"
+        "previous": "Tẹ́lẹ̀",
+        "next": "Tókàn",
+        "create": "Ṣẹ̀dá Ìrántí",
+        "creating": "Ń Ṣẹ̀dá..."
+      },
+      "sidebar": {
+        "title": "Àwọn ìgbésẹ̀ ìkọ́lé",
+        "hint1": "Ìmọ̀ràn: fi pamọ́ nígbà gbogbo",
+        "hint2": "Ìmọ̀ràn: ṣàgbẹ̀wò lórí àwọn ẹ̀rọ oríṣiríṣi"
+      },
+      "basicInfo": {
+        "firstName": {
+          "label": "Orúkọ Àkọ́bẹ̀rẹ̀",
+          "placeholder": "Tẹ orúkọ àkọ́bẹ̀rẹ̀ sí"
+        },
+        "lastName": {
+          "label": "Orúkọ Ìdílé",
+          "placeholder": "Tẹ orúkọ ìdílé sí"
+        },
+        "birthDate": {
+          "label": "Ọjọ́ Ìbí",
+          "placeholder": "Ọjọ́/MM/Ọdún"
+        },
+        "deathDate": {
+          "label": "Ọjọ́ Ikú",
+          "placeholder": "Ọjọ́/MM/Ọdún"
+        },
+        "relationship": {
+          "label": "Ìbáṣepọ̀ Pẹ̀lú Ẹni Tí O Ti Lọ",
+          "placeholder": "Fún àpẹẹrẹ: ọmọ, ọmọbìnrin, aya, ọ̀rẹ́...",
+          "options": {
+            "spouse": "Ọkọ/Ìyàwó",
+            "child": "Ọmọ",
+            "parent": "Òbí",
+            "sibling": "Arákùnrin/Arábìnrin",
+            "grandparent": "Bàbá/Bàbá Àgbà",
+            "grandchild": "Ọmọ Ọmọ",
+            "friend": "Ọ̀rẹ́",
+            "colleague": "Alábàṣepọ̀",
+            "other": "Mìíràn"
+          }
+        },
+        "location": {
+          "label": "Ibi (Ìlú, Orílẹ̀-Èdè)",
+          "placeholder": "Ìlú, Orílẹ̀-Èdè"
+        },
+        "nationality": {
+          "label": "Orílẹ̀-Èdè",
+          "placeholder": "Orílẹ̀-Èdè"
+        },
+        "autoSaved": "A fi pamọ́ ní àìròtẹ́lẹ̀"
+      },
+      "memorialDetails": {
+        "saving": "Ń Fi Pamọ́...",
+        "autoSaved": "A fi pamọ́ ní àìròtẹ́lẹ̀",
+        "profilePhoto": {
+          "label": "Fọ́tò Pròfáìlì",
+          "helpText": "Gbé fọ́tò tó dára kan tí ó ṣàpẹẹrẹ rẹ̀"
+        },
+        "backgroundImage": {
+          "label": "Àwòrán Ẹ̀yìn (Ìfẹ́)",
+          "helpText": "Ibi kan tàbí ìrántí tó ṣe pàtàkì"
+        },
+        "memorialMessage": {
+          "label": "Ìfiránṣẹ́ Ìrántí",
+          "placeholder": "Ìfiránṣẹ́ pàtàkì kan tàbí ọ̀rọ̀ kan tí ó ṣàpẹẹrẹ ẹ̀mí rẹ̀..."
+        },
+        "privacySetting": {
+          "label": "Ètò Àṣírí",
+          "options": {
+            "public": "Gbangba - Ẹnikẹ́ni lè wò",
+            "unlisted": "Kò sí àtòkọ - Pẹ̀lú ìjápọ̀ nìkan",
+            "private": "Ìkọ̀kọ̀ - Àwọn tí a pe nìkan"
+          }
+        }
+      },
+      "templates": {
+        "classic": {
+          "name": "Ìrántí Àṣà",
+          "description": "Ìrísí àṣà àti ẹlẹ́wà pẹ̀lú àtòkọ àti ìṣètò fọ́màlì",
+          "features": ["Abala ìtàn ìgbésí ayé", "Àtòkọ fọ́tò", "Ògiri ìbọlá", "Àlàyé iṣẹ́"]
+        },
+        "modern": {
+          "name": "Ìbọlá Ìgbàlódé",
+          "description": "Ìṣètò tó mọ́ pẹ̀lú ìdákẹ́jẹ́ẹ́ fọ́tò àti ìrísí aláìlẹ́gbẹ́",
+          "features": [
+            "Àkójọ fọ́tò tó tóbi",
+            "Ìṣẹ̀dá ìlà",
+            "Àwọn ìbọlá ìfọ̀rọ̀wérọ̀",
+            "Pínpín lórí àwọn nẹ́tiwọ́ọ̀kì"
+          ]
+        },
+        "garden": {
+          "name": "Ọgbà Àwọn Ìrántí",
+          "description": "Thème tí ó ní ìsopọ̀ pẹ̀lú àdánidá pẹ̀lú àwọn àwọ̀ rírọ̀ àti àwọn èròjà aláìlẹ́gbẹ́",
+          "features": ["Àwọn ẹ̀yìn àdánidá", "Àwọn àwọ̀ rírọ̀", "Ọgbà ìrántí", "Ìrísí ìsinmi"]
+        },
+        "celebration": {
+          "name": "Ayẹyẹ Ìgbésí Ayé",
+          "description": "Ìrísí tó mọ́lẹ̀ àti tó fúnni ní ìdùnnú fún ìrántí ayọ̀ àti ayẹyẹ",
+          "features": [
+            "Àwọn àwọ̀ tó mọ́lẹ̀",
+            "Ìdákẹ́jẹ́ẹ́ ayẹyẹ",
+            "Àwọn ìrántí ayọ̀",
+            "Tóni tó fúnni ní ìdùnnú"
+          ]
+        }
+      },
+      "review": {
+        "title": "Àtúnyẹ̀wò Ìrántí Rẹ",
+        "subtitle": "Ṣàyẹ̀wò gbogbo àlàyé ṣáájú ṣíṣẹ̀dá ìrántí rẹ",
+        "sections": {
+          "template": "Àdàkọ",
+          "basicInfo": "Àlàyé Ìpìlẹ̀",
+          "memorialDetails": "Àwọn Àlàyé Ìrántí"
+        },
+        "messages": {
+          "templateSelected": "A yan àdàkọ ní àṣeyọrí",
+          "basicInfoComplete": "Àlàyé ìpìlẹ̀ ti parí",
+          "memorialDetailsComplete": "Àwọn àlàyé ìrántí ti parí",
+          "readyToCreate": "Ìrántí rẹ ti ṣetán láti ṣẹ̀dá",
+          "creatingMemorial": "Ń ṣẹ̀dá ìrántí rẹ...",
+          "memorialCreated": "A ṣẹ̀dá ìrántí ní àṣeyọrí!",
+          "redirecting": "Ń dari rẹ sí dashboard rẹ..."
+        },
+        "actions": {
+          "edit": "Ṣàtúnṣe",
+          "createMemorial": "Ṣẹ̀dá Ìrántí"
+        }
+      },
+      "content": {
+        "biography": "Ìtàn Ìgbésí Ayé",
+        "epitaph": "Àkọlé Ìkẹyìn",
+        "tributes": "Ọlá",
+        "timeline": "Àtòkọ Àkókò",
+        "gallery": "Àtòkọ Àwòrán",
+        "familyTree": "Ìgbé Ẹbí",
+        "condolences": "Ìdùnnú",
+        "support": "Àtìlẹ́yìn"
       }
     },
     "settings": {
@@ -1231,6 +1368,47 @@
         "allReviewed": "All tributes have been reviewed"
       },
       "live": "Live"
+    },
+    "templates": {
+      "title": "Àwọn Àdàkọ",
+      "subtitle": "Ṣàkóso àwọn àdàkọ ìrántí fún ojú-ìwé rẹ",
+      "tabs": {
+        "available": "Àwọn Àdàkọ Tó Wà",
+        "custom": "Àwọn Àdàkọ Àkànṣe",
+        "preview": "Àkọ́yẹ̀wò"
+      },
+      "actions": {
+        "select": "Yan Àdàkọ",
+        "customize": "Ṣe Àtúnṣe",
+        "preview": "Wo Àkọ́yẹ̀wò",
+        "apply": "Lo Àdàkọ"
+      },
+      "empty": {
+        "noTemplates": "Kò sí àwọn àdàkọ ní báyì",
+        "noCustomTemplates": "Kò sí àwọn àdàkọ àkànṣe"
+      },
+      "selected": "Àdàkọ Tí A Yan",
+      "validation": {
+        "nameRequired": "Orúkọ àdàkọ ni a nílò",
+        "nameTooShort": "Orúkọ àdàkọ gbọ́dọ̀ jẹ́ ó kéré jù ààmì 3",
+        "nameTooLong": "Orúkọ àdàkọ kò gbọ́dọ̀ ju ààmì 50 lọ",
+        "nameInvalidChars": "Orúkọ àdàkọ ní àwọn ààmì tí kò tọ̀",
+        "descriptionTooLong": "Àlàyé kò gbọ́dọ̀ ju ààmì 500 lọ",
+        "descriptionInvalidChars": "Àlàyé ní àwọn ààmì tí kò tọ̀",
+        "searchQueryRequired": "Ìwádìí ni a nílò",
+        "searchQueryTooShort": "Ìwádìí gbọ́dọ̀ jẹ́ ó kéré jù ààmì 2",
+        "searchQueryInvalidChars": "Ìwádìí ní àwọn ààmì tí kò tọ̀",
+        "colorInvalid": "Àwọ̀ HEX tí kò tọ̀",
+        "fontSizeInvalid": "Ìwọ̀n font tí kò tọ̀ (fún àpẹẹrẹ: 16px, 1.2em)",
+        "spacingInvalid": "Àlàfo tí kò tọ̀ (fún àpẹẹrẹ: 10px, 1rem)",
+        "borderRadiusInvalid": "Radius ààlà tí kò tọ̀ (fún àpẹẹrẹ: 4px, 50%)",
+        "maxWidthInvalid": "Ìbú tó pọ̀ jùlọ tí kò tọ̀ (fún àpẹẹrẹ: 1200px, 100%)",
+        "lineHeightInvalid": "Gígùn laini tí kò tọ̀ (fún àpẹẹrẹ: 1.5, 20px)",
+        "customizationInvalid": "Àtúnṣe àdàkọ ní àṣìṣe",
+        "importInvalidFormat": "Fáìlì ìgbéwọlé ní àṣìṣe tàbí tí kò wúlò",
+        "importInvalidData": "Dátà ìgbéwọlé ní àṣìṣe",
+        "importFileTooLarge": "Fáìlì ìgbéwọlé tóbi jù (òkè: 5MB)"
+      }
     }
   },
   "termsAndConditions": {
@@ -2082,6 +2260,258 @@
         "youreReceiving": "Ìwọ ń gba èyí nítorí o sopọ̀ mọ́ ojú-ìwé ìrántí {memorial}.",
         "copyright": "© {year} ForeverPages. Gbogbo ẹ̀tọ́ ni a dáàbò bò."
       }
+    },
+    "templates": {
+      "title": "Àwọn Àdàkọ",
+      "subtitle": "Ṣẹ̀dá kí o sì ṣàkóso àwọn àdàkọ ìrántí àkànṣe rẹ",
+      "createButton": "Ṣẹ̀dá Àdàkọ",
+      "createButtonShort": "Ṣẹ̀dá",
+      "createDialog": {
+        "title": "Ṣẹ̀dá Àdàkọ Tuntun",
+        "description": "Yan àdàkọ ìpìlẹ̀ kí o sì ṣe àtúnṣe fún ìrántí rẹ"
+      },
+      "form": {
+        "name": {
+          "label": "Orúkọ Àdàkọ",
+          "placeholder": "Tẹ orúkọ àdàkọ sí i"
+        },
+        "description": {
+          "label": "Àlàyé",
+          "placeholder": "Àlàyé yiyan"
+        },
+        "baseTemplate": {
+          "label": "Àdàkọ Ìpìlẹ̀"
+        },
+        "creating": "Ń ṣẹ̀dá..."
+      },
+      "list": {
+        "title": "Àwọn Àdàkọ Rẹ ({count})",
+        "subtitle": "Àwọn àdàkọ tí o ṣẹ̀dá kí o sì ṣe àtúnṣe"
+      },
+      "error": {
+        "title": "Àṣìṣe Nínú Gbigbé Àwọn Àdàkọ"
+      },
+      "empty": {
+        "title": "Kò Sí Àdàkọ Kankan Síbẹ̀",
+        "description": "Ṣẹ̀dá àdàkọ àkànṣe rẹ àkọ́kọ́ láti bẹ̀rẹ̀",
+        "createButton": "Ṣẹ̀dá Àdàkọ Àkọ́kọ́"
+      },
+      "actions": {
+        "preview": "Àkọ́yẹ̀wò",
+        "edit": "Ṣàtúnṣe",
+        "duplicate": "Ṣẹ̀dá Ọ̀kan Mìíràn",
+        "delete": "Pa Rẹ́"
+      },
+      "deleteDialog": {
+        "title": "Pa Àdàkọ Rẹ́",
+        "description": "Ṣé o dá jù báyàn pé o fẹ́ pa \"{name}\"? Iṣẹ́ yìí kò ṣeé yí padà.",
+        "deleting": "Ń pa rẹ́...",
+        "confirm": "Pa Àdàkọ Rẹ́"
+      },
+      "createSuccess": "A ṣẹ̀dá àdàkọ ní àṣeyọrí",
+      "createError": "Àṣìṣe nínú ṣíṣẹ̀dá àdàkọ",
+      "deleteSuccess": "A pa àdàkọ rẹ́ ní àṣeyọrí",
+      "deleteError": "Àṣìṣe nínú pípà àdàkọ rẹ́",
+      "validationError": "Jọ̀wọ́ tẹ orúkọ àdàkọ sí i kí o sì yan àdàkọ ìpìlẹ̀",
+      "validation": {
+        "nameRequired": "Orúkọ àdàkọ ni a nílò",
+        "nameTooShort": "Orúkọ àdàkọ gbọ́dọ̀ jẹ́ ó kéré jù ààmì 3",
+        "nameTooLong": "Orúkọ àdàkọ kò gbọ́dọ̀ ju ààmì 50 lọ",
+        "nameInvalid": "Orúkọ àdàkọ ní àwọn ààmì tí kò tọ̀",
+        "descriptionTooLong": "Àlàyé kò gbọ́dọ̀ ju ààmì 500 lọ",
+        "descriptionInvalid": "Àlàyé ní àwọn ààmì tí kò tọ̀",
+        "searchQueryInvalid": "Ìwádìí ní àwọn ààmì tí kò tọ̀",
+        "colorInvalid": "Àwọ̀ HEX tí kò tọ̀",
+        "fontSizeInvalid": "Ìwọ̀n font tí kò tọ̀ (fún àpẹẹrẹ: 16px, 1.2em)",
+        "spacingInvalid": "Àlàfo tí kò tọ̀ (fún àpẹẹrẹ: 10px, 1rem)",
+        "borderRadiusInvalid": "Radius ààlà tí kò tọ̀ (fún àpẹẹrẹ: 4px, 50%)",
+        "maxWidthInvalid": "Ìbú tó pọ̀ jùlọ tí kò tọ̀ (fún àpẹẹrẹ: 1200px, 100%)",
+        "lineHeightInvalid": "Gígùn laini tí kò tọ̀ (fún àpẹẹrẹ: 1.5, 20px)",
+        "customizationInvalid": "Àtúnṣe àdàkọ ní àṣìṣe",
+        "importInvalid": "Fáìlì ìgbéwọlé ní àṣìṣe tàbí tí kò wúlò",
+        "exportFailed": "Àṣìṣe nínú ṣíṣe ìfitárí ètò àdàkọ"
+      },
+      "failedToLoadBaseTemplates": "Ó kùnà láti gbé àwọn àdàkọ ìpìlẹ̀"
+    },
+    "marketplace": {
+      "title": "Ọjà Àwọn Àdàkọ",
+      "subtitle": "Ṣàwárí àwọn àdàkọ premium láti mú ìrántí rẹ dára sí i",
+      "search": {
+        "placeholder": "Ṣàwárí àwọn àdàkọ...",
+        "noResults": "A kò rí àwọn àdàkọ tó bá ìwádìí rẹ"
+      },
+      "filters": {
+        "all": "Gbogbo Àwọn Àdàkọ",
+        "free": "Ọ̀fẹ̀",
+        "premium": "Premium",
+        "categories": {
+          "traditional": "Àṣà",
+          "modern": "Ìgbàlódé",
+          "nature": "Àdánidá",
+          "religious": "Ìsìn",
+          "military": "Ologun",
+          "sports": "Eré ìdárayá",
+          "music": "Orin",
+          "artistic": "Ìṣẹ̀ọ̀nà"
+        },
+        "sort": {
+          "popular": "Tó Gbajúmọ̀ Jùlọ",
+          "newest": "Tó Tuntun Jùlọ",
+          "rating": "Ìdíyelé Tó Dára Jùlọ",
+          "priceLow": "Iye Owó: Kéré Sí Púpọ̀",
+          "priceHigh": "Iye Owó: Púpọ̀ Sí Kéré"
+        }
+      },
+      "template": {
+        "preview": "Àkọ́yẹ̀wò",
+        "download": "Gbé Sílẹ̀",
+        "purchased": "A Ti Ra",
+        "price": "Iye Owó",
+        "category": "Ẹ̀ka",
+        "downloads": "Àwọn Ìgbàsílẹ̀",
+        "rating": "Ìdíyelé",
+        "features": "Àwọn Ẹ̀yà"
+      },
+      "purchase": {
+        "dialog": {
+          "title": "Ra Àdàkọ",
+          "description": "O ń ra \"{name}\" fún {price}",
+          "confirm": "Fìdí Rẹ̀ Mú Lára",
+          "cancel": "Fagilee",
+          "processing": "Ń ṣiṣẹ́..."
+        },
+        "success": "A ra àdàkọ ní àṣeyọrí!",
+        "error": "Àṣìṣe nínú rírà àdàkọ"
+      },
+      "download": {
+        "success": "A gbé àdàkọ sílẹ̀ ní àṣeyọrí!",
+        "error": "Àṣìṣe nínú gbígbé àdàkọ sílẹ̀"
+      },
+      "loading": "Ń gbé àwọn àdàkọ...",
+      "error": "Àṣìṣe nínú gbígbe àwọn àdàkọ"
+    },
+    "analytics": {
+      "title": "Ìtúpalẹ̀ Àwọn Àdàkọ",
+      "subtitle": "Ṣàyẹ̀wò ìṣe àti ìlò àwọn àdàkọ rẹ",
+      "metrics": {
+        "totalTemplates": "Àpapọ̀ Àwọn Àdàkọ",
+        "totalDownloads": "Àpapọ̀ Àwọn Ìgbàsílẹ̀",
+        "totalRevenue": "Àpapọ̀ Owó Wọlé",
+        "averageRating": "Ìdíyelé Àpapọ̀",
+        "totalViews": "Àpapọ̀ Àwọn Ìwò",
+        "uniqueVisitors": "Àwọn Àlẹ̀wò Àkànṣe",
+        "averageTime": "Àkókò Àpapọ̀ Lórí Ojú-ìwé",
+        "conversionRate": "Ọ̀nà Ìyípadà",
+        "popularTemplates": "Àwọn Àdàkọ Gbajúmọ̀",
+        "usageTrends": "Àwọn Ìṣe Ìlò"
+      },
+      "charts": {
+        "viewsOverTime": "Àwọn Ìwò Ní Àkókò",
+        "templateUsage": "Ìpín Ìlò Àdàkọ",
+        "visitorDemographics": "Àwọn Àlàyé Àwọn Àlẹ̀wò",
+        "performanceMetrics": "Àwọn Ìṣe Ìṣẹ́"
+      },
+      "periods": {
+        "7days": "Ọjọ́ 7 Tó Kọjá",
+        "30days": "Ọjọ́ 30 Tó Kọjá",
+        "90days": "Ọjọ́ 90 Tó Kọjá",
+        "1year": "Ọdún 1 Tó Kọjá"
+      },
+      "loading": "Ń gbé ìtúpalẹ̀...",
+      "error": "Àṣìṣe nínú gbígbe ìtúpalẹ̀",
+      "noData": "Kò sí dátà ìtúpalẹ̀ síbẹ̀"
+    },
+    "customization": {
+      "title": "Àtúnṣe Àkànṣe",
+      "subtitle": "Ṣe àtúnṣe apá kọ̀ọ̀kan ti àdàkọ rẹ pẹ̀lú àwọn àṣàyàn àkànṣe",
+      "sections": {
+        "colors": "Àwọn Àwọ̀",
+        "typography": "Ìṣẹ̀dá Lẹ́tà",
+        "layout": "Ìtòlẹ́sẹẹsẹ",
+        "code": "Kọ́dù Àkànṣe"
+      },
+      "colors": {
+        "primary": "Àwọ̀ Àkọ́kọ́",
+        "secondary": "Àwọ̀ Kejì",
+        "accent": "Àwọ̀ Àfikún",
+        "background": "Àwọ̀ Èbúté",
+        "text": "Àwọ̀ Ọ̀rọ̀",
+        "reset": "Tún Padà Sí Ìpilẹ̀ṣẹ̀"
+      },
+      "typography": {
+        "fontFamily": "Ẹbí Font",
+        "fontSize": "Ìwọ̀n Font",
+        "lineHeight": "Gígùn Laini",
+        "fontWeight": "Ìwúwo Font",
+        "textAlign": "Ìtòlẹ́sẹẹsẹ Ọ̀rọ̀"
+      },
+      "layout": {
+        "containerWidth": "Ìbú Apoti",
+        "spacing": "Àlàfo",
+        "borderRadius": "Radius Ààlà",
+        "shadows": "Àwọn Òjìji"
+      },
+      "code": {
+        "css": "CSS Àkànṣe",
+        "javascript": "JavaScript Àkànṣe",
+        "html": "HTML Àkànṣe",
+        "warning": "Ìkìlọ̀: Kọ́dù àkànṣe lè ba àdàkọ rẹ jẹ́. Lo ó pẹ̀lú ìṣọ́ra."
+      },
+      "preview": {
+        "title": "Àkọ́yẹ̀wò Lónìí",
+        "mobile": "Ẹ̀rọ Alágbèéká",
+        "tablet": "Táblẹ́ẹ̀tì",
+        "desktop": "Kọ̀ǹpútà",
+        "fullscreen": "Ojú-ìwé Kíkún"
+      },
+      "actions": {
+        "save": "Fi Àwọn Àyípadà Pamọ́",
+        "reset": "Tún Gbogbo Rẹ̀ Padà",
+        "export": "Ṣe Ìfitárí Ètò",
+        "import": "Ṣe Ìgbéwọlé Ètò",
+        "saving": "Ń fi pamọ́...",
+        "resetting": "Ń tún padà..."
+      },
+      "import": {
+        "dialog": {
+          "title": "Ṣe Ìgbéwọlé Ètò Àtúnṣe",
+          "description": "Lẹ́tà ètò ìfitárí rẹ sí ìsàlẹ̀",
+          "placeholder": "Lẹ́tà JSON ètò níhìn-ín...",
+          "import": "Ṣe Ìgbéwọlé",
+          "cancel": "Fagilee"
+        },
+        "success": "A ṣe ìgbéwọlé ètò ní àṣeyọrí!",
+        "error": "Àṣìṣe nínú ṣíṣe ìgbéwọlé ètò. Jọ̀wọ́ ṣàyẹ̀wò ìtòlẹ́sẹẹsẹ."
+      },
+      "export": {
+        "success": "A ṣe ìfitárí ètò sí fáìlì!",
+        "error": "Àṣìṣe nínú ṣíṣe ìfitárí ètò"
+      },
+      "save": {
+        "success": "A fi àtúnṣe pamọ́ ní àṣeyọrí!",
+        "error": "Àṣìṣe nínú fífi àtúnṣe pamọ́"
+      },
+      "reset": {
+        "confirm": {
+          "title": "Tún Gbogbo Àtúnṣe Padà?",
+          "description": "Èyí yóò dá gbogbo ètò padà sí ìpilẹ̀ṣẹ̀ wọn. Iṣẹ́ yìí kò ṣeé yí padà.",
+          "confirm": "Tún Gbogbo Rẹ̀ Padà",
+          "cancel": "Fagilee"
+        },
+        "success": "A tún gbogbo àtúnṣe padà ní àṣeyọrí!",
+        "error": "Àṣìṣe nínú tútún àtúnṣe padà"
+      },
+      "validation": {
+        "invalidCss": "Ìtòlẹ́sẹẹsẹ CSS tí kò tọ̀",
+        "invalidJs": "Ìtòlẹ́sẹẹsẹ JavaScript tí kò tọ̀",
+        "invalidHtml": "Ìtòlẹ́sẹẹsẹ HTML tí kò tọ̀"
+      }
+    },
+    "tabs": {
+      "myTemplates": "Àwọn Àdàkọ Mi",
+      "marketplace": "Ọjà",
+      "analytics": "Ìtúpalẹ̀",
+      "customization": "Àtúnṣe"
     }
   }
 }

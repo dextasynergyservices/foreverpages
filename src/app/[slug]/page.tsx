@@ -52,6 +52,11 @@ export default async function MemorialPage({ params }: MemorialPageProps) {
           email: true,
         },
       },
+      userTemplate: {
+        include: {
+          baseTemplate: true,
+        },
+      },
       streams: {
         where: {
           OR: [
@@ -112,22 +117,7 @@ export default async function MemorialPage({ params }: MemorialPageProps) {
 
   return (
     <MemorialPageClient
-      memorial={{
-        id: memorial.id,
-        slug: memorial.slug,
-        firstName: memorial.firstName,
-        lastName: memorial.lastName,
-        middleName: memorial.middleName,
-        biography: memorial.biography,
-        birthDate: memorial.birthDate.toISOString(),
-        deathDate: memorial.deathDate.toISOString(),
-        profilePhoto: memorial.profilePhoto,
-        coverPhoto: memorial.coverPhoto,
-        allowComments: memorial.allowComments,
-        password: memorial.password,
-        viewCount: memorial.viewCount,
-        candleCount: memorial.candleCount,
-      }}
+      memorial={memorial}
       activeStream={
         activeStream
           ? {
