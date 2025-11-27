@@ -1,5 +1,5 @@
 import React from "react";
-// Memorial type is available via SectionProps; no direct import required here
+// Memorial type is available via SectionProps; no direct import required here..
 import { useTranslations } from "@/hooks/useTranslations";
 import { createSection } from "@/lib/templates/sectionFactory";
 import type { SectionProps } from "@/lib/templates/sectionRegistry";
