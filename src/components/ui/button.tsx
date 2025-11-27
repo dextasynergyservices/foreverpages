@@ -1,4 +1,3 @@
-// Rewritten to normalize EOL for CI (no functional change)
 "use client";
 
 import * as React from "react";
@@ -18,7 +17,7 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        // Memorial-specific variants using design system tokens..
+        // Memorial-specific variants using design system tokens
         memorial: "btn-memorial shadow-soft",
         "memorial-secondary": "btn-secondary-memorial",
         "memorial-outline":
@@ -43,6 +42,7 @@ const buttonVariants = cva(
     },
   }
 );
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
