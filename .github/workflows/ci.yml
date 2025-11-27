@@ -216,3 +216,28 @@ jobs:
 
       - name: ESLint check
         run: pnpm exec eslint src/components/ui/badge.tsx src/components/ui/button.tsx src/components/ui/sheet.tsx || true
+
+  debug-segments:
+    name: Debug Segment Exports
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Search for segment-related exports
+        run: |
+          echo '--- files exporting `config` or containing segment keys ---'
+          grep -R "export const config" -n || true
+          grep -R "matcher:" -n || true
+          grep -R "export const dynamic" -n || true
+          grep -R "export const runtime" -n || true
+          echo '--- all js/ts files with "export const" occurrences (filtered) ---'
+          grep -R "export const" src app | sed -n '1,200p' || true
