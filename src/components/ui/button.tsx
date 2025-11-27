@@ -1,3 +1,4 @@
+// Rewritten to normalize EOL for CI (no functional change)
 "use client";
 
 import * as React from "react";

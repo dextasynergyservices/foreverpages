@@ -1,3 +1,4 @@
+// Rewritten to normalize EOL for CI (no functional change)
 "use client";
 
 import * as SheetPrimitive from "@radix-ui/react-dialog";
