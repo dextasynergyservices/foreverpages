@@ -1,7 +1,8 @@
 import React from "react";
-import { Memorial } from "@/generated/prisma";
+// Memorial type is available via SectionProps; no direct import required here
 import { useTranslations } from "@/hooks/useTranslations";
 import { createSection } from "@/lib/templates/sectionFactory";
+import type { SectionProps } from "@/lib/templates/sectionRegistry";
 
 interface HeroSectionConfig {
   showCoverPhoto: boolean;
@@ -10,10 +11,10 @@ interface HeroSectionConfig {
   overlayOpacity: number;
 }
 
-const HeroSectionComponent: React.FC<{
-  memorial: Memorial;
-  config: HeroSectionConfig;
-}> = ({ memorial, config }) => {
+const HeroSectionComponent: React.FC<SectionProps & { config?: HeroSectionConfig }> = ({
+  memorial,
+  config,
+}) => {
   const { t } = useTranslations();
 
   const heightClasses = {
@@ -22,14 +23,21 @@ const HeroSectionComponent: React.FC<{
     large: "h-[32rem]",
   };
 
+  const cfg = {
+    showCoverPhoto: config?.showCoverPhoto ?? true,
+    showEpitaph: config?.showEpitaph ?? true,
+    height: config?.height ?? "medium",
+    overlayOpacity: config?.overlayOpacity ?? 0.4,
+  } as HeroSectionConfig;
+
   return (
     <section className="relative">
-      {config.showCoverPhoto && memorial.coverPhoto && (
+      {cfg.showCoverPhoto && memorial.coverPhoto && (
         <div
-          className={`${heightClasses[config.height]} bg-cover bg-center relative`}
+          className={`${heightClasses[cfg.height]} bg-cover bg-center relative`}
           style={{ backgroundImage: `url(${memorial.coverPhoto})` }}
         >
-          <div className="absolute inset-0 bg-black" style={{ opacity: config.overlayOpacity }} />
+          <div className="absolute inset-0 bg-black" style={{ opacity: cfg.overlayOpacity }} />
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center text-white z-10">
               <h1 className="text-5xl font-bold mb-4">
@@ -45,7 +53,7 @@ const HeroSectionComponent: React.FC<{
       )}
 
       <div className="max-w-4xl mx-auto px-6 py-8">
-        {config.showEpitaph && (
+        {cfg.showEpitaph && (
           <div className="text-center">
             <p className="text-lg text-gray-700 leading-relaxed">
               {memorial.epitaph ||
@@ -69,7 +77,7 @@ export const HeroSection = createSection("hero", HeroSectionComponent, {
   defaultConfig: {
     showCoverPhoto: true,
     showEpitaph: true,
-    height: "medium" as const,
+    height: "medium",
     overlayOpacity: 0.4,
   },
 });
