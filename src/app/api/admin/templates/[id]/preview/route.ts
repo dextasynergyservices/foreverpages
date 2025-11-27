@@ -48,4 +48,4 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 }
 
 // Mark route as dynamic to ensure runtime behaviors are explicit for Next.
-export const dynamic = "force-dynamic" as const;
+export const dynamic = "force-dynamic";
