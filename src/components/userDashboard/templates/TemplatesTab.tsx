@@ -138,7 +138,7 @@ const TemplatesTab = () => {
       queryClient.invalidateQueries({ queryKey: ["user-templates"] });
     },
     onError: (error: Error) => {
-      toast.error(error.message || t("dashboard.templates.deleteError"));
+      toast.error(String(error.message || t("dashboard.templates.deleteError")));
     },
   });
 
@@ -146,7 +146,7 @@ const TemplatesTab = () => {
     const nameValidation = validateTemplateName(templateName);
     if (!nameValidation.isValid) {
       toast.error(
-        t(`dashboard.templates.validation.${nameValidation.error}`) || nameValidation.error
+        String(t(`dashboard.templates.validation.${nameValidation.error}`) || nameValidation.error)
       );
       return;
     }
@@ -154,8 +154,10 @@ const TemplatesTab = () => {
     const descriptionValidation = validateTemplateDescription(templateDescription);
     if (!descriptionValidation.isValid) {
       toast.error(
-        t(`dashboard.templates.validation.${descriptionValidation.error}`) ||
-          descriptionValidation.error
+        String(
+          t(`dashboard.templates.validation.${descriptionValidation.error}`) ||
+            descriptionValidation.error
+        )
       );
       return;
     }

@@ -23,7 +23,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Plus, Edit, Trash2 } from "lucide-react";
-import type { TemplateCategory } from "@/generated/prisma";
+import type { TemplateCategory, Template } from "@/generated/prisma";
 import { toastNotification } from "@/lib/toastNotifications";
 
 export default function CategoriesPage() {
@@ -31,16 +31,20 @@ export default function CategoriesPage() {
   const [editingCategory, setEditingCategory] = useState<TemplateCategory | null>(null);
   const [deleteCategoryId, setDeleteCategoryId] = useState<string | null>(null);
 
+  type CategoryWithTemplates = TemplateCategory & {
+    templates?: Pick<Template, "id" | "name" | "isActive">[];
+  };
+
   const {
     data: categories,
     isLoading,
     refetch,
-  } = useQuery({
+  } = useQuery<CategoryWithTemplates[]>({
     queryKey: ["admin-categories"],
     queryFn: async () => {
       const response = await fetch("/api/admin/templates/categories");
       if (!response.ok) throw new Error("Failed to fetch categories");
-      return response.json();
+      return (await response.json()) as CategoryWithTemplates[];
     },
   });
 
@@ -116,6 +120,8 @@ export default function CategoriesPage() {
     },
   });
 
+  // (Use mutation.status === 'pending' inline where needed)
+
   if (isLoading) {
     return (
       <div className="p-6">
@@ -143,7 +149,7 @@ export default function CategoriesPage() {
             </DialogHeader>
             <CategoryForm
               onSubmit={(data) => createMutation.mutate(data)}
-              isLoading={createMutation.isPending}
+              isLoading={createMutation.status === "pending"}
             />
           </DialogContent>
         </Dialog>
@@ -165,7 +171,7 @@ export default function CategoriesPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {categories?.map((category: TemplateCategory) => (
+            {categories?.map((category: CategoryWithTemplates) => (
               <TableRow key={category.id}>
                 <TableCell>
                   <div className="w-8 h-8 rounded flex items-center justify-center bg-gray-100">
@@ -225,7 +231,7 @@ export default function CategoriesPage() {
             <CategoryForm
               initialData={editingCategory}
               onSubmit={(data) => updateMutation.mutate({ id: editingCategory.id, data })}
-              isLoading={updateMutation.isPending}
+              isLoading={updateMutation.status === "pending"}
             />
           </DialogContent>
         </Dialog>
@@ -254,9 +260,9 @@ export default function CategoriesPage() {
                   if (deleteCategoryId) deleteMutation.mutate(deleteCategoryId);
                   setDeleteCategoryId(null);
                 }}
-                disabled={deleteMutation.isPending}
+                disabled={deleteMutation.status === "pending"}
               >
-                {deleteMutation.isPending ? "Deleting..." : "Delete"}
+                {deleteMutation.status === "pending" ? "Deleting..." : "Delete"}
               </Button>
             </div>
           </DialogContent>

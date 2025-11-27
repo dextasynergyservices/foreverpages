@@ -133,7 +133,8 @@ async function runTypeScriptCheck(files: string[], cwd?: string) {
 
   for (const d of diagnostics) {
     const file = d.file;
-    const pos = d.start ? file?.getLineAndCharacterOfPosition(d.start) : undefined;
+    const pos =
+      typeof d.start === "number" && file ? file.getLineAndCharacterOfPosition(d.start) : undefined;
     const fileName = file ? file.fileName : "";
     const msg = ts.flattenDiagnosticMessageText(d.messageText, "\n");
     const line = fileName ? `${fileName}:${pos?.line}:${pos?.character} - ${msg}` : msg;
@@ -143,7 +144,9 @@ async function runTypeScriptCheck(files: string[], cwd?: string) {
     if (d.code && benignCodes.has(d.code)) isBenign = true;
     const modMatch =
       msg.match(/Cannot find module '\s*([^']+)\s*'/i) ||
-      msg.match(/cannot find module "([^\"]+)"/i);
+      msg.match(/Cannot find module "([^"]+)"/i) ||
+      msg.match(/cannot find module '([^']+)'/i) ||
+      msg.match(/cannot find module "([^"]+)"/i);
     if (modMatch && modMatch[1]) {
       const modName = modMatch[1].trim();
       if (benignModuleNames.has(modName)) isBenign = true;

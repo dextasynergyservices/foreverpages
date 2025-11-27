@@ -1,6 +1,6 @@
 import DOMPurify from "isomorphic-dompurify";
 
-interface TemplateCustomization {
+export interface TemplateCustomization {
   name?: string;
   colors?: Record<string, string>;
   typography?: {

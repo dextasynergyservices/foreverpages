@@ -304,8 +304,13 @@ export async function validateAndExtractZip(
       const checkAndUpload = async (p: string | null, key: "preview" | "thumbnail") => {
         if (!p) return;
         const buf = await fs.promises.readFile(p);
-        const meta = await sharp(buf).metadata();
-        if (!meta.format || !["png", "jpeg", "jpg"].includes(meta.format))
+        const meta = (await sharp(buf).metadata()) as {
+          format?: string | undefined;
+          width?: number | undefined;
+          height?: number | undefined;
+          [key: string]: unknown;
+        };
+        if (!meta.format || !["png", "jpeg", "jpg"].includes(String(meta.format)))
           result.errors.push(`${key} must be PNG or JPEG`);
         if ((meta.width || 0) < 200 || (meta.height || 0) < 100)
           result.warnings.push(`${key} is smaller than recommended`);

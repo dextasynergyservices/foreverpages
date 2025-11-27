@@ -28,10 +28,19 @@ export async function GET() {
     });
 
     // Map templateCategories relation to a `templates` array for frontend convenience
-    const mapped = categories.map((c) => ({
-      ...c,
-      templates: c.templateCategories?.map((tc) => tc.template) || [],
-    }));
+    const mapped = categories.map((c) => {
+      const templates = (c.templateCategories || [])
+        .map((tc) => tc.template || null)
+        .filter(Boolean) as {
+        id: string;
+        name: string;
+        isActive: boolean;
+      }[];
+      return {
+        ...c,
+        templates,
+      };
+    });
 
     return NextResponse.json(mapped);
   } catch (error) {

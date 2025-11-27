@@ -1,7 +1,7 @@
 import React from "react";
 import { Template, UserTemplate, Memorial } from "@/generated/prisma";
 import { TemplateThemeProvider, TemplateTheme } from "@/contexts/TemplateThemeContext";
-import { sectionRegistry } from "./sectionRegistry";
+import { getSection } from "./sectionRegistry";
 
 export interface ModularTemplateProps {
   memorial: Memorial;
@@ -38,7 +38,7 @@ export const createModularTemplate = (config: ModularTemplateConfig) => {
           {config.sections
             .filter((section) => section.enabled)
             .map((section) => {
-              const sectionModule = sectionRegistry.getSection(section.id);
+              const sectionModule = getSection(section.id);
               if (!sectionModule) return null;
 
               const ModuleComponent = sectionModule.component;

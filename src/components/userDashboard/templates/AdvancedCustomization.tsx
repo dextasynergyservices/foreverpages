@@ -30,7 +30,6 @@ import {
   Palette,
   Type,
   Layout,
-  Image,
   Settings,
   Save,
   Undo,
@@ -46,11 +45,12 @@ import {
   validateTemplateCustomization,
   sanitizeTemplateCustomization,
   validateColor,
+  TemplateCustomization,
 } from "@/utils/templateSecurity";
-import toast from "react-hot-toast";
 
-interface TemplateCustomization {
-  id: string;
+// Concrete full customization shape used by this UI component.
+type TemplateCustomizationFull = TemplateCustomization & {
+  id?: string;
   name: string;
   colors: {
     primary: string;
@@ -87,7 +87,8 @@ interface TemplateCustomization {
   };
   customCSS: string;
   customJS: string;
-}
+};
+import toast from "react-hot-toast";
 
 interface AdvancedCustomizationProps {
   templateId?: string;
@@ -118,7 +119,7 @@ const FONT_WEIGHTS = [
 export const AdvancedCustomization: React.FC<AdvancedCustomizationProps> = ({ templateId }) => {
   const { t } = useTranslations();
   const queryClient = useQueryClient();
-  const [customization, setCustomization] = useState<TemplateCustomization>({
+  const [customization, setCustomization] = useState<TemplateCustomizationFull>({
     id: templateId || "",
     name: "",
     colors: {
@@ -158,16 +159,29 @@ export const AdvancedCustomization: React.FC<AdvancedCustomizationProps> = ({ te
     customJS: "",
   });
 
-  const [history, setHistory] = useState<TemplateCustomization[]>([]);
+  const [history, setHistory] = useState<TemplateCustomizationFull[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
 
-  const { isLoading } = useQuery({
+  // Ensure `elements` shape exists at runtime to avoid many optional-chaining checks.
+  const elements = React.useMemo(
+    () =>
+      customization.elements ?? {
+        showHeader: true,
+        showFooter: true,
+        showSidebar: false,
+        headerHeight: 64,
+        footerHeight: 64,
+      },
+    [customization.elements]
+  );
+
+  const { isLoading: isQueryLoading } = useQuery({
     queryKey: ["template-customization", templateId],
-    queryFn: async (): Promise<TemplateCustomization> => {
+    queryFn: async (): Promise<TemplateCustomizationFull> => {
       if (!templateId) return customization;
       const response = await fetch(`/api/templates/${templateId}/customization`);
       if (!response.ok) throw new Error("Failed to fetch template customization");
-      return response.json();
+      return (await response.json()) as TemplateCustomizationFull;
     },
     enabled: !!templateId,
     staleTime: 15 * 60 * 1000,
@@ -175,7 +189,7 @@ export const AdvancedCustomization: React.FC<AdvancedCustomizationProps> = ({ te
   });
 
   const saveMutation = useMutation({
-    mutationFn: async (data: TemplateCustomization) => {
+    mutationFn: async (data: TemplateCustomization | TemplateCustomizationFull) => {
       const response = await fetch(`/api/templates/${templateId || "new"}/customization`, {
         method: templateId ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
@@ -194,7 +208,7 @@ export const AdvancedCustomization: React.FC<AdvancedCustomizationProps> = ({ te
   });
 
   const updateCustomization = useCallback(
-    (updates: Partial<TemplateCustomization>) => {
+    (updates: Partial<TemplateCustomizationFull>) => {
       setCustomization((prev) => {
         const newCustomization = { ...prev, ...updates };
         // Add to history
@@ -278,6 +292,8 @@ export const AdvancedCustomization: React.FC<AdvancedCustomizationProps> = ({ te
     saveMutation.mutate(sanitizedCustomization);
   };
 
+  const isSaving = saveMutation.status === "pending";
+
   const handleExport = () => {
     const dataStr = JSON.stringify(customization, null, 2);
     const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
@@ -306,80 +322,107 @@ export const AdvancedCustomization: React.FC<AdvancedCustomizationProps> = ({ te
           }
 
           const sanitizedCustomization = sanitizeTemplateCustomization(importedCustomization);
-          setCustomization(sanitizedCustomization);
+          setCustomization(sanitizedCustomization as TemplateCustomizationFull);
           toast.success(t("dashboard.templates.customization.import.success"));
         } catch (error) {
-          toast.error(t("dashboard.templates.customization.import.error", error));
+          const msg =
+            typeof error === "string" ? error : error instanceof Error ? error.message : "";
+          toast.error(
+            t("dashboard.templates.customization.import.error") || `Import error: ${msg}`
+          );
         }
       };
       reader.readAsText(file);
     }
   };
 
-  const previewStyles = useMemo(
-    () => ({
+  const previewStyles = useMemo(() => {
+    const safe = {
+      colors: customization.colors ?? {
+        primary: "#3b82f6",
+        secondary: "#64748b",
+        accent: "#f59e0b",
+        background: "#ffffff",
+        text: "#1f2937",
+      },
+      typography: customization.typography ?? {
+        fontFamily: "Inter",
+        fontSize: { heading: 24, body: 16, small: 14 },
+        fontWeight: { heading: "600", body: "400" },
+        lineHeight: 1.5,
+      },
+      layout: customization.layout ?? { spacing: 16, borderRadius: 8, maxWidth: 1200, padding: 24 },
+      elements: customization.elements ?? {
+        showHeader: true,
+        showFooter: true,
+        showSidebar: false,
+        headerHeight: 64,
+        footerHeight: 64,
+      },
+    };
+
+    return {
       container: {
-        fontFamily: customization.typography.fontFamily,
-        backgroundColor: customization.colors.background,
-        color: customization.colors.text,
-        maxWidth: `${customization.layout.maxWidth}px`,
+        fontFamily: safe.typography.fontFamily,
+        backgroundColor: safe.colors.background,
+        color: safe.colors.text,
+        maxWidth: `${safe.layout.maxWidth}px`,
         margin: "0 auto",
-        padding: `${customization.layout.padding}px`,
-        borderRadius: `${customization.layout.borderRadius}px`,
+        padding: `${safe.layout.padding}px`,
+        borderRadius: `${safe.layout.borderRadius}px`,
       },
       header: {
-        height: `${customization.elements.headerHeight}px`,
-        backgroundColor: customization.colors.primary,
+        height: `${safe.elements.headerHeight}px`,
+        backgroundColor: safe.colors.primary,
         color: "white",
         display: "flex",
         alignItems: "center",
         padding: "0 16px",
-        borderRadius: `${customization.layout.borderRadius}px 0 0 0`,
+        borderRadius: `${safe.layout.borderRadius}px 0 0 0`,
       },
       heading: {
-        fontSize: `${customization.typography.fontSize.heading}px`,
-        fontWeight: customization.typography.fontWeight.heading,
+        fontSize: `${safe.typography.fontSize.heading}px`,
+        fontWeight: safe.typography.fontWeight.heading,
         margin: 0,
       },
       subheading: {
-        fontSize: `${customization.typography.fontSize.heading * 0.8}px`,
-        fontWeight: customization.typography.fontWeight.heading,
-        color: customization.colors.primary,
+        fontSize: `${safe.typography.fontSize.heading * 0.8}px`,
+        fontWeight: safe.typography.fontWeight.heading,
+        color: safe.colors.primary,
         margin: 0,
-        lineHeight: customization.typography.lineHeight,
+        lineHeight: safe.typography.lineHeight,
       },
       body: {
-        fontSize: `${customization.typography.fontSize.body}px`,
-        fontWeight: customization.typography.fontWeight.body,
-        lineHeight: customization.typography.lineHeight,
+        fontSize: `${safe.typography.fontSize.body}px`,
+        fontWeight: safe.typography.fontWeight.body,
+        lineHeight: safe.typography.lineHeight,
         margin: 0,
       },
       accentBox: {
-        backgroundColor: customization.colors.secondary + "20",
-        border: `1px solid ${customization.colors.secondary}`,
-        borderRadius: `${customization.layout.borderRadius}px`,
+        backgroundColor: safe.colors.secondary + "20",
+        border: `1px solid ${safe.colors.secondary}`,
+        borderRadius: `${safe.layout.borderRadius}px`,
       },
       smallText: {
-        fontSize: `${customization.typography.fontSize.small}px`,
+        fontSize: `${safe.typography.fontSize.small}px`,
         margin: 0,
-        color: customization.colors.secondary,
+        color: safe.colors.secondary,
       },
       footer: {
-        height: `${customization.elements.footerHeight}px`,
-        backgroundColor: customization.colors.secondary + "10",
+        height: `${safe.elements.footerHeight}px`,
+        backgroundColor: safe.colors.secondary + "10",
         padding: "16px",
-        borderRadius: `0 0 0 ${customization.layout.borderRadius}px`,
+        borderRadius: `0 0 0 ${safe.layout.borderRadius}px`,
       },
       footerText: {
-        fontSize: `${customization.typography.fontSize.small}px`,
+        fontSize: `${safe.typography.fontSize.small}px`,
         margin: 0,
         textAlign: "center" as const,
       },
-    }),
-    [customization]
-  );
+    };
+  }, [customization]);
 
-  if (isLoading) {
+  if (isQueryLoading) {
     return <div>Loading customization...</div>;
   }
 
@@ -421,11 +464,9 @@ export const AdvancedCustomization: React.FC<AdvancedCustomizationProps> = ({ te
             </Button>
             <input type="file" accept=".json" onChange={handleImport} className="hidden" />
           </label>
-          <Button onClick={handleSave} disabled={saveMutation.isPending}>
+          <Button onClick={handleSave} disabled={isSaving}>
             <Save className="h-4 w-4 mr-2" />
-            {saveMutation.isPending
-              ? "Saving..."
-              : t("dashboard.templates.customization.actions.save")}
+            {isSaving ? "Saving..." : t("dashboard.templates.customization.actions.save")}
           </Button>
           <Dialog>
             <DialogTrigger asChild>
@@ -494,13 +535,9 @@ export const AdvancedCustomization: React.FC<AdvancedCustomizationProps> = ({ te
             <Layout className="h-4 w-4" />
             {t("dashboard.templates.customization.sections.layout")}
           </TabsTrigger>
+
           <TabsTrigger value="elements" className="flex items-center gap-2">
-            <Image className="h-4 w-4" alt="" />
             Elements
-          </TabsTrigger>
-          <TabsTrigger value="code" className="flex items-center gap-2">
-            <Settings className="h-4 w-4" />
-            {t("dashboard.templates.customization.sections.code")}
           </TabsTrigger>
           <TabsTrigger value="preview" className="flex items-center gap-2">
             <Eye className="h-4 w-4" />
@@ -817,24 +854,20 @@ export const AdvancedCustomization: React.FC<AdvancedCustomizationProps> = ({ te
                   <div className="flex items-center justify-between">
                     <Label>Show Header</Label>
                     <Switch
-                      checked={customization.elements.showHeader}
+                      checked={elements.showHeader}
                       onCheckedChange={(checked) =>
-                        updateCustomization({
-                          elements: { ...customization.elements, showHeader: checked },
-                        })
+                        updateCustomization({ elements: { ...elements, showHeader: checked } })
                       }
                     />
                   </div>
 
-                  {customization.elements.showHeader && (
+                  {elements.showHeader && (
                     <div>
-                      <Label>Header Height: {customization.elements.headerHeight}px</Label>
+                      <Label>Header Height: {elements.headerHeight}px</Label>
                       <Slider
-                        value={[customization.elements.headerHeight]}
+                        value={[elements.headerHeight]}
                         onValueChange={([value]) =>
-                          updateCustomization({
-                            elements: { ...customization.elements, headerHeight: value },
-                          })
+                          updateCustomization({ elements: { ...elements, headerHeight: value } })
                         }
                         min={32}
                         max={128}
@@ -849,24 +882,20 @@ export const AdvancedCustomization: React.FC<AdvancedCustomizationProps> = ({ te
                   <div className="flex items-center justify-between">
                     <Label>Show Footer</Label>
                     <Switch
-                      checked={customization.elements.showFooter}
+                      checked={elements.showFooter}
                       onCheckedChange={(checked) =>
-                        updateCustomization({
-                          elements: { ...customization.elements, showFooter: checked },
-                        })
+                        updateCustomization({ elements: { ...elements, showFooter: checked } })
                       }
                     />
                   </div>
 
-                  {customization.elements.showFooter && (
+                  {elements.showFooter && (
                     <div>
-                      <Label>Footer Height: {customization.elements.footerHeight}px</Label>
+                      <Label>Footer Height: {elements.footerHeight}px</Label>
                       <Slider
-                        value={[customization.elements.footerHeight]}
+                        value={[elements.footerHeight]}
                         onValueChange={([value]) =>
-                          updateCustomization({
-                            elements: { ...customization.elements, footerHeight: value },
-                          })
+                          updateCustomization({ elements: { ...elements, footerHeight: value } })
                         }
                         min={32}
                         max={128}
@@ -880,11 +909,9 @@ export const AdvancedCustomization: React.FC<AdvancedCustomizationProps> = ({ te
                 <div className="flex items-center justify-between">
                   <Label>Show Sidebar</Label>
                   <Switch
-                    checked={customization.elements.showSidebar}
+                    checked={elements.showSidebar}
                     onCheckedChange={(checked) =>
-                      updateCustomization({
-                        elements: { ...customization.elements, showSidebar: checked },
-                      })
+                      updateCustomization({ elements: { ...elements, showSidebar: checked } })
                     }
                   />
                 </div>
@@ -933,7 +960,7 @@ export const AdvancedCustomization: React.FC<AdvancedCustomizationProps> = ({ te
             </CardHeader>
             <CardContent>
               <div className="border rounded-lg p-6 min-h-[400px]" style={previewStyles.container}>
-                {customization.elements.showHeader && (
+                {elements.showHeader && (
                   <div className="mb-6 border-b" style={previewStyles.header}>
                     <h1 style={previewStyles.heading}>Header</h1>
                   </div>
@@ -961,7 +988,7 @@ export const AdvancedCustomization: React.FC<AdvancedCustomizationProps> = ({ te
                   </Button>
                 </div>
 
-                {customization.elements.showFooter && (
+                {elements.showFooter && (
                   <div className="mt-6 border-t pt-4" style={previewStyles.footer}>
                     <p style={previewStyles.footerText}>Footer Content</p>
                   </div>

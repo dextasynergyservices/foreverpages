@@ -176,6 +176,7 @@ export default function UploadTemplateDialog({
   });
 
   // Derive boolean flags from `mutation.status` for type-safe checks.
+  // `@tanstack/react-query` uses 'loading' | 'success' | 'error' etc.
   const isLoading = mutation.status === "pending";
   const isSuccess = mutation.status === "success";
   const isError = mutation.status === "error";
@@ -325,15 +326,25 @@ export default function UploadTemplateDialog({
 
     mutation.mutate(selectedFile as File, {
       onSuccess(data) {
-        setUploadedTemplateId(data?.data?.templateId || null);
+        const tid =
+          data && data.data && typeof data.data === "object"
+            ? (data.data.templateId as string | undefined)
+            : undefined;
+        setUploadedTemplateId(tid ?? null);
         setUploadStep("done");
-        // capture generated manifest from server response if present
-        try {
-          const gm = data?.data?.generatedManifest as Record<string, unknown> | undefined;
-          const gn = data?.data?.generatedNotes as string[] | undefined;
-          if (gm) setGeneratedManifest(gm);
-          if (gn) setGeneratedNotes(gn || null);
-        } catch {}
+        // capture generated manifest from server response if present (defensive)
+        const gm =
+          data && data.data && typeof data.data === "object"
+            ? (data.data.generatedManifest as Record<string, unknown> | undefined)
+            : undefined;
+        const gn =
+          data && data.data && typeof data.data === "object"
+            ? (data.data.generatedNotes as string[] | undefined)
+            : undefined;
+        if (gm && typeof gm === "object") setGeneratedManifest(gm);
+        else setGeneratedManifest(null);
+        if (Array.isArray(gn)) setGeneratedNotes(gn);
+        else setGeneratedNotes(null);
         // when server acknowledges upload, start processing step
         setProcessStep("running");
       },
@@ -758,7 +769,7 @@ export default function UploadTemplateDialog({
                   <div className="flex items-center justify-between">
                     <strong>Generated config.json (candidate)</strong>
                     <small className="text-xs text-muted-foreground">
-                      {generatedNotes ? generatedNotes.join("; ") : ""}
+                      {Array.isArray(generatedNotes) ? generatedNotes.join("; ") : ""}
                     </small>
                   </div>
                   <pre className="mt-2 max-h-56 overflow-auto whitespace-pre-wrap text-sm">

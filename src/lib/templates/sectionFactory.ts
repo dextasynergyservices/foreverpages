@@ -3,7 +3,8 @@ import { SectionProps, registerSection } from "./sectionRegistry";
 
 export const createSection = <T extends Record<string, unknown> = Record<string, unknown>>(
   id: string,
-  component: React.ComponentType<SectionProps>,
+  // Accept any component shape to allow per-section typed props
+  component: React.ComponentType<SectionProps & { config?: T }>,
   options: {
     displayName: string;
     category: string;
@@ -11,13 +12,13 @@ export const createSection = <T extends Record<string, unknown> = Record<string,
     defaultConfig?: T;
   }
 ) => {
-  const SectionWrapper: React.ComponentType<SectionProps> = (props) => {
+  const SectionWrapper: React.ComponentType<SectionProps & { config?: T }> = (props) => {
     const config = { ...options.defaultConfig, ...props.config } as T;
     return React.createElement(component, { ...props, config });
   };
 
   registerSection(id, {
-    component: SectionWrapper,
+    component: SectionWrapper as unknown as Parameters<typeof registerSection>[1]["component"],
     defaultConfig: options.defaultConfig,
     displayName: options.displayName,
     category: options.category,

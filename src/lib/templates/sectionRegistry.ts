@@ -3,7 +3,10 @@ import { Memorial } from "@/generated/prisma";
 
 export interface SectionProps {
   memorial: Memorial;
+  // Allow any shape for config (templates provide typed defaults per-section)
   config: Record<string, unknown>;
+  // Some sections accept a `layout` prop; make it optional and permissive
+  layout?: string;
   className?: string;
 }
 
