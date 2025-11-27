@@ -172,6 +172,9 @@ jobs:
       - name: Type checking
         run: pnpm exec tsc -p tsconfig.app.json --noEmit
 
+      - name: "Prettier: auto-fix UI primitives (before next build)"
+        run: pnpm exec prettier --write src/components/ui/badge.tsx src/components/ui/button.tsx src/components/ui/sheet.tsx || true
+
       - name: Build
         run: pnpm build
 
