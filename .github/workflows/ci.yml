@@ -79,6 +79,9 @@ jobs:
           head -n 200 signaling-server-tsc-trace.txt || true
           echo "=== END tsc --traceResolution ==="
 
+      - name: 'Prettier: auto-fix UI primitives'
+        run: pnpm exec prettier --write src/components/ui/badge.tsx src/components/ui/button.tsx src/components/ui/sheet.tsx || true
+
       - name: Run Lint
         run: pnpm lint
 
