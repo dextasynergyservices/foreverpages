@@ -383,6 +383,7 @@
         "builder": "Onye Na-ewu Olili",
         "invitations": "Oku",
         "tributes": "Nkwanye Ugwu",
+        "templates": "Ụdị",
         "settings": "Ntọala"
       }
     },
@@ -529,6 +530,60 @@
       "downloadFailed": "Nbudata adaala",
       "loadingMore": "Na-ebulite ndị ọzọ...",
       "allLoaded": "Ebulitela foto na vidiyo niile"
+    },
+    "templates": {
+      "title": "Ụdị Pụrụ Iche",
+      "subtitle": "Jikwaa ụdị memorial pụrụ iche gị",
+      "createTemplate": "Mepụta Ụdị",
+      "createDialog": {
+        "title": "Mepụta Ụdị Ọhụrụ",
+        "description": "Chekwaa ntọala gị ugbu a dị ka ụdị enwere ike iji mee ihe",
+        "form": {
+          "name": {
+            "label": "Aha Ụdị",
+            "placeholder": "Tinye aha maka ụdị gị"
+          },
+          "description": {
+            "label": "Nkọwa (Nhọrọ)",
+            "placeholder": "Kọwaa ụdị a..."
+          }
+        },
+        "actions": {
+          "create": "Mepụta Ụdị",
+          "creating": "Na-emepụta...",
+          "cancel": "Kagbuo"
+        }
+      },
+      "list": {
+        "empty": {
+          "title": "Enweghị ụdị pụrụ iche",
+          "description": "Mepụta ụdị pụrụ iche gị nke mbụ iji jigharịa ntọala kachasị amasị gị"
+        },
+        "item": {
+          "created": "E kere na {{date}}",
+          "lastUsed": "Ojiji ikpeazụ: {{date}}",
+          "actions": {
+            "use": "Jiri Ụdị a",
+            "edit": "Dezie",
+            "delete": "Hichapụ"
+          }
+        }
+      },
+      "deleteDialog": {
+        "title": "Hichapụ Ụdị",
+        "description": "Ị ji n'aka na ịchọrọ ihichapụ ụdị a? Enweghị ike ịweghachi omume a.",
+        "actions": {
+          "delete": "Hichapụ",
+          "cancel": "Kagbuo"
+        }
+      },
+      "actions": {
+        "createSuccess": "E mepụtara ụdị nke ọma",
+        "createError": "Emeghị ụdị ahụ",
+        "deleteSuccess": "E hichapụrụ ụdị nke ọma",
+        "deleteError": "Emeghị ihichapụ ụdị ahụ",
+        "loadError": "Emeghị ibulite ụdị ndị ahụ"
+      }
     },
     "invitations": {
       "title": "Oku Oriri Ncheta",
@@ -1092,31 +1147,167 @@
     },
     "pageBuilder": {
       "header": {
-        "title": "Create Memorial",
-        "cancel": "Cancel"
+        "title": "Mepụta Ncheta",
+        "cancel": "Kagbuo"
       },
       "steps": {
         "chooseTemplate": {
-          "title": "Choose Template",
-          "description": "Select a design that honors your loved one"
+          "title": "Họrọ Ụdị",
+          "description": "Họrọ nhazi na-asọpụrụ onye ahụ nwụrụ anwụ"
         },
         "basicInfo": {
-          "title": "Basic Information",
-          "description": "Tell us about your loved one"
+          "title": "Ozi Ndị Isi",
+          "description": "Gwa anyị gbasara onye ahụ nwụrụ anwụ"
         },
         "details": {
-          "title": "Memorial Details",
-          "description": "Add photos and memories"
+          "title": "Nkọwa Ncheta",
+          "description": "Tinye foto na ncheta"
         },
         "review": {
-          "title": "Review",
-          "description": "Review and create your memorial"
+          "title": "Nyochaa",
+          "description": "Nyochaa ma mepụta ncheta gị"
         }
       },
       "buttons": {
-        "previous": "Previous",
-        "next": "Next",
-        "create": "Create Memorial"
+        "previous": "Nke gara aga",
+        "next": "Nke na-esote",
+        "create": "Mepụta Ncheta",
+        "creating": "Na-emepụta..."
+      },
+      "sidebar": {
+        "title": "Nzọụkwụ nrụpụta",
+        "hint1": "Ndụmọdụ: chekwaa mgbe niile",
+        "hint2": "Ndụmọdụ: lelee na ngwaọrụ dị iche iche"
+      },
+      "basicInfo": {
+        "firstName": {
+          "label": "Aha Mbụ",
+          "placeholder": "Tinye aha mbụ"
+        },
+        "lastName": {
+          "label": "Aha Ụlọ",
+          "placeholder": "Tinye aha ụlọ"
+        },
+        "birthDate": {
+          "label": "Ụbọchị Ọmụmụ",
+          "placeholder": "Ụbọchị/Ọnwa/Afọ"
+        },
+        "deathDate": {
+          "label": "Ụbọchị Ọnwụ",
+          "placeholder": "Ụbọchị/Ọnwa/Afọ"
+        },
+        "relationship": {
+          "label": "Mmekọrịta na Onye Nwụrụ Anwụ",
+          "placeholder": "Dịka ọmụmaatụ: nwa, nwa nwanyị, nwunye, enyi...",
+          "options": {
+            "spouse": "Di/Nwunye",
+            "child": "Nwa",
+            "parent": "Nne/Nna",
+            "sibling": "Nwanne",
+            "grandparent": "Nne nne/Nna nna",
+            "grandchild": "Nwa nwa",
+            "friend": "Enyi",
+            "colleague": "Onye ọrụ ibe",
+            "other": "Ndị ọzọ"
+          }
+        },
+        "location": {
+          "label": "Ebe (Obodo, Mba)",
+          "placeholder": "Obodo, Mba"
+        },
+        "nationality": {
+          "label": "Mba",
+          "placeholder": "Mba"
+        },
+        "autoSaved": "Echekwara ya na-akpaghị aka"
+      },
+      "memorialDetails": {
+        "saving": "Na-echekwa...",
+        "autoSaved": "Echekwara ya na-akpaghị aka",
+        "profilePhoto": {
+          "label": "Foto Prọfaịlụ",
+          "helpText": "Bulite foto mara mma na-anọchite anya ya"
+        },
+        "backgroundImage": {
+          "label": "Foto Ndabere (Nhọrọ)",
+          "helpText": "Ebe dị mkpa ma ọ bụ ncheta"
+        },
+        "memorialMessage": {
+          "label": "Ozi Ncheta",
+          "placeholder": "Ozi dị mkpa ma ọ bụ okwu na-anọchite anya mmụọ ya..."
+        },
+        "privacySetting": {
+          "label": "Nhazi Nzuzo",
+          "options": {
+            "public": "Ọha - Onye ọ bụla nwere ike ịlele",
+            "unlisted": "Enweghị ndepụta - Naanị site na njikọ",
+            "private": "Nzuzo - Naanị ndị a kpọrọ"
+          }
+        }
+      },
+      "templates": {
+        "classic": {
+          "name": "Ncheta Ọdịnala",
+          "description": "Nhazi ọdịnala na mara mma na ndepụta na nhazi fọmàl",
+          "features": ["Ngalaba akụkọ ndụ", "Ndepụta foto", "Mgbidi nsọpụrụ", "Ozi ọrụ"]
+        },
+        "modern": {
+          "name": "Nsọpụrụ Ụbọchị",
+          "description": "Nhazi dị ọcha na nke oge a na-elekwasị anya na foto na nhazi na-enweghị atụ",
+          "features": [
+            "Ngalaba foto buru ibu",
+            "Edemede dị ọcha",
+            "Nsọpụrụ mmekọrịta",
+            "Kekọrịta na netwọkụ"
+          ]
+        },
+        "garden": {
+          "name": "Ogige Ncheta",
+          "description": "Isiokwu sitere na okike na agba dị jụụ na ihe ndị dị n'okike",
+          "features": ["Ndabere okike", "Agba dị jụụ", "Ogige ncheta", "Nhazi dị jụụ"]
+        },
+        "celebration": {
+          "name": "Ememe Ndụ",
+          "description": "Nhazi na-egbuke egbuke na na-enye obi ụtọ maka ncheta na ememe na-egbuke egbuke",
+          "features": [
+            "Agba na-egbuke egbuke",
+            "Nlekwasị na ememe",
+            "Ncheta na-egbuke egbuke",
+            "Tọ́n na-enye obi ụtọ"
+          ]
+        }
+      },
+      "review": {
+        "title": "Nyochaa Ncheta Gị",
+        "subtitle": "Lelee ozi niile tupu ime ncheta gị",
+        "sections": {
+          "template": "Ụdị",
+          "basicInfo": "Ozi Ndị Isi",
+          "memorialDetails": "Nkọwa Ncheta"
+        },
+        "messages": {
+          "templateSelected": "Ahọrọla ụdị nke ọma",
+          "basicInfoComplete": "Emechara ozi ndị isi",
+          "memorialDetailsComplete": "Emechara nkọwa ncheta",
+          "readyToCreate": "Ncheta gị dị njikere ime",
+          "creatingMemorial": "Na-emepụta ncheta gị...",
+          "memorialCreated": "Emepụtara ncheta nke ọma!",
+          "redirecting": "Na-eduga gị na dashboard gị..."
+        },
+        "actions": {
+          "edit": "Dezie",
+          "createMemorial": "Mepụta Ncheta"
+        }
+      },
+      "content": {
+        "biography": "Akụkọ Ndụ",
+        "epitaph": "Ede Ede",
+        "tributes": "Nkwanye Ùgwù",
+        "timeline": "Usoro Oge",
+        "gallery": "Ụlọ Nchịkọta Ihe Nkiri",
+        "familyTree": "Osisi Ezinụlọ",
+        "condolences": "Ọmịiko",
+        "support": "Nkwado"
       }
     },
     "settings": {
@@ -2082,6 +2273,261 @@
         "youreReceiving": "Ị na-enweta nke a n'ihi na ị jikọtara na ibe ncheta {memorial}.",
         "copyright": "© {year} ForeverPages. Ikike niile echekwara."
       }
+    },
+    "templates": {
+      "title": "Ndobe",
+      "subtitle": "Mepụta ma jikwaa ndobe ncheta pụrụ iche gị",
+      "createButton": "Mepụta Ndobe",
+      "createButtonShort": "Mepụta",
+      "createDialog": {
+        "title": "Mepụta Ndobe Ọhụrụ",
+        "description": "Họrọ ndobe ntọala ma hazie ya maka ncheta gị"
+      },
+      "form": {
+        "name": {
+          "label": "Aha Ndobe",
+          "placeholder": "Tinye aha ndobe"
+        },
+        "description": {
+          "label": "Nkọwa",
+          "placeholder": "Nkọwa nhọrọ"
+        },
+        "baseTemplate": {
+          "label": "Ndobe Ntọala"
+        },
+        "creating": "Na-emepụta..."
+      },
+      "list": {
+        "title": "Ndobe Gị ({count})",
+        "subtitle": "Ndobe ị mepụtara ma hazie"
+      },
+      "error": {
+        "title": "Njehie n'ibubata Ndobe"
+      },
+      "empty": {
+        "title": "Enweghị Ndobe Ọbụla Ka",
+        "description": "Mepụta ndobe pụrụ iche gị nke mbụ iji malite",
+        "createButton": "Mepụta Ndobe Mbụ"
+      },
+      "actions": {
+        "preview": "Nlele",
+        "edit": "Dezie",
+        "duplicate": "Mepụta Ọzọ",
+        "delete": "Hichapụ"
+      },
+      "deleteDialog": {
+        "title": "Hichapụ Ndobe",
+        "description": "Ị ji n'aka na ịchọrọ ihichapụ \"{name}\"? Omume a enweghị ike ịweghachi.",
+        "deleting": "Na-ehichapụ...",
+        "confirm": "Hichapụ Ndobe"
+      },
+      "createSuccess": "Emebere ndobe nke ọma",
+      "createError": "Njehie n'imepụta ndobe",
+      "deleteSuccess": "Ehichapụrụ ndobe nke ọma",
+      "deleteError": "Njehie n'ihichapụ ndobe",
+      "validationError": "Biko tinye aha ndobe ma họrọ ndobe ntọala",
+      "validation": {
+        "nameRequired": "A chọrọ aha ndobe",
+        "nameTooShort": "Aha ndobe ga-enwerịrị opekempe mkpụrụ edemede 3",
+        "nameTooLong": "Aha ndobe enweghị ike ịgafe mkpụrụ edemede 100",
+        "nameInvalidChars": "Aha ndobe nwere mkpụrụ edemede na-ezighi ezi",
+        "descriptionTooLong": "Nkọwa enweghị ike ịgafe mkpụrụ edemede 500",
+        "descriptionInvalidChars": "Nkọwa nwere mkpụrụ edemede na-ezighi ezi",
+        "searchQueryRequired": "A chọrọ ajụjụ nchọta",
+        "searchQueryTooShort": "Ajụjụ nchọta ga-enwerịrị opekempe mkpụrụ edemede 2",
+        "searchQueryInvalidChars": "Ajụjụ nchọta nwere mkpụrụ edemede na-ezighi ezi",
+        "colorInvalid": "Nhazi agba ezighi ezi",
+        "fontSizeInvalid": "Nha font ga-adị n'etiti 8px na 72px",
+        "spacingInvalid": "Oghere ga-adị n'etiti 0px na 100px",
+        "borderRadiusInvalid": "Radius oke ga-adị n'etiti 0px na 50px",
+        "maxWidthInvalid": "Obosara kachasị ga-adị n'etiti 200px na 2000px",
+        "lineHeightInvalid": "Ogologo ahịrị ga-adị n'etiti 0.8 na 3.0",
+        "customizationInvalid": "Nhazi ndobe nwere ụkpụrụ na-ezighi ezi",
+        "importInvalidFormat": "Nhazi faịlụ mbubata ezighi ezi",
+        "importInvalidData": "Data mbubata nwere nhazi ndobe na-ezighi ezi",
+        "importFileTooLarge": "Faịlụ mbubata buru ibu oke (opekempe 5MB)"
+      },
+      "failedToLoadBaseTemplates": "Ọdịda ibubata ndobe ntọala"
+    },
+    "marketplace": {
+      "title": "Ebe Ahịa Ndobe",
+      "subtitle": "Chọpụta ndobe premium iji melite ncheta gị",
+      "search": {
+        "placeholder": "Chọọ ndobe...",
+        "noResults": "Achọtaghị ndobe dabara na nchọta gị"
+      },
+      "filters": {
+        "all": "Ndobe Niile",
+        "free": "N'efu",
+        "premium": "Premium",
+        "categories": {
+          "traditional": "Omenala",
+          "modern": "Ọgbara Ọhụrụ",
+          "nature": "Okike",
+          "religious": "Okpukpe",
+          "military": "Ndị Agha",
+          "sports": "Egwu",
+          "music": "Egwu",
+          "artistic": "Nka"
+        },
+        "sort": {
+          "popular": "Kachasị Ewu Ewu",
+          "newest": "Kachasị Ọhụrụ",
+          "rating": "Ntụle Kachasị Mma",
+          "priceLow": "Ọnụ Ahịa: Ntakịrị ruo Nnukwu",
+          "priceHigh": "Ọnụ Ahịa: Nnukwu ruo Ntakịrị"
+        }
+      },
+      "template": {
+        "preview": "Nlele",
+        "download": "Budata",
+        "purchased": "Azụtara",
+        "price": "Ọnụ Ahịa",
+        "category": "Otu",
+        "downloads": "Mbubata",
+        "rating": "Ntụle",
+        "features": "Atụmatụ"
+      },
+      "purchase": {
+        "dialog": {
+          "title": "Zụta Ndobe",
+          "description": "Ị na-azụta \"{name}\" maka {price}",
+          "confirm": "Kwenye Nzụta",
+          "cancel": "Kagbuo",
+          "processing": "Na-arụ ọrụ..."
+        },
+        "success": "Azụtara ndobe nke ọma!",
+        "error": "Njehie n'ịzụta ndobe"
+      },
+      "download": {
+        "success": "Budatara ndobe nke ọma!",
+        "error": "Njehie n'ịbudata ndobe"
+      },
+      "loading": "Na-ebubata ndobe...",
+      "error": "Njehie n'ibubata ndobe"
+    },
+    "analytics": {
+      "title": "Ntụle Ndobe",
+      "subtitle": "Nyochaa omume na ojiji nke ndobe gị",
+      "metrics": {
+        "totalTemplates": "Ngụkọta Ndobe",
+        "totalDownloads": "Ngụkọta Mbubata",
+        "totalRevenue": "Ngụkọta Ego",
+        "averageRating": "Ntụle Nkezi",
+        "totalViews": "Ngụkọta Nlele",
+        "uniqueVisitors": "Ndị Ọbịa Pụrụ Iche",
+        "averageTime": "Oge Nkezi na Ibe",
+        "conversionRate": "Ọnụ Ọgụgụ Ntụgharị",
+        "popularTemplates": "Ndobe Ewu Ewu",
+        "usageTrends": "Ụzọ Ojiji"
+      },
+      "charts": {
+        "viewsOverTime": "Nlele N'oge",
+        "templateUsage": "Nkesa Ojiji Ndobe",
+        "visitorDemographics": "Ụdị Ndị Ọbịa",
+        "performanceMetrics": "Akara Ọrụ"
+      },
+      "periods": {
+        "7days": "Ụbọchị 7 gara aga",
+        "30days": "Ụbọchị 30 gara aga",
+        "90days": "Ụbọchị 90 gara aga",
+        "1year": "Afọ 1 gara aga"
+      },
+      "loading": "Na-ebubata ntụle...",
+      "error": "Njehie n'ibubata ntụle",
+      "noData": "Enweghị data ntụle ka"
+    },
+    "customization": {
+      "title": "Nhazi Pụrụ Iche",
+      "subtitle": "Hazie akụkụ ọ bụla nke ndobe gị site na nhọrọ pụrụ iche",
+      "sections": {
+        "colors": "Agba",
+        "typography": "Nhazi Edemede",
+        "layout": "Nhazi",
+        "code": "Koodu Pụrụ Iche"
+      },
+      "colors": {
+        "primary": "Agba Isi",
+        "secondary": "Agba Nke Abụọ",
+        "accent": "Agba Mgbakwunye",
+        "background": "Agba Ndabere",
+        "text": "Agba Edemede",
+        "reset": "Tọgharịa na Mbụ"
+      },
+      "typography": {
+        "fontFamily": "Ezinụlọ Font",
+        "fontSize": "Nha Font",
+        "lineHeight": "Ogologo Ahịrị",
+        "fontWeight": "Ịdị Arọ Font",
+        "textAlign": "Nhazi Edemede"
+      },
+      "layout": {
+        "containerWidth": "Obosara Ihe Nwere",
+        "spacing": "Oghere",
+        "borderRadius": "Radius Oke",
+        "shadows": "Onyinyo"
+      },
+      "code": {
+        "css": "CSS Pụrụ Iche",
+        "javascript": "JavaScript Pụrụ Iche",
+        "html": "HTML Pụrụ Iche",
+        "warning": "Ịdọ aka na ntị: Koodu pụrụ iche nwere ike imebi ndobe gị. Jiri ya nke ọma."
+      },
+      "preview": {
+        "title": "Nlele Ugbu a",
+        "mobile": "Ekwenti",
+        "tablet": "Tablet",
+        "desktop": "Kọmputa",
+        "fullscreen": "Ihuenyo Zurụ Ezu"
+      },
+      "actions": {
+        "save": "Chekwaa Mgbanwe",
+        "reset": "Tọgharịa Niile",
+        "export": "Bupụ Ntọala",
+        "import": "Bubata Ntọala",
+        "saving": "Na-echekwa...",
+        "resetting": "Na-atọgharịa..."
+      },
+      "import": {
+        "dialog": {
+          "title": "Bubata Ntọala Nhazi",
+          "description": "Manye ntọala mbupụ gị n'okpuru",
+          "placeholder": "Manye JSON ntọala ebe a...",
+          "import": "Bubata",
+          "cancel": "Kagbuo"
+        },
+        "success": "Ebugatara ntọala nke ọma!",
+        "error": "Njehie n'ịbubata ntọala. Biko lelee nhazi."
+      },
+      "export": {
+        "success": "Ebupụrụ ntọala na faịlụ!",
+        "error": "Njehie n'ịbupụ ntọala"
+      },
+      "save": {
+        "success": "Echekwara nhazi nke ọma!",
+        "error": "Njehie n'ichekwa nhazi"
+      },
+      "reset": {
+        "confirm": {
+          "title": "Tọgharịa Nhazi Niile?",
+          "description": "Nke a ga-eweghachi ntọala niile na mbụ ha. Omume a enweghị ike ịweghachi.",
+          "confirm": "Tọgharịa Niile",
+          "cancel": "Kagbuo"
+        },
+        "success": "Atọgharịrị nhazi niile nke ọma!",
+        "error": "Njehie n'atọgharịa nhazi"
+      },
+      "validation": {
+        "invalidCss": "Nhazi CSS ezighi ezi",
+        "invalidJs": "Nhazi JavaScript ezighi ezi",
+        "invalidHtml": "Nhazi HTML ezighi ezi"
+      }
+    },
+    "tabs": {
+      "myTemplates": "Ndobe M",
+      "marketplace": "Ebe Ahịa",
+      "analytics": "Ntụle",
+      "customization": "Nhazi"
     }
   }
 }

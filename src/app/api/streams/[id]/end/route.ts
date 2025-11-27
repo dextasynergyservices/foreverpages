@@ -18,7 +18,11 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const streamId = params.id;
+    const { id } = (await params) as { id?: string };
+    if (!id) {
+      return NextResponse.json({ error: "Missing stream id" }, { status: 400 });
+    }
+    const streamId = id;
 
     // Check if stream exists and user owns it
     const stream = await prisma.memorialStream.findUnique({

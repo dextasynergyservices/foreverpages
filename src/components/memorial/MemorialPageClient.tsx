@@ -1,27 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { StreamStatus, StreamQuality } from "@/generated/prisma";
+import { StreamStatus, StreamQuality, UserTemplate, Template, Memorial } from "@/generated/prisma";
 import MemorialHero from "@/components/memorial/MemorialHero";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-
-interface Memorial {
-  id: string;
-  slug: string;
-  firstName: string;
-  lastName: string;
-  middleName: string | null;
-  biography: string | null;
-  birthDate: string;
-  deathDate: string;
-  profilePhoto: string | null;
-  coverPhoto: string | null;
-  allowComments: boolean;
-  password: string | null;
-  viewCount: number;
-  candleCount: number;
-}
+import { TemplateRenderer } from "@/components/templates/base/TemplateRenderer";
 
 interface ActiveStream {
   id: string;
@@ -42,8 +26,16 @@ interface ActiveStream {
   totalViews: number;
 }
 
+interface MemorialWithTemplate extends Memorial {
+  userTemplate:
+    | (UserTemplate & {
+        baseTemplate: Template;
+      })
+    | null;
+}
+
 interface MemorialPageClientProps {
-  memorial: Memorial;
+  memorial: MemorialWithTemplate;
   activeStream: ActiveStream | null;
 }
 
@@ -54,6 +46,12 @@ export default function MemorialPageClient({ memorial, activeStream }: MemorialP
   const requiresPassword =
     activeStream && activeStream.password && !activeStream.isPublic && !isPasswordVerified;
 
+  // If memorial has a template, use the template system
+  if (memorial.userTemplate) {
+    return <TemplateRenderer userTemplate={memorial.userTemplate} memorial={memorial} />;
+  }
+
+  // Fallback to legacy hardcoded layout
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
@@ -61,7 +59,11 @@ export default function MemorialPageClient({ memorial, activeStream }: MemorialP
       <main className="flex-1">
         {/* Dynamic Hero Section */}
         <MemorialHero
-          memorial={memorial}
+          memorial={{
+            ...memorial,
+            birthDate: memorial.birthDate.toISOString(),
+            deathDate: memorial.deathDate.toISOString(),
+          }}
           activeStream={activeStream}
           requiresPassword={!!requiresPassword}
           onPasswordVerified={() => setIsPasswordVerified(true)}

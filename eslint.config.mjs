@@ -32,6 +32,8 @@ const eslintConfig = [
       "src/generated/**",
       // Ignore compiled artifacts from the signaling server
       "signaling-server/dist/**",
+      // Ignore template fixture examples (these are intentionally unlinted)
+      "scripts/template-to-fix/**",
     ],
   },
 

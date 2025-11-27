@@ -49,6 +49,7 @@ export function canAccessDashboardSection(role: MemorialRole | null, section: st
   const permissions: Record<string, MemorialRole[]> = {
     analytics: ["OWNER", "ADMIN", "EDITOR", "CONTRIBUTOR", "VIEWER"],
     gallery: ["OWNER", "ADMIN", "EDITOR", "CONTRIBUTOR"],
+    templates: ["OWNER", "ADMIN", "EDITOR"],
     "funeral-builder": ["OWNER", "ADMIN", "EDITOR"],
     invitations: ["OWNER", "ADMIN"],
     tributes: ["OWNER", "ADMIN", "EDITOR", "CONTRIBUTOR"],
@@ -69,6 +70,7 @@ export function getAllowedDashboardSections(role: MemorialRole | null): string[]
     OWNER: [
       "analytics",
       "gallery",
+      "templates",
       "funeral-builder",
       "invitations",
       "tributes",
@@ -78,13 +80,14 @@ export function getAllowedDashboardSections(role: MemorialRole | null): string[]
     ADMIN: [
       "analytics",
       "gallery",
+      "templates",
       "funeral-builder",
       "invitations",
       "tributes",
       "livestreams",
       "settings",
     ],
-    EDITOR: ["analytics", "gallery", "funeral-builder", "tributes"],
+    EDITOR: ["analytics", "gallery", "templates", "funeral-builder", "tributes"],
     CONTRIBUTOR: ["analytics", "gallery", "tributes"],
     VIEWER: ["analytics"],
   };

@@ -384,79 +384,8 @@
         "builder": "Funeral Builder",
         "invitations": "Invitations",
         "tributes": "Tributes",
+        "templates": "Templates",
         "settings": "Settings"
-      }
-    },
-    "analytics": {
-      "title": "Analytics Dashboard",
-      "subtitle": "Track engagement and activity on your memorial pages",
-      "exportReport": "Export Report",
-      "error": "Unable to load analytics data",
-      "timeRanges": {
-        "7days": "Last 7 days",
-        "30days": "Last 30 days",
-        "90days": "Last 90 days",
-        "1year": "Last year"
-      },
-      "fromLastPeriod": "from last period",
-      "stats": {
-        "totalVisits": {
-          "title": "Total Visits",
-          "description": "Page views this month"
-        },
-        "uniqueVisitors": {
-          "title": "Unique Visitors",
-          "description": "Individual visitors"
-        },
-        "tributeMessages": {
-          "title": "Tribute Messages",
-          "description": "New tributes this week"
-        },
-        "memorialShares": {
-          "title": "Memorial Shares",
-          "description": "Social media shares"
-        }
-      },
-      "visitorTrends": {
-        "title": "Visitor Trends",
-        "description": "Daily visitors over the past 30 days"
-      },
-      "mostVisited": {
-        "title": "Most Visited Pages",
-        "description": "Popular sections of the memorial",
-        "views": "views"
-      },
-      "recentActivity": {
-        "title": "Recent Activity",
-        "description": "Latest interactions with your memorial pages"
-      },
-      "activity": {
-        "newTribute": "New tribute from {{author}} on {{memorial}}",
-        "memorialCreated": "Memorial \"{{memorial}}\" created"
-      },
-      "pages": {
-        "memorialHome": "Memorial Home",
-        "photoGallery": "Photo Gallery",
-        "tributeWall": "Tribute Wall",
-        "serviceInfo": "Service Information",
-        "biography": "Biography"
-      },
-      "memorialSummary": {
-        "title": "Memorial Summary",
-        "description": "Key information at a glance",
-        "viewMemorial": "View Memorial Page",
-        "created": "Created",
-        "status": "Status",
-        "photos": "Photos",
-        "approvedTributes": "Approved Tributes",
-        "serviceRsvps": "Service RSVPs",
-        "memorialPage": "Memorial Page"
-      },
-      "collaboratorMemorials": {
-        "title": "Memorials You're Helping Manage",
-        "subtitle": "You've been invited to collaborate on these memorials",
-        "ownedBy": "Owned by {{owner}}",
-        "manageMemorial": "Manage Memorial"
       }
     },
     "gallery": {
@@ -1117,7 +1046,100 @@
       "buttons": {
         "previous": "Previous",
         "next": "Next",
-        "create": "Create Memorial"
+        "create": "Create Memorial",
+        "creating": "Creating..."
+      },
+      "sidebar": {
+        "title": "Build steps",
+        "hint1": "Tip: save frequently",
+        "hint2": "Tip: preview on different devices"
+      },
+      "memorialDetails": {
+        "saving": "Saving...",
+        "autoSaved": "Auto-saved",
+        "profilePhoto": {
+          "label": "Profile Photo",
+          "helpText": "Upload a beautiful photo that represents them"
+        },
+        "backgroundImage": {
+          "label": "Background Image (Optional)",
+          "helpText": "A meaningful place or memory"
+        },
+        "memorialMessage": {
+          "label": "Memorial Message",
+          "placeholder": "A special message or quote that captures their spirit..."
+        },
+        "privacySetting": {
+          "label": "Privacy Setting",
+          "options": {
+            "public": "Public - Anyone can view",
+            "unlisted": "Unlisted - Only with link",
+            "private": "Private - Invited only"
+          }
+        }
+      },
+      "templates": {
+        "classic": {
+          "name": "Classic Memorial",
+          "description": "Traditional and elegant design with timeline and formal layout",
+          "features": ["Biography section", "Photo timeline", "Tribute wall", "Service information"]
+        },
+        "modern": {
+          "name": "Modern Tribute",
+          "description": "Clean, contemporary layout with photo focus and minimalist design",
+          "features": [
+            "Large photo gallery",
+            "Clean typography",
+            "Interactive tributes",
+            "Social sharing"
+          ]
+        },
+        "garden": {
+          "name": "Garden of Memories",
+          "description": "Nature-inspired theme with soft colors and organic elements",
+          "features": [
+            "Nature backgrounds",
+            "Soft color palette",
+            "Memory garden",
+            "Peaceful design"
+          ]
+        },
+        "celebration": {
+          "name": "Celebration of Life",
+          "description": "Bright and uplifting design for joyful remembrance and celebration",
+          "features": ["Vibrant colors", "Celebration focus", "Happy memories", "Uplifting tone"]
+        }
+      },
+      "content": {
+        "biography": {
+          "title": "Biography"
+        },
+        "epitaph": {
+          "title": "Epitaph",
+          "default": "In loving memory"
+        },
+        "tributes": {
+          "title": "Tributes & Memories",
+          "legacy": "Legacy",
+          "lifeStory": "Life Story"
+        },
+        "timeline": {
+          "title": "Life Timeline",
+          "born": "Born",
+          "passedAway": "Passed Away"
+        },
+        "gallery": {
+          "title": "Photo Gallery"
+        },
+        "familyTree": {
+          "title": "Family Tree"
+        },
+        "condolences": {
+          "title": "Condolences"
+        },
+        "support": {
+          "title": "Support & Donations"
+        }
       }
     },
     "settings": {
@@ -1232,6 +1254,263 @@
         "allReviewed": "All tributes have been reviewed"
       },
       "live": "Live"
+    },
+    "templates": {
+      "title": "My Templates",
+      "subtitle": "Create and manage your custom memorial templates",
+      "createButton": "Create Template",
+      "createButtonShort": "Create",
+      "createDialog": {
+        "title": "Create New Template",
+        "description": "Choose a base template and customize it for your memorial"
+      },
+      "form": {
+        "name": {
+          "label": "Template Name",
+          "placeholder": "Enter template name"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Optional description"
+        },
+        "baseTemplate": {
+          "label": "Base Template"
+        },
+        "creating": "Creating..."
+      },
+      "list": {
+        "title": "Your Templates ({count})",
+        "subtitle": "Templates you've created and customized"
+      },
+      "error": {
+        "title": "Failed to Load Templates"
+      },
+      "failedToLoadBaseTemplates": "Failed to load base templates",
+      "empty": {
+        "title": "No Templates Yet",
+        "description": "Create your first custom template to get started",
+        "createButton": "Create First Template"
+      },
+      "actions": {
+        "preview": "Preview",
+        "edit": "Edit",
+        "duplicate": "Duplicate",
+        "delete": "Delete"
+      },
+      "deleteDialog": {
+        "title": "Delete Template",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "deleting": "Deleting...",
+        "confirm": "Delete Template"
+      },
+      "createSuccess": "Template created successfully",
+      "createError": "Failed to create template",
+      "deleteSuccess": "Template deleted successfully",
+      "deleteError": "Failed to delete template",
+      "validation": {
+        "nameRequired": "Template name is required",
+        "nameTooShort": "Template name must be at least 3 characters",
+        "nameTooLong": "Template name cannot exceed 100 characters",
+        "nameInvalidChars": "Template name contains invalid characters",
+        "descriptionTooLong": "Description cannot exceed 500 characters",
+        "descriptionInvalidChars": "Description contains invalid characters",
+        "searchQueryRequired": "Search query is required",
+        "searchQueryTooShort": "Search query must be at least 2 characters",
+        "searchQueryInvalidChars": "Search query contains invalid characters",
+        "colorInvalid": "Invalid color format",
+        "fontSizeInvalid": "Font size must be between 8px and 72px",
+        "spacingInvalid": "Spacing must be between 0px and 100px",
+        "borderRadiusInvalid": "Border radius must be between 0px and 50px",
+        "maxWidthInvalid": "Maximum width must be between 200px and 2000px",
+        "lineHeightInvalid": "Line height must be between 0.8 and 3.0",
+        "customizationInvalid": "Template customization contains invalid values",
+        "importInvalidFormat": "Invalid import file format",
+        "importInvalidData": "Import data contains invalid template configuration",
+        "importFileTooLarge": "Import file is too large (maximum 5MB)"
+      }
+    },
+    "marketplace": {
+      "title": "Template Marketplace",
+      "subtitle": "Discover premium templates to enhance your memorials",
+      "search": {
+        "placeholder": "Search templates...",
+        "noResults": "No templates found matching your search"
+      },
+      "filters": {
+        "all": "All Templates",
+        "free": "Free",
+        "premium": "Premium",
+        "categories": {
+          "traditional": "Traditional",
+          "modern": "Modern",
+          "nature": "Nature",
+          "religious": "Religious",
+          "military": "Military",
+          "sports": "Sports",
+          "music": "Music",
+          "artistic": "Artistic"
+        },
+        "sort": {
+          "popular": "Most Popular",
+          "newest": "Newest",
+          "rating": "Highest Rated",
+          "priceLow": "Price: Low to High",
+          "priceHigh": "Price: High to Low"
+        }
+      },
+      "template": {
+        "preview": "Preview",
+        "download": "Download",
+        "purchased": "Purchased",
+        "price": "Price",
+        "category": "Category",
+        "downloads": "Downloads",
+        "rating": "Rating",
+        "features": "Features"
+      },
+      "purchase": {
+        "dialog": {
+          "title": "Purchase Template",
+          "description": "You're about to purchase \"{name}\" for {price}",
+          "confirm": "Confirm Purchase",
+          "cancel": "Cancel",
+          "processing": "Processing..."
+        },
+        "success": "Template purchased successfully!",
+        "error": "Failed to purchase template"
+      },
+      "download": {
+        "success": "Template downloaded successfully!",
+        "error": "Failed to download template"
+      },
+      "loading": "Loading templates...",
+      "error": "Failed to load templates"
+    },
+    "analytics": {
+      "title": "Template Analytics",
+      "subtitle": "Track performance and usage of your templates",
+      "metrics": {
+        "totalTemplates": "Total Templates",
+        "totalDownloads": "Total Downloads",
+        "totalRevenue": "Total Revenue",
+        "averageRating": "Average Rating",
+        "totalViews": "Total Views",
+        "uniqueVisitors": "Unique Visitors",
+        "averageTime": "Avg. Time on Page",
+        "conversionRate": "Conversion Rate",
+        "popularTemplates": "Popular Templates",
+        "usageTrends": "Usage Trends",
+        "conversionRateLabel": "Conversion Rate",
+        "averageSessionDuration": "Avg. Session Duration",
+        "bounceRate": "Bounce Rate"
+      },
+      "charts": {
+        "viewsOverTime": "Views Over Time",
+        "templateUsage": "Template Usage Distribution",
+        "visitorDemographics": "Visitor Demographics",
+        "performanceMetrics": "Performance Metrics"
+      },
+      "periods": {
+        "7days": "Last 7 Days",
+        "30days": "Last 30 Days",
+        "90days": "Last 90 Days",
+        "1year": "Last Year"
+      },
+      "loading": "Loading analytics...",
+      "error": "Failed to load analytics",
+      "noData": "No analytics data available yet"
+    },
+    "customization": {
+      "title": "Advanced Customization",
+      "subtitle": "Fine-tune your template with advanced options",
+      "sections": {
+        "colors": "Colors",
+        "typography": "Typography",
+        "layout": "Layout",
+        "code": "Custom Code"
+      },
+      "colors": {
+        "primary": "Primary Color",
+        "secondary": "Secondary Color",
+        "accent": "Accent Color",
+        "background": "Background Color",
+        "text": "Text Color",
+        "reset": "Reset to Default"
+      },
+      "typography": {
+        "fontFamily": "Font Family",
+        "fontSize": "Font Size",
+        "lineHeight": "Line Height",
+        "fontWeight": "Font Weight",
+        "textAlign": "Text Alignment"
+      },
+      "layout": {
+        "containerWidth": "Container Width",
+        "spacing": "Spacing",
+        "borderRadius": "Border Radius",
+        "shadows": "Shadows"
+      },
+      "code": {
+        "css": "Custom CSS",
+        "javascript": "Custom JavaScript",
+        "html": "Custom HTML",
+        "warning": "Warning: Custom code can break your template. Use with caution."
+      },
+      "preview": {
+        "title": "Live Preview",
+        "mobile": "Mobile",
+        "tablet": "Tablet",
+        "desktop": "Desktop",
+        "fullscreen": "Fullscreen"
+      },
+      "actions": {
+        "save": "Save Changes",
+        "reset": "Reset All",
+        "export": "Export Settings",
+        "import": "Import Settings",
+        "saving": "Saving...",
+        "resetting": "Resetting..."
+      },
+      "import": {
+        "dialog": {
+          "title": "Import Customization Settings",
+          "description": "Paste your exported settings below",
+          "placeholder": "Paste JSON settings here...",
+          "import": "Import",
+          "cancel": "Cancel"
+        },
+        "success": "Settings imported successfully!",
+        "error": "Failed to import settings. Please check the format."
+      },
+      "export": {
+        "success": "Settings exported to clipboard!",
+        "error": "Failed to export settings"
+      },
+      "save": {
+        "success": "Customization saved successfully!",
+        "error": "Failed to save customization"
+      },
+      "reset": {
+        "confirm": {
+          "title": "Reset All Customizations?",
+          "description": "This will restore all settings to their default values. This action cannot be undone.",
+          "confirm": "Reset All",
+          "cancel": "Cancel"
+        },
+        "success": "All customizations reset successfully!",
+        "error": "Failed to reset customizations"
+      },
+      "validation": {
+        "invalidCss": "Invalid CSS syntax",
+        "invalidJs": "Invalid JavaScript syntax",
+        "invalidHtml": "Invalid HTML syntax"
+      }
+    },
+    "tabs": {
+      "myTemplates": "My Templates",
+      "marketplace": "Marketplace",
+      "analytics": "Analytics",
+      "customization": "Customization"
     }
   },
   "termsAndConditions": {

@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useTheme } from "@/hooks/useTheme";
+import { useTranslations } from "@/hooks/useTranslations";
 import toast from "react-hot-toast";
 
 interface BasicInfoData {
@@ -22,6 +23,7 @@ interface BasicInfoData {
 
 export const BasicInfoForm: React.FC = () => {
   const { theme } = useTheme();
+  const { t } = useTranslations();
   const [formData, setFormData] = useState<BasicInfoData>({
     fullName: "",
     birthDate: "",
@@ -54,11 +56,13 @@ export const BasicInfoForm: React.FC = () => {
         localStorage.setItem("memorialBasicInfo", JSON.stringify(data));
         setTimeout(() => {
           setIsAutoSaving(false);
-          toast.success("Auto-saved", { duration: 1000 });
+          toast.success(t("dashboard.pageBuilder.basicInfo.autoSaved", {}, "Auto-saved"), {
+            duration: 1000,
+          });
         }, 500);
       }, 1000); // 1 second debounce
     };
-  }, []);
+  }, [t]);
 
   const debouncedSave = autoSave();
 
@@ -72,19 +76,31 @@ export const BasicInfoForm: React.FC = () => {
 
   return (
     <div className="space-y-6 max-w-xl mx-auto">
-      {isAutoSaving && <div className={`text-sm ${textMuted} text-center`}>Saving...</div>}
+      {isAutoSaving && (
+        <div className={`text-sm ${textMuted} text-center`}>
+          {t("dashboard.pageBuilder.basicInfo.saving", {}, "Saving...")}
+        </div>
+      )}
       <div>
-        <Label htmlFor="full-name">Full Name *</Label>
+        <Label htmlFor="full-name">
+          {t("dashboard.pageBuilder.basicInfo.fullName.label", {}, "Full Name *")}
+        </Label>
         <Input
           id="full-name"
-          placeholder="Enter the full name"
+          placeholder={t(
+            "dashboard.pageBuilder.basicInfo.fullName.placeholder",
+            {},
+            "Enter the full name"
+          )}
           value={formData.fullName}
           onChange={(e) => handleInputChange("fullName", e.target.value)}
         />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <Label htmlFor="birth-date">Birth Date</Label>
+          <Label htmlFor="birth-date">
+            {t("dashboard.pageBuilder.basicInfo.birthDate.label", {}, "Birth Date")}
+          </Label>
           <Input
             id="birth-date"
             type="date"
@@ -93,7 +109,9 @@ export const BasicInfoForm: React.FC = () => {
           />
         </div>
         <div>
-          <Label htmlFor="passing-date">Date of Passing</Label>
+          <Label htmlFor="passing-date">
+            {t("dashboard.pageBuilder.basicInfo.passingDate.label", {}, "Date of Passing")}
+          </Label>
           <Input
             id="passing-date"
             type="date"
@@ -103,29 +121,55 @@ export const BasicInfoForm: React.FC = () => {
         </div>
       </div>
       <div>
-        <Label htmlFor="relationship">Your Relationship</Label>
+        <Label htmlFor="relationship">
+          {t("dashboard.pageBuilder.basicInfo.relationship.label", {}, "Your Relationship")}
+        </Label>
         <Select
           value={formData.relationship}
           onValueChange={(value) => handleInputChange("relationship", value)}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Select your relationship" />
+            <SelectValue
+              placeholder={t(
+                "dashboard.pageBuilder.basicInfo.relationship.placeholder",
+                {},
+                "Select your relationship"
+              )}
+            />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="spouse">Spouse</SelectItem>
-            <SelectItem value="child">Child</SelectItem>
-            <SelectItem value="parent">Parent</SelectItem>
-            <SelectItem value="sibling">Sibling</SelectItem>
-            <SelectItem value="family">Other Family</SelectItem>
-            <SelectItem value="friend">Friend</SelectItem>
+            <SelectItem value="spouse">
+              {t("dashboard.pageBuilder.basicInfo.relationship.options.spouse", {}, "Spouse")}
+            </SelectItem>
+            <SelectItem value="child">
+              {t("dashboard.pageBuilder.basicInfo.relationship.options.child", {}, "Child")}
+            </SelectItem>
+            <SelectItem value="parent">
+              {t("dashboard.pageBuilder.basicInfo.relationship.options.parent", {}, "Parent")}
+            </SelectItem>
+            <SelectItem value="sibling">
+              {t("dashboard.pageBuilder.basicInfo.relationship.options.sibling", {}, "Sibling")}
+            </SelectItem>
+            <SelectItem value="family">
+              {t("dashboard.pageBuilder.basicInfo.relationship.options.family", {}, "Other Family")}
+            </SelectItem>
+            <SelectItem value="friend">
+              {t("dashboard.pageBuilder.basicInfo.relationship.options.friend", {}, "Friend")}
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>
       <div>
-        <Label htmlFor="short-bio">Brief Biography</Label>
+        <Label htmlFor="short-bio">
+          {t("dashboard.pageBuilder.basicInfo.shortBio.label", {}, "Brief Biography")}
+        </Label>
         <Textarea
           id="short-bio"
-          placeholder="Share a few words about their life, personality, and what made them special..."
+          placeholder={t(
+            "dashboard.pageBuilder.basicInfo.shortBio.placeholder",
+            {},
+            "Share a few words about their life, personality, and what made them special..."
+          )}
           rows={4}
           value={formData.shortBio}
           onChange={(e) => handleInputChange("shortBio", e.target.value)}

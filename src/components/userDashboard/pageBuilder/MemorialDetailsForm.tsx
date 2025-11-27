@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useTheme } from "@/hooks/useTheme";
+import { useTranslations } from "@/hooks/useTranslations";
 import toast from "react-hot-toast";
 
 interface MemorialDetailsData {
@@ -21,6 +22,7 @@ interface MemorialDetailsData {
 
 export const MemorialDetailsForm: React.FC = () => {
   const { theme } = useTheme();
+  const { t } = useTranslations();
   const [formData, setFormData] = useState<MemorialDetailsData>({
     profilePhoto: null,
     backgroundImage: null,
@@ -62,11 +64,13 @@ export const MemorialDetailsForm: React.FC = () => {
         localStorage.setItem("memorialDetails", JSON.stringify(dataToSave));
         setTimeout(() => {
           setIsAutoSaving(false);
-          toast.success("Auto-saved", { duration: 1000 });
+          toast.success(t("dashboard.pageBuilder.memorialDetails.autoSaved", {}, "Auto-saved"), {
+            duration: 1000,
+          });
         }, 500);
       }, 1000); // 1 second debounce
     };
-  }, []);
+  }, [t]);
 
   const debouncedSave = autoSave();
 
@@ -90,39 +94,71 @@ export const MemorialDetailsForm: React.FC = () => {
 
   return (
     <div className="space-y-6 max-w-xl mx-auto">
-      {isAutoSaving && <div className={`text-sm ${textMuted} text-center`}>Saving...</div>}
+      {isAutoSaving && (
+        <div className={`text-sm ${textMuted} text-center`}>
+          {t("dashboard.pageBuilder.memorialDetails.saving", {}, "Saving...")}
+        </div>
+      )}
       <div>
-        <Label htmlFor="profile-photo">Profile Photo</Label>
+        <Label htmlFor="profile-photo">
+          {t("dashboard.pageBuilder.memorialDetails.profilePhoto.label", {}, "Profile Photo")}
+        </Label>
         <Input
           id="profile-photo"
           type="file"
           accept="image/*"
           onChange={(e) => handleFileChange("profilePhoto", e.target.files?.[0] || null)}
         />
-        <p className={`text-sm mt-1 ${textMuted}`}>Upload a beautiful photo that represents them</p>
+        <p className={`text-sm mt-1 ${textMuted}`}>
+          {t(
+            "dashboard.pageBuilder.memorialDetails.profilePhoto.helpText",
+            {},
+            "Upload a beautiful photo that represents them"
+          )}
+        </p>
       </div>
       <div>
-        <Label htmlFor="background-image">Background Image (Optional)</Label>
+        <Label htmlFor="background-image">
+          {t(
+            "dashboard.pageBuilder.memorialDetails.backgroundImage.label",
+            {},
+            "Background Image (Optional)"
+          )}
+        </Label>
         <Input
           id="background-image"
           type="file"
           accept="image/*"
           onChange={(e) => handleFileChange("backgroundImage", e.target.files?.[0] || null)}
         />
-        <p className={`text-sm mt-1 ${textMuted}`}>A meaningful place or memory</p>
+        <p className={`text-sm mt-1 ${textMuted}`}>
+          {t(
+            "dashboard.pageBuilder.memorialDetails.backgroundImage.helpText",
+            {},
+            "A meaningful place or memory"
+          )}
+        </p>
       </div>
       <div>
-        <Label htmlFor="memorial-message">Memorial Message</Label>
+        <Label htmlFor="memorial-message">
+          {t("dashboard.pageBuilder.memorialDetails.memorialMessage.label", {}, "Memorial Message")}
+        </Label>
         <Textarea
           id="memorial-message"
-          placeholder="A special message or quote that captures their spirit..."
+          placeholder={t(
+            "dashboard.pageBuilder.memorialDetails.memorialMessage.placeholder",
+            {},
+            "A special message or quote that captures their spirit..."
+          )}
           rows={3}
           value={formData.memorialMessage}
           onChange={(e) => handleInputChange("memorialMessage", e.target.value)}
         />
       </div>
       <div>
-        <Label htmlFor="privacy-setting">Privacy Setting</Label>
+        <Label htmlFor="privacy-setting">
+          {t("dashboard.pageBuilder.memorialDetails.privacySetting.label", {}, "Privacy Setting")}
+        </Label>
         <Select
           value={formData.privacySetting}
           onValueChange={(value) => handleInputChange("privacySetting", value)}
@@ -131,9 +167,27 @@ export const MemorialDetailsForm: React.FC = () => {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="public">Public - Anyone can view</SelectItem>
-            <SelectItem value="unlisted">Unlisted - Only with link</SelectItem>
-            <SelectItem value="private">Private - Invited only</SelectItem>
+            <SelectItem value="public">
+              {t(
+                "dashboard.pageBuilder.memorialDetails.privacySetting.options.public",
+                {},
+                "Public - Anyone can view"
+              )}
+            </SelectItem>
+            <SelectItem value="unlisted">
+              {t(
+                "dashboard.pageBuilder.memorialDetails.privacySetting.options.unlisted",
+                {},
+                "Unlisted - Only with link"
+              )}
+            </SelectItem>
+            <SelectItem value="private">
+              {t(
+                "dashboard.pageBuilder.memorialDetails.privacySetting.options.private",
+                {},
+                "Private - Invited only"
+              )}
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>

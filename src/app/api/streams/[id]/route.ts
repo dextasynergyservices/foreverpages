@@ -13,11 +13,12 @@ import { notifySignalingMetadataUpdate } from "@/lib/signaling";
 export async function GET(req: NextRequest, context: { params?: { id?: string } }) {
   try {
     const { params } = context || {};
-    if (!params?.id) {
+    const { id } = (await params) as { id?: string };
+    if (!id) {
       return NextResponse.json({ error: "Missing stream id" }, { status: 400 });
     }
     const session = await getServerSession(authOptions);
-    const streamId = params.id;
+    const streamId = id;
 
     const stream = await prisma.memorialStream.findUnique({
       where: { id: streamId },
@@ -115,7 +116,8 @@ export async function GET(req: NextRequest, context: { params?: { id?: string } 
 export async function PATCH(req: NextRequest, context: { params?: { id?: string } }) {
   try {
     const { params } = context || {};
-    if (!params?.id) {
+    const { id } = (await params) as { id?: string };
+    if (!id) {
       return NextResponse.json({ error: "Missing stream id" }, { status: 400 });
     }
     const session = await getServerSession(authOptions);
@@ -123,7 +125,7 @@ export async function PATCH(req: NextRequest, context: { params?: { id?: string 
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const streamId = params.id;
+    const streamId = id;
     const body = await req.json();
 
     // Check if stream exists and user owns it
@@ -217,7 +219,8 @@ export async function PATCH(req: NextRequest, context: { params?: { id?: string 
 export async function DELETE(req: NextRequest, context: { params?: { id?: string } }) {
   try {
     const { params } = context || {};
-    if (!params?.id) {
+    const { id } = (await params) as { id?: string };
+    if (!id) {
       return NextResponse.json({ error: "Missing stream id" }, { status: 400 });
     }
     const session = await getServerSession(authOptions);
@@ -225,7 +228,7 @@ export async function DELETE(req: NextRequest, context: { params?: { id?: string
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const streamId = params.id;
+    const streamId = id;
 
     // Check if stream exists and user owns it
     const stream = await prisma.memorialStream.findUnique({

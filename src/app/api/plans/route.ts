@@ -6,12 +6,15 @@ export async function GET(request: NextRequest) {
     // Get language from query params or header, default to 'en'
     const searchParams = request.nextUrl.searchParams;
     const language = searchParams.get("lang") || searchParams.get("language") || "en";
+    const all = searchParams.get("all") === "true";
 
-    // Fetch all visible plans with their translations
+    // Fetch all visible plans with their translations (or all if admin)
     const plans = await prisma.plan.findMany({
-      where: {
-        isVisible: true,
-      },
+      where: all
+        ? {}
+        : {
+            isVisible: true,
+          },
       include: {
         translations: {
           where: {

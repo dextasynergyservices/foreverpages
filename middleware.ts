@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { rateLimitMiddleware } from "@/lib/rate-limit";
+import { paymentGuard } from "@/middleware/payment-guard";
 
 /**
  * Authentication middleware for protecting user-related and admin routes.
@@ -22,39 +23,10 @@ import { rateLimitMiddleware } from "@/lib/rate-limit";
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // === PAYMENT GUARD: Protect signup routes ===
-  // Signup pages don't require authentication, but may require payment verification
+  // Delegate signup/payment checks to the centralized payment guard helper
   if (pathname === "/signup" || pathname === "/auth/signup") {
-    const typeParam = req.nextUrl.searchParams.get("type");
-    const invitationParam = req.nextUrl.searchParams.get("invitation");
-
-    console.log("🔍 Signup route hit:", { pathname, typeParam, invitationParam });
-
-    // Allow collaborators to signup without payment
-    if (typeParam === "collaborator" && invitationParam) {
-      console.log("✅ Collaborator signup - allowing access");
-      return NextResponse.next();
-    }
-
-    // Check if payment reference exists in cookies or query params
-    const paymentParam = req.nextUrl.searchParams.get("payment");
-    const paymentCookie = req.cookies.get("paymentId")?.value;
-
-    console.log("💳 Payment check:", { paymentParam, paymentCookie });
-
-    // Allow access if payment exists in either location
-    if (!paymentParam && !paymentCookie) {
-      // No payment found - redirect to packages page
-      console.log("❌ No payment found - redirecting to packages");
-      const packagesUrl = new URL("/packages", req.url);
-      const response = NextResponse.redirect(packagesUrl);
-      response.headers.set("X-Redirect-Reason", "payment-required");
-      return response;
-    }
-
-    // Payment verified or collaborator - allow signup
-    console.log("✅ Payment verified - allowing signup");
-    return NextResponse.next();
+    const result = await paymentGuard(req);
+    if (result) return result;
   }
 
   // Add no-cache headers for auth-related routes

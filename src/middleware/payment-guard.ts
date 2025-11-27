@@ -9,7 +9,7 @@ import type { NextRequest } from "next/server";
  * before accessing protected routes like /signup
  */
 
-export function middleware(request: NextRequest) {
+export async function paymentGuard(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Only apply to signup route
@@ -46,9 +46,5 @@ export function middleware(request: NextRequest) {
 }
 
 // Configure which routes this middleware applies to
-export const config = {
-  matcher: [
-    "/signup",
-    // Add other routes that need payment protection
-  ],
-};
+// Note: route matcher config is centralized in `middleware.ts`.
+// Avoid exporting `config` here to prevent duplicate/invalid segment configuration exports.
