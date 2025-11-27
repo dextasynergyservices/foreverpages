@@ -174,8 +174,27 @@ jobs:
       - name: "Prettier: auto-fix UI primitives (before next build)"
         run: pnpm exec prettier --write src/components/ui/badge.tsx src/components/ui/button.tsx src/components/ui/sheet.tsx || true
 
-      - name: Build
-        run: pnpm build
+      - name: Run Next build (capture logs)
+        run: |
+          echo '=== START next build (logs to build.log) ==='
+          pnpm exec next build 2>&1 | tee build.log || true
+
+      - name: Upload build log artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build-log
+          path: build.log
+
+      - name: Fail on invalid segment export
+        if: always()
+        run: |
+          if grep -q "Invalid segment configuration export detected" build.log; then
+            echo "Detected invalid segment configuration in build.log - failing job";
+            exit 1;
+          else
+            echo "No invalid segment configuration detected in build.log";
+          fi
 
   debug-prettier:
     name: Debug Prettier
