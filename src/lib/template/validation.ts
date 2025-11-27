@@ -8,7 +8,6 @@ import {
   cleanupExtractionBase,
 } from "@/server/template-extracts/tempExtract";
 import Ajv from "ajv";
-import sharp from "sharp";
 import schema from "./schemas/config.schema.json";
 import { scanFileForSecurity, SecurityFinding } from "./securityScan";
 import { uploadToCloudinary } from "../cloudinary";
@@ -304,7 +303,20 @@ export async function validateAndExtractZip(
       const checkAndUpload = async (p: string | null, key: "preview" | "thumbnail") => {
         if (!p) return;
         const buf = await fs.promises.readFile(p);
-        const meta = (await sharp(buf).metadata()) as {
+        // Import sharp lazily to avoid requiring native bindings at Next build/collection time
+        const sharpModule = await import("sharp");
+
+        type SharpLike = (input: Buffer) => {
+          metadata: () => Promise<
+            Record<string, unknown> & { format?: string; width?: number; height?: number }
+          >;
+        };
+
+        const sharpFn = (sharpModule &&
+          (sharpModule.default || sharpModule)) as unknown as SharpLike;
+
+        // Call sharp to obtain image metadata
+        const meta = (await sharpFn(buf).metadata()) as {
           format?: string | undefined;
           width?: number | undefined;
           height?: number | undefined;
