@@ -29,10 +29,17 @@ jobs:
         with:
           version: 8
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+      - name: Verify pnpm + Node
+        run: |
+          pnpm -v
+          node -v
+          npm -v || true
+
+      - name: Cache pnpm store
+        uses: actions/cache@v3
         with:
-          version: 8
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: Download template package
         if: ${{ github.event.client_payload && github.event.client_payload.packageUrl }}
@@ -94,9 +101,9 @@ jobs:
       - name: Install uploader dependencies
         if: ${{ always() }}
         run: |
-          # Install minimal uploader deps (cloudinary + node-fetch v2)
-          npm init -y
-          npm install --no-audit --no-fund cloudinary@^1.32.0 node-fetch@2
+          # Install minimal uploader deps (cloudinary + node-fetch v2 + unzipper) using pnpm
+          pnpm init -y
+          pnpm add --no-frozen-lockfile cloudinary@^1.32.0 node-fetch@2 unzipper
 
       - name: Upload build to Cloudinary and POST callback
         if: ${{ always() }}
@@ -228,8 +235,6 @@ jobs:
             }
           })();
           EOF
-          # install unzipper
-          npm install --no-audit --no-fund unzipper
           node upload_and_callback.js
 
       - name: Upload artifacts
