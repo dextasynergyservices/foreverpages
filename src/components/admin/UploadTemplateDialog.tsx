@@ -79,6 +79,19 @@ export default function UploadTemplateDialog({
   const [planQuery, setPlanQuery] = useState("");
   const [categoryQuery, setCategoryQuery] = useState("");
   const [uploadedTemplateId, setUploadedTemplateId] = useState<string | null>(null);
+  // Persist last uploaded template id in session so admin can see status across navigation
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem("lastUploadedTemplateId");
+      if (saved) setUploadedTemplateId(saved);
+    } catch {
+      // ignore
+    }
+  }, []);
+  const [prUrl, setPrUrl] = useState<string | null>(null);
+  const [prNumber, setPrNumber] = useState<string | null>(null);
+  const [publishUrl, setPublishUrl] = useState<string | null>(null);
+  const [applyError, setApplyError] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement | null>(null);
   const dialogRef = useRef<HTMLDivElement | null>(null);
@@ -148,15 +161,42 @@ export default function UploadTemplateDialog({
             resolve(parsed);
           } else {
             setUploadStep("error");
-            console.error("Upload failed", { status: xhr.status, response: parsed || text });
+            // Collect response headers for diagnostics
+            const headers: Record<string, string> = {};
             try {
-              if (parsed && typeof parsed === "object")
+              xhr
+                .getAllResponseHeaders()
+                .split("\r\n")
+                .filter(Boolean)
+                .forEach((h) => {
+                  const idx = h.indexOf(":");
+                  if (idx > 0) headers[h.slice(0, idx).trim()] = h.slice(idx + 1).trim();
+                });
+            } catch {}
+
+            console.error("Upload failed", {
+              status: xhr.status,
+              statusText: xhr.statusText,
+              headers,
+              // include parsed object when available for easier debugging
+              parsed: parsed || null,
+              text: text || null,
+            });
+
+            try {
+              if (parsed && typeof parsed === "object") {
                 console.error("Upload response (full):", JSON.stringify(parsed, null, 2));
-              else console.error("Upload response (text):", text);
+              } else if (text) {
+                console.error("Upload response (text):", text);
+              }
             } catch (ee) {
               console.error("Failed to stringify server response", ee);
             }
-            reject(parsed || new Error("Upload failed"));
+
+            // Attach helpful hint to rejected error
+            const errToReject =
+              parsed || new Error(`Upload failed: ${xhr.status} ${xhr.statusText}`);
+            reject(errToReject);
           }
         };
 
@@ -167,8 +207,45 @@ export default function UploadTemplateDialog({
         };
 
         xhr.onerror = () => {
+          const raw = xhr.responseText;
+          let parsed: unknown = undefined;
+          try {
+            parsed = raw ? JSON.parse(raw) : undefined;
+          } catch {
+            /* ignore parse errors */
+          }
+
+          const headers: Record<string, string> = {};
+          try {
+            xhr
+              .getAllResponseHeaders()
+              .split("\r\n")
+              .filter(Boolean)
+              .forEach((h) => {
+                const idx = h.indexOf(":");
+                if (idx > 0) headers[h.slice(0, idx).trim()] = h.slice(idx + 1).trim();
+              });
+          } catch {
+            /* ignore */
+          }
+
+          console.error("Upload failed (network/error)", {
+            status: xhr.status,
+            statusText: xhr.statusText,
+            headers,
+            responseText: raw,
+            parsedBody: parsed,
+            xhr,
+          });
+
           setUploadStep("error");
-          reject(new Error("Upload failed"));
+          const maybeMsg =
+            parsed && typeof parsed === "object"
+              ? (parsed as Record<string, unknown>)["message"]
+              : undefined;
+          const parsedMessage = typeof maybeMsg === "string" ? maybeMsg : undefined;
+          setApiError(parsedMessage || `Upload failed: ${xhr.status} ${xhr.statusText}`);
+          reject(parsed || new Error(`Upload failed: ${xhr.status} ${xhr.statusText}`));
         };
 
         xhr.send(form);
@@ -191,6 +268,8 @@ export default function UploadTemplateDialog({
   const [logsUrl, setLogsUrl] = useState<string | null>(null);
   const [generatedManifest, setGeneratedManifest] = useState<Record<string, unknown> | null>(null);
   const [generatedNotes, setGeneratedNotes] = useState<string[] | null>(null);
+  const [rebuildLoading, setRebuildLoading] = useState(false);
+  const [sseError, setSseError] = useState<string | null>(null);
 
   const isControlled = typeof controlledOpen === "boolean";
   const openState = isControlled ? controlledOpen! : internalOpen;
@@ -331,6 +410,9 @@ export default function UploadTemplateDialog({
             ? (data.data.templateId as string | undefined)
             : undefined;
         setUploadedTemplateId(tid ?? null);
+        try {
+          if (tid) sessionStorage.setItem("lastUploadedTemplateId", tid);
+        } catch {}
         setUploadStep("done");
         // capture generated manifest from server response if present (defensive)
         const gm =
@@ -388,7 +470,7 @@ export default function UploadTemplateDialog({
     } catch {}
   }
 
-  async function fetchStatusAndLogs() {
+  const fetchStatusAndLogs = React.useCallback(async () => {
     if (!uploadedTemplateId) return;
     try {
       const res = await fetch(`/api/admin/templates/${uploadedTemplateId}/status`);
@@ -397,6 +479,15 @@ export default function UploadTemplateDialog({
       setLogs((j && (j.logs as string)) || null);
       setPackageUrl((j && (j.packageUrl as string)) || null);
       setLogsUrl((j && (j.logsUrl as string)) || null);
+      // capture PR/publish links if backend returns them
+      const maybePr = j ? (j.prUrl as string) || null : null;
+      const maybePrNumber = j ? (j.prNumber as string) || null : null;
+      const maybePublish = j
+        ? (j.publishUrl as string) || (j.publishedUrl as string) || null
+        : null;
+      setPrUrl(maybePr || null);
+      setPrNumber(maybePrNumber || null);
+      setPublishUrl(maybePublish || null);
       // Map server processing status to UI steps
       const s = j?.status as string | undefined;
       if (s === "PROCESSING") {
@@ -414,11 +505,78 @@ export default function UploadTemplateDialog({
     } catch {
       setLogs("Failed to fetch logs");
     }
-  }
+  }, [uploadedTemplateId]);
+
+  // When there's a persisted uploadedTemplateId, poll for status/logs and links periodically
+  useEffect(() => {
+    if (!uploadedTemplateId) return;
+    // fetch immediately and then poll
+    fetchStatusAndLogs();
+
+    // Also wire Server-Sent Events for real-time updates
+    let es: EventSource | null = null;
+    try {
+      es = new EventSource(`/api/admin/templates/${uploadedTemplateId}/events`);
+      es.addEventListener("message", (ev) => {
+        try {
+          const data = JSON.parse(ev.data);
+          if (data?.type === "update" && data.payload) {
+            const p = data.payload as Record<string, unknown>;
+            setLogs((p.logs as string) || null);
+            setPackageUrl((p.packageUrl as string) || null);
+            setLogsUrl((p.logsUrl as string) || null);
+            setPrUrl((p.prUrl as string) || null);
+            // try to update prNumber if present
+            const pn = (p.prNumber as string) || null;
+            if (pn) setPrNumber(pn);
+            // map status to process step
+            const s = p.status as string | undefined;
+            if (s === "PROCESSING") setProcessStep("running");
+            else if (s === "VALIDATED" || s === "PUBLISHED") setProcessStep("done");
+            else if (s === "ERROR") setProcessStep("error");
+          } else if (data?.type === "error") {
+            setSseError(data.message || "SSE error");
+          }
+        } catch {
+          // ignore broken events
+        }
+      });
+    } catch {
+      // fallback to polling only
+    }
+
+    const iv = setInterval(() => {
+      fetchStatusAndLogs();
+    }, 3000);
+
+    return () => {
+      clearInterval(iv);
+      try {
+        es?.close();
+      } catch {}
+    };
+  }, [uploadedTemplateId, fetchStatusAndLogs]);
 
   return (
     <Dialog.Root open={openState} onOpenChange={setOpenState}>
-      {!hideTrigger && <Dialog.Trigger className="btn">Upload Template</Dialog.Trigger>}
+      {!hideTrigger && (
+        <div className="flex items-center gap-2">
+          <Dialog.Trigger className="btn">Upload Template</Dialog.Trigger>
+          {uploadedTemplateId && (
+            <a
+              className="inline-flex items-center gap-2 rounded px-2 py-1 text-sm bg-slate-100"
+              href={`/admin/templates/${uploadedTemplateId}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span>
+                {status === "PROCESSING" ? "Processing" : prNumber ? `PR #${prNumber}` : "Uploaded"}
+              </span>
+              {prUrl && <span className="text-xs text-blue-600">PR</span>}
+            </a>
+          )}
+        </div>
+      )}
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/40" />
         <Dialog.Content
@@ -735,11 +893,22 @@ export default function UploadTemplateDialog({
                     Download package
                   </a>
                 )}
+                {prUrl && (
+                  <a className="btn-outline" href={prUrl} target="_blank" rel="noreferrer">
+                    View PR
+                  </a>
+                )}
+                {publishUrl && (
+                  <a className="btn" href={publishUrl} target="_blank" rel="noreferrer">
+                    View Published
+                  </a>
+                )}
                 {uploadedTemplateId && (
                   <button
                     className="btn-ghost"
                     onClick={async () => {
                       try {
+                        setRebuildLoading(true);
                         const res = await fetch(
                           `/api/admin/templates/${uploadedTemplateId}/rebuild`,
                           {
@@ -751,10 +920,39 @@ export default function UploadTemplateDialog({
                       } catch (e) {
                         console.error(e);
                         toast.error("Failed to dispatch rebuild");
+                      } finally {
+                        setRebuildLoading(false);
                       }
                     }}
                   >
-                    Re-run CI
+                    {rebuildLoading ? (
+                      <span className="inline-flex items-center gap-2">
+                        <svg
+                          className="animate-spin h-4 w-4"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          aria-hidden
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                          />
+                        </svg>
+                        Rebuilding...
+                      </span>
+                    ) : (
+                      "Re-run CI"
+                    )}
                   </button>
                 )}
               </div>
@@ -763,6 +961,61 @@ export default function UploadTemplateDialog({
                   {logs}
                 </pre>
               )}
+              {sseError && (
+                <div className="mt-2 text-sm text-red-600">
+                  <strong>SSE error:</strong>
+                  <div className="whitespace-pre-wrap">{sseError}</div>
+                </div>
+              )}
+              {/* Prominent processing / open button */}
+              <div className="mt-3">
+                {uploadedTemplateId && (
+                  <div className="flex items-center gap-2">
+                    {status === "PROCESSING" || processStep === "running" ? (
+                      <button className="btn btn-primary inline-flex items-center gap-2" disabled>
+                        <svg
+                          className="animate-spin h-4 w-4"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          aria-hidden
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                          />
+                        </svg>
+                        Processing...
+                      </button>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <a
+                          className="btn"
+                          href={`/admin/templates/${uploadedTemplateId}`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Open Template
+                        </a>
+                        {prUrl && (
+                          <a className="btn-outline" href={prUrl} target="_blank" rel="noreferrer">
+                            Open PR
+                          </a>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
               {/* Generated manifest preview and apply */}
               {generatedManifest && (
                 <div className="mt-4 rounded border p-3 bg-slate-50">
@@ -780,17 +1033,26 @@ export default function UploadTemplateDialog({
                       className="btn"
                       onClick={async () => {
                         if (!uploadedTemplateId) return;
+                        setApplyError(null);
                         try {
                           const res = await fetch(`/api/admin/templates/${uploadedTemplateId}`, {
                             method: "PATCH",
                             headers: { "content-type": "application/json" },
                             body: JSON.stringify({ manifest: generatedManifest }),
                           });
-                          if (!res.ok) throw new Error("Failed to apply generated manifest");
+                          const text = await res.text();
+                          if (!res.ok) {
+                            const msg = text || `${res.status} ${res.statusText}`;
+                            setApplyError(msg);
+                            toast.error(`Failed to apply generated manifest`);
+                            return;
+                          }
                           toast.success("Applied generated manifest");
                         } catch (e) {
                           console.error(e);
-                          toast.error("Failed to apply generated manifest");
+                          const text = e instanceof Error ? e.message : String(e);
+                          setApplyError(text);
+                          toast.error(`Failed to apply generated manifest: ${text}`);
                         }
                       }}
                     >
@@ -805,6 +1067,12 @@ export default function UploadTemplateDialog({
                     >
                       Dismiss
                     </button>
+                    {applyError && (
+                      <div className="mt-2 text-sm text-red-600">
+                        <strong>Apply failed:</strong>
+                        <div className="whitespace-pre-wrap">{applyError}</div>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

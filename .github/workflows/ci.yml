@@ -82,7 +82,6 @@ jobs:
       - name: "Prettier: auto-fix UI primitives"
         run: pnpm exec prettier --write src/components/ui/badge.tsx src/components/ui/button.tsx src/components/ui/sheet.tsx || true
 
-
       - name: Run Lint
         run: pnpm lint
 
@@ -175,8 +174,13 @@ jobs:
       - name: "Prettier: auto-fix UI primitives (before next build)"
         run: pnpm exec prettier --write src/components/ui/badge.tsx src/components/ui/button.tsx src/components/ui/sheet.tsx || true
 
+      - name: "Prettier: auto-fix UI primitives (before next build)"
+        run: pnpm exec prettier --write src/components/ui/badge.tsx src/components/ui/button.tsx src/components/ui/sheet.tsx || true
+
       - name: Build
         run: pnpm build
+
+  # Removed duplicate debug-prettier and debug-segments jobs (the first occurrences earlier in the file are kept)
 
   debug-prettier:
     name: Debug Prettier
