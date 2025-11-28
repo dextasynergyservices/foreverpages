@@ -41,6 +41,24 @@ async function processNext() {
           processingLogs: "Queued for remote build dispatch",
         },
       });
+      // If the template already includes an uploaded package, try to dispatch a remote build now.
+      const tpl = await prisma.template.findUnique({ where: { id: job.templateId } });
+      const pkgUrl = tpl?.packageUrl || undefined;
+      if (pkgUrl) {
+        try {
+          const callbackUrl =
+            process.env.TEMPLATE_BUILD_CALLBACK_URL ||
+            `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/api/admin/templates/${job.templateId}/build-callback`;
+          await dispatchTemplateBuild(job.templateId, pkgUrl, callbackUrl);
+          // leave status as PROCESSING and logs as-is; remote build will callback when done
+          running = false;
+          if (queue.length) processNext();
+          return;
+        } catch (e) {
+          console.warn("Failed to dispatch remote build while skipping local processing", e);
+          // fall through to return so job remains marked as queued for remote processing
+        }
+      }
     } catch (e) {
       console.warn("Failed to update template status while skipping local processing", e);
     }
