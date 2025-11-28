@@ -25,6 +25,8 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
         processingLogs: true,
         processingLogsUrl: true,
         packageUrl: true,
+        prUrl: true,
+        prNumber: true,
       },
     });
     if (!t) return NextResponse.json({ message: "Not found" }, { status: 404 });
@@ -34,6 +36,8 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
       logs: t.processingLogs,
       logsUrl: t.processingLogsUrl,
       packageUrl: t.packageUrl,
+      prUrl: t.prUrl,
+      prNumber: t.prNumber,
     });
   } catch (e) {
     console.error("Status endpoint error", e);

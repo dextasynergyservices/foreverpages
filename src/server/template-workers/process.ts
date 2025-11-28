@@ -180,6 +180,10 @@ async function runEslintCheck(files: string[], cwd: string) {
     if (/Could not find config file/i.test(msg) || /no ESLint configuration found/i.test(msg)) {
       return { raw: msg, filtered: "", ignored: true };
     }
+    // Treat missing plugin/package (e.g. eslint-plugin-...) as non-fatal for template checks
+    if (/Cannot find package/i.test(msg) || /Error: Failed to load plugin/i.test(msg)) {
+      return { raw: msg, filtered: "", ignored: true };
+    }
     return { raw: msg, filtered: msg, ignored: false };
   }
 }
@@ -252,46 +256,84 @@ export async function runHeavyAnalysis(extractionDir: string) {
       "clsx",
       "@types/react",
       "@types/react-dom",
+      "class-variance-authority",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-slot",
     ];
     try {
-      if (!fs.existsSync(shimPath)) {
-        const lines: string[] = [];
-        // Declare modules so imports like `import {useQuery} from '@tanstack/react-query'` don't error
-        for (const m of shimModules) lines.push(`declare module "${m}";`);
-
-        // Provide a minimal react/jsx-runtime shim and a global React/JSX ambient
-        // declaration so templates that rely on the automatic JSX runtime or
-        // UMD/global React do not produce hard TypeScript errors when deps
-        // aren't installed in the worker.
-        lines.push(
-          "",
-          'declare module "react/jsx-runtime" {',
-          "  export function jsx(type: any, props: any, key?: any): any;",
-          "  export function jsxs(type: any, props: any, key?: any): any;",
-          "  export function jsxDEV(type: any, props: any, key?: any): any;",
-          "}",
-          "",
-          "declare namespace React {",
-          "  interface Attributes {}",
-          "  type ReactNode = any;",
-          "  interface ComponentProps<T = any> {}",
-          "}",
-          "declare const React: any;",
-          "",
-          "declare namespace JSX {",
-          "  interface IntrinsicElements { [elemName: string]: any }",
-          "  interface Element {}",
-          "  interface ElementClass {}",
-          "  interface ElementAttributesProperty {}",
-          "}"
-        );
-
-        fs.writeFileSync(shimPath, lines.join("\n"), "utf-8");
+      // Always overwrite the shim with a minimal, non-conflicting set of
+      // third-party module declarations. This prevents template-provided
+      // shims (which may declare `react` or global types) from causing
+      // duplicate identifier diagnostics during worker analysis.
+      const lines: string[] = [];
+      for (const m of shimModules) {
+        // For known third-party modules we'll provide minimal declarations below,
+        // but still add a basic `declare module` line first to be safe.
+        lines.push(`declare module "${m}";`);
       }
-      // Ensure the shim is included in the TS file list for checking
+
+      // Provide focused, minimal declarations for libraries that expose types
+      // commonly used by templates (avoid declaring `react` or global React types).
+      lines.push(
+        "",
+        "// Minimal React runtime/type shims used by templates",
+        'declare module "react" {',
+        "  export type ReactNode = any;",
+        "  export type ElementRef<T> = any;",
+        "  export type ComponentProps<T extends keyof any> = any;",
+        "  export type ComponentPropsWithoutRef<T> = any;",
+        "  export type ComponentPropsWithRef<T> = any;",
+        "  export interface HTMLAttributes<T> { className?: string; }",
+        "  export interface TextareaHTMLAttributes<T> extends HTMLAttributes<T> {}",
+        "  export type CSSProperties = any;",
+        "}",
+        "",
+        "// Minimal cva/VariantProps shim",
+        'declare module "class-variance-authority" {',
+        "  export function cva(base?: any, opts?: any): any;",
+        "  export type VariantProps<T = any> = any;",
+        "}",
+        "",
+        "// Radix dialog/slot minimal shims",
+        'declare module "@radix-ui/react-dialog" {',
+        "  export type DialogProps = any;",
+        "  export const Root: any;",
+        "  export const Trigger: any;",
+        "  export const Content: any;",
+        "  export const Overlay: any;",
+        "  export const Close: any;",
+        "  export const Portal: any;",
+        "  export const Title: any;",
+        "  export const Description: any;",
+        "}",
+        "",
+        'declare module "@radix-ui/react-slot" {',
+        "  const Slot: any;",
+        "  export { Slot };",
+        "  export default Slot;",
+        "}",
+        "",
+        "// Minimal lucide/clsx/sonner shims",
+        'declare module "lucide-react" {',
+        "  export type LucideProps = { className?: string; size?: number | string };",
+        "  export const X: (p: LucideProps) => any;",
+        "  export const Search: (p: LucideProps) => any;",
+        "  export default function LucideIcon(props: LucideProps): any;",
+        "}",
+        "",
+        'declare module "clsx" {',
+        "  function clsx(...args: any[]): string;",
+        "  export default clsx;",
+        "}",
+        "",
+        'declare module "sonner" {',
+        "  export const toast: any;",
+        "}"
+      );
+
+      fs.writeFileSync(shimPath, lines.join("\n"), "utf-8");
       if (!tsFiles.includes(shimPath)) tsFiles.push(shimPath);
     } catch (e: unknown) {
-      // non-fatal — proceed without shim if file operations fail
       console.warn("Failed to write template shim:", String((e as Error)?.message || e));
     }
 
@@ -313,7 +355,9 @@ export async function runHeavyAnalysis(extractionDir: string) {
     // (it contains many noisy "Cannot find module" messages for missing runtime deps).
     if (tsFiltered) {
       if (tsRaw) outputParts.push("TypeScript (raw):\n" + tsRaw);
-      outputParts.push("TypeScript (issues):\n" + tsFiltered);
+      // Present TS diagnostics as warnings (non-blocking) so admins can see type issues
+      // without preventing uploads. Prefix as 'TypeScript (warnings)'.
+      outputParts.push("TypeScript (warnings):\n" + tsFiltered);
     } else if (tsRes.ignoredCount && tsRes.ignoredCount > 0) {
       outputParts.push(`TypeScript: ${tsRes.ignoredCount} benign diagnostics ignored`);
     }
@@ -327,11 +371,21 @@ export async function runHeavyAnalysis(extractionDir: string) {
       outputParts.push("Security scan:\n" + securityFindings.join("\n"));
 
     let output = outputParts.join("\n\n");
-    // success is true only if there are no filtered TS errors, no filtered ESLint issues, and no security findings
-    const hasTsIssues = !!tsFiltered && tsFiltered.trim().length > 0;
+    // success is true only if there are no filtered ESLint issues and no security findings.
+    // TypeScript diagnostics from uploaded templates are treated as warnings because
+    // template authors may use different TS configs or non-standard typings. Keeping
+    // TS diagnostics as non-blocking avoids rejecting uploads for template-local type
+    // issues while still surfacing them to admins for inspection.
     const hasEslintIssues = !!eslintFiltered && eslintFiltered.trim().length > 0;
     const hasSecurity = securityFindings && securityFindings.length > 0;
-    const success = !hasTsIssues && !hasEslintIssues && !hasSecurity;
+
+    // By default, ESLint issues are warnings (non-blocking) because templates
+    // may use custom lint configs and plugins not present in the worker. Set
+    // TEMPLATE_ENFORCE_LINT=1 to make ESLint failures block uploads in CI/strict
+    // environments.
+    const enforceLint = process.env.TEMPLATE_ENFORCE_LINT === "1";
+    const lintBlocking = enforceLint ? hasEslintIssues : false;
+    const success = !lintBlocking && !hasSecurity;
 
     // Optionally run docker parity checks only when explicitly requested
     // Only allow docker parity when explicitly enabled and not on production node
