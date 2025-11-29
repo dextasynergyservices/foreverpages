@@ -101,9 +101,14 @@ jobs:
       - name: Install uploader dependencies
         if: ${{ always() }}
         run: |
-          # Install minimal uploader deps (cloudinary + node-fetch v2 + unzipper) using pnpm
-          pnpm init -y
-          pnpm add --no-frozen-lockfile cloudinary@^1.32.0 node-fetch@2 unzipper
+          # If the extracted template exists, install its deps (which include uploader deps)
+          if [ -d template ]; then
+            cd template
+            pnpm install --frozen-lockfile || pnpm install
+          else
+            # No template dir (no build output). Install uploader deps at repo root as fallback.
+            pnpm add --no-frozen-lockfile cloudinary@^1.32.0 node-fetch@2 unzipper
+          fi
 
       - name: Upload build to Cloudinary and POST callback
         if: ${{ always() }}
@@ -235,7 +240,15 @@ jobs:
             }
           })();
           EOF
-          node upload_and_callback.js
+          # If the template dir exists and we installed deps there, copy build.zip into it and run uploader from that dir
+          if [ -d template ]; then
+            if [ -f build.zip ]; then
+              cp build.zip template/ || true
+            fi
+            (cd template && node ../upload_and_callback.js)
+          else
+            node upload_and_callback.js
+          fi
 
       - name: Upload artifacts
         if: ${{ always() }}
