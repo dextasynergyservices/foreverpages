@@ -47,8 +47,26 @@ jobs:
           echo "Downloading package from ${GITHUB_EVENT_PATH}"
           PACKAGE_URL=${{ github.event.client_payload.packageUrl }}
           echo "Package URL: $PACKAGE_URL"
-          curl -L "$PACKAGE_URL" -o template.zip
-          unzip template.zip -d template
+          # Save to a temp filename (preserve original name if provided by server)
+          TMP_FILE=$(mktemp --suffix=.zip)
+          echo "Saving package to $TMP_FILE"
+          curl -L "$PACKAGE_URL" -o "$TMP_FILE"
+          # Ensure there's a canonical template.zip for later steps
+          cp "$TMP_FILE" template.zip || true
+          mkdir -p template
+          unzip -o template.zip -d template || true
+
+      - name: "Debug: list workspace / inspect downloaded zip"
+        if: ${{ github.event.client_payload && github.event.client_payload.packageUrl }}
+        run: |
+          echo "--- GITHUB_EVENT_PATH: $GITHUB_EVENT_PATH ---"
+          echo "Event payload snippet:" && jq '.' $GITHUB_EVENT_PATH || true
+          echo "--- Workspace top-level ---"
+          ls -la || true
+          echo "--- template/ listing ---"
+          ls -la template || true
+          echo "--- template.zip info ---"
+          if [ -f template.zip ]; then unzip -l template.zip || echo "template.zip exists but unzip failed"; else echo "template.zip not found"; fi
 
       - name: Install deps
         if: ${{ always() }}
@@ -95,7 +113,12 @@ jobs:
             echo "Zipping $BUILD_DIR to build.zip"
             cd "$BUILD_DIR" && zip -r ../../build.zip . || (echo "zip failed" && exit 0)
           else
-            echo "No build dir to package"
+            if [ -d template ]; then
+              echo "No build dir detected; zipping entire template directory to build.zip"
+              cd template && zip -r ../build.zip . || (echo "zip failed" && exit 0)
+            else
+              echo "No build dir to package"
+            fi
           fi
 
       - name: Install uploader dependencies
@@ -123,6 +146,12 @@ jobs:
           CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
           CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
         run: |
+          # If the original uploaded package exists as template.zip and no build.zip was produced,
+          # fall back to using the uploaded package by copying it to build.zip so the uploader can proceed.
+          if [ -f template.zip ] && [ ! -f build.zip ]; then
+            echo "No build.zip produced; using uploaded template.zip as build.zip"
+            cp template.zip build.zip || true
+          fi
           node -e "const fs=require('fs'); if(!fs.existsSync('build.zip')){console.log('No build.zip found, skipping upload'); process.exit(0);}"
           if [ -d template ]; then
             cat > template/upload_and_callback.js <<'EOF'
