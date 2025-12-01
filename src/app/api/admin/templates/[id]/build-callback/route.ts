@@ -169,7 +169,8 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
                   continue;
                 }
                 if (e.isFile()) {
-                  const rel = path.relative(process.cwd(), full).replace(/\\/g, "/");
+                  // Get path relative to tmpBase, not process.cwd()
+                  const rel = path.relative(tmpBase, full).replace(/\\/g, "/");
                   const content = fs.readFileSync(full, "utf8");
                   out.push({ path: rel, content });
                 }

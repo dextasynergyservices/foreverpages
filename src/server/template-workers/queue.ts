@@ -260,7 +260,8 @@ async function handleRemoteBuildWithPolling(templateId: string, packageUrl: stri
               continue;
             }
             if (e.isFile()) {
-              const rel = path.relative(process.cwd(), full).replace(/\\/g, "/");
+              // Get path relative to tmpBase, not process.cwd()
+              const rel = path.relative(tmpBase, full).replace(/\\/g, "/");
               const content = fs.readFileSync(full, "utf8");
               out.push({ path: rel, content });
             }
