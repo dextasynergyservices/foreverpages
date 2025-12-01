@@ -17,7 +17,7 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        // Memorial-specific variants using design system tokens
+        // Memorial-specifics variants using design system tokens
         memorial: "btn-memorial shadow-soft",
         "memorial-secondary": "btn-secondary-memorial",
         "memorial-outline":
