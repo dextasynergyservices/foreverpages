@@ -9,6 +9,7 @@ This solution **will work permanently** because it no longer depends on unreliab
 ## Problem We Solved
 
 **Before:** Template uploads were stuck on "PROCESSING" status indefinitely because:
+
 - GitHub Actions workflow would complete successfully
 - Webhook callback to `/api/admin/templates/[id]/build-callback` was never reaching the server
 - Root cause: `NEXTAUTH_URL` environment variable not correctly set in production, making callback URL unreachable
@@ -23,11 +24,13 @@ This solution **will work permanently** because it no longer depends on unreliab
 ### Two-Layer Approach: Callback + Polling
 
 **Layer 1: Webhook Callback (Backup)**
+
 - GitHub workflow still sends callback to `/api/admin/templates/[id]/build-callback`
 - If it arrives, great—immediate PR creation
 - If it doesn't arrive (common in production), no problem
 
 **Layer 2: GitHub API Polling (Primary)**
+
 - Queue processor now actively polls GitHub API to check if build completed
 - Doesn't depend on GitHub being able to reach our server
 - Polls GitHub API directly every 15 seconds for up to 10 minutes
@@ -48,6 +51,7 @@ This solution **will work permanently** because it no longer depends on unreliab
 ### 1. **GitHub Workflow** (`.github/workflows/template-build.yml`)
 
 **What it does:**
+
 - Downloads template from Cloudinary (publicly accessible URL)
 - Installs dependencies
 - Builds the template
@@ -56,6 +60,7 @@ This solution **will work permanently** because it no longer depends on unreliab
 - **Posts single callback** with complete payload
 
 **Callback Payload:**
+
 ```json
 {
   "templateId": "template-123",
@@ -71,10 +76,12 @@ This solution **will work permanently** because it no longer depends on unreliab
 ### 2. **Polling Utility** (`src/lib/github/polling.ts`)
 
 **Functions:**
+
 - `checkTemplateBuildStatus(templateId)`: Query GitHub API for build status
 - `pollUntilBuildComplete(templateId, maxWaitSeconds, pollIntervalSeconds)`: Loop until complete
 
 **How it works:**
+
 ```typescript
 // Call this from queue processor
 const success = await pollUntilBuildComplete(templateId, 600, 15);
@@ -83,6 +90,7 @@ const success = await pollUntilBuildComplete(templateId, 600, 15);
 ```
 
 **GitHub API Query:**
+
 - Searches for recent `repository_dispatch` workflow runs
 - Filters for runs within last 10 minutes
 - Returns status: "queued" | "in_progress" | "completed"
@@ -93,6 +101,7 @@ const success = await pollUntilBuildComplete(templateId, 600, 15);
 **Purpose:** Webhook endpoint for when GitHub callback arrives (backup path)
 
 **Handles:**
+
 - Validates callback secret header
 - Receives artifact URL, logs, and status from workflow
 - If status is "VALIDATED":
@@ -108,6 +117,7 @@ const success = await pollUntilBuildComplete(templateId, 600, 15);
 **New Function:** `handleRemoteBuildWithPolling(templateId, packageUrl)`
 
 **Workflow:**
+
 1. Dispatch GitHub build with callback URL
 2. Poll GitHub API (not wait for callback)
 3. When build completes:
@@ -118,6 +128,7 @@ const success = await pollUntilBuildComplete(templateId, 600, 15);
 4. Handle timeouts/failures gracefully
 
 **Integration:** When production mode is enabled and local processing is disabled:
+
 - Instead of just dispatching and hoping for callback
 - Now actively polls GitHub until build complete
 - Creates PR automatically when done
@@ -166,13 +177,13 @@ const success = await pollUntilBuildComplete(templateId, 600, 15);
 
 ## Why This Solves the Original Problem
 
-| Issue | Before | After |
-|-------|--------|-------|
-| **Webhook dependency** | Build dispatched, system waits forever for callback | Polling actively checks GitHub every 15s, doesn't rely on inbound webhook |
-| **Production failure** | Callback URL used `NEXTAUTH_URL` which wasn't accessible | Queue processor polls GitHub directly; no inbound request needed |
-| **PR creation** | Never happened because callback never arrived | Guaranteed to happen via polling when build completes |
-| **User experience** | Status stuck on "PROCESSING" indefinitely | Status updates to "VALIDATED" with PR link in ~1 minute |
-| **Reliability** | Depended on environment configuration | Works even if webhook fails; uses proven GitHub API approach |
+| Issue                  | Before                                                   | After                                                                     |
+| ---------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------- |
+| **Webhook dependency** | Build dispatched, system waits forever for callback      | Polling actively checks GitHub every 15s, doesn't rely on inbound webhook |
+| **Production failure** | Callback URL used `NEXTAUTH_URL` which wasn't accessible | Queue processor polls GitHub directly; no inbound request needed          |
+| **PR creation**        | Never happened because callback never arrived            | Guaranteed to happen via polling when build completes                     |
+| **User experience**    | Status stuck on "PROCESSING" indefinitely                | Status updates to "VALIDATED" with PR link in ~1 minute                   |
+| **Reliability**        | Depended on environment configuration                    | Works even if webhook fails; uses proven GitHub API approach              |
 
 ---
 
@@ -204,6 +215,7 @@ NODE_ENV=production
 ```
 
 **GitHub Secrets (in repository settings):**
+
 - `CLOUDINARY_CLOUD_NAME`
 - `CLOUDINARY_API_KEY`
 - `CLOUDINARY_API_SECRET`
@@ -227,6 +239,7 @@ NODE_ENV=production
    - Check server logs for `[queue]` entries
 
 3. **Monitor queue processor:**
+
    ```
    [queue] 🔄 Starting remote build workflow for template xxx
    [queue] 📤 Dispatching GitHub build for xxx
@@ -253,9 +266,11 @@ NODE_ENV=production
 ## Files Modified/Created
 
 ### Created:
+
 - `src/lib/github/polling.ts` - GitHub API polling utility
 
 ### Modified:
+
 - `src/server/template-workers/queue.ts`
   - Added `handleRemoteBuildWithPolling()` function
   - Updated `processNext()` to use polling instead of just dispatching
@@ -266,6 +281,7 @@ NODE_ENV=production
   - Workflow now passes `artifactUrl` (Cloudinary URL)
 
 ### Already Complete:
+
 - `src/app/api/admin/templates/[id]/build-callback/route.ts` - Webhook handler with logging
 - `src/app/api/admin/templates/[id]/status/route.ts` - Status polling endpoint
 - `src/lib/github/dispatch.ts` - Build dispatch utility
@@ -320,12 +336,14 @@ This solution is **permanent and reliable** because:
 If template uploads still don't create PRs:
 
 1. **Check GitHub token:**
+
    ```bash
    curl -H "Authorization: Bearer $TEMPLATE_GITHUB_TOKEN" \
      https://api.github.com/user
    ```
 
 2. **Check recent workflow runs:**
+
    ```bash
    curl -H "Authorization: Bearer $TEMPLATE_GITHUB_TOKEN" \
      https://api.github.com/repos/dextasynergyservices/foreverpages/actions/runs
