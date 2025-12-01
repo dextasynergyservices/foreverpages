@@ -29,7 +29,7 @@ async function ghFetch(path: string, opts: RequestInit = {}) {
   return res.json();
 }
 
-type FileSpec = { path: string; content: string };
+type FileSpec = { path: string; content: string | Buffer };
 
 export async function createPrForTemplate(
   branchName: string,
