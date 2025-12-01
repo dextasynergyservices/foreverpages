@@ -3,6 +3,7 @@ import { PrismaClient } from "@/generated/prisma";
 import type { Prisma } from "@/generated/prisma";
 import fs from "fs";
 import path from "path";
+import os from "os";
 import util from "util";
 import AdmZip from "adm-zip";
 import { exec as childExec } from "child_process";
@@ -208,8 +209,10 @@ async function handleRemoteBuildWithPolling(templateId: string, packageUrl: stri
     console.log(`[queue] ✓ Build succeeded for ${templateId}, creating PR...`);
 
     try {
-      // Download artifact
-      const tmpBase = fs.mkdtempSync(path.join(process.cwd(), "tmp", `template-${templateId}-`));
+      // Download artifact - use os.tmpdir() and ensure parent exists
+      const tmpDir = path.join(os.tmpdir(), "foreverpages-templates");
+      await fs.promises.mkdir(tmpDir, { recursive: true });
+      const tmpBase = fs.mkdtempSync(path.join(tmpDir, `template-${templateId}-`));
       const zipPath = path.join(tmpBase, "artifact.zip");
 
       console.log(`[queue] 📥 Downloading artifact from ${packageUrl.slice(0, 80)}...`);
