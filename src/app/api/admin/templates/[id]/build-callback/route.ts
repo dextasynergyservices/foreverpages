@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient, Prisma } from "@/generated/prisma";
+import { createPrForTemplate } from "@/lib/github/pr";
 import fs from "fs";
 import os from "os";
 import path from "path";
@@ -51,12 +52,12 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     // If validated, attempt to obtain an artifact URL (build callback's artifactUrl or stored packageUrl)
     try {
       if (status === "VALIDATED") {
-        // mark as processing while we enqueue
+        // mark as processing while we download and create PR
         await prisma.template.update({
           where: { id },
           data: {
             processingStatus: "PROCESSING",
-            processingLogs: "Remote build validated; enqueuing for persistence",
+            processingLogs: "Remote build validated; downloading artifact and creating PR",
           },
         });
 
@@ -81,51 +82,110 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
             },
           });
         } else {
-          // Create a DB-backed TemplateJob with payload containing the artifact URL and runUrl
+          // Download artifact, extract, and directly create PR
           try {
-            // Use the shared enqueue which will create a DB job and optionally wake local queue
-            const { enqueueTemplateProcessing } = await import("@/server/template-workers/queue");
-            await enqueueTemplateProcessing(
-              id,
-              null,
-              { packageUrl: candidateUrl, runUrl: runUrl } as Prisma.JsonObject,
-              true // pushNow: wake same-process worker immediately
-            );
-          } catch (e) {
-            console.error(
-              "Failed to enqueue DB TemplateJob for artifact, falling back to local extract",
-              id,
-              e
-            );
-            // fallback: try to download & enqueue locally
-            try {
-              const tmpBase = fs.mkdtempSync(path.join(os.tmpdir(), `template-${id}-`));
-              const zipPath = path.join(tmpBase, "artifact.zip");
-              const res = await fetch(candidateUrl);
-              if (!res.ok) throw new Error(`Failed to fetch artifact: ${res.status}`);
-              const ab = await res.arrayBuffer();
-              await fs.promises.writeFile(zipPath, Buffer.from(ab));
-              const zip = new AdmZip(zipPath);
-              zip.extractAllTo(tmpBase, true);
-              const { enqueueTemplateProcessing } = await import("@/server/template-workers/queue");
-              await enqueueTemplateProcessing(id, tmpBase, undefined, true);
-            } catch (ee) {
-              console.error("Fallback download/extract failed", id, ee);
-              await prisma.template.update({
-                where: { id },
-                data: {
-                  processingStatus: "VALIDATED",
-                  processingLogs:
-                    (finalData.processingLogs as string) ||
-                    "Validated but failed to download artifact",
-                },
-              });
+            const tmpBase = fs.mkdtempSync(path.join(os.tmpdir(), `template-${id}-`));
+            const zipPath = path.join(tmpBase, "artifact.zip");
+
+            // Download artifact
+            console.log(`Downloading artifact from ${candidateUrl}`);
+            const res = await fetch(candidateUrl);
+            if (!res.ok) throw new Error(`Failed to fetch artifact: ${res.status}`);
+            const ab = await res.arrayBuffer();
+            await fs.promises.writeFile(zipPath, Buffer.from(ab));
+
+            // Extract
+            console.log("Extracting artifact");
+            const zip = new AdmZip(zipPath);
+            zip.extractAllTo(tmpBase, true);
+
+            // Get template info for PR details
+            const tpl = await prisma.template.findUnique({ where: { id } });
+            if (!tpl) throw new Error("Template record not found");
+
+            const slug = tpl.slug || `template-${id}`;
+            const safeSlug = String(slug || "")
+              .toLowerCase()
+              .replace(/[^a-z0-9\-_]/g, "-")
+              .replace(/-+/g, "-")
+              .replace(/^-|-$/g, "")
+              .slice(0, 60);
+            const branch = `template/${safeSlug}-${id}-${Date.now()}`;
+
+            // Collect files relative to repo root
+            function collectRelativeFiles(dir: string) {
+              const out: { path: string; content: string }[] = [];
+              const stack = [dir];
+              while (stack.length) {
+                const p = stack.pop()!;
+                const entries = fs.readdirSync(p, { withFileTypes: true });
+                for (const e of entries) {
+                  const full = path.join(p, e.name);
+                  if (e.isDirectory()) {
+                    if (
+                      e.name === "node_modules" ||
+                      e.name === ".git" ||
+                      e.name === "dist" ||
+                      e.name === "build"
+                    )
+                      continue;
+                    stack.push(full);
+                    continue;
+                  }
+                  if (e.isFile()) {
+                    const rel = path.relative(process.cwd(), full).replace(/\\/g, "/");
+                    const content = fs.readFileSync(full, "utf8");
+                    out.push({ path: rel, content });
+                  }
+                }
+              }
+              return out;
             }
+
+            const files = collectRelativeFiles(tmpBase);
+            if (!files.length) throw new Error("No files extracted from artifact");
+
+            const title = `Add template ${slug}`;
+            const body = `Automated template upload for ${slug} (id: ${id}).\n\nBuild logs:\n${logs || "(no logs)"}\n`;
+
+            // Create PR
+            console.log(`Creating PR for template ${id}`);
+            const pr = await createPrForTemplate(branch, files, title, body, "develop");
+
+            // Update template with PR info
+            await prisma.template.update({
+              where: { id },
+              data: {
+                prNumber: pr.number.toString(),
+                prUrl: pr.url,
+                processingStatus: "VALIDATED",
+                processingLogs: "PR created successfully",
+              },
+            });
+
+            console.log(`PR created successfully for template ${id}: ${pr.url}`);
+
+            // Cleanup temp directory
+            try {
+              await fs.promises.rm(tmpBase, { recursive: true, force: true });
+            } catch (e) {
+              console.warn("Failed to cleanup temp directory", e);
+            }
+          } catch (e) {
+            console.error("Failed to create PR from remote build artifact", id, e);
+            const errorMsg = e instanceof Error ? e.message : String(e);
+            await prisma.template.update({
+              where: { id },
+              data: {
+                processingStatus: "ERROR",
+                processingLogs: `Failed to create PR: ${errorMsg}`,
+              },
+            });
           }
         }
       }
     } catch (e) {
-      console.warn("Error while enqueuing remote artifact processing", e);
+      console.warn("Error while processing remote build artifact", e);
     }
 
     return NextResponse.json({ message: "OK" });
