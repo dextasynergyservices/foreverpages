@@ -118,7 +118,9 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
 
         // Download artifact, extract, and directly create PR
         try {
-          const tmpBase = fs.mkdtempSync(path.join(os.tmpdir(), `template-${id}-`));
+          const tmpDir = path.join(os.tmpdir(), "foreverpages-templates");
+          await fs.promises.mkdir(tmpDir, { recursive: true });
+          const tmpBase = fs.mkdtempSync(path.join(tmpDir, `template-${id}-`));
           const zipPath = path.join(tmpBase, "artifact.zip");
 
           // Download artifact
