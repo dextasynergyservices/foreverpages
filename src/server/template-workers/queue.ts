@@ -11,6 +11,7 @@ import { dispatchTemplateBuild } from "@/lib/github/dispatch";
 import { createPrForTemplate } from "@/lib/github/pr";
 import { cleanupOldExtractions } from "@/server/cleanup/cleanupExtracts";
 import { runAdapter } from "./adapter";
+import { pollUntilBuildComplete } from "@/lib/github/polling";
 
 type ExecResult = { stdout: string; stderr: string };
 const exec = util.promisify(childExec) as (
@@ -163,6 +164,164 @@ async function retryOrFailDbJob(id: string, errorMsg?: string) {
   }
 }
 
+/**
+ * Handle remote GitHub build: dispatch, poll for completion, create PR
+ */
+async function handleRemoteBuildWithPolling(templateId: string, packageUrl: string): Promise<void> {
+  try {
+    console.log(`[queue] 🔄 Starting remote build workflow for template ${templateId}`);
+
+    // Dispatch the build
+    const callbackUrl =
+      process.env.TEMPLATE_BUILD_CALLBACK_URL ||
+      `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/api/admin/templates/${templateId}/build-callback`;
+
+    console.log(`[queue] 📤 Dispatching GitHub build for ${templateId}`);
+    await dispatchTemplateBuild(templateId, packageUrl, callbackUrl);
+
+    // Update status
+    await prisma.template.update({
+      where: { id: templateId },
+      data: {
+        processingStatus: "PROCESSING",
+        processingLogs: "Build dispatched to GitHub, polling for completion...",
+      },
+    });
+
+    // Poll for build completion (10 minute timeout, 15 second intervals)
+    console.log(`[queue] ⏳ Polling for build completion for ${templateId}`);
+    const buildSucceeded = await pollUntilBuildComplete(templateId, 600, 15);
+
+    if (!buildSucceeded) {
+      console.error(`[queue] ❌ Build failed or timed out for ${templateId}`);
+      await prisma.template.update({
+        where: { id: templateId },
+        data: {
+          processingStatus: "ERROR",
+          processingLogs: "GitHub build failed or timed out",
+        },
+      });
+      return;
+    }
+
+    // Build succeeded - now create PR from the artifact
+    console.log(`[queue] ✓ Build succeeded for ${templateId}, creating PR...`);
+
+    try {
+      // Download artifact
+      const tmpBase = fs.mkdtempSync(path.join(process.cwd(), "tmp", `template-${templateId}-`));
+      const zipPath = path.join(tmpBase, "artifact.zip");
+
+      console.log(`[queue] 📥 Downloading artifact from ${packageUrl.slice(0, 80)}...`);
+      const res = await fetch(packageUrl);
+      if (!res.ok) throw new Error(`Failed to fetch artifact: ${res.status}`);
+      const ab = await res.arrayBuffer();
+      await fs.promises.writeFile(zipPath, Buffer.from(ab));
+
+      // Extract
+      console.log(`[queue] 📦 Extracting artifact (${ab.byteLength} bytes)`);
+      const zip = new AdmZip(zipPath);
+      zip.extractAllTo(tmpBase, true);
+
+      // Get template info
+      const tpl = await prisma.template.findUnique({ where: { id: templateId } });
+      if (!tpl) throw new Error("Template not found");
+
+      const slug = tpl.slug || `template-${templateId}`;
+      const safeSlug = String(slug || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9\-_]/g, "-")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "")
+        .slice(0, 60);
+      const branch = `template/${safeSlug}-${templateId}-${Date.now()}`;
+
+      // Collect files
+      function collectRelativeFiles(dir: string) {
+        const out: { path: string; content: string }[] = [];
+        const stack = [dir];
+        while (stack.length) {
+          const p = stack.pop()!;
+          const entries = fs.readdirSync(p, { withFileTypes: true });
+          for (const e of entries) {
+            const full = path.join(p, e.name);
+            if (e.isDirectory()) {
+              if (
+                e.name === "node_modules" ||
+                e.name === ".git" ||
+                e.name === "dist" ||
+                e.name === "build"
+              )
+                continue;
+              stack.push(full);
+              continue;
+            }
+            if (e.isFile()) {
+              const rel = path.relative(process.cwd(), full).replace(/\\/g, "/");
+              const content = fs.readFileSync(full, "utf8");
+              out.push({ path: rel, content });
+            }
+          }
+        }
+        return out;
+      }
+
+      const files = collectRelativeFiles(tmpBase);
+      if (!files.length) throw new Error("No files extracted from artifact");
+
+      // Create PR
+      const title = `Add template ${slug}`;
+      const body = `Automated template upload for ${slug} (id: ${templateId}).\n\nGitHub Actions build completed successfully.`;
+
+      console.log(`[queue] 🔗 Creating PR with ${files.length} files for ${templateId}`);
+      const pr = await createPrForTemplate(branch, files, title, body, "develop");
+
+      // Update template with PR info
+      await prisma.template.update({
+        where: { id: templateId },
+        data: {
+          prNumber: pr.number.toString(),
+          prUrl: pr.url,
+          processingStatus: "VALIDATED",
+          processingLogs: "PR created successfully",
+        },
+      });
+
+      console.log(`[queue] ✅ PR created for ${templateId}: ${pr.url}`);
+
+      // Cleanup
+      try {
+        await fs.promises.rm(tmpBase, { recursive: true, force: true });
+      } catch (e) {
+        console.warn("[queue] Failed to cleanup temp directory:", e);
+      }
+    } catch (e) {
+      const errorMsg = e instanceof Error ? e.message : String(e);
+      console.error(`[queue] ❌ Failed to create PR for ${templateId}:`, e);
+      await prisma.template.update({
+        where: { id: templateId },
+        data: {
+          processingStatus: "ERROR",
+          processingLogs: `Failed to create PR: ${errorMsg}`,
+        },
+      });
+    }
+  } catch (e) {
+    console.error(`[queue] ❌ Error in remote build workflow for ${templateId}:`, e);
+    try {
+      await prisma.template.update({
+        where: { id: templateId },
+        data: {
+          processingStatus: "ERROR",
+          processingLogs: `Remote build error: ${e instanceof Error ? e.message : String(e)}`,
+        },
+      });
+    } catch (updateErr) {
+      console.error("[queue] Failed to update template after error:", updateErr);
+    }
+  }
+}
+
 async function processNext() {
   if (running) return;
   // Load any persisted jobs first so multiple processes won't lose work
@@ -210,17 +369,17 @@ async function processNext() {
       const pkgUrl = tpl?.packageUrl || undefined;
       if (pkgUrl) {
         try {
-          const callbackUrl =
-            process.env.TEMPLATE_BUILD_CALLBACK_URL ||
-            `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/api/admin/templates/${job.templateId}/build-callback`;
-          await dispatchTemplateBuild(job.templateId, pkgUrl, callbackUrl);
-          // leave status as PROCESSING and logs as-is; remote build will callback when done
+          console.log(
+            `[queue] 🚀 Starting polling-based remote build for template ${job.templateId}`
+          );
+          // Use new polling handler that will dispatch, poll, and create PR
+          await handleRemoteBuildWithPolling(job.templateId, pkgUrl);
           running = false;
           if (queue.length) processNext();
           return;
         } catch (e) {
-          console.warn("Failed to dispatch remote build while skipping local processing", e);
-          // fall through to return so job remains marked as queued for remote processing
+          console.error("[queue] ❌ Polling handler failed:", e);
+          // fall through to mark as error
         }
       }
     } catch (e) {
