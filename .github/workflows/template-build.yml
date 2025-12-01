@@ -56,17 +56,7 @@ jobs:
           mkdir -p template
           unzip -o template.zip -d template || true
 
-      - name: "Debug: list workspace / inspect downloaded zip"
-        if: ${{ github.event.client_payload && github.event.client_payload.packageUrl }}
-        run: |
-          echo "--- GITHUB_EVENT_PATH: $GITHUB_EVENT_PATH ---"
-          echo "Event payload snippet:" && jq '.' $GITHUB_EVENT_PATH || true
-          echo "--- Workspace top-level ---"
-          ls -la || true
-          echo "--- template/ listing ---"
-          ls -la template || true
-          echo "--- template.zip info ---"
-          if [ -f template.zip ]; then unzip -l template.zip || echo "template.zip exists but unzip failed"; else echo "template.zip not found"; fi
+      # Debug step removed — validation now focuses on the extracted `template/` directory
 
       - name: Install deps
         if: ${{ always() }}
@@ -121,283 +111,39 @@ jobs:
             fi
           fi
 
-      - name: Install uploader dependencies
-        if: ${{ always() }}
-        run: |
-          # If the extracted template exists, install its deps (which include uploader deps)
-          if [ -d template ]; then
-            cd template
-            pnpm install --frozen-lockfile || pnpm install
-            # Ensure uploader helper deps are available in template/node_modules
-            pnpm add --no-frozen-lockfile cloudinary@^1.32.0 node-fetch@2 unzipper || true
-          else
-            # No template dir (no build output). Install uploader deps at repo root as fallback.
-            pnpm add --no-frozen-lockfile cloudinary@^1.32.0 node-fetch@2 unzipper
-          fi
+      # Removed uploader dependencies install step — not needed for validation-only workflow
 
-      - name: Upload build to Cloudinary and POST callback
+      - name: Validate extracted template and POST callback
         if: ${{ always() }}
         env:
           TEMPLATE_ID: ${{ github.event.client_payload.templateId }}
           CALLBACK_URL: ${{ github.event.client_payload.callbackUrl }}
           GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           CALLBACK_SECRET: ${{ secrets.TEMPLATE_BUILD_CALLBACK_SECRET }}
-          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
-          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
-          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
         run: |
-          # If the original uploaded package exists as template.zip and no build.zip was produced,
-          # fall back to using the uploaded package by copying it to build.zip so the uploader can proceed.
-          if [ -f template.zip ] && [ ! -f build.zip ]; then
-            echo "No build.zip produced; using uploaded template.zip as build.zip"
-            cp template.zip build.zip || true
-          fi
-          node -e "const fs=require('fs'); if(!fs.existsSync('build.zip')){console.log('No build.zip found, skipping upload'); process.exit(0);}"
-          if [ -d template ]; then
-            cat > template/upload_and_callback.js <<'EOF'
-          const cloudinary = require('cloudinary').v2;
-          const fetch = require('node-fetch');
-          const fs = require('fs');
-          const path = require('path');
-          const os = require('os');
-          const unzipper = require('unzipper');
-
-          cloudinary.config({
-            cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-            api_key: process.env.CLOUDINARY_API_KEY,
-            api_secret: process.env.CLOUDINARY_API_SECRET,
-          });
-
-          async function uploadFile(filePath, publicId) {
-            return new Promise((resolve, reject) => {
-              cloudinary.uploader.upload(filePath, {
-                resource_type: 'auto',
-                public_id: publicId,
-                overwrite: true,
-              }, (err, res) => {
-                if (err) return reject(err);
-                resolve(res);
-              });
-            });
-          }
-
-          (async () => {
-            try {
-              const zipFile = 'build.zip';
-              if (!fs.existsSync(zipFile)) {
-                console.log('No build.zip to upload');
-                process.exit(0);
-              }
-              const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'template-build-'));
-              console.log('Extracting build.zip to', tmpDir);
-              await fs.createReadStream(zipFile).pipe(unzipper.Extract({ path: tmpDir })).promise();
-
-              // Walk files and upload preserving relative paths
-              const allFiles = [];
-              function walk(dir) {
-                for (const name of fs.readdirSync(dir)) {
-                  const full = path.join(dir, name);
-                  if (fs.statSync(full).isDirectory()) walk(full);
-                  else allFiles.push(full);
-                }
-              }
-              walk(tmpDir);
-
-              const assetsMap = {};
-              let indexUrl = null;
-              for (const file of allFiles) {
-                const rel = path.relative(tmpDir, file).replace(/\\/g, '/');
-                // Preserve folder structure in public_id by replacing leading/trailing slashes and using __ as separator
-                const publicId = `templates/${process.env.TEMPLATE_ID}/${rel}`.replace(/\//g, '__');
-                console.log('Uploading', rel, 'as', publicId);
-                try {
-                  const res = await uploadFile(file, publicId);
-                  assetsMap[rel] = res.secure_url;
-                  // If this is index.html, record its secure URL
-                  if (rel.toLowerCase() === 'index.html') indexUrl = res.secure_url;
-                } catch (e) {
-                  console.error('Upload failed for', rel, e);
-                }
-              }
-
-              let artifact = indexUrl;
-              if (!artifact) {
-                console.log('index.html not found — falling back to zip upload');
-                const res = await new Promise((resolve, reject) => {
-                  cloudinary.uploader.upload(zipFile, { resource_type: 'raw', folder: `templates/${process.env.TEMPLATE_ID}` }, (err, r) => err ? reject(err) : resolve(r));
-                });
-                artifact = res.secure_url;
-              }
-
-              const payload = {
-                templateId: process.env.TEMPLATE_ID,
-                artifactUrl: artifact,
-                assetsMap,
-                runUrl: process.env.GITHUB_RUN_URL,
-                status: 'VALIDATED',
-                logs: indexUrl ? 'Uploaded unzipped files; index.html available' : 'Uploaded build.zip (no index.html)'
-              };
-
-              if (process.env.CALLBACK_URL) {
-                console.log('Posting callback to', process.env.CALLBACK_URL);
-                await fetch(process.env.CALLBACK_URL, {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'X-BUILD-CALLBACK-SECRET': process.env.CALLBACK_SECRET || ''
-                  },
-                  body: JSON.stringify(payload),
-                }).then((r) => console.log('Callback response', r.status));
-              } else {
-                console.log('No callback URL provided; skipping callback');
-              }
-
-            } catch (e) {
-              console.error('Upload/callback error', e);
-              try {
-                if (process.env.CALLBACK_URL) {
-                  await fetch(process.env.CALLBACK_URL, {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                      'X-BUILD-CALLBACK-SECRET': process.env.CALLBACK_SECRET || ''
-                    },
-                    body: JSON.stringify({ templateId: process.env.TEMPLATE_ID, status: 'ERROR', logs: String(e) }),
-                  });
-                }
-              } catch (e2) {
-                console.error('Failed to send error callback', e2);
-              }
-              process.exit(1);
-            }
-          })();
-          EOF
+          # Quick validation: ensure the extracted template directory exists and is non-empty
+          STATUS="VALIDATED"
+          LOGS=""
+          if [ -d template ] && [ "$(ls -A template | wc -l)" -gt 0 ]; then
+            LOGS="template directory exists and is non-empty"
           else
-            cat > upload_and_callback.js <<'EOF'
-          const cloudinary = require('cloudinary').v2;
-          const fetch = require('node-fetch');
-          const fs = require('fs');
-          const path = require('path');
-          const os = require('os');
-          const unzipper = require('unzipper');
-
-          cloudinary.config({
-            cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-            api_key: process.env.CLOUDINARY_API_KEY,
-            api_secret: process.env.CLOUDINARY_API_SECRET,
-          });
-
-          async function uploadFile(filePath, publicId) {
-            return new Promise((resolve, reject) => {
-              cloudinary.uploader.upload(filePath, {
-                resource_type: 'auto',
-                public_id: publicId,
-                overwrite: true,
-              }, (err, res) => {
-                if (err) return reject(err);
-                resolve(res);
-              });
-            });
-          }
-
-          (async () => {
-            try {
-              const zipFile = 'build.zip';
-              if (!fs.existsSync(zipFile)) {
-                console.log('No build.zip to upload');
-                process.exit(0);
-              }
-              const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'template-build-'));
-              console.log('Extracting build.zip to', tmpDir);
-              await fs.createReadStream(zipFile).pipe(unzipper.Extract({ path: tmpDir })).promise();
-
-              // Walk files and upload preserving relative paths
-              const allFiles = [];
-              function walk(dir) {
-                for (const name of fs.readdirSync(dir)) {
-                  const full = path.join(dir, name);
-                  if (fs.statSync(full).isDirectory()) walk(full);
-                  else allFiles.push(full);
-                }
-              }
-              walk(tmpDir);
-
-              const assetsMap = {};
-              let indexUrl = null;
-              for (const file of allFiles) {
-                const rel = path.relative(tmpDir, file).replace(/\\/g, '/');
-                const publicId = `templates/${process.env.TEMPLATE_ID}/${rel}`.replace(/\//g, '__');
-                console.log('Uploading', rel, 'as', publicId);
-                try {
-                  const res = await uploadFile(file, publicId);
-                  assetsMap[rel] = res.secure_url;
-                  if (rel.toLowerCase() === 'index.html') indexUrl = res.secure_url;
-                } catch (e) {
-                  console.error('Upload failed for', rel, e);
-                }
-              }
-
-              let artifact = indexUrl;
-              if (!artifact) {
-                console.log('index.html not found — falling back to zip upload');
-                const res = await new Promise((resolve, reject) => {
-                  cloudinary.uploader.upload(zipFile, { resource_type: 'raw', folder: `templates/${process.env.TEMPLATE_ID}` }, (err, r) => err ? reject(err) : resolve(r));
-                });
-                artifact = res.secure_url;
-              }
-
-              const payload = {
-                templateId: process.env.TEMPLATE_ID,
-                artifactUrl: artifact,
-                assetsMap,
-                runUrl: process.env.GITHUB_RUN_URL,
-                status: 'VALIDATED',
-                logs: indexUrl ? 'Uploaded unzipped files; index.html available' : 'Uploaded build.zip (no index.html)'
-              };
-
-              if (process.env.CALLBACK_URL) {
-                console.log('Posting callback to', process.env.CALLBACK_URL);
-                await fetch(process.env.CALLBACK_URL, {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'X-BUILD-CALLBACK-SECRET': process.env.CALLBACK_SECRET || ''
-                  },
-                  body: JSON.stringify(payload),
-                }).then((r) => console.log('Callback response', r.status));
-              } else {
-                console.log('No callback URL provided; skipping callback');
-              }
-
-            } catch (e) {
-              console.error('Upload/callback error', e);
-              try {
-                if (process.env.CALLBACK_URL) {
-                  await fetch(process.env.CALLBACK_URL, {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                      'X-BUILD-CALLBACK-SECRET': process.env.CALLBACK_SECRET || ''
-                    },
-                    body: JSON.stringify({ templateId: process.env.TEMPLATE_ID, status: 'ERROR', logs: String(e) }),
-                  });
-                }
-              } catch (e2) {
-                console.error('Failed to send error callback', e2);
-              }
-              process.exit(1);
-            }
-          })();
-          EOF
+            STATUS="ERROR"
+            LOGS="Extracted template directory missing or empty"
           fi
-          # If the template dir exists and we installed deps there, copy build.zip into it and run uploader from that dir
+
+          # Short file listing for debugging (top 200 entries)
+          FILES=""
           if [ -d template ]; then
-            if [ -f build.zip ]; then
-              cp build.zip template/ || true
-            fi
-            (cd template && node upload_and_callback.js)
+            FILES=$(ls -R template | sed -n '1,200p' | tr '\n' ' ')
+          fi
+
+          PAYLOAD=$(jq -n --arg id "$TEMPLATE_ID" --arg status "$STATUS" --arg runUrl "$GITHUB_RUN_URL" --arg logs "$LOGS" --arg files "$FILES" '{ templateId: $id, status: $status, runUrl: $runUrl, logs: $logs, files: $files }')
+
+          if [ -n "$CALLBACK_URL" ]; then
+            echo "Posting callback to $CALLBACK_URL"
+            curl -s -X POST -H "Content-Type: application/json" -H "X-BUILD-CALLBACK-SECRET: $CALLBACK_SECRET" -d "$PAYLOAD" "$CALLBACK_URL" || true
           else
-            node upload_and_callback.js
+            echo "No callback URL provided; skipping callback"
           fi
 
       - name: Upload artifacts
