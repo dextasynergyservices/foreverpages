@@ -241,7 +241,7 @@ async function handleRemoteBuildWithPolling(templateId: string, packageUrl: stri
 
       // Collect files
       function collectRelativeFiles(dir: string) {
-        const out: { path: string; content: string }[] = [];
+        const out: { path: string; content: string | Buffer }[] = [];
         const stack = [dir];
         while (stack.length) {
           const p = stack.pop()!;
@@ -262,8 +262,21 @@ async function handleRemoteBuildWithPolling(templateId: string, packageUrl: stri
             if (e.isFile()) {
               // Get path relative to tmpBase, not process.cwd()
               const rel = path.relative(tmpBase, full).replace(/\\/g, "/");
-              const content = fs.readFileSync(full, "utf8");
-              out.push({ path: rel, content });
+              // Save templates to src/app/templates/ instead of root
+              const finalPath = `src/app/templates/${rel}`;
+
+              // Handle binary files (images) separately
+              if (
+                [".png", ".jpg", ".jpeg", ".gif", ".webp"].includes(
+                  path.extname(e.name).toLowerCase()
+                )
+              ) {
+                const buffer = fs.readFileSync(full);
+                out.push({ path: finalPath, content: buffer });
+              } else {
+                const content = fs.readFileSync(full, "utf8");
+                out.push({ path: finalPath, content });
+              }
             }
           }
         }
@@ -659,7 +672,7 @@ async function processNext() {
           const branch = `template/${safeSlug}-${job.templateId}-${Date.now()}`;
           // collect files relative to repo root
           function collectRelativeFiles(dir: string) {
-            const out: { path: string; content: string }[] = [];
+            const out: { path: string; content: string | Buffer }[] = [];
             const stack = [dir];
             while (stack.length) {
               const p = stack.pop()!;
@@ -672,9 +685,22 @@ async function processNext() {
                   continue;
                 }
                 if (e.isFile()) {
-                  const rel = path.relative(process.cwd(), full).replace(/\\/g, "/");
-                  const content = fs.readFileSync(full, "utf8");
-                  out.push({ path: rel, content });
+                  const rel = path.relative(repoDest, full).replace(/\\/g, "/");
+                  // Save templates to src/app/templates/ instead of root
+                  const finalPath = `src/app/templates/${rel}`;
+
+                  // Handle binary files (images) separately
+                  if (
+                    [".png", ".jpg", ".jpeg", ".gif", ".webp"].includes(
+                      path.extname(e.name).toLowerCase()
+                    )
+                  ) {
+                    const buffer = fs.readFileSync(full);
+                    out.push({ path: finalPath, content: buffer });
+                  } else {
+                    const content = fs.readFileSync(full, "utf8");
+                    out.push({ path: finalPath, content });
+                  }
                 }
               }
             }
