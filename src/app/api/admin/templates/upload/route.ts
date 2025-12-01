@@ -368,11 +368,12 @@ export async function POST(request: NextRequest) {
     });
   } catch (err) {
     console.error("Template upload error:", err);
+    const errorMsg = (err as Error)?.message || String(err);
     // During local development expose the error message to aid debugging. Remove in production.
     const devBody =
       process.env.NODE_ENV === "production"
         ? { message: "Internal server error" }
-        : { message: "Internal server error", error: String((err as Error)?.message || err) };
+        : { message: "Internal server error", error: errorMsg, stack: (err as Error)?.stack };
     return NextResponse.json(devBody, { status: 500 });
   }
 }
