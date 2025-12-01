@@ -113,11 +113,24 @@ jobs:
 
       # Removed uploader dependencies install step — not needed for validation-only workflow
 
-      - name: Validate extracted template and POST callback
+      - name: Upload artifacts
+        if: ${{ always() }}
+        id: upload-artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: template-build-artifacts
+          path: |
+            template/dist
+            template/build
+            template.zip
+            build_output.txt
+
+      - name: Validate extracted template and POST callback with artifact
         if: ${{ always() }}
         env:
           TEMPLATE_ID: ${{ github.event.client_payload.templateId }}
           CALLBACK_URL: ${{ github.event.client_payload.callbackUrl }}
+          PACKAGE_URL: ${{ github.event.client_payload.packageUrl }}
           GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           CALLBACK_SECRET: ${{ secrets.TEMPLATE_BUILD_CALLBACK_SECRET }}
         run: |
@@ -131,28 +144,32 @@ jobs:
             LOGS="Extracted template directory missing or empty"
           fi
 
-          # Short file listing for debugging (top 200 entries)
-          FILES=""
-          if [ -d template ]; then
-            FILES=$(ls -R template | sed -n '1,200p' | tr '\n' ' ')
-          fi
+          # The artifact URL is the original package URL uploaded by the client
+          # (GitHub Actions artifact URLs require auth and are not suitable for callback)
+          ARTIFACT_URL="$PACKAGE_URL"
 
-          PAYLOAD=$(jq -n --arg id "$TEMPLATE_ID" --arg status "$STATUS" --arg runUrl "$GITHUB_RUN_URL" --arg logs "$LOGS" --arg files "$FILES" '{ templateId: $id, status: $status, runUrl: $runUrl, logs: $logs, files: $files }')
+          # Construct callback payload with all necessary info
+          PAYLOAD=$(jq -n \
+            --arg id "$TEMPLATE_ID" \
+            --arg status "$STATUS" \
+            --arg runUrl "$GITHUB_RUN_URL" \
+            --arg artifactUrl "$ARTIFACT_URL" \
+            --arg logs "$LOGS" \
+            '{
+              templateId: $id,
+              status: $status,
+              runUrl: $runUrl,
+              artifactUrl: $artifactUrl,
+              logs: $logs
+            }')
 
           if [ -n "$CALLBACK_URL" ]; then
-            echo "Posting callback to $CALLBACK_URL"
-            curl -s -X POST -H "Content-Type: application/json" -H "X-BUILD-CALLBACK-SECRET: $CALLBACK_SECRET" -d "$PAYLOAD" "$CALLBACK_URL" || true
+            echo "Posting callback to $CALLBACK_URL with packageUrl: $ARTIFACT_URL"
+            curl -s -X POST \
+              -H "Content-Type: application/json" \
+              -H "X-BUILD-CALLBACK-SECRET: $CALLBACK_SECRET" \
+              -d "$PAYLOAD" \
+              "$CALLBACK_URL" || true
           else
             echo "No callback URL provided; skipping callback"
           fi
-
-      - name: Upload artifacts
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: template-build-artifacts
-          path: |
-            template/dist
-            template/build
-            template.zip
-            build_output.txt
