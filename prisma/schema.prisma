@@ -980,6 +980,8 @@ model Template {
   plans         Plan[]
   // Historical versions for this template
   templateVersions TemplateVersion[]
+  // Back-relation for processing jobs
+  templateJobs    TemplateJob[]
 
   @@index([slug])
   @@index([isActive])
@@ -1118,6 +1120,40 @@ enum TemplateProcessingStatus {
   VALIDATED
   PUBLISHED
   ERROR
+}
+
+// Job queue for processing uploaded templates reliably across deployments
+model TemplateJob {
+  id         String                 @id @default(cuid())
+  templateId String
+  template   Template               @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  // The directory on disk where the uploaded/extracted files were saved (if present)
+  extractionDir String?
+
+  // JSON payload with additional metadata (e.g., artifactUrl, runUrl, packageUrl)
+  payload    Json?
+
+  status     TemplateJobStatus     @default(PENDING)
+  attempt    Int                   @default(0)
+  error      String?               @db.Text
+
+  createdAt  DateTime              @default(now())
+  updatedAt  DateTime              @updatedAt
+  claimedAt  DateTime?
+  claimedBy  String?               // hostname/pid that claimed the job
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([templateId])
+}
+
+enum TemplateJobStatus {
+  PENDING
+  CLAIMED
+  RUNNING
+  DONE
+  FAILED
 }
 
 enum TemplateContentType {

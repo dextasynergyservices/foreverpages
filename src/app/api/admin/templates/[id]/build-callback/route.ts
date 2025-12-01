@@ -49,9 +49,9 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       data: finalData as unknown as Prisma.TemplateUpdateInput,
     });
 
-    // If validated and artifactUrl present, download & extract and enqueue for persistence + PR creation
+    // If validated, attempt to obtain an artifact URL (build callback's artifactUrl or stored packageUrl)
     try {
-      if (status === "VALIDATED" && artifactUrl) {
+      if (status === "VALIDATED") {
         // mark as processing while we enqueue
         await prisma.template.update({
           where: { id },
@@ -61,29 +61,52 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
           },
         });
 
-        const tmpBase = fs.mkdtempSync(path.join(os.tmpdir(), `template-${id}-`));
-        const zipPath = path.join(tmpBase, "artifact.zip");
-        try {
-          const res = await fetch(artifactUrl);
-          if (!res.ok) throw new Error(`Failed to fetch artifact: ${res.status}`);
-          const ab = await res.arrayBuffer();
-          await fs.promises.writeFile(zipPath, Buffer.from(ab));
-          // extract
-          const zip = new AdmZip(zipPath);
-          zip.extractAllTo(tmpBase, true);
-          // extracted content may be at tmpBase or inside a single subdir; pass tmpBase and let the worker copy
-          enqueueTemplateProcessing(id, tmpBase);
-        } catch (e) {
-          console.error("Failed to download/extract artifact for template", id, e);
-          // restore VALIDATED state but record logs
+        // Prefer artifactUrl returned by the build; fall back to the template.packageUrl stored earlier.
+        let candidateUrl: string | null = artifactUrl || null;
+        if (!candidateUrl) {
+          const tplRec = await prisma.template.findUnique({
+            where: { id },
+            select: { packageUrl: true },
+          });
+          candidateUrl = tplRec?.packageUrl || null;
+        }
+
+        if (!candidateUrl) {
+          // Nothing to fetch — restore VALIDATED and exit
           await prisma.template.update({
             where: { id },
             data: {
               processingStatus: "VALIDATED",
               processingLogs:
-                (finalData.processingLogs as string) || "Validated but failed to download artifact",
+                (finalData.processingLogs as string) || "Validated but no artifact URL available",
             },
           });
+        } else {
+          const tmpBase = fs.mkdtempSync(path.join(os.tmpdir(), `template-${id}-`));
+          const zipPath = path.join(tmpBase, "artifact.zip");
+          try {
+            const res = await fetch(candidateUrl);
+            if (!res.ok) throw new Error(`Failed to fetch artifact: ${res.status}`);
+            const ab = await res.arrayBuffer();
+            await fs.promises.writeFile(zipPath, Buffer.from(ab));
+            // extract
+            const zip = new AdmZip(zipPath);
+            zip.extractAllTo(tmpBase, true);
+            // extracted content may be at tmpBase or inside a single subdir; pass tmpBase and let the worker copy
+            enqueueTemplateProcessing(id, tmpBase);
+          } catch (e) {
+            console.error("Failed to download/extract artifact for template", id, e);
+            // restore VALIDATED state but record logs
+            await prisma.template.update({
+              where: { id },
+              data: {
+                processingStatus: "VALIDATED",
+                processingLogs:
+                  (finalData.processingLogs as string) ||
+                  "Validated but failed to download artifact",
+              },
+            });
+          }
         }
       }
     } catch (e) {
