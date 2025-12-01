@@ -23,7 +23,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
 
     try {
       const { enqueueTemplateProcessing } = await import("@/server/template-workers/queue");
-      await enqueueTemplateProcessing(templateId, tpl.storagePath);
+      await enqueueTemplateProcessing(templateId, tpl.storagePath, undefined, true);
     } catch (e) {
       console.error("Failed to enqueue processing:", e);
       return NextResponse.json({ message: "Failed to enqueue processing" }, { status: 500 });

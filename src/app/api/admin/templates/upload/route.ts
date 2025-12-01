@@ -337,7 +337,8 @@ export async function POST(request: NextRequest) {
     // Enqueue background processing job
     try {
       const { enqueueTemplateProcessing } = await import("@/server/template-workers/queue");
-      if (validation.tempDir) await enqueueTemplateProcessing(template.id, validation.tempDir);
+      if (validation.tempDir)
+        await enqueueTemplateProcessing(template.id, validation.tempDir, undefined, true);
     } catch (e) {
       console.error("Failed to enqueue worker, rolling back template and files", e);
       // Attempt to remove DB record and cleanup extracted files

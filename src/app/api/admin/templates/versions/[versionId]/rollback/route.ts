@@ -66,7 +66,8 @@ export async function POST(request: NextRequest, { params }: { params: { version
 
     try {
       const { enqueueTemplateProcessing } = await import("@/server/template-workers/queue");
-      if (updated.storagePath) await enqueueTemplateProcessing(updated.id, updated.storagePath);
+      if (updated.storagePath)
+        await enqueueTemplateProcessing(updated.id, updated.storagePath, undefined, true);
     } catch (e) {
       console.warn("Failed to enqueue processing after rollback:", e);
     }

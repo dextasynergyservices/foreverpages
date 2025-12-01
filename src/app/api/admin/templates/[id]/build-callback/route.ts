@@ -4,7 +4,6 @@ import fs from "fs";
 import os from "os";
 import path from "path";
 import AdmZip from "adm-zip";
-import { enqueueTemplateProcessing } from "@/server/template-workers/queue";
 
 const prisma = new PrismaClient();
 export const runtime = "nodejs";
@@ -82,30 +81,46 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
             },
           });
         } else {
-          const tmpBase = fs.mkdtempSync(path.join(os.tmpdir(), `template-${id}-`));
-          const zipPath = path.join(tmpBase, "artifact.zip");
+          // Create a DB-backed TemplateJob with payload containing the artifact URL and runUrl
           try {
-            const res = await fetch(candidateUrl);
-            if (!res.ok) throw new Error(`Failed to fetch artifact: ${res.status}`);
-            const ab = await res.arrayBuffer();
-            await fs.promises.writeFile(zipPath, Buffer.from(ab));
-            // extract
-            const zip = new AdmZip(zipPath);
-            zip.extractAllTo(tmpBase, true);
-            // extracted content may be at tmpBase or inside a single subdir; pass tmpBase and let the worker copy
-            enqueueTemplateProcessing(id, tmpBase);
+            // Use the shared enqueue which will create a DB job and optionally wake local queue
+            const { enqueueTemplateProcessing } = await import("@/server/template-workers/queue");
+            await enqueueTemplateProcessing(
+              id,
+              null,
+              { packageUrl: candidateUrl, runUrl: runUrl } as Prisma.JsonObject,
+              true // pushNow: wake same-process worker immediately
+            );
           } catch (e) {
-            console.error("Failed to download/extract artifact for template", id, e);
-            // restore VALIDATED state but record logs
-            await prisma.template.update({
-              where: { id },
-              data: {
-                processingStatus: "VALIDATED",
-                processingLogs:
-                  (finalData.processingLogs as string) ||
-                  "Validated but failed to download artifact",
-              },
-            });
+            console.error(
+              "Failed to enqueue DB TemplateJob for artifact, falling back to local extract",
+              id,
+              e
+            );
+            // fallback: try to download & enqueue locally
+            try {
+              const tmpBase = fs.mkdtempSync(path.join(os.tmpdir(), `template-${id}-`));
+              const zipPath = path.join(tmpBase, "artifact.zip");
+              const res = await fetch(candidateUrl);
+              if (!res.ok) throw new Error(`Failed to fetch artifact: ${res.status}`);
+              const ab = await res.arrayBuffer();
+              await fs.promises.writeFile(zipPath, Buffer.from(ab));
+              const zip = new AdmZip(zipPath);
+              zip.extractAllTo(tmpBase, true);
+              const { enqueueTemplateProcessing } = await import("@/server/template-workers/queue");
+              await enqueueTemplateProcessing(id, tmpBase, undefined, true);
+            } catch (ee) {
+              console.error("Fallback download/extract failed", id, ee);
+              await prisma.template.update({
+                where: { id },
+                data: {
+                  processingStatus: "VALIDATED",
+                  processingLogs:
+                    (finalData.processingLogs as string) ||
+                    "Validated but failed to download artifact",
+                },
+              });
+            }
           }
         }
       }
