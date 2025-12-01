@@ -10,9 +10,17 @@ const prisma = new PrismaClient();
 export const runtime = "nodejs";
 
 export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+  console.log("[build-callback] 🔔 CALLBACK RECEIVED - Request method:", request.method);
+  console.log("[build-callback] 🔔 Params:", params);
+
   try {
     const id = params?.id;
-    if (!id) return NextResponse.json({ message: "Missing template id" }, { status: 400 });
+    if (!id) {
+      console.log("[build-callback] ❌ Missing template id in params");
+      return NextResponse.json({ message: "Missing template id" }, { status: 400 });
+    }
+
+    console.log(`[build-callback] 🔍 Processing callback for template: ${id}`);
 
     // Validate callback secret header
     const secretHeader =
@@ -20,14 +28,21 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       request.headers.get("X-BUILD-CALLBACK-SECRET");
     const expected = process.env.TEMPLATE_BUILD_CALLBACK_SECRET || null;
     if (expected && secretHeader !== expected) {
-      console.warn("Invalid callback secret for template callback", { id });
+      console.warn("[build-callback] ❌ Invalid callback secret", {
+        id,
+        received: !!secretHeader,
+        expected: !!expected,
+      });
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const body = await request.json().catch(() => null);
-    if (!body) return NextResponse.json({ message: "Invalid JSON" }, { status: 400 });
+    if (!body) {
+      console.log("[build-callback] ❌ Failed to parse JSON body");
+      return NextResponse.json({ message: "Invalid JSON" }, { status: 400 });
+    }
 
-    console.log(`[build-callback] Received callback for template ${id}:`, {
+    console.log(`[build-callback] ✓ Received callback for template ${id}:`, {
       status: body.status,
       hasArtifactUrl: !!body.artifactUrl,
       hasLogs: !!body.logs,
