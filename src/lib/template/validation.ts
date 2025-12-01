@@ -349,8 +349,11 @@ export async function validateAndExtractZip(
         resourceType: "raw",
       });
       uploaded.package = { public_id: packRes.public_id, url: packRes.secure_url };
-    } catch {
-      result.warnings.push("Failed to persist package zip");
+    } catch (err) {
+      console.error("Failed to upload package to Cloudinary:", err);
+      result.errors.push(
+        `Failed to upload package: ${err instanceof Error ? err.message : String(err)}`
+      );
     }
 
     result.uploaded = uploaded;
