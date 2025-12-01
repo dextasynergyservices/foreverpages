@@ -120,7 +120,13 @@ async function run() {
     }),
   });
 
-  const branchName = `template/e2e-${templateId}`;
+  const safeSlug = String(`e2e-${id}`)
+    .toLowerCase()
+    .replace(/[^a-z0-9\-_]/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 60);
+  const branchName = `template/${safeSlug}-${templateId}-${Date.now()}`;
   await ghFetch("/git/refs", {
     method: "POST",
     body: JSON.stringify({ ref: `refs/heads/${branchName}`, sha: commit.sha }),

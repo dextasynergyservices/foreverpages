@@ -46,7 +46,13 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       return NextResponse.json({ error: "No files to create PR" }, { status: 400 });
 
     const slug = tpl.slug || `template-${id}`;
-    const branch = `template/${slug}-${id}`;
+    const safeSlug = String(slug || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9\-_]/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "")
+      .slice(0, 60);
+    const branch = `template/${safeSlug}-${id}-${Date.now()}`;
     const title = `Add template ${slug}`;
     const body = `Manual PR for template ${slug} (id: ${id})`;
 
