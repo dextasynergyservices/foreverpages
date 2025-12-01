@@ -1,5 +1,6 @@
 import { runHeavyAnalysis } from "./process";
 import { PrismaClient } from "@/generated/prisma";
+import type { Prisma } from "@/generated/prisma";
 import fs from "fs";
 import path from "path";
 import util from "util";
@@ -19,12 +20,130 @@ const exec = util.promisify(childExec) as (
 const prisma = new PrismaClient();
 
 type Job = { templateId: string; extractionDir: string };
+type DbJob = { id: string; templateId: string; extractionDir?: string };
 
 const queue: Job[] = [];
 let running = false;
+const dbMap = new Map<string, string>();
+const JOB_DIR = path.join(process.cwd(), ".template-job-queue");
+
+async function ensureJobDir() {
+  try {
+    await fs.promises.mkdir(JOB_DIR, { recursive: true });
+  } catch (e) {
+    console.warn("Failed to ensure job dir", e);
+  }
+}
+
+async function persistJobToDisk(job: Job) {
+  try {
+    const fname = `${Date.now()}-${job.templateId}-${Math.random().toString(36).slice(2, 8)}.json`;
+    const tmp = path.join(JOB_DIR, fname + ".tmp");
+    const dest = path.join(JOB_DIR, fname);
+    await fs.promises.writeFile(tmp, JSON.stringify(job), "utf8");
+    await fs.promises.rename(tmp, dest);
+  } catch (e) {
+    console.warn("Failed to persist job to disk", e);
+  }
+}
+
+async function loadDiskJobs() {
+  try {
+    await ensureJobDir();
+    const entries = await fs.promises.readdir(JOB_DIR);
+    for (const e of entries) {
+      // Try to atomically claim the file by renaming it to a unique name including PID
+      const src = path.join(JOB_DIR, e);
+      const claimed = path.join(JOB_DIR, `${e}.claimed-${process.pid}-${Date.now()}`);
+      try {
+        await fs.promises.rename(src, claimed);
+      } catch {
+        // another process likely claimed it; skip
+        continue;
+      }
+      try {
+        const data = await fs.promises.readFile(claimed, "utf8");
+        const job: Job = JSON.parse(data);
+        queue.push(job);
+        // remove the claimed file now that it's in memory
+        await fs.promises.unlink(claimed).catch(() => {});
+      } catch (err) {
+        console.warn("Failed to read/queue claimed job", err);
+        // try to remove to avoid stuck files
+        await fs.promises.unlink(claimed).catch(() => {});
+      }
+    }
+  } catch (e) {
+    console.warn("Failed to load disk jobs", e);
+  }
+}
+
+// Attempt to claim a pending DB job atomically and return it.
+async function claimDbJob(): Promise<DbJob | null> {
+  try {
+    // Find a pending job
+    const job = await prisma.templateJob.findFirst({
+      where: { status: "PENDING" },
+      orderBy: { createdAt: "asc" },
+    });
+    if (!job) return null;
+    const claimed = await prisma.templateJob.updateMany({
+      where: { id: job.id, status: "PENDING" },
+      data: {
+        status: "CLAIMED",
+        claimedAt: new Date(),
+        claimedBy: `${process.env.HOSTNAME || "local"}:${process.pid}`,
+      },
+    });
+    if (claimed.count === 0) return null; // someone else claimed it
+    // refetch the job
+    const j = await prisma.templateJob.findUnique({ where: { id: job.id } });
+    if (!j) return null;
+    return { id: j.id, templateId: j.templateId, extractionDir: j.extractionDir || undefined };
+  } catch (e) {
+    console.warn("Failed to claim DB job", e);
+    return null;
+  }
+}
+
+// Mark DB job done/failed
+async function finishDbJob(id: string, success: boolean, errorMsg?: string) {
+  try {
+    await prisma.templateJob.update({
+      where: { id },
+      data: {
+        status: success ? "DONE" : "FAILED",
+        error: errorMsg || undefined,
+        updatedAt: new Date(),
+      },
+    });
+  } catch (e) {
+    console.warn("Failed to mark DB job finished", e);
+  }
+}
 
 async function processNext() {
   if (running) return;
+  // Load any persisted jobs first so multiple processes won't lose work
+  if (queue.length === 0) {
+    await loadDiskJobs();
+  }
+  // If still no in-memory jobs, try to claim a DB job
+  if (queue.length === 0) {
+    const dbJob = await claimDbJob();
+    if (dbJob) {
+      // push into in-memory queue for processing and remember job id on the object using a hidden property
+      // push into in-memory queue for processing and remember job id in module-level map
+      const jb: Job = {
+        templateId: dbJob.templateId,
+        extractionDir:
+          dbJob.extractionDir ||
+          path.join(process.cwd(), "tmp", `extracted-${dbJob.templateId}-${Date.now()}`),
+      };
+      queue.push(jb);
+      dbMap.set(jb.templateId + "@" + jb.extractionDir, dbJob.id);
+    }
+  }
   const job = queue.shift();
   if (!job) return;
   running = true;
@@ -68,6 +187,23 @@ async function processNext() {
   }
   try {
     console.log(`Processing template ${job.templateId} at ${job.extractionDir}`);
+    // If this job was claimed via DB, mark it RUNNING
+    const dbJobKey = job.templateId + "@" + job.extractionDir;
+    if (dbMap.has(dbJobKey)) {
+      const dbJobId = dbMap.get(dbJobKey)!;
+      try {
+        await prisma.templateJob.update({
+          where: { id: dbJobId },
+          data: {
+            status: "RUNNING",
+            claimedAt: new Date(),
+            claimedBy: `${process.env.HOSTNAME || "local"}:${process.pid}`,
+          },
+        });
+      } catch (e) {
+        console.warn("Failed to mark DB job RUNNING", e);
+      }
+    }
     const res = await runHeavyAnalysis(job.extractionDir);
     // upload logs to Cloudinary (raw) and save a trimmed copy in DB
     const fullOutput = res.output ?? "";
@@ -327,6 +463,12 @@ async function processNext() {
           processingLogsUrl: logsUrl || undefined,
         },
       });
+      // mark DB job failed if present
+      if (dbMap.has(job.templateId + "@" + job.extractionDir)) {
+        const id = dbMap.get(job.templateId + "@" + job.extractionDir)!;
+        await finishDbJob(id, false, trimmed?.slice(0, 2000));
+        dbMap.delete(job.templateId + "@" + job.extractionDir);
+      }
     }
   } catch (err) {
     console.error("Worker error:", err);
@@ -335,6 +477,11 @@ async function processNext() {
         where: { id: job.templateId },
         data: { processingStatus: "ERROR" },
       });
+      if (dbMap.has(job.templateId + "@" + job.extractionDir)) {
+        const id = dbMap.get(job.templateId + "@" + job.extractionDir)!;
+        await finishDbJob(id, false, String(err));
+        dbMap.delete(job.templateId + "@" + job.extractionDir);
+      }
     } catch {}
   } finally {
     // cleanup extracted files
@@ -358,11 +505,37 @@ async function processNext() {
     running = false;
     // process next job
     if (queue.length) processNext();
+    else {
+      // if no local in-memory jobs, poll DB again after a short delay
+      setTimeout(
+        () => processNext().catch((e) => console.warn("processNext poll failed", e)),
+        2000
+      );
+    }
   }
 }
 
 export function enqueueTemplateProcessing(templateId: string, extractionDir: string) {
-  queue.push({ templateId, extractionDir });
+  const job = { templateId, extractionDir };
+  queue.push(job);
+  // persist job for durability across processes
+  persistJobToDisk(job).catch((e) => console.warn("persistJobToDisk failed", e));
+  // create a DB TemplateJob record for cross-host durability
+  (async () => {
+    try {
+      const payload = { extractionDir };
+      await prisma.templateJob.create({
+        data: {
+          templateId,
+          extractionDir,
+          payload: payload as Prisma.JsonObject,
+          status: "PENDING",
+        },
+      });
+    } catch (e) {
+      console.warn("Failed to create DB TemplateJob", e);
+    }
+  })();
   // try to start processing
   processNext();
 }
