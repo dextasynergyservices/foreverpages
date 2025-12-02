@@ -123,6 +123,12 @@ const nextConfig = {
 
   // Optimize bundle
   webpack: (config, { dev, isServer }) => {
+    // Skip entire src/app/templates directory - templates are self-contained
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "src/app/templates": false,
+    };
+
     // Exclude uploaded templates from webpack processing
     // Templates are self-contained modules with their own build system
     config.module.rules = (config.module.rules || []).map((rule: Record<string, unknown>) => {
