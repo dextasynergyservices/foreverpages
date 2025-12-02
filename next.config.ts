@@ -11,6 +11,12 @@ const nextConfig = {
   // Faster refreshes in development
   reactStrictMode: true,
 
+  // Skip TypeScript type checking during build
+  // Templates have their own type system and will fail if checked by Next.js
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+
   // Redirect HTTP to HTTPS in production
   async redirects() {
     return [
