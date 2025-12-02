@@ -34,6 +34,10 @@ const eslintConfig = [
       "signaling-server/dist/**",
       // Ignore template fixture examples (these are intentionally unlinted)
       "scripts/template-to-fix/**",
+      // Ignore uploaded templates - they have their own build and lint configs
+      "src/app/templates/**",
+      // Ignore root-level template directory (legacy)
+      "light-template/**",
     ],
   },
 
