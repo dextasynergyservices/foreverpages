@@ -123,6 +123,29 @@ const nextConfig = {
 
   // Optimize bundle
   webpack: (config, { dev, isServer }) => {
+    // Exclude uploaded templates from webpack processing
+    // Templates are self-contained modules with their own build system
+    config.module.rules = (config.module.rules || []).map((rule: Record<string, unknown>) => {
+      if (
+        rule.test &&
+        typeof rule.test === "object" &&
+        (rule.test.toString().includes("tsx") || rule.test.toString().includes("ts"))
+      ) {
+        return {
+          ...rule,
+          exclude: (path: string) => {
+            if (path.includes("src/app/templates")) return true;
+            const ruleExclude = rule.exclude as unknown;
+            if (typeof ruleExclude === "function")
+              return (ruleExclude as (path: string) => boolean)(path);
+            if (ruleExclude instanceof RegExp) return ruleExclude.test(path);
+            return false;
+          },
+        };
+      }
+      return rule;
+    });
+
     // Speed up development builds
     if (dev) {
       config.watchOptions = {
