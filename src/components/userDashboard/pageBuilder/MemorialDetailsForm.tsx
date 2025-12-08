@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textArea";
@@ -11,7 +11,8 @@ import {
 } from "@/components/ui/select";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslations } from "@/hooks/useTranslations";
-import toast from "react-hot-toast";
+import { useAutoSave, DraftData } from "@/hooks/useAutoSave";
+import { SaveStatusIndicator } from "./SaveStatusIndicator";
 
 interface MemorialDetailsData {
   profilePhoto: File | null;
@@ -20,7 +21,15 @@ interface MemorialDetailsData {
   privacySetting: string;
 }
 
-export const MemorialDetailsForm: React.FC = () => {
+interface MemorialDetailsFormProps {
+  memorialId?: string;
+  onDataChange?: (data: Partial<MemorialDetailsData>) => void;
+}
+
+export const MemorialDetailsForm: React.FC<MemorialDetailsFormProps> = ({
+  memorialId,
+  onDataChange,
+}) => {
   const { theme } = useTheme();
   const { t } = useTranslations();
   const [formData, setFormData] = useState<MemorialDetailsData>({
@@ -29,7 +38,18 @@ export const MemorialDetailsForm: React.FC = () => {
     memorialMessage: "",
     privacySetting: "public",
   });
-  const [isAutoSaving, setIsAutoSaving] = useState(false);
+
+  const { autoSave, autoSaveError, saveStatus, lastSavedAt } = useAutoSave({
+    memorialId,
+    enabled: !!memorialId,
+    debounceMs: 1000,
+    onSuccess: (data) => {
+      console.log("Draft saved successfully:", data);
+    },
+    onError: (error) => {
+      console.error("Draft save error:", error);
+    },
+  });
 
   // Load saved data on component mount
   useEffect(() => {
@@ -49,39 +69,28 @@ export const MemorialDetailsForm: React.FC = () => {
     }
   }, []);
 
-  // Debounced auto-save function
-  const autoSave = useCallback(() => {
-    let timeoutId: NodeJS.Timeout;
-    return (data: Partial<MemorialDetailsData>) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        setIsAutoSaving(true);
-        // Only save text data to localStorage (files can't be stored)
-        const dataToSave = {
-          memorialMessage: data.memorialMessage,
-          privacySetting: data.privacySetting,
-        };
-        localStorage.setItem("memorialDetails", JSON.stringify(dataToSave));
-        setTimeout(() => {
-          setIsAutoSaving(false);
-          toast.success(t("dashboard.pageBuilder.memorialDetails.autoSaved", {}, "Auto-saved"), {
-            duration: 1000,
-          });
-        }, 500);
-      }, 1000); // 1 second debounce
-    };
-  }, [t]);
-
-  const debouncedSave = autoSave();
-
   const handleInputChange = (field: keyof MemorialDetailsData, value: string | File | null) => {
     const newData = { ...formData, [field]: value };
     setFormData(newData);
 
-    // Only auto-save text data
+    // Only auto-save text data to both localStorage and server
     if (field === "memorialMessage" || field === "privacySetting") {
-      debouncedSave({ [field]: value });
+      const dataToSave = {
+        memorialMessage: newData.memorialMessage,
+        privacySetting: newData.privacySetting,
+      };
+
+      // Save to localStorage as fallback
+      localStorage.setItem("memorialDetails", JSON.stringify(dataToSave));
+
+      // Trigger auto-save if memorial ID is available
+      if (memorialId) {
+        autoSave(dataToSave as DraftData);
+      }
     }
+
+    // Call parent callback if provided
+    onDataChange?.(newData);
   };
 
   const handleFileChange = (field: "profilePhoto" | "backgroundImage", file: File | null) => {
@@ -94,11 +103,12 @@ export const MemorialDetailsForm: React.FC = () => {
 
   return (
     <div className="space-y-6 max-w-xl mx-auto">
-      {isAutoSaving && (
-        <div className={`text-sm ${textMuted} text-center`}>
-          {t("dashboard.pageBuilder.memorialDetails.saving", {}, "Saving...")}
-        </div>
-      )}
+      <SaveStatusIndicator
+        status={saveStatus}
+        lastSavedAt={lastSavedAt}
+        error={autoSaveError}
+        showTimestamp
+      />
       <div>
         <Label htmlFor="profile-photo">
           {t("dashboard.pageBuilder.memorialDetails.profilePhoto.label", {}, "Profile Photo")}

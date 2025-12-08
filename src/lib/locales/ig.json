@@ -1,208 +1,208 @@
 {
   "hero": {
-    "title": "Honor Their Memory",
-    "subtitle": "Create beautiful memorial websites where families and friends celebrate lives and share memories together",
+    "title": "Sọpụrụ Ncheta Ha",
+    "subtitle": "Mepụta weebụsaịtị ncheta mara mma ebe ezinụlọ na ndị enyi na-eme emume ndụ ma na-ekekọrịta ncheta ọnụ",
     "buttons": {
-      "create": "Create a Memorial Page",
-      "view": "View Sample Memorial"
+      "create": "Mepụta Ibe Ncheta",
+      "view": "Lee Ihe Nlele Ncheta"
     }
   },
   "navbar": {
     "logo": "ForeverPages",
     "navigation": {
-      "features": "Features",
-      "home": "Home",
-      "memorials": "Memorial Pages",
-      "howItWorks": "How It Works",
-      "support": "Contact"
+      "features": "Atụmatụ",
+      "home": "Ụlọ",
+      "memorials": "Ibe Ncheta",
+      "howItWorks": "Otu O Si Arụ Ọrụ",
+      "support": "Kọntaktị"
     },
     "buttons": {
-      "signIn": "Sign In",
-      "signOut": "Log Out",
+      "signIn": "Banye",
+      "signOut": "Pụọ",
       "dashboard": "Dashboard"
     }
   },
   "contact": {
-    "title": "Get In Touch",
-    "subtitle": "Have questions or need support? We're here to help you create a beautiful memorial.",
+    "title": "Kpọtụrụ Anyị",
+    "subtitle": "Ị nwere ajụjụ ma ọ bụ chọrọ nkwado? Anyị nọ ebe a iji nyere gị aka imepụta ncheta mara mma.",
     "info": {
       "email": {
-        "title": "Email Us",
-        "description": "Send us an email anytime"
+        "title": "Zitere Anyị Ozi-e",
+        "description": "Zitere anyị ozi-e oge ọ bụla"
       },
       "phone": {
-        "title": "Call Us",
-        "description": "Mon-Fri from 10am to 6pm (WAT)"
+        "title": "Kpọọ Anyị",
+        "description": "Mọn-Fraị n'etiti 10am na 6pm (WAT)"
       },
       "address": {
-        "title": "Office Address"
+        "title": "Adreesị Ọfịs"
       },
       "hours": {
-        "title": "Business Hours",
-        "weekdays": "Monday - Friday",
-        "saturday": "Saturday",
-        "sunday": "Sunday",
-        "closed": "Closed"
+        "title": "Oge Ọrụ",
+        "weekdays": "Mọnde - Fraịde",
+        "saturday": "Satọde",
+        "sunday": "Sọnde",
+        "closed": "Emechiri"
       }
     },
     "form": {
-      "name": "Full Name",
-      "namePlaceholder": "Enter your full name",
-      "email": "Email Address",
-      "emailPlaceholder": "Enter your email address",
-      "subject": "Subject",
-      "subjectPlaceholder": "What is this regarding?",
-      "message": "Message",
-      "messagePlaceholder": "Tell us how we can help you...",
-      "send": "Send Message",
-      "sending": "Sending..."
+      "name": "Aha Zuruezu",
+      "namePlaceholder": "Tinye aha gị zuruezu",
+      "email": "Adreesị Ozi-e",
+      "emailPlaceholder": "Tinye adreesị ozi-e gị",
+      "subject": "Isiokwu",
+      "subjectPlaceholder": "Gịnị kpatara ihe a?",
+      "message": "Ozi",
+      "messagePlaceholder": "Gwa anyị otu anyị ga-esi nyere gị aka...",
+      "send": "Zipụ Ozi",
+      "sending": "Na-eziga..."
     }
   },
   "features": {
-    "title": "Compassionate Features",
-    "subtitle": "Everything you need to create a beautiful, lasting tribute that brings people together",
+    "title": "Atụmatụ Obi Ọmịiko",
+    "subtitle": "Ihe niile ịchọrọ iji mepụta nkwanye ùgwù mara mma, na-adịgide adịgide nke na-eme ka ndị mmadụ gbakọta ọnụ",
     "items": {
       "memoryGallery": {
-        "title": "Memory Gallery",
-        "description": "Share unlimited photos, videos, and cherished memories in a beautifully organized collection that tells the complete story of your loved one's life journey and special moments captured over time."
+        "title": "Ebe Ngosipụta Ncheta",
+        "description": "Kekọrịta foto, vidiyo na ncheta ndị a hụrụ n'anya na-akparaghị ókè n'ime nchịkọta a haziri nke ọma nke na-akọ akụkọ zuru ezu nke njem ndụ onye ị hụrụ n'anya na oge pụrụ iche e dekọrọ n'ime oge."
       },
       "tributeWall": {
-        "title": "Tribute Wall",
-        "description": "Friends and family can leave heartfelt messages, share personal stories, and offer condolences in a dedicated space that becomes a digital gathering place for everyone who cared about your loved one."
+        "title": "Mgbidi Nkwanye Ùgwù",
+        "description": "Ndị enyi na ezinụlọ nwere ike ịhapụ ozi sitere n'obi, kekọrịta akụkọ nkeonwe, ma nye ndị mmadụ nkasi obi n'ime oghere a raara onwe ya nye nke na-aghọ ebe nzukọ dijitalụ maka onye ọ bụla na-eche banyere onye ị hụrụ n'anya."
       },
       "privacyControls": {
-        "title": "Privacy Controls",
-        "description": "Maintain complete control over who can view and contribute to the memorial with our comprehensive privacy settings that ensure your family's comfort and security during this difficult time."
+        "title": "Njikwa Nzuzo",
+        "description": "Jikwaa njikwa zuru oke n'ime onye nwere ike ilele ma tinye aka na ncheta site na ntọala nzuzo anyị zuru ezu nke na-eme ka ahụ iru ala na nchekwa ezinụlọ gị n'oge a siri ike."
       },
       "foreverPreserved": {
-        "title": "Forever Preserved",
-        "description": "Your memorial pages are permanently preserved in our secure cloud storage, ensuring they remain accessible for future generations to visit, remember, and cherish forever without any time limitations."
+        "title": "Echekwara Ruo Mgbe Ebighị Ebi",
+        "description": "Ibe ncheta gị ga-echekwa ruo mgbe ebighị ebi na nchekwa igwe ojii anyị dị nchebe, na-ahụ na ha ga-anọgide na-enweta ya maka ọgbọ ndị ga-abịa n'ọdịnihu iji gaa, cheta, ma jiri obi ụtọ na-echekwa ruo mgbe ebighị ebi na-enweghị oke oge ọ bụla."
       }
     }
   },
   "funeralPages": {
-    "title": "Community Memorials",
-    "subtitle": "See how others are honoring their loved ones with beautiful, personalized memorial pages",
-    "viewMore": "View More Memorials",
-    "featured": "Featured",
-    "tributes": "tributes",
-    "visits": "visits",
-    "by": "By",
-    "memorialImage": "Memorial Image"
+    "title": "Ncheta Obodo",
+    "subtitle": "Lee ka ndị ọzọ si asọpụrụ ndị ha hụrụ n'anya site na ibe ncheta mara mma nke ahaziri onwe ha",
+    "viewMore": "Lee Ncheta Ndị Ọzọ",
+    "featured": "E gosipụtara",
+    "tributes": "nkwanye ùgwù",
+    "visits": "nleta",
+    "by": "Site na",
+    "memorialImage": "Foto Ncheta"
   },
   "allFuneralPage": {
-    "title": "Community Memorials",
-    "subtitle": "See how others are honoring their loved ones with beautiful, personalized memorial pages",
-    "by": "By",
-    "view": "View",
-    "noMemorials": "No memorial pages found.",
-    "previous": "Previous",
-    "next": "Next",
-    "searchPlaceholder": "Search by name or family...",
-    "search": "Search"
+    "title": "Ncheta Obodo",
+    "subtitle": "Lee ka ndị ọzọ si asọpụrụ ndị ha hụrụ n'anya site na ibe ncheta mara mma nke ahaziri onwe ha",
+    "by": "Site na",
+    "view": "Lee",
+    "noMemorials": "Ahụghị ibe ncheta ọ bụla.",
+    "previous": "Nke gara aga",
+    "next": "Ọzọ",
+    "searchPlaceholder": "Chọọ site na aha ma ọ bụ ezinụlọ...",
+    "search": "Chọọ"
   },
   "howItWorks": {
-    "title": "How It Works",
-    "subtitle": "Creating a beautiful memorial is simple and takes just a few minutes",
+    "title": "Otu O Si Arụ Ọrụ",
+    "subtitle": "Ime ncheta mara mma dị mfe ma na-ewe naanị nkeji ole na ole",
     "steps": {
       "create": {
         "number": "01",
-        "title": "Create Your Memorial",
-        "description": "Start by choosing a beautiful template and adding basic information about your loved one. Our intuitive interface makes it easy to get started in just minutes.",
+        "title": "Mepụta Ncheta Gị",
+        "description": "Malite site n'ịhọrọ ndokwa mara mma ma tinye ozi bụ isi gbasara onye ị hụrụ n'anya. Interface anyị nwere nghọta na-eme ka ọ dị mfe ịmalite naanị n'ime nkeji ole na ole.",
         "icon": "✍️"
       },
       "addContent": {
         "number": "02",
-        "title": "Add Photos & Stories",
-        "description": "Upload cherished photos, write meaningful stories, and organize memories in a way that truly honors their life and legacy.",
+        "title": "Tinye Foto na Akụkọ",
+        "description": "Bulite foto ndị a hụrụ n'anya, dee akụkọ ndị bara uru, ma hazie ncheta n'ụzọ na-asọpụrụ ndụ ha na ihe nketa ha n'ezie.",
         "icon": "📸"
       },
       "share": {
         "number": "03",
-        "title": "Share with Family",
-        "description": "Invite family and friends to contribute their own memories, photos, and tributes to create a comprehensive memorial together.",
+        "title": "Kekọrịta na Ezinụlọ",
+        "description": "Kpọọ ezinụlọ na ndị enyi ka ha tinye ncheta, foto, na nkwanye ùgwù nke ha iji mepụta ncheta zuru oke ọnụ.",
         "icon": "👥"
       },
       "preserve": {
         "number": "04",
-        "title": "Preserve Forever",
-        "description": "Your memorial is safely stored and will remain accessible for future generations to visit, remember, and cherish forever.",
+        "title": "Chekwaa Ruo Mgbe Ebighị Ebi",
+        "description": "Ncheta gị ga-echekwa nke ọma ma ga-anọgide na-enweta ya maka ọgbọ ndị ga-abịa n'ọdịnihu iji gaa, cheta, ma jiri obi ụtọ na-echekwa ruo mgbe ebighị ebi.",
         "icon": "💝"
       }
     },
     "buttons": {
-      "watchDemo": "Watch Demo Video"
+      "watchDemo": "Lelee Vidiyo Ngosi"
     },
     "modal": {
-      "title": "How It Works - Demo",
-      "description": "Watch this quick demo to see how easy it is to create a beautiful memorial page",
-      "placeholder": "Replace this with your video player component"
+      "title": "Otu O Si Arụ Ọrụ - Ngosi",
+      "description": "Lelee ngosi ngwa ngwa a iji hụ otu o si dị mfe imepụta ibe ncheta mara mma",
+      "placeholder": "Dochie nke a na ngwa ọkpụkpọ vidiyo gị"
     }
   },
   "testimonials": {
-    "title": "What Families Are Saying",
-    "subtitle": "Real stories from families who have found comfort and healing through our platform",
+    "title": "Ihe Ndị Ezinụlọ Na-ekwu",
+    "subtitle": "Akụkọ eziokwu sitere n'aka ezinụlọ ndị chọtara nkasi obi na ọgwụgwọ site na ikpo okwu anyị",
     "testimonials": {
       "sarah": {
         "name": "Sarah Johnson",
-        "role": "Daughter",
-        "content": "Creating a memorial for my father was one of the most healing experiences. The platform made it so easy to gather photos and stories from our entire family. It's become a place we all visit regularly."
+        "role": "Ada",
+        "content": "Ịmepụta ncheta maka nna m bụ otu n'ime ahụmahụ ọgwụgwọ kachasị. Ikpo okwu ahụ mere ka ọ dị mfe ịnakọta foto na akụkọ sitere n'aka ezinụlọ anyị niile. Ọ ghọwo ebe anyị niile na-eleta mgbe niile."
       },
       "michael": {
         "name": "Michael Chen",
-        "role": "Son",
-        "content": "The privacy controls gave us peace of mind, and the beautiful templates helped us create something truly special. Friends and family from around the world could contribute their memories."
+        "role": "Nwa Nwoke",
+        "content": "Njikwa nzuzo nyere anyị obi iru ala, na ndokwa mara mma nyere anyị aka imepụta ihe pụrụ iche n'ezie. Ndị enyi na ezinụlọ sitere n'ụwa niile nwere ike itinye aka na ncheta ha."
       },
       "emily": {
         "name": "Emily Rodriguez",
-        "role": "Granddaughter",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+        "role": "Nwa Nwa",
+        "content": "Enwere m ike ichekwa akụkọ na usoro nri nne nne m n'ụzọ ga-adịru mgbe ebighị ebi. Ndị otu nkwado nyere aka nke ukwuu n'oge usoro ahụ dum."
       },
       "emanuel": {
         "name": "Emanuel Okeke",
-        "role": "Grandson",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+        "role": "Nwa Nwa",
+        "content": "Enwere m ike ichekwa akụkọ na usoro nri nne nne m n'ụzọ ga-adịru mgbe ebighị ebi. Ndị otu nkwado nyere aka nke ukwuu n'oge usoro ahụ dum."
       },
       "boma": {
         "name": "Boma George",
-        "role": "Granddaughter",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+        "role": "Nwa Nwa",
+        "content": "Enwere m ike ichekwa akụkọ na usoro nri nne nne m n'ụzọ ga-adịru mgbe ebighị ebi. Ndị otu nkwado nyere aka nke ukwuu n'oge usoro ahụ dum."
       },
       "tosin": {
         "name": "Tosin Ola",
-        "role": "Grandson",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+        "role": "Nwa Nwa",
+        "content": "Enwere m ike ichekwa akụkọ na usoro nri nne nne m n'ụzọ ga-adịru mgbe ebighị ebi. Ndị otu nkwado nyere aka nke ukwuu n'oge usoro ahụ dum."
       },
       "aish": {
         "name": "Aish Usman",
-        "role": "Granddaughter",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+        "role": "Nwa Nwa",
+        "content": "Enwere m ike ichekwa akụkọ na usoro nri nne nne m n'ụzọ ga-adịru mgbe ebighị ebi. Ndị otu nkwado nyere aka nke ukwuu n'oge usoro ahụ dum."
       }
     },
     "joinFamilies": {
-      "title": "Join Families",
-      "description": "Over 50,000 families have trusted us to help preserve their loved ones' memories. Start creating your memorial today and join our compassionate community."
+      "title": "Sonye na Ezinụlọ",
+      "description": "Ihe karịrị ezinụlọ 50,000 tụkwasịrị anyị obi iji nyere aka ichekwa ncheta ndị ha hụrụ n'anya. Malite imepụta ncheta gị taa wee sonye n'ime obodo anyị nwere ọmịiko."
     }
   },
   "pricing": {
-    "getStarted": "Get Started",
-    "daysOfForever": "days of forever",
+    "getStarted": "Malite",
+    "daysOfForever": "ụbọchị nke ruo mgbe ebighị ebi",
     "modal": {
-      "plan": "Plan",
-      "featuresIncluded": "Features Included:",
-      "termsAndConditions": "Terms & Conditions",
-      "proceedToPayment": "Proceed to Payment",
-      "agreeTermsMessage": "Please agree to the terms and conditions to proceed with payment"
+      "plan": "Atụmatụ",
+      "featuresIncluded": "Atụmatụ Ndị Agụnyere:",
+      "termsAndConditions": "Usoro na Ọnọdụ",
+      "proceedToPayment": "Gaa n'ihu na Ịkwụ Ụgwọ",
+      "agreeTermsMessage": "Biko kwenye na usoro na ọnọdụ iji gaa n'ihu na ịkwụ ụgwọ"
     },
     "renewal": {
-      "oneTimePayment": "One-time Payment",
-      "whatYouGet": "What You Get",
-      "upgradeToLifetime": "Upgrade to Lifetime Access",
-      "loading": "Loading..."
+      "oneTimePayment": "Ịkwụ Ụgwọ Otu Oge",
+      "whatYouGet": "Ihe Ị Ga-enweta",
+      "upgradeToLifetime": "Kwalite gaa na Ohere Ndụ Dum",
+      "loading": "Na-ebu..."
     },
     "payment": {
-      "initializing": "Initializing...",
-      "securePayment": "🔒 Secure payment powered by Paystack"
+      "initializing": "Na-amalite...",
+      "securePayment": "🔒 Ịkwụ ụgwọ echekwara nke Paystack na-akwado"
     },
     "subscription": {
       "status": {
@@ -240,121 +240,121 @@
         "expired": "Ndenye aha gị agwụla. Mee ọhụrụ ugbu a iji nweta ohere na njirimara niile."
       }
     },
-    "title": "Choose Your Plan",
-    "subtitle": "Select the perfect plan to create a beautiful memorial website",
+    "title": "Họrọ Atụmatụ Gị",
+    "subtitle": "Họrọ atụmatụ zuru oke iji mepụta weebụsaịtị ncheta mara mma",
     "plans": {
       "basic": {
-        "name": "Basic",
+        "name": "Nke Bụ Isi",
         "price": "120,000",
-        "period": "/60days",
-        "description": "Perfect for getting started",
+        "period": "/60ụbọchị",
+        "description": "Zuru oke maka ịmalite",
         "features": {
-          "photos": "Up to 50 photos",
-          "template": "Basic template",
-          "tributeWall": "Tribute wall",
-          "mobile": "Mobile responsive",
-          "privacy": "Basic privacy controls"
+          "photos": "Ruo foto 50",
+          "template": "Ndokwa bụ isi",
+          "tributeWall": "Mgbidi nkwanye ùgwù",
+          "mobile": "Na-anabata ekwentị",
+          "privacy": "Njikwa nzuzo bụ isi"
         },
-        "button": "Get Started Free"
+        "button": "Malite N'efu"
       },
       "premium": {
         "name": "Premium",
         "price": "250,000",
-        "period": "/90days",
-        "description": "Most popular choice",
+        "period": "/90ụbọchị",
+        "description": "Nhọrọ kachasị ewu ewu",
         "features": {
-          "photos": "Unlimited photos & videos",
-          "template": "Premium templates",
-          "customization": "Advanced customization",
-          "support": "Priority support",
-          "backup": "Download & backup",
-          "analytics": "Analytics dashboard",
-          "domain": "Custom domain"
+          "photos": "Foto na vidiyo na-enweghị njedebe",
+          "template": "Ndokwa ndị kachasị mma",
+          "customization": "Nhazi dị elu",
+          "support": "Nkwado ndị mbụ",
+          "backup": "Nbudata na nchekwa",
+          "analytics": "Dashboard nyocha",
+          "domain": "Ngalaba ahaziri onwe ya"
         },
-        "button": "Choose Premium",
-        "badge": "Most Popular"
+        "button": "Họrọ Premium",
+        "badge": "Kachasị Ewu Ewu"
       },
       "family": {
-        "name": "Family",
+        "name": "Ezinụlọ",
         "price": "350,000",
-        "period": "/365days",
-        "description": "For extended families",
+        "period": "/365ụbọchị",
+        "description": "Maka ezinụlọ gbasaa",
         "features": {
-          "photos": "Everything in Premium",
-          "template": "Multiple memorials",
-          "tributeWall": "Family tree integration",
-          "mobile": "Advanced privacy controls",
-          "privacy": "Dedicated support",
-          "support": "Custom branding",
-          "branding": "API access"
+          "photos": "Ihe niile dị na Premium",
+          "template": "Ọtụtụ ncheta",
+          "tributeWall": "Njikọta osisi ezinụlọ",
+          "mobile": "Njikwa nzuzo dị elu",
+          "privacy": "Nkwado a raara onwe ya nye",
+          "support": "Akara ahaziri onwe ya",
+          "branding": "Ohere API"
         },
-        "button": "Choose Family"
+        "button": "Họrọ Ezinụlọ"
       }
     },
     "allPlansInclude": {
-      "title": "All Plans Include",
-      "description": "Free setup assistance, 24/7 customer support, and the peace of mind that your memorial will be preserved forever."
+      "title": "Atụmatụ Niile Gụnyere",
+      "description": "Enyemaka nhazi n'efu, nkwado ndị ahịa 24/7, na obi iru ala na a ga-echekwa ncheta gị ruo mgbe ebighị ebi."
     }
   },
   "cta": {
-    "title": "Start Creating a Memorial Today",
-    "subtitle": "Join thousands of families who have found comfort in preserving and sharing the memories of their loved ones.",
+    "title": "Malite Ime Ncheta Taa",
+    "subtitle": "Sonye na puku kwuru puku ezinụlọ ndị chọtara nkasi obi n'ichekwa na ịkekọrịta ncheta ndị ha hụrụ n'anya.",
     "buttons": {
-      "getStarted": "Get Started Free",
-      "viewSample": "View Sample Memorial"
+      "getStarted": "Malite N'efu",
+      "viewSample": "Lee Ihe Nlele Ncheta"
     },
-    "reassurance": "No credit card required • Easy setup • Free forever plan available"
+    "reassurance": "Achọghị kaadị kredit • Nhazi dị mfe • Atụmatụ n'efu ruo mgbe ebighị ebi dị"
   },
   "footer": {
     "links": {
-      "privacy": "Privacy Policy",
-      "terms": "Terms of Service",
-      "support": "Support",
-      "contact": "Contact"
+      "privacy": "Amụma Nzuzo",
+      "terms": "Usoro Ọrụ",
+      "support": "Nkwado",
+      "contact": "Kọntaktị"
     },
-    "copyright": "ForeverPages. Created with love to honor every life."
+    "copyright": "ForeverPages. Emebere ya n'ịhụnanya iji sọpụrụ ndụ ọ bụla."
   },
   "common": {
-    "loading": "Loading...",
-    "error": "An error occurred",
-    "retry": "Retry",
-    "close": "Close",
-    "save": "Save",
-    "cancel": "Cancel"
+    "loading": "Na-ebu...",
+    "error": "Enwere mperi",
+    "retry": "Nwaa Ọzọ",
+    "close": "Mechie",
+    "save": "Chekwaa",
+    "cancel": "Kagbuo"
   },
   "faq": {
-    "title": "Frequently Asked Questions",
-    "subtitle": "Find answers to common questions about creating and managing memorial pages",
+    "title": "Ajụjụ Ndị A Na-ajụkarị",
+    "subtitle": "Chọta azịza nye ajụjụ ndị a na-ajụkarị gbasara imepụta na ijikwa ibe ncheta",
     "items": {
       "memorialDuration": {
-        "question": "How long will the memorial page remain active?",
-        "answer": "Your memorial page will remain active forever. We are committed to preserving these digital legacies indefinitely, ensuring that future generations can always remember and celebrate the lives of their loved ones."
+        "question": "Olee otu ogologo oge ibe ncheta ahụ ga-anọgide na-arụ ọrụ?",
+        "answer": "Ibe ncheta gị ga-anọgide na-arụ ọrụ ruo mgbe ebighị ebi. Anyị na-akwado ichekwa ihe nketa dijitalụ ndị a ruo mgbe ebighị ebi, na-ahụ na ọgbọ ndị ga-abịa n'ọdịnihu ga-enwe ike icheta ma na-eme emume ndụ ndị ha hụrụ n'anya mgbe niile."
       },
       "contentTypes": {
-        "question": "What type of content can I add to a memorial page?",
-        "answer": "You can add photos, videos, written memories, audio recordings, and important life milestones. Our platform supports various media formats to help you create a comprehensive and meaningful tribute."
+        "question": "Olee ụdị ọdịnaya m nwere ike itinye na ibe ncheta?",
+        "answer": "Ị nwere ike itinye foto, vidiyo, ncheta ederede, ndekọ ọdịyo, na ihe omume ndụ dị mkpa. Ikpo okwu anyị na-akwado ụdị mgbasa ozi dị iche iche iji nyere gị aka imepụta nkwanye ùgwù zuru oke ma baa uru."
       },
       "privacyControl": {
-        "question": "Can I control who can view the memorial page?",
-        "answer": "Yes, you have full control over the privacy settings. You can make the page public, private with password protection, or share it only with specific people via invitation links."
+        "question": "Enwere m ike ijikwa onye nwere ike ilele ibe ncheta?",
+        "answer": "Ee, ị nwere njikwa zuru oke n'ime ntọala nzuzo. Ị nwere ike mee ibe ahụ ọha, nzuzo na nchekwa okwuntughe, ma ọ bụ kekọrịta ya naanị na ndị mmadụ kpọmkwem site na njikọ ọkpụkpọ."
       },
       "multipleContributors": {
-        "question": "Can multiple people contribute to the same memorial page?",
-        "answer": "Absolutely. You can invite family members and friends to contribute their own memories, photos, and stories. This creates a collaborative space where everyone can share their unique perspective and memories."
+        "question": "Ọtụtụ mmadụ nwere ike itinye aka n'otu ibe ncheta?",
+        "answer": "N'ezie. Ị nwere ike ịkpọ ndị òtù ezinụlọ na ndị enyi ka ha tinye ncheta, foto, na akụkọ nke ha. Nke a na-emepụta oghere mmekọrịta ebe onye ọ bụla nwere ike ịkekọrịta echiche na ncheta pụrụ iche ha."
       },
       "changesAfterCreation": {
-        "question": "Can I make changes to the memorial page after it's created?",
-        "answer": "Yes, you can update and edit the memorial page at any time. Add new content, modify existing information, or update privacy settings whenever needed."
+        "question": "Enwere m ike ime mgbanwe na ibe ncheta mgbe e mepụtara ya?",
+        "answer": "Ee, ị nwere ike imelite na dezie ibe ncheta oge ọ bụla. Tinye ọdịnaya ọhụrụ, gbanwee ozi dịnụ, ma ọ bụ melite ntọala nzuzo mgbe ọ bụla achọrọ."
       },
       "cost": {
-        "question": "Is there a cost associated with creating a memorial page?",
-        "answer": "We offer both free and premium options. The free version includes essential features, while premium options provide additional storage, advanced customization, and enhanced privacy controls. Our goal is to make digital memorials accessible to everyone."
+        "question": "Enwere ụgwọ metụtara imepụta ibe ncheta?",
+        "answer": "Anyị na-enye ma nhọrọ n'efu na ndị kacha mma. Ụdị n'efu gụnyere atụmatụ ndị bụ isi, ebe nhọrọ ndị kacha mma na-enye ebe nchekwa agbakwunyere, nhazi dị elu, na njikwa nzuzo emelitere. Ebumnuche anyị bụ ime ka ncheta dijitalụ dị maka onye ọ bụla."
       }
     },
     "help": {
-      "title": "Still have questions?",
-      "description": "Our support team is here to help you create a beautiful and lasting tribute",
-      "button": "Contact Support"
+      "title": "Ị ka nwere ajụjụ?",
+      "description": "Ndị otu nkwado anyị nọ ebe a iji nyere gị aka imepụta nkwanye ùgwù mara mma na nke na-adịgide adịgide",
+      "button": "Kpọtụrụ Nkwado"
     }
   },
   "dashboard": {
@@ -380,8 +380,8 @@
       "nav": {
         "analytics": "Nyocha",
         "gallery": "Ebe Nchekwa Foto",
-        "builder": "Onye Na-ewu Olili",
-        "invitations": "Oku",
+        "builder": "Onye Na-ewu Ncheta",
+        "invitations": "Ọkpụkpọ",
         "tributes": "Nkwanye Ugwu",
         "templates": "Ụdị",
         "settings": "Ntọala"
@@ -457,7 +457,36 @@
         "subtitle": "A kpọrọ gị ka i mekọrịta na ihe ncheta ndị a",
         "ownedBy": "Onye nwe ya bụ {{owner}}",
         "manageMemorial": "Jikwaa Ihe Ncheta"
-      }
+      },
+      "metrics": {
+        "totalTemplates": "Ngụkọta Ndokwa",
+        "totalDownloads": "Ngụkọta Nbudata",
+        "totalRevenue": "Ngụkọta Ego",
+        "averageRating": "Ntụle Nkezi",
+        "totalViews": "Ngụkọta Nlele",
+        "uniqueVisitors": "Ndị Ọbịa Pụrụ Iche",
+        "averageTime": "Oge Nkezi na Ibe",
+        "conversionRate": "Ọnụ Ọgụgụ Ntụgharị",
+        "popularTemplates": "Ndokwa Ewu Ewu",
+        "usageTrends": "Ụzọ Ojiji",
+        "conversionRateLabel": "Ọnụ Mgbanwe",
+        "averageSessionDuration": "Oge Ngalaba Mgbanwe",
+        "bounceRate": "Ọnụ Ṅkwụ Azụ"
+      },
+      "charts": {
+        "viewsOverTime": "Nlele N'oge",
+        "templateUsage": "Nkesa Ojiji Ndokwa",
+        "visitorDemographics": "Ụdị Ndị Ọbịa",
+        "performanceMetrics": "Akara Ọrụ"
+      },
+      "periods": {
+        "7days": "Ụbọchị 7 gara aga",
+        "30days": "Ụbọchị 30 gara aga",
+        "90days": "Ụbọchị 90 gara aga",
+        "1year": "Afọ 1 gara aga"
+      },
+      "loading": "Na-ebubata nyocha...",
+      "noData": "Enweghị data nyocha ka"
     },
     "gallery": {
       "title": "Ebe Nchekwa Foto na Vidiyo",
@@ -484,6 +513,8 @@
       "video": "Vidiyo",
       "videos": "Vidiyo",
       "view": "Lee",
+      "edit": "Dezie",
+      "download": "Budata",
       "delete": "Hichapụ",
       "deleteTitle": "Hichapụ Foto/Vidiyo?",
       "deleteDescription": "Agaghị emegharị omume a. Nke a ga-ehichapụ foto/vidiyo a kpamkpam n'ebe nchekwa gị.",
@@ -491,6 +522,9 @@
       "deleting": "Na-ehichapụ foto/vidiyo...",
       "deleteSuccess": "Ehichapụla foto/vidiyo nke ọma",
       "deleteFailed": "Ihichapụ foto/vidiyo adaala",
+      "savingEdit": "Na-echekwa foto edeziri...",
+      "editSuccess": "E deziri foto nke ọma",
+      "editFailed": "Ịdezie foto adaala",
       "cancel": "Kagbuo",
       "dropHere": "Tụba faịlụ ebe a...",
       "dragDropLibrary": "Bulite foto na vidiyo n'ọba akwụkwọ gị",
@@ -529,11 +563,16 @@
       "downloadSuccess": "Mmalite nbudata",
       "downloadFailed": "Nbudata adaala",
       "loadingMore": "Na-ebulite ndị ọzọ...",
-      "allLoaded": "Ebulitela foto na vidiyo niile"
+      "allLoaded": "Ebulitela foto na vidiyo niile",
+      "reorder": "Hazie ọzọ",
+      "reorderSuccess": "E haziri media nke ọma",
+      "reorderFailed": "E nweghị ike ịhazi media ọzọ",
+      "reorderMode": "Ọnọdụ Nhazi Ọzọ",
+      "dragToReorder": "Dọkpụrụ ka ịhazi ọzọ"
     },
     "templates": {
       "title": "Ụdị Pụrụ Iche",
-      "subtitle": "Jikwaa ụdị memorial pụrụ iche gị",
+      "subtitle": "Jikwaa ụdị ncheta pụrụ iche gị",
       "createTemplate": "Mepụta Ụdị",
       "createDialog": {
         "title": "Mepụta Ụdị Ọhụrụ",
@@ -567,7 +606,9 @@
             "edit": "Dezie",
             "delete": "Hichapụ"
           }
-        }
+        },
+        "title": "Ụdị Gị ({{count}})",
+        "subtitle": "Ụdị ndị ị mepụtara ma hazie"
       },
       "deleteDialog": {
         "title": "Hichapụ Ụdị",
@@ -575,22 +616,78 @@
         "actions": {
           "delete": "Hichapụ",
           "cancel": "Kagbuo"
-        }
+        },
+        "deleting": "Na-ehichapụ...",
+        "confirm": "Hichapụ Ụdị"
       },
       "actions": {
         "createSuccess": "E mepụtara ụdị nke ọma",
         "createError": "Emeghị ụdị ahụ",
         "deleteSuccess": "E hichapụrụ ụdị nke ọma",
         "deleteError": "Emeghị ihichapụ ụdị ahụ",
-        "loadError": "Emeghị ibulite ụdị ndị ahụ"
+        "loadError": "Emeghị ibulite ụdị ndị ahụ",
+        "preview": "Nlele",
+        "edit": "Dezie",
+        "duplicate": "Mepụtagharịa",
+        "delete": "Hichapụ"
+      },
+      "createButton": "Mepụta Ụdị",
+      "createButtonShort": "Mepụta",
+      "form": {
+        "name": {
+          "label": "Aha Ụdị",
+          "placeholder": "Tinye aha ụdị"
+        },
+        "description": {
+          "label": "Nkọwa",
+          "placeholder": "Nkọwa nhọrọ"
+        },
+        "baseTemplate": {
+          "label": "Ụdị Ntọala"
+        },
+        "creating": "Na-emepụta..."
+      },
+      "error": {
+        "title": "Ọdịda n'Ibulite Ụdị"
+      },
+      "failedToLoadBaseTemplates": "Ọdịda n'Ibulite Ụdị Ntọala",
+      "empty": {
+        "title": "Enweghị Ụdị Ọbụla Ka",
+        "description": "Mepụta ụdị pụrụ iche gị nke mbụ iji malite",
+        "createButton": "Mepụta Ụdị Mbụ"
+      },
+      "createSuccess": "Emebere ụdị nke ọma",
+      "createError": "Ọdịda n'imepụta ụdị",
+      "deleteSuccess": "Ehichapụrụ ụdị nke ọma",
+      "deleteError": "Ọdịda n'ihichapụ ụdị",
+      "validation": {
+        "nameRequired": "A chọrọ aha ụdị",
+        "nameTooShort": "Aha ụdị ga-enwerịrị opekempe mkpụrụ edemede 3",
+        "nameTooLong": "Aha ụdị enweghị ike ịgafe mkpụrụ edemede 100",
+        "nameInvalidChars": "Aha ụdị nwere mkpụrụ edemede na-ezighi ezi",
+        "descriptionTooLong": "Nkọwa enweghị ike ịgafe mkpụrụ edemede 500",
+        "descriptionInvalidChars": "Nkọwa nwere mkpụrụ edemede na-ezighi ezi",
+        "searchQueryRequired": "A chọrọ ajụjụ nchọta",
+        "searchQueryTooShort": "Ajụjụ nchọta ga-enwerịrị opekempe mkpụrụ edemede 2",
+        "searchQueryInvalidChars": "Ajụjụ nchọta nwere mkpụrụ edemede na-ezighi ezi",
+        "colorInvalid": "Nhazi agba ezighi ezi",
+        "fontSizeInvalid": "Nha font ga-adị n'etiti 8px na 72px",
+        "spacingInvalid": "Oghere ga-adị n'etiti 0px na 100px",
+        "borderRadiusInvalid": "Radius oke ga-adị n'etiti 0px na 50px",
+        "maxWidthInvalid": "Obosara kachasị ga-adị n'etiti 200px na 2000px",
+        "lineHeightInvalid": "Ogologo ahịrị ga-adị n'etiti 0.8 na 3.0",
+        "customizationInvalid": "Nhazi ụdị nwere ụkpụrụ na-ezighi ezi",
+        "importInvalidFormat": "Nhazi faịlụ mbubata ezighi ezi",
+        "importInvalidData": "Data mbubata nwere nhazi ụdị na-ezighi ezi",
+        "importFileTooLarge": "Faịlụ mbubata buru ibu oke (opekempe 5MB)"
       }
     },
     "invitations": {
-      "title": "Oku Oriri Ncheta",
-      "subtitle": "Zipu oku na jikwaa azịza RSVP maka ọrụ ncheta",
+      "title": "Ọkpụkpọ Emume Ncheta",
+      "subtitle": "Zipu ọkpụkpọ na jikwaa azịza RSVP maka ọrụ ncheta",
       "tabs": {
-        "create": "Mepụta Oku",
-        "manage": "Jikwaa Oku",
+        "create": "Mepụta Ọkpụkpọ",
+        "manage": "Jikwaa Ọkpụkpọ",
         "guests": "Ndị Ọbịa",
         "analytics": "Nyocha",
         "rsvp": "Nzaghachi RSVP",
@@ -599,33 +696,33 @@
       "empty": {
         "noMemorials": {
           "title": "Enweghị Ibe Ncheta",
-          "description": "Ị kwesịrị ịmepụta ibe ncheta tupu ị nwee ike iziga oku. Ibe ncheta na-asọpụrụ ma na-eme mmemme ndụ ndị ị hụrụ n'anya.",
+          "description": "Ị kwesịrị ịmepụta ibe ncheta tupu ị nwee ike iziga ọkpụkpọ. Ibe ncheta na-asọpụrụ ma na-eme mmemme ndụ ndị ị hụrụ n'anya.",
           "action": "Mepụta Ibe Ncheta"
         },
         "noInvitations": {
-          "title": "E Zigabeghị Oku Ọ Bụla",
-          "description": "Malite ịkpọ ezinụlọ na ndị enyi ka ha hụ ma tinye aka na ibe ncheta gị. Ị nwere ike iziga oku site na email ma ọ bụ WhatsApp.",
-          "action": "Ziga Oku Mbụ Gị"
+          "title": "E Zigabeghị Ọkpụkpọ Ọ Bụla",
+          "description": "Malite ịkpọ ezinụlọ na ndị enyi ka ha hụ ma tinye aka na ibe ncheta gị. Ị nwere ike iziga ọkpụkpọ site na email ma ọ bụ WhatsApp.",
+          "action": "Ziga Ọkpụkpọ Mbụ Gị"
         },
         "noRecipients": {
           "title": "Agbakwụnyeghị Ndị Ga-anata Ya",
-          "description": "Tinye ma ọ dịkarịa ala otu onye ga-anata ya ka i zipu oku. Ị nwere ike itinye email ha, nọmba ekwentị, ma ọ bụ ha abụọ.",
+          "description": "Tinye ma ọ dịkarịa ala otu onye ga-anata ya ka i zipu ọkpụkpọ. Ị nwere ike itinye email ha, nọmba ekwentị, ma ọ bụ ha abụọ.",
           "hint": "Pịa bọtịnụ 'Tinye Onye Ga-anata Ya' n'elu ka ị malite"
         },
         "noResults": {
           "title": "Achọtaghị Ihe Ọ Bụla",
-          "description": "Ọ dịghị oku dabara na \"{{query}}\". Gbalịa ịhazigharị ọchụchọ gị ma ọ bụ nzacha.",
+          "description": "Ọ dịghị ọkpụkpọ dabara na \"{{query}}\". Gbalịa ịhazigharị ọchụchọ gị ma ọ bụ nzacha.",
           "action": "Hichapụ Ọchụchọ"
         }
       },
       "wizard": {
-        "step1Title": "Nkọwa Oku",
+        "step1Title": "Nkọwa Ọkpụkpọ",
         "step2Title": "Tinye Ndị Ga-anata Ya",
         "step3Title": "Nyochaa ma Ziga",
         "stepProgress": "Nzọụkwụ {{current}} n'ime {{total}}",
-        "step1Info": "Họrọ ibe ncheta ma hazie ozi oku gị. Ị nwere ike itinye mmetụ nke gị site na isiokwu na ozi ahaziri.",
-        "step2Info": "Tinye ndị ọbịa ị chọrọ ịkpọ na emume ncheta. Ha ga-enweta oku iji kwado ọbịbịa ha.",
-        "step3Info": "Lelee nkọwa oku gị n'okpuru wee pịa Ziga mgbe ị dị njikere.",
+        "step1Info": "Họrọ ibe ncheta ma hazie ozi ọkpụkpọ gị. Ị nwere ike itinye mmetụ nke gị site na isiokwu na ozi ahaziri.",
+        "step2Info": "Tinye ndị ọbịa ị chọrọ ịkpọ na emume ncheta. Ha ga-enweta ọkpụkpọ iji kwado ọbịbịa ha.",
+        "step3Info": "Lelee nkọwa ọkpụkpọ gị n'okpuru wee pịa Ziga mgbe ị dị njikere.",
         "selectMemorial": "Ibe Ncheta",
         "selectMemorialPlaceholder": "Họrọ ibe ncheta...",
         "invitingGuests": "Na-akpọ ndị ọbịa na",
@@ -633,11 +730,11 @@
         "optional": "(Nhọrọ)",
         "characters": "mkpụrụedemede",
         "subjectPlaceholder": "Ọmụmaatụ, A kpọrọ gị ka ị mee ememe ndụ nke ọma",
-        "cardDescription": "Bulite foto kaadị oku ahaziri (kacha 5MB)",
+        "cardDescription": "Bulite foto kaadị ọkpụkpọ ahaziri (kacha 5MB)",
         "uploadCard": "Bulite Foto",
         "back": "Azụ",
         "next": "Ọzọ",
-        "send": "Ziga Oku",
+        "send": "Ziga Ọkpụkpọ",
         "sending": "Na-eziga...",
         "readyToSend": "Njikere Iziga!",
         "professionalEmail": "Ọkachamara na enwere ike inweta ya n'ebe niile",
@@ -651,11 +748,11 @@
         "email": "Ozi-e",
         "phone": "Ekwentị",
         "addRecipient": "Tinye Onye Nnata Ọzọ",
-        "invitationDetails": "Nkọwa Oku",
+        "invitationDetails": "Nkọwa Ọkpụkpọ",
         "customSubject": "Isiokwu Ahaziri",
         "personalMessage": "Ozi Nkeonwe",
-        "invitationCard": "Kaadị Oku",
-        "noCustomDetails": "Enweghị nkọwa ahaziri agbakwunyere (na-eji template ndabere)",
+        "invitationCard": "Kaadị Ọkpụkpọ",
+        "noCustomDetails": "Enweghị nkọwa ahaziri agbakwunyere (na-eji ụdị ndabere)",
         "deliveryMethod": "Ụzọ Nnyefe",
         "recipientsSummary": "Ndị Nnata ({{count}})",
         "total": "ngụkọta",
@@ -675,25 +772,25 @@
         "aRecipient": "Onye nnata"
       },
       "success": {
-        "bulkSent": "E zigara oku {{count}} nke ọma",
+        "bulkSent": "E zigara ọkpụkpọ {{count}} nke ọma",
         "exported": "Ebupụtara {{format}} nke ọma",
-        "deleted": "Ehichapụla oku nye {{name}}",
-        "bulkDeleted": "Ehichapụla oku {{count}}"
+        "deleted": "Ehichapụla ọkpụkpọ nye {{name}}",
+        "bulkDeleted": "Ehichapụla ọkpụkpọ {{count}}"
       },
       "toasts": {
-        "exportSuccess": "Ebupụtara oku dị ka {{format}}",
+        "exportSuccess": "Ebupụtara ọkpụkpọ dị ka {{format}}",
         "exportError": "Mbupụ daa ada dị ka {{format}}",
-        "deleteSuccess": "Ehichapụla oku nye {{name}}",
-        "bulkDeleteSuccess": "Ehichapụla oku {{count}}"
+        "deleteSuccess": "Ehichapụla ọkpụkpọ nye {{name}}",
+        "bulkDeleteSuccess": "Ehichapụla ọkpụkpọ {{count}}"
       },
       "delete": {
-        "title": "Kagbuo Oku?",
-        "description": "Enweghị ike ịmegharị omume a. A ga-akagbu oku ahụ ma onye a kpọrọ agaghị enwe ike ịnabata ya.",
+        "title": "Kagbuo Ọkpụkpọ?",
+        "description": "Enweghị ike ịmegharị omume a. A ga-akagbu ọkpụkpọ ahụ ma onye a kpọrọ agaghị enwe ike ịnabata ya.",
         "cancel": "Kagbuo",
-        "confirm": "Kagbuo Oku"
+        "confirm": "Kagbuo Ọkpụkpọ"
       },
       "create": {
-        "invitationDetails": "Nkọwa Oku",
+        "invitationDetails": "Nkọwa Ọkpụkpọ",
         "emailSubject": "Isiokwu Email",
         "personalMessage": "Ozi Nke Onwe",
         "templateStyle": "Ụdị Ndebiri",
@@ -719,19 +816,19 @@
         "sendViaEmail": "Ziga Site na Email",
         "sendViaWhatsApp": "Ziga Site na WhatsApp",
         "message": "Ozi Nke Onwe",
-        "messageInfo": "Dezie ozi dị n'okpuru iji mee ka oku gị bụrụ nke gị",
-        "messagePlaceholder": "Tinye ndetu nke gị n'oku gị...",
+        "messageInfo": "Dezie ozi dị n'okpuru iji mee ka ọkpụkpọ gị bụrụ nke gị",
+        "messagePlaceholder": "Tinye ndetu nke gị n'ọkpụkpọ gị...",
         "defaultMessage": "Anyị na-akpọ gị ọkụ ka gị na anyị sonyere iji sọpụrụ ndụ na ncheta {{memorialName}}. Ọbịbịa gị ga-apụta nnọọ ukwuu nye anyị ka anyị na-eme mmemme ihe nketa ha ma kesaa ncheta dị oke ọnụ ahịa ọnụ.",
-        "invitationCard": "Kaadị Oku (Nhọrọ)",
+        "invitationCard": "Kaadị Ọkpụkpọ (Nhọrọ)",
         "customSubject": "Isiokwu Email Ahaziri (Nhọrọ)",
         "enableRSVP": "Mee RSVP Ka O Rụọ Ọrụ",
         "rsvpDescription": "Kwere ndị ọbịa ka ha kwenye ịbịa",
-        "submit": "Ziga Oku",
+        "submit": "Ziga Ọkpụkpọ",
         "sending": "Na-eziga..."
       },
       "actions": {
         "importFromContacts": "Bubata Site na Ndị Kọntaktị",
-        "sendInvitations": "Ziga Oku",
+        "sendInvitations": "Ziga Ọkpụkpọ",
         "resend": "Zigatụ",
         "remove": "Wepụ",
         "delete": "Hichapụ",
@@ -744,8 +841,8 @@
         "refresh": "Megharia"
       },
       "manage": {
-        "sentInvitations": "Oku Ezigara",
-        "trackDelivery": "Soro ọnọdụ nnyefe ma jikwaa ndepụta oku gị",
+        "sentInvitations": "Ọkpụkpọ Ezigara",
+        "trackDelivery": "Soro ọnọdụ nnyefe ma jikwaa ndepụta ọkpụkpọ gị",
         "table": {
           "guestName": "Aha Ọbịa",
           "email": "Email",
@@ -755,7 +852,7 @@
           "sentDate": "Ụbọchị E Zigara",
           "actions": "Omume",
           "anonymous": "Na-amaghị Aha",
-          "noInvitations": "Achọtaghị oku.",
+          "noInvitations": "Achọtaghị ọkpụkpọ.",
           "pending": "Na-eche",
           "attending": "Ga-abịa",
           "declined": "Ajụla",
@@ -788,8 +885,8 @@
           "failed": "Dara Ada"
         },
         "emptyState": {
-          "title": "Ezigabeghị oku ọ bụla",
-          "description": "Mepụta oku mbụ gị iji malite"
+          "title": "Ezigabeghị ọkpụkpọ ọ bụla",
+          "description": "Mepụta ọkpụkpọ mbụ gị iji malite"
         }
       },
       "search": {
@@ -801,8 +898,8 @@
         "clearFilters": "Hichapụ Nzacha",
         "showing": "Na-egosi",
         "of": "nke",
-        "invitation": "oku",
-        "invitations": "oku",
+        "invitation": "ọkpụkpọ",
+        "invitations": "ọkpụkpọ",
         "matching": "na-adaba",
         "statusOptions": {
           "all": "Ọnọdụ Niile",
@@ -826,7 +923,7 @@
         "cannotAttend": "Enweghị Ike Ịbịa",
         "noResponse": "Enweghị Nzaghachi",
         "responsesTitle": "Nzaghachi RSVP",
-        "responsesDescription": "Lee ma jikwaa nzaghachi sitere n'aka ndị a kpọrọ oku",
+        "responsesDescription": "Lee ma jikwaa nzaghachi sitere n'aka ndị a kpọrọ ọkpụkpọ",
         "metrics": {
           "total": "Niile A Kpọrọ",
           "attending": "Ga-abịa",
@@ -922,8 +1019,8 @@
         }
       },
       "analytics": {
-        "title": "Nyocha Oku",
-        "description": "Soro ma nyochaa ọrụ oku gị",
+        "title": "Nyocha Ọkpụkpọ",
+        "description": "Soro ma nyochaa ọrụ ọkpụkpọ gị",
         "exportData": "Bupụ Data",
         "exportSuccess": "Ebupụtala nyocha nke ọma",
         "exportError": "Mbupụ nyocha daa ada",
@@ -954,14 +1051,14 @@
           "deliveryRateDescription": "{{delivered}} n'ime {{total}} enyefere",
           "avgResponseTime": "Oge Nzaghachi Nkezi",
           "avgResponseTimeDescription": "Site na iziga ruo nzaghachi",
-          "expiredInvitations": "Oku Agwụla Oge",
+          "expiredInvitations": "Ọkpụkpọ Agwụla Oge",
           "expiredDescription": "Gafere ụbọchị njedebe"
         }
       },
       "analyticsCharts": {
         "stats": {
           "totalSent": "Ngụkọta Ezigara",
-          "allInvitations": "Oku niile",
+          "allInvitations": "Ọkpụkpọ niile",
           "accepted": "Nnabatara",
           "acceptanceRate": "{{rate}}% ọnụego nnabata",
           "responseRate": "Ọnụego Nzaghachi",
@@ -970,7 +1067,7 @@
           "awaitingResponse": "Na-eche nzaghachi"
         },
         "timeline": {
-          "title": "Oku N'oge",
+          "title": "Ọkpụkpọ N'oge",
           "description": "Ọrụ ụbọchị 30 gara aga",
           "sent": "Ezigara",
           "accepted": "Nnabatara",
@@ -989,7 +1086,7 @@
           "description": "Nkesa Email na WhatsApp",
           "email": "Email",
           "whatsapp": "WhatsApp",
-          "invitations": "Oku"
+          "invitations": "Ọkpụkpọ"
         },
         "export": "Wepụta Nyocha"
       },
@@ -1027,7 +1124,7 @@
         },
         "emptyState": {
           "noGuests": "Enweghị ọbịa {{filter}}",
-          "allResponded": "Ọbịa niile azaala oku ha",
+          "allResponded": "Ọbịa niile azaala ọkpụkpọ ha",
           "tryDifferentFilter": "Gbalịa họrọ nzacha ọzọ"
         },
         "guestDetails": {
@@ -1039,12 +1136,12 @@
       "rsvpPage": {
         "title": "Kwenye Ọbịbịa Maka Ọrụ Ncheta",
         "subtitle": "A kpọọla gị ka ị bịa ọrụ ncheta maka",
-        "loading": "Na-ebu oku...",
+        "loading": "Na-ebu ọkpụkpọ...",
         "error": {
           "invalidLink": "Njikọ RSVP adịghị mma. Biko lelee URL wee nwaa ọzọ.",
           "expired": "Njikọ RSVP a agwụla. Biko kpọtụrụ onye nhazi.",
-          "notFound": "Achọtaghị oku.",
-          "loadFailed": "Enweghị ike ibu nkọwa oku. Biko nwaa ọzọ ma emechaa.",
+          "notFound": "Achọtaghị ọkpụkpọ.",
+          "loadFailed": "Enweghị ike ibu nkọwa ọkpụkpọ. Biko nwaa ọzọ ma emechaa.",
           "submitFailed": "Enweghị ike iziga RSVP. Biko nwaa ọzọ.",
           "selectOption": "Biko họrọ nhọrọ RSVP"
         },
@@ -1093,7 +1190,7 @@
           "dates": "{{birthDate}} - {{deathDate}}"
         },
         "calendar": {
-          "attached": "E jikọtara oku kalenda",
+          "attached": "E jikọtara ọkpụkpọ kalenda",
           "description": "Tinye ọrụ ncheta na kalenda gị"
         },
         "qrCode": {
@@ -1102,16 +1199,16 @@
         }
       },
       "notifications": {
-        "invitationSent": "E zigara oku nke ọma",
-        "invitationResent": "E zigatụla oku nke ọma",
-        "invitationDeleted": "E hichapụla oku nke ọma",
+        "invitationSent": "E zigara ọkpụkpọ nke ọma",
+        "invitationResent": "E zigatụla ọkpụkpọ nke ọma",
+        "invitationDeleted": "E hichapụla ọkpụkpọ nke ọma",
         "rsvpReceived": "Natara RSVP ọhụrụ",
         "qrCodeDownloaded": "E budatara koodu QR",
         "exportComplete": "E mechara mbupụta nke ọma",
         "errors": {
-          "sendFailed": "Enweghị ike iziga oku",
-          "resendFailed": "Enweghị ike izigatụ oku",
-          "deleteFailed": "Enweghị ike ihichapụ oku",
+          "sendFailed": "Enweghị ike iziga ọkpụkpọ",
+          "resendFailed": "Enweghị ike izigatụ ọkpụkpọ",
+          "deleteFailed": "Enweghị ike ihichapụ ọkpụkpọ",
           "exportFailed": "Enweghị ike ibupụta data",
           "qrCodeFailed": "Enweghị ike ibudata koodu QR"
         }
@@ -1119,23 +1216,23 @@
       "emails": {
         "subject": {
           "invitation": "{{inviterName}} kpọrọ gị na oriri ncheta {{memorialName}}",
-          "rsvpNotification": "RSVP Ọhụrụ: {{guestName}} zara oku ncheta {{memorialName}}"
+          "rsvpNotification": "RSVP Ọhụrụ: {{guestName}} zara ọkpụkpọ ncheta {{memorialName}}"
         },
         "invitation": {
-          "header": "Oku Oriri Ncheta",
+          "header": "Ọkpụkpọ Oriri Ncheta",
           "subheader": "A kpọrọ gị ka i cheta ma mee ememe ndụ",
           "greeting": "Ndewo {{recipientName}}",
           "invitedBy": "{{inviterName}} kpọọla gị ka ị bịa oriri ncheta maka {{memorialName}}.",
           "rsvpPrompt": "Biko mee ka anyị mara ma ị ga-abịa.",
-          "acceptButton": "Nabata Oku",
+          "acceptButton": "Nabata Ọkpụkpọ",
           "declineButton": "Jụ",
-          "expiresOn": "Oku a ga-agwụ na {{date}}",
-          "footer": "Ọ bụrụ na ị tụghị anya oku a, ị nwere ike ileghara email a anya n'enweghị nsogbu."
+          "expiresOn": "Ọkpụkpọ a ga-agwụ na {{date}}",
+          "footer": "Ọ bụrụ na ị tụghị anya ọkpụkpọ a, ị nwere ike ileghara email a anya n'enweghị nsogbu."
         },
         "rsvpNotification": {
           "header": "RSVP Ọhụrụ",
           "greeting": "Ndewo {{organizerName}}",
-          "body": "{{guestName}} azala oku ọrụ ncheta gị.",
+          "body": "{{guestName}} azala ọkpụkpọ ọrụ ncheta gị.",
           "viewButton": "Lee Nzaghachi Niile",
           "footer": "ForeverPages - Chekwaa ncheta, ruo mgbe ebighị ebi."
         }
@@ -1162,6 +1259,10 @@
         "details": {
           "title": "Nkọwa Ncheta",
           "description": "Tinye foto na ncheta"
+        },
+        "customize": {
+          "title": "Ịme Nlereanya",
+          "description": "Chọọ agba na nlereanya"
         },
         "review": {
           "title": "Nyochaa",
@@ -1245,6 +1346,42 @@
           }
         }
       },
+      "form": {
+        "saving": "Ezi...",
+        "saved": "Eziri",
+        "savedAt": "Eziri {{time}} na",
+        "saveFailed": "Ọdịda na-ezi"
+      },
+      "customizer": {
+        "title": "Ịme Nlereanya",
+        "description": "Ịme ihe nke agba, mkpụrụ edema na nhazi maka ncheta gị",
+        "stepDescription": "Ịme ihe nke nzacha ncheta gị site na agba, mkpụrụ edema na nhazi nhọrọ. Lelee mgbagwoju anya n'ụzọ dị mkpa.",
+        "reset": "Megharịa",
+        "colors": "Agba",
+        "fonts": "Mkpụrụ Edema",
+        "layout": "Nhazi",
+        "primaryColor": "Agba Nke Mbu",
+        "secondaryColor": "Agba Nke Abụọ",
+        "accentColor": "Agba Nkọku",
+        "headerBg": "Azụ Isi",
+        "headerText": "Edema Isi",
+        "bodyBg": "Azụ Ahụ",
+        "bodyText": "Edema Ahụ",
+        "colorPreview": "Nlele",
+        "fontFamily": "Ezigbo Edema",
+        "headingSize": "Oge Isi",
+        "bodyFontSize": "Oge Edema Ahụ",
+        "fontPreview": "Nlele",
+        "headingExample": "Ihe Nlele Isi",
+        "bodyExample": "Nke a bụ edema ahụ na-egosi ka ihu ncheta gị ga-elere anya na nhọrọ edema ahọpụtara.",
+        "spacing": "Oghere",
+        "borderRadius": "Gburugburu Eze",
+        "containerWidth": "Okpuru Ọbụ",
+        "layoutPreview": "Nlele Nhazi",
+        "showPreview": "Igosi Nlele Ebube",
+        "hidePreview": "Zoro Nlele",
+        "backToEditor": "Laghachi na Onye Dezie"
+      },
       "templates": {
         "classic": {
           "name": "Ncheta Ọdịnala",
@@ -1277,213 +1414,431 @@
           ]
         }
       },
+      "loadingTemplates": "Ibu ndokwa...",
+      "mustSignInTitle": "Biko banye",
+      "mustSignInMessage": "Ị ga-esi banye ka ị nwee ike ike na ndokwa na Onye na-emepụta Ncheta.",
+      "marketplace": {
+        "signIn": "Banye",
+        "signinNeeded": "Banye ka ị nwee ike ike na ndokwa ndị ọzọ"
+      },
       "review": {
-        "title": "Nyochaa Ncheta Gị",
-        "subtitle": "Lelee ozi niile tupu ime ncheta gị",
-        "sections": {
-          "template": "Ụdị",
-          "basicInfo": "Ozi Ndị Isi",
-          "memorialDetails": "Nkọwa Ncheta"
-        },
-        "messages": {
-          "templateSelected": "Ahọrọla ụdị nke ọma",
-          "basicInfoComplete": "Emechara ozi ndị isi",
-          "memorialDetailsComplete": "Emechara nkọwa ncheta",
-          "readyToCreate": "Ncheta gị dị njikere ime",
-          "creatingMemorial": "Na-emepụta ncheta gị...",
-          "memorialCreated": "Emepụtara ncheta nke ọma!",
-          "redirecting": "Na-eduga gị na dashboard gị..."
-        },
-        "actions": {
-          "edit": "Dezie",
-          "createMemorial": "Mepụta Ncheta"
+        "templateLabel": "Ụdị:",
+        "privacyLabel": "Nchekwa:",
+        "privacyValue": "Ọhaneze",
+        "featuresLabel": "Ihe Ndị Ngọsi:",
+        "featuresValue": "Ike Zuru"
+      },
+      "publish": {
+        "title": "Bipụta Ncheta",
+        "description": "Mepụta URL na-akpọwu maka ihu-ọma gị",
+        "memorialFor": "Ncheta maka:",
+        "slugLabel": "URL Ncheta",
+        "slugPlaceholder": "nne-m-nwere-amamịhe",
+        "slugHint": "Ihe onyonyo 3-50. Jiri agụụ, ọnụ ọgụgụ, usoro ndụ, ndụ ndụ",
+        "invalidSlug": "URL ga-enwe ihe onyonyo 3-50, agụụ-ọnụ ọgụgụ na usoro ndụ/ndụ ndụ",
+        "invalidSlugError": "Njikọ ụfọdụ URL",
+        "error": "Bipụta dajụ",
+        "successDescription": "Ncheta gị bipụtawo nke ọma. Kekọ ibi gadị n'okpuru ihe:",
+        "copy": "Detọ",
+        "view": "Lelee",
+        "done": "Ezubere",
+        "publishing": "Bipụtawa...",
+        "publish": "Bipụta",
+        "cancel": "Kagbuo",
+        "urlCopied": "URL detọọ!",
+        "copyFailed": "Ọdịda na-detọ",
+        "success": "Ncheta Bipụtara!",
+        "validation": {
+          "slugRequired": "URL dị mkpa",
+          "slugTooShort": "URL ga-enwe ihe onyonyo mpe 3",
+          "slugTooLong": "URL agaghị ebo ihe onyonyo 50",
+          "slugInvalid": "URL nwere ike ịgụ agụụ, ọnụ ọgụgụ, usoro ndụ na ndụ ndụ naanị",
+          "slugTaken": "URL a ejiri na. Biko zaa nnukwu ihe."
         }
       },
+      "autoSave": {
+        "saving": "Ezi...",
+        "saved": "Eziri",
+        "error": "Ọdịda na-ezi",
+        "lastSaved": "Ezikorom {{time}}"
+      },
+      "subscription": {
+        "banner": {
+          "gracePeriod": {
+            "title": "Mma Ezi Gbada",
+            "message": "Mma gị gbada n'ime ụbọchị {{days}}. Mume taa ka ị nwee ike imepụta ihuoma."
+          },
+          "expired": {
+            "title": "Mma Ezi Gbadara",
+            "message": "Mma gị gbadara. Biko mume ya ka ị nwee ike mepụta na bipụta ihuoma."
+          },
+          "renewButton": "Mume"
+        },
+        "renewalRedirect": "Na-eduga gị na mume mma...",
+        "renew": "Mume Mma",
+        "createMemorialExpired": "Mma gị gbadara. Biko mume ya ka ị mepụta ncheta ọhụrụ."
+      },
+      "validation": {
+        "requiredField": "Nke a dị mkpa",
+        "invalidEmail": "Biko tinye adres email ziri ezi",
+        "alreadyPublished": "Ị na-enwe ncheta bipụtara na",
+        "subscriptionRequired": "Mma gị adịghị ike"
+      },
       "content": {
-        "biography": "Akụkọ Ndụ",
-        "epitaph": "Ede Ede",
-        "tributes": "Nkwanye Ùgwù",
-        "timeline": "Usoro Oge",
-        "gallery": "Ụlọ Nchịkọta Ihe Nkiri",
-        "familyTree": "Osisi Ezinụlọ",
-        "condolences": "Ọmịiko",
-        "support": "Nkwado"
+        "biography": {
+          "title": "Akụkọ Ala Onye"
+        },
+        "epitaph": {
+          "title": "Okwu Ili",
+          "default": "N'icheta"
+        },
+        "tributes": {
+          "title": "Ihuoma na Icheta",
+          "legacy": "Ihe Ndị Ụmụ Nna Hapụ",
+          "lifeStory": "Akụkọ Ndụ"
+        },
+        "timeline": {
+          "title": "Oge Ndụ",
+          "born": "Amụrụ",
+          "passedAway": "Lara"
+        },
+        "gallery": {
+          "title": "Eji Foto"
+        },
+        "familyTree": {
+          "title": "Osisi Ezinụlọ"
+        },
+        "condolences": {
+          "title": "Ihuoma"
+        },
+        "support": {
+          "title": "Nyocha na Onyinye"
+        }
       }
     },
     "settings": {
-      "title": "Settings",
-      "subtitle": "Manage your account and memorial page preferences",
+      "title": "Ntọala",
+      "subtitle": "Jikwaa akaụntụ gị na mmasị ibe ncheta",
       "tabs": {
-        "profile": "Profile",
-        "memorial": "Memorial",
-        "privacy": "Privacy",
-        "notifications": "Notifications",
-        "advanced": "Advanced"
+        "profile": "Prọfaịlụ",
+        "memorial": "Ncheta",
+        "privacy": "Nzuzo",
+        "notifications": "Ịkwa ọkwa",
+        "advanced": "Dị elu"
       },
       "profile": {
-        "title": "Profile Information",
-        "description": "Update your personal information and account details",
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "email": "Email Address",
-        "phone": "Phone Number",
-        "relationship": "Relationship to Deceased",
-        "save": "Save Profile Changes"
+        "title": "Ozi Prọfaịlụ",
+        "description": "Melite ozi nkeonwe gị na nkọwa akaụntụ",
+        "firstName": "Aha Mbụ",
+        "lastName": "Aha Ụlọ",
+        "email": "Adreesị Ozi-e",
+        "phone": "Nọmba Ekwentị",
+        "relationship": "Mmekọrịta na Onye Nwụrụ Anwụ",
+        "save": "Chekwaa Mgbanwe Prọfaịlụ"
       },
       "memorial": {
-        "title": "Memorial Page Settings",
-        "description": "Configure your memorial page appearance and behavior",
-        "pageTitle": "Memorial Page Title",
-        "customUrl": "Custom URL (Optional)",
-        "theme": "Theme",
+        "title": "Ntọala Ibe Ncheta",
+        "description": "Hazie ọdịdị na omume ibe ncheta gị",
+        "pageTitle": "Aha Ibe Ncheta",
+        "customUrl": "URL Ahaziri (Nhọrọ)",
+        "theme": "Isiokwu",
         "publicMemorial": {
-          "label": "Public Memorial",
-          "description": "Allow anyone to view the memorial page"
+          "label": "Ncheta Ọha",
+          "description": "Kwe ka onye ọ bụla lelee ibe ncheta"
         },
         "allowTributes": {
-          "label": "Allow Tributes",
-          "description": "Let visitors leave tribute messages"
+          "label": "Kwe ka Nkwanye Ùgwù",
+          "description": "Hapụ ndị ọbịa ka ha hapụ ozi nkwanye ùgwù"
         },
         "moderateTributes": {
-          "label": "Moderate Tributes",
-          "description": "Review tributes before they appear publicly"
+          "label": "Na-edozi Nkwanye Ùgwù",
+          "description": "Nyochaa nkwanye ùgwù tupu ha apụta n'ihu ọha"
         },
-        "save": "Save Memorial Settings"
+        "save": "Chekwaa Ntọala Ncheta"
       },
       "privacy": {
-        "title": "Privacy & Security",
-        "description": "Control who can see and interact with your memorial",
-        "visibility": "Memorial Visibility",
-        "indexing": "Search Engine Indexing",
+        "title": "Nzuzo na Nchekwa",
+        "description": "Chịkwaa onye nwere ike ịhụ ma soro ncheta gị na-emekọrịta ihe",
+        "visibility": "Ịhụ Ncheta",
+        "indexing": "Ntinye Ọchịchọ Igwe",
         "access": {
-          "title": "Access Management",
-          "additionalAdmins": "Additional Administrators",
-          "sendAdminInvites": "Send Admin Invitations"
+          "title": "Njikwa Ohere",
+          "additionalAdmins": "Ndị Nchịkwa Agbakwunyere",
+          "sendAdminInvites": "Zipu Ọkpụkpọ Nchịkwa"
         },
-        "save": "Save Privacy Settings"
+        "save": "Chekwaa Ntọala Nzuzo"
       },
       "notifications": {
-        "title": "Notification Preferences",
-        "description": "Choose how and when you want to be notified",
+        "title": "Mmasị Ịkwa ọkwa",
+        "description": "Họrọ otu ịchọrọ ka a kpọsaa gị oge",
         "email": {
-          "label": "Email Notifications",
-          "description": "Receive updates via email"
+          "label": "Ịkwa ọkwa Email",
+          "description": "Nata mmelite site na email"
         },
         "types": {
-          "newTributes": "New Tributes",
-          "photoUploads": "Photo Uploads",
-          "rsvpUpdates": "RSVP Updates",
-          "weeklySummary": "Weekly Summary"
+          "newTributes": "Nkwanye Ùgwù Ọhụrụ",
+          "photoUploads": "Nbulite Foto",
+          "rsvpUpdates": "Mmelite RSVP",
+          "weeklySummary": "Nchịkọta Izu"
         },
-        "save": "Save Notification Settings"
+        "save": "Chekwaa Ntọala Ịkwa ọkwa"
       },
       "advanced": {
-        "title": "Advanced Settings",
-        "description": "Advanced options and data management",
+        "title": "Ntọala Dị elu",
+        "description": "Nhọrọ dị elu na njikwa data",
         "export": {
-          "title": "Data Export",
-          "description": "Download all your memorial data including photos, tributes, and information",
-          "button": "Export Memorial Data"
+          "title": "Mbupụ Data",
+          "description": "Budata data ncheta gị niile gụnyere foto, nkwanye ùgwù, na ozi",
+          "button": "Bupụta Data Ncheta"
         },
         "domain": {
-          "title": "Custom Domain",
-          "description": "Connect your own domain name to this memorial (Premium feature)",
-          "connect": "Connect Domain"
+          "title": "Ngalaba Ahaziri",
+          "description": "Jikọọ ngalaba nke gị na ncheta a (Atụmatụ dị elu)",
+          "connect": "Jikọọ Ngalaba"
         },
         "danger": {
-          "title": "Danger Zone",
-          "archive": "Archive Memorial",
-          "archiveDescription": "Make the memorial private and stop accepting new tributes",
-          "delete": "Delete Memorial",
-          "deleteDescription": "Permanently delete this memorial and all associated data. This cannot be undone."
+          "title": "Mpaghara Ihe ize Ndụ",
+          "archive": "Debe Ncheta",
+          "archiveDescription": "Mee ka ncheta dị na nzuzo ma kwụsị ịnakwere nkwanye ùgwù ọhụrụ",
+          "delete": "Hichapụ Ncheta",
+          "deleteDescription": "Hichapụ ncheta a kpamkpam na data niile metụtara ya. Enweghị ike ịgbanwe nke a."
         },
         "account": {
-          "title": "Account Actions",
-          "signOut": "Sign Out"
+          "title": "Omume Akaụntụ",
+          "signOut": "Pụọ"
         }
       }
     },
     "tributes": {
-      "title": "Tributes & Condolences",
-      "subtitle": "Manage and moderate tribute messages from visitors",
+      "title": "Nkwanye Ùgwù na Ekele",
+      "subtitle": "Jikwaa ma na-edozi ozi nkwanye ùgwù sitere n'aka ndị ọbịa",
       "tabs": {
-        "pending": "Pending Review",
-        "approved": "Approved",
-        "flagged": "Flagged",
-        "all": "All Tributes"
+        "pending": "Na-eche Nyocha",
+        "approved": "Akwadoro",
+        "flagged": "Akara",
+        "all": "Nkwanye Ùgwù Niile"
       },
       "actions": {
-        "approve": "Approve",
-        "reject": "Reject",
-        "flag": "Flag"
+        "approve": "Kwenye",
+        "reject": "Jụ",
+        "flag": "Akara"
       },
       "empty": {
-        "noPending": "No Pending Tributes",
-        "allReviewed": "All tributes have been reviewed"
+        "noPending": "Enweghị Nkwanye Ùgwù Na-eche",
+        "allReviewed": "A nyochala nkwanye ùgwù niile"
       },
-      "live": "Live"
+      "live": "Na-ebi ndụ"
+    },
+    "marketplace": {
+      "title": "Ebe Ahịa Ụdị",
+      "subtitle": "Chọpụta ụdị dị elu iji kwalite ncheta gị",
+      "search": {
+        "placeholder": "Chọọ ụdị...",
+        "noResults": "Achọtaghị ụdị dabara na nchọta gị"
+      },
+      "filters": {
+        "all": "Ụdị Niile",
+        "free": "N'efu",
+        "premium": "Premium",
+        "categories": {
+          "traditional": "Omenala",
+          "modern": "Ọgbara Ọhụrụ",
+          "nature": "Okike",
+          "religious": "Okpukpe",
+          "military": "Ndị Agha",
+          "sports": "Egwuregwu",
+          "music": "Egwu",
+          "artistic": "Nka"
+        },
+        "sort": {
+          "popular": "Kachasị Ewu Ewu",
+          "newest": "Kachasị Ọhụrụ",
+          "rating": "Ntụle Kachasị Mma",
+          "priceLow": "Ọnụ Ahịa: Ntakịrị ruo Nnukwu",
+          "priceHigh": "Ọnụ Ahịa: Nnukwu ruo Ntakịrị"
+        }
+      },
+      "template": {
+        "preview": "Nlele",
+        "download": "Budata",
+        "purchased": "Azụtara",
+        "price": "Ọnụ Ahịa",
+        "category": "Otu",
+        "downloads": "Mbubata",
+        "rating": "Ntụle",
+        "features": "Atụmatụ"
+      },
+      "purchase": {
+        "dialog": {
+          "title": "Zụta Ụdị",
+          "description": "Ị na-azụta \"{{name}}\" maka {{price}}",
+          "confirm": "Kwenye Nzụta",
+          "cancel": "Kagbuo",
+          "processing": "Na-arụ ọrụ..."
+        },
+        "success": "Azụtara ụdị nke ọma!",
+        "error": "Ọdịda n'ịzụta ụdị"
+      },
+      "download": {
+        "success": "Budatara ụdị nke ọma!",
+        "error": "Ọdịda n'ịbudata ụdị"
+      },
+      "loading": "Na-ebubata ụdị...",
+      "error": "Ọdịda n'ibubata ụdị"
+    },
+    "customization": {
+      "title": "Nhazi Dị Elu",
+      "subtitle": "Hazie ụdị gị nke ọma site na nhọrọ dị elu",
+      "sections": {
+        "colors": "Agba",
+        "typography": "Nhazi Edemede",
+        "layout": "Nhazi",
+        "code": "Koodu Ahaziri"
+      },
+      "colors": {
+        "primary": "Agba Isi",
+        "secondary": "Agba Nke Abụọ",
+        "accent": "Agba Mgbakwunye",
+        "background": "Agba Ndabere",
+        "text": "Agba Edemede",
+        "reset": "Tọgharịa na Mbụ"
+      },
+      "typography": {
+        "fontFamily": "Ezinụlọ Font",
+        "fontSize": "Nha Font",
+        "lineHeight": "Ogologo Ahịrị",
+        "fontWeight": "Ịdị Arọ Font",
+        "textAlign": "Nhazi Edemede"
+      },
+      "layout": {
+        "containerWidth": "Obosara Ihe Nwere",
+        "spacing": "Oghere",
+        "borderRadius": "Radius Oke",
+        "shadows": "Onyinyo"
+      },
+      "code": {
+        "css": "CSS Ahaziri",
+        "javascript": "JavaScript Ahaziri",
+        "html": "HTML Ahaziri",
+        "warning": "Ịdọ aka na ntị: Koodu ahaziri nwere ike imebi ụdị gị. Jiri ya nke ọma."
+      },
+      "preview": {
+        "title": "Nlele Ugbu a",
+        "mobile": "Ekwenti",
+        "tablet": "Tablet",
+        "desktop": "Kọmputa",
+        "fullscreen": "Ihuenyo Zurụ Ezu"
+      },
+      "actions": {
+        "save": "Chekwaa Mgbanwe",
+        "reset": "Tọgharịa Niile",
+        "export": "Bupụ Ntọala",
+        "import": "Bubata Ntọala",
+        "saving": "Na-echekwa...",
+        "resetting": "Na-atọgharịa..."
+      },
+      "import": {
+        "dialog": {
+          "title": "Bubata Ntọala Nhazi",
+          "description": "Manye ntọala mbupụ gị n'okpuru",
+          "placeholder": "Manye JSON ntọala ebe a...",
+          "import": "Bubata",
+          "cancel": "Kagbuo"
+        },
+        "success": "Ebugatara ntọala nke ọma!",
+        "error": "Ọdịda n'ịbubata ntọala. Biko lelee nhazi."
+      },
+      "export": {
+        "success": "Ebupụrụ ntọala na faịlụ!",
+        "error": "Ọdịda n'ịbupụ ntọala"
+      },
+      "save": {
+        "success": "Echekwara nhazi nke ọma!",
+        "error": "Ọdịda n'ichekwa nhazi"
+      },
+      "reset": {
+        "confirm": {
+          "title": "Tọgharịa Nhazi Niile?",
+          "description": "Nke a ga-eweghachi ntọala niile na mbụ ha. Omume a enweghị ike ịweghachi.",
+          "confirm": "Tọgharịa Niile",
+          "cancel": "Kagbuo"
+        },
+        "success": "Atọgharịrị nhazi niile nke ọma!",
+        "error": "Ọdịda n'atọgharịa nhazi"
+      },
+      "validation": {
+        "invalidCss": "Nhazi CSS ezighi ezi",
+        "invalidJs": "Nhazi JavaScript ezighi ezi",
+        "invalidHtml": "Nhazi HTML ezighi ezi"
+      }
+    },
+    "tabs": {
+      "myTemplates": "Ụdị M",
+      "marketplace": "Ebe Ahịa",
+      "analytics": "Nyocha",
+      "customization": "Nhazi"
     }
   },
   "termsAndConditions": {
-    "agree": "I agree to the Terms and Conditions",
-    "title": "Memorial Website Service Terms and Conditions",
+    "agree": "Ekwenyere m na Usoro na Ọnọdụ",
+    "title": "Usoro na Ọnọdụ Ọrụ Weebụsaịtị Ncheta",
     "sections": {
       "serviceDescription": {
-        "title": "1. Service Description",
-        "content": "Our memorial website service provides a platform to create and maintain online memorials for loved ones. This includes hosting, templates, and maintenance as specified in your chosen plan."
+        "title": "1. Nkọwa Ọrụ",
+        "content": "Ọrụ weebụsaịtị ncheta anyị na-enye ikpo okwu iji mepụta ma jikwaa ncheta ịntanetị maka ndị a hụrụ n'anya. Nke a gụnyere ịnabata, ụdị, na mmezi dịka akọwapụtara na atụmatụ ị họọrọ."
       },
       "paymentTerms": {
-        "title": "2. Payment Terms",
-        "content": "All payments are one-time fees for the selected plan. Payment is required before service activation. Fees are non-refundable once the website has been created and published."
+        "title": "2. Usoro Ịkwụ Ụgwọ",
+        "content": "Ịkwụ ụgwọ niile bụ ụgwọ otu oge maka atụmatụ ahọpụtara. Achọrọ ịkwụ ụgwọ tupu ịmalite ọrụ. A naghị akwụghachi ụgwọ ozugbo emepụtara ma bipụta weebụsaịtị ahụ."
       },
       "contentGuidelines": {
-        "title": "3. Content Guidelines",
-        "content": "You agree to provide appropriate content that respects the memory of the deceased. We reserve the right to remove any content that violates our community guidelines or is deemed inappropriate."
+        "title": "3. Ntuziaka Ọdịnaya",
+        "content": "Ị kwenyere ịnye ọdịnaya kwesịrị ekwesị nke na-asọpụrụ ncheta onye ahụ nwụrụ anwụ. Anyị nwere ikike iwepụ ọdịnaya ọ bụla na-emebi ụkpụrụ obodo anyị ma ọ bụ nke e chere na ọ bụ nke na-ekwesịghị ekwesị."
       },
       "privacyAndData": {
-        "title": "4. Privacy and Data",
-        "content": "We respect your privacy and will handle all personal information in accordance with our privacy policy. Memorial content may be publicly accessible unless privacy settings are applied."
+        "title": "4. Nzuzo na Data",
+        "content": "Anyị na-asọpụrụ nzuzo gị ma ga-ejikwa ozi nkeonwe niile dịka amụma nzuzo anyị si dị. Enwere ike ịnweta ọdịnaya ncheta n'ihu ọha ọ gwụla ma etinyere ntọala nzuzo."
       },
       "serviceAvailability": {
-        "title": "5. Service Availability",
-        "content": "We strive to maintain 99% uptime but cannot guarantee uninterrupted service. Scheduled maintenance may occur with prior notice."
+        "title": "5. Nnweta Ọrụ",
+        "content": "Anyị na-agba mbọ ịnọgide na-enwe oge arụ ọrụ 99% mana anyị enweghị ike ikwe nkwa ọrụ na-adịghị akwụsị akwụsị. Enwere ike ịrụ mmezi ahaziri ya na ndụmọdụ mbụ."
       },
       "intellectualProperty": {
-        "title": "6. Intellectual Property",
-        "content": "You retain rights to the content you provide. We retain rights to the platform, templates, and technology. The memorial website design is licensed for your use."
+        "title": "6. Ikike Ọgụgụ Isi",
+        "content": "Ị na-ejigide ikike nke ọdịnaya ị na-enye. Anyị na-ejigide ikike nke ikpo okwu, ụdị, na teknụzụ. E nyere gị ikike imepụta weebụsaịtị ncheta ahụ maka ojiji gị."
       },
       "termination": {
-        "title": "7. Termination",
-        "content": "You may request termination of service at any time. We reserve the right to terminate service for violation of terms. Memorial websites are maintained for the duration specified in your plan."
+        "title": "7. Ịkwụsị",
+        "content": "Ị nwere ike ịrịọ ka a kwụsị ọrụ oge ọ bụla. Anyị nwere ikike ịkwụsị ọrụ maka imebi usoro. A na-echekwa weebụsaịtị ncheta maka oge akọwapụtara na atụmatụ gị."
       },
       "limitationOfLiability": {
-        "title": "8. Limitation of Liability",
-        "content": "Our liability is limited to the amount paid for the service. We are not liable for indirect damages or losses resulting from service use."
+        "title": "8. Mbelata nke Ịnọgidesi Ike",
+        "content": "Ịnọgidesi ike anyị dị obere na ego a kwụrụ maka ọrụ ahụ. Anyị abụghị ndị ga-akwụ ụgwọ maka mmebi ma ọ bụ mfu ndị ọzọ sitere na ojiji ọrụ."
       }
     },
-    "note": "Note: By checking the agreement box, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions."
+    "note": "Rịba ama: Site na ịlele igbe nkwekọrịta, ị kwetara na ị gụọla, ghọtara, ma kwenye ka e jide gị na Usoro na Ọnọdụ ndị a."
   },
   "register": {
-    "welcome": "Create Account",
-    "subtitle": "Create a lasting memory",
+    "welcome": "Mepụta Akaụntụ",
+    "subtitle": "Mepụta ncheta na-adịgide adịgide",
     "form": {
-      "name": "Full Name",
-      "email": "Email Address",
-      "phone": "Phone Number",
-      "password": "Password",
-      "confirmPassword": "Confirm Password"
+      "name": "Aha Zuruezu",
+      "email": "Adreesị Ozi-e",
+      "phone": "Nọmba Ekwentị",
+      "password": "Okwuntughe",
+      "confirmPassword": "Kwenye Okwuntughe"
     },
     "placeholders": {
-      "name": "Enter your full name",
-      "email": "Enter your email",
-      "phone": "WhatsApp number",
-      "password": "Enter your password",
-      "confirmPassword": "Confirm your password"
+      "name": "Tinye aha gị zuruezu",
+      "email": "Tinye ozi-e gị",
+      "phone": "Nọmba WhatsApp",
+      "password": "Tinye okwuntughe gị",
+      "confirmPassword": "Kwenye okwuntughe gị"
     },
     "buttons": {
-      "createAccount": "Create Account",
-      "creatingAccount": "Creating Account...",
-      "loginHere": "Login here",
+      "createAccount": "Mepụta Akaụntụ",
+      "creatingAccount": "Na-emepụta Akaụntụ...",
+      "loginHere": "Banye ebe a",
       "continueWithGoogle": "Gaa n'ihu na Google",
       "signingUpWithGoogle": "Na-edebanye aha na Google..."
     },
@@ -1491,48 +1846,48 @@
       "divider": "MA ỌBỤ"
     },
     "errors": {
-      "nameRequired": "Name is required",
-      "emailRequired": "Email is required",
-      "invalidEmail": "Please enter a valid email",
-      "phoneRequired": "Phone number is required",
-      "passwordRequired": "Password is required",
-      "passwordLength": "Password must be at least 8 characters",
-      "passwordsDontMatch": "Passwords do not match",
-      "recaptchaRequired": "Please complete the reCAPTCHA verification",
-      "paymentRequired": "Payment required. Please complete payment first.",
-      "paymentVerificationFailed": "Payment verification failed. Please complete payment first.",
-      "paymentVerificationError": "Failed to verify payment. Please try again.",
-      "registrationFailed": "Registration failed",
-      "registrationError": "An error occurred during registration"
+      "nameRequired": "Aha dị mkpa",
+      "emailRequired": "Email dị mkpa",
+      "invalidEmail": "Biko tinye email dị irè",
+      "phoneRequired": "Nọmba ekwentị dị mkpa",
+      "passwordRequired": "Okwuntughe dị mkpa",
+      "passwordLength": "Okwuntughe ga-abụrịrị opekata mpe mkpụrụ edemede 8",
+      "passwordsDontMatch": "Okwuntughe anaghị adakọ",
+      "recaptchaRequired": "Biko mechaa nkwenye reCAPTCHA",
+      "paymentRequired": "Achọrọ ịkwụ ụgwọ. Biko mechaa ịkwụ ụgwọ mbụ.",
+      "paymentVerificationFailed": "Nkwenye ịkwụ ụgwọ dara ada. Biko mechaa ịkwụ ụgwọ mbụ.",
+      "paymentVerificationError": "Enweghị ike ịchọpụta ịkwụ ụgwọ. Biko nwaa ọzọ.",
+      "registrationFailed": "Ndebanye aha dara ada",
+      "registrationError": "Enwere mperi n'oge ndebanye aha"
     },
     "success": {
-      "accountCreated": "Account created successfully! Please verify your email."
+      "accountCreated": "Emepụtara akaụntụ nke ọma! Biko chọpụta email gị."
     },
-    "alreadyHaveAccount": "Already have an account?",
+    "alreadyHaveAccount": "Ị nweela akaụntụ?",
     "terms": {
-      "byRegistering": "By registering, you agree to our",
-      "termsOfService": "Terms of Service",
-      "and": "and",
-      "privacyPolicy": "Privacy Policy"
+      "byRegistering": "Site na ịdebanye aha, ị kwenyere na",
+      "termsOfService": "Usoro Ọrụ",
+      "and": "na",
+      "privacyPolicy": "Amụma Nzuzo"
     },
-    "tagline": "A place to honor and remember those we love"
+    "tagline": "Ebe a ga-asọpụrụ ma cheta ndị anyị hụrụ n'anya"
   },
   "login": {
-    "welcomeBack": "Welcome Back",
-    "subtitle": "Login to ForeverPages",
+    "welcomeBack": "Nnọọ ọzọ",
+    "subtitle": "Banye na ForeverPages",
     "form": {
-      "email": "Email Address",
-      "emailOrPhone": "Email or Phone Number",
-      "password": "Password"
+      "email": "Adreesị Ozi-e",
+      "emailOrPhone": "Ozi-e ma ọ bụ Nọmba Ekwentị",
+      "password": "Okwuntughe"
     },
     "placeholders": {
-      "email": "Enter your email",
-      "emailOrPhone": "Enter your email or phone number",
-      "password": "Enter your password"
+      "email": "Tinye ozi-e gị",
+      "emailOrPhone": "Tinye ozi-e gị ma ọ bụ nọmba ekwentị",
+      "password": "Tinye okwuntughe gị"
     },
     "buttons": {
-      "login": "Login",
-      "registerHere": "Register here",
+      "login": "Banye",
+      "registerHere": "Debanye aha ebe a",
       "signInWithGoogle": "Banye na Google",
       "signingInWithGoogle": "Na-abanye na Google..."
     },
@@ -1540,73 +1895,73 @@
       "divider": "MA ỌBỤ"
     },
     "errors": {
-      "emailRequired": "Email is required",
-      "invalidEmail": "Please enter a valid email",
-      "passwordRequired": "Password is required"
+      "emailRequired": "Email dị mkpa",
+      "invalidEmail": "Biko tinye email dị irè",
+      "passwordRequired": "Okwuntughe dị mkpa"
     },
-    "rememberMe": "Remember me",
-    "forgotPassword": "Forgot password?",
-    "noAccount": "Don't have an account?",
-    "tagline": "A place to honor and remember those we love",
+    "rememberMe": "Cheta m",
+    "forgotPassword": "Echefuru okwuntughe?",
+    "noAccount": "Ịnweghị akaụntụ?",
+    "tagline": "Ebe a ga-asọpụrụ ma cheta ndị anyị hụrụ n'anya",
     "loggingOut": "Na-apụ..."
   },
   "forgotPassword": {
-    "title": "Forgot Password",
-    "subtitle": "Enter your email to reset your password",
+    "title": "Echefuru Okwuntughe",
+    "subtitle": "Tinye email gị iji tọgharịa okwuntughe gị",
     "form": {
-      "email": "Email Address"
+      "email": "Adreesị Ozi-e"
     },
     "placeholders": {
-      "email": "Enter your email address"
+      "email": "Tinye adreesị ozi-e gị"
     },
     "buttons": {
-      "resetPassword": "Reset Password",
-      "sending": "Sending..."
+      "resetPassword": "Tọgharịa Okwuntughe",
+      "sending": "Na-eziga..."
     },
     "errors": {
-      "emailRequired": "Email is required",
-      "invalidEmail": "Please enter a valid email address"
+      "emailRequired": "Email dị mkpa",
+      "invalidEmail": "Biko tinye adreesị ozi-e dị irè"
     },
-    "backToLogin": "Back to Login",
+    "backToLogin": "Lagachi na Ịbanye",
     "success": {
-      "title": "Check Your Email",
-      "subtitle": "We've sent you a password reset link",
-      "checkEmail": "Check Your Email",
-      "instructions": "We've sent a password reset link to {{email}}. Please check your inbox and follow the instructions to reset your password.",
-      "tryAgain": "Try Another Email",
-      "backToLogin": "Back to Login"
+      "title": "Lelee Email Gị",
+      "subtitle": "Anyị eziterela gị njikọ ịtọgharịa okwuntughe",
+      "checkEmail": "Lelee Email Gị",
+      "instructions": "Anyị ezitela njikọ ịtọgharịa okwuntughe na {{email}}. Biko lelee igbe mbata gị ma soro ntuziaka ahụ tọgharịa okwuntughe gị.",
+      "tryAgain": "Nwaa Email Ọzọ",
+      "backToLogin": "Lagachi na Ịbanye"
     },
-    "tagline": "A place to honor and remember those we love"
+    "tagline": "Ebe a ga-asọpụrụ ma cheta ndị anyị hụrụ n'anya"
   },
   "resetPassword": {
-    "title": "Reset Password",
-    "subtitle": "Create a new password for your account",
+    "title": "Tọgharịa Okwuntughe",
+    "subtitle": "Mepụta okwuntughe ọhụrụ maka akaụntụ gị",
     "form": {
-      "newPassword": "New Password",
-      "confirmPassword": "Confirm Password"
+      "newPassword": "Okwuntughe Ọhụrụ",
+      "confirmPassword": "Kwenye Okwuntughe"
     },
     "placeholders": {
-      "newPassword": "Enter your new password",
-      "confirmPassword": "Confirm your new password"
+      "newPassword": "Tinye okwuntughe ọhụrụ gị",
+      "confirmPassword": "Kwenye okwuntughe ọhụrụ gị"
     },
     "buttons": {
-      "resetPassword": "Reset Password",
-      "resetting": "Resetting..."
+      "resetPassword": "Tọgharịa Okwuntughe",
+      "resetting": "Na-atọgharịa..."
     },
     "errors": {
-      "passwordRequired": "Password is required",
-      "passwordLength": "Password must be at least 8 characters",
-      "passwordsDontMatch": "Passwords do not match"
+      "passwordRequired": "Okwuntughe dị mkpa",
+      "passwordLength": "Okwuntughe ga-abụrịrị opekata mpe mkpụrụ edemede 8",
+      "passwordsDontMatch": "Okwuntughe anaghị adakọ"
     },
-    "backToLogin": "Back to Login",
+    "backToLogin": "Lagachi na Ịbanye",
     "success": {
-      "title": "Password Reset",
-      "subtitle": "Your password has been successfully reset",
-      "passwordReset": "Password Reset Successful",
-      "loginAgain": "You can now login with your new password",
-      "backToLogin": "Back to Login"
+      "title": "Ọnụ Ọgụgụ Okwuntughe",
+      "subtitle": "A tọgharịrị okwuntughe gị nke ọma",
+      "passwordReset": "Ọnụ Ọgụgụ Okwuntughe gara nke ọma",
+      "loginAgain": "Ị nwere ike ịbanye ugbu a na okwuntughe ọhụrụ gị",
+      "backToLogin": "Lagachi na Ịbanye"
     },
-    "tagline": "A place to honor and remember those we love"
+    "tagline": "Ebe a ga-asọpụrụ ma cheta ndị anyị hụrụ n'anya"
   },
   "emailVerification": {
     "banner": {
@@ -1616,69 +1971,69 @@
       "resendEmail": "Ziga Email Ọzọ",
       "sending": "Na-eziga..."
     },
-    "title": "Verify Your Email",
-    "subtitle": "Enter the 6-digit code sent to your email",
-    "enterCode": "Enter Verification Code",
-    "instructions": "Please enter the 6-digit verification code we sent to your email address.",
-    "spamWarning": "If you don't see the email, check your spam folder.",
-    "didntReceive": "Didn't receive the code?",
-    "resendIn": "Resend in",
-    "verifying": "Verifying your code...",
+    "title": "Kwenye Email Gị",
+    "subtitle": "Tinye koodu ọnụọgụ 6 e zigara na email gị",
+    "enterCode": "Tinye Koodu Nkwenye",
+    "instructions": "Biko tinye koodu nkwenye ọnụọgụ 6 anyị zigara na adreesị email gị.",
+    "spamWarning": "Ọ bụrụ na ị hụghị email ahụ, lelee nchịkọta spam gị.",
+    "didntReceive": "Ị nataghị koodu ahụ?",
+    "resendIn": "Zigharịa na",
+    "verifying": "Na-enyocha koodu gị...",
     "buttons": {
-      "resend": "Resend Code",
-      "resendCode": "Resend Verification Code",
-      "sending": "Sending...",
-      "backToLogin": "Back to Login"
+      "resend": "Zigharịa Koodu",
+      "resendCode": "Zigharịa Koodu Nkwenye",
+      "sending": "Na-eziga...",
+      "backToLogin": "Lagachi na Ịbanye"
     },
     "success": {
-      "toast": "Email verified successfully! Redirecting..."
+      "toast": "A kwadoro email nke ọma! Na-eduga gị..."
     },
     "error": {
-      "expired": "Verification code has expired. Please request a new one.",
-      "invalid": "Invalid code. Please check and try again."
+      "expired": "Koodu nkwenye agwụla. Biko rịọ nke ọhụrụ.",
+      "invalid": "Koodu ezighi ezi. Biko lelee ma nwaa ọzọ."
     },
-    "tagline": "A place to honor and remember those we love"
+    "tagline": "Ebe a ga-asọpụrụ ma cheta ndị anyị hụrụ n'anya"
   },
   "confirmEmail": {
-    "title": "Confirming Your Email",
-    "subtitle": "We're verifying your email address",
-    "verifying": "Verifying your email address...",
-    "redirectNotice": "You will be redirected to login automatically",
+    "title": "Na-akwado Email Gị",
+    "subtitle": "Anyị na-enyocha adreesị email gị",
+    "verifying": "Na-enyocha adreesị email gị...",
+    "redirectNotice": "A ga-eduga gị na ịbanye na-akpaghị aka",
     "success": {
-      "toast": "Email confirmed successfully!",
-      "redirecting": "Redirecting to login..."
+      "toast": "A kwadoro email nke ọma!",
+      "redirecting": "Na-eduga na ịbanye..."
     },
     "error": {
-      "toast": "Email confirmation failed",
-      "expired": "Confirmation link has expired",
-      "invalid": "Invalid confirmation link",
-      "network": "Network error. Please try again."
+      "toast": "Nkwenye email dara ada",
+      "expired": "Njikọ nkwenye agwụla",
+      "invalid": "Njikọ nkwenye ezighi ezi",
+      "network": "Njehie netwọk. Biko nwaa ọzọ."
     }
   },
   "offline": {
     "status": {
-      "online": "Online",
-      "offline": "Offline",
-      "syncing": "Syncing..."
+      "online": "Ịntanetị",
+      "offline": "Akpaghị",
+      "syncing": "Na-emekọrịta..."
     },
-    "pendingActions": "Pending actions: {count}",
+    "pendingActions": "Omume na-echere: {{count}}",
     "syncProgress": {
-      "synchronizing": "Synchronizing...",
-      "progress": "Progress: {{current}}/{{total}}",
-      "title": "Sync Progress",
-      "complete": "Complete"
+      "synchronizing": "Na-emekọrịta...",
+      "progress": "Ọganihu: {{current}}/{{total}}",
+      "title": "Ọganihu Mmekọrịta",
+      "complete": "Emechaa"
     },
     "banner": {
-      "offlineMessage": "You're currently offline.",
-      "pendingActions": "You have {count} pending action{{count !== 1 ? 's' : ''}} that will sync when you're back online."
+      "offlineMessage": "Ị nọ ugbu a n'ịntanetị.",
+      "pendingActions": "Ị nwere {{count}} omume na-echere {{count !== 1 ? 's' : ''}} nke ga-emekọrịta mgbe ị laghachiri n'ịntanetị."
     },
-    "lastSync": "Last sync: {{synced}} synced, {{failed}} failed",
+    "lastSync": "Mmekọrịta ikpeazụ: {{synced}} emekọrịtala, {{failed}} dara ada",
     "loading": {
-      "offline": "Offline",
-      "viewingCached": "Viewing cached images",
-      "actionsQueued": "{count} action{{count !== 1 ? 's' : ''}} queued",
-      "willSyncWhenOnline": "will sync when online",
-      "savedLocally": "Will be saved locally and synced when online"
+      "offline": "Akpaghị",
+      "viewingCached": "Na-ele foto ndị echekwara",
+      "actionsQueued": "{{count}} omume {{count !== 1 ? 's' : ''}} nọ n'ahịrị",
+      "willSyncWhenOnline": "ga-emekọrịta mgbe ị nọ n'ịntanetị",
+      "savedLocally": "A ga-echekwa ya na mpaghara ma mekọrịta ya mgbe ị nọ n'ịntanetị"
     }
   },
   "twoFactor": {
@@ -1688,80 +2043,80 @@
       "enable": "Gbanye 2FA"
     },
     "verification": {
-      "title": "Two-Factor Authentication",
+      "title": "Nkwenye Abụọ",
       "subtitle": {
-        "email": "Enter the code sent to your email",
-        "authenticator": "Enter the code from your authenticator app"
+        "email": "Tinye koodu e zigara na email gị",
+        "authenticator": "Tinye koodu sitere na ngwa nkwenye gị"
       },
-      "enterCode": "Enter Verification Code",
+      "enterCode": "Tinye Koodu Nkwenye",
       "instructions": {
-        "email": "Code sent to {{email}}",
-        "authenticator": "Open your authenticator app"
+        "email": "Koodu ezitere na {{email}}",
+        "authenticator": "Mepee ngwa nkwenye gị"
       },
-      "verifying": "Verifying...",
-      "resendCode": "Resend code",
-      "useBackupCode": "Use backup code instead",
+      "verifying": "Na-enyocha...",
+      "resendCode": "Zigharịa koodu",
+      "useBackupCode": "Jiri koodu nchekwa kama",
       "backupCode": {
-        "title": "Enter Backup Code",
-        "subtitle": "Enter one of your saved backup codes",
+        "title": "Tinye Koodu Nchekwa",
+        "subtitle": "Tinye otu n'ime koodu nchekwa gị echekwara",
         "placeholder": "XXXX-XXXX",
-        "verify": "Verify Backup Code",
-        "useVerificationCode": "Use verification code instead"
+        "verify": "Nyochaa Koodu Nchekwa",
+        "useVerificationCode": "Jiri koodu nkwenye kama"
       },
-      "backToLogin": "Back to login",
-      "success": "Verification successful!",
+      "backToLogin": "Lagachi na ịbanye",
+      "success": "Nkwenye gara nke ọma!",
       "error": {
-        "invalidCode": "Invalid verification code",
-        "failed": "Failed to complete login"
+        "invalidCode": "Koodu nkwenye ezighi ezi",
+        "failed": "Enweghị ike imecha ịbanye"
       }
     },
     "settings": {
-      "title": "Two-Factor Authentication",
-      "description": "Add an extra layer of security to your account",
+      "title": "Nkwenye Abụọ",
+      "description": "Tinye nchebe ọzọ na akaụntụ gị",
       "status": {
-        "enabled": "2FA Enabled",
-        "disabled": "2FA Disabled",
+        "enabled": "2FA Agbanyere",
+        "disabled": "2FA Agbanyehị",
         "method": {
           "email": "Email",
-          "authenticator": "Authenticator App"
+          "authenticator": "Ngwa Nkwenye"
         }
       },
       "enable": {
-        "title": "Enable Two-Factor Authentication",
-        "selectMethod": "Select Authentication Method",
+        "title": "Gbanye Nkwenye Abụọ",
+        "selectMethod": "Họrọ Usoro Nkwenye",
         "methods": {
           "email": {
-            "title": "Email Authentication",
-            "description": "Receive a verification code via email whenever you sign in"
+            "title": "Nkwenye Email",
+            "description": "Nata koodu nkwenye site na email mgbe ọ bụla ị banyere"
           },
           "authenticator": {
-            "title": "Authenticator App",
-            "description": "Use an authenticator app like Google Authenticator or Authy"
+            "title": "Ngwa Nkwenye",
+            "description": "Jiri ngwa nkwenye dị ka Google Authenticator ma ọ bụ Authy"
           }
         }
       },
       "email": {
-        "title": "Email Two-Factor Authentication",
-        "description": "You'll receive a verification code via email when signing in.",
-        "howItWorks": "How it works:",
+        "title": "Nkwenye Abụọ Email",
+        "description": "Ị ga-enweta koodu nkwenye site na email mgbe ị banyere.",
+        "howItWorks": "Otu o si arụ ọrụ:",
         "steps": {
-          "step1": "Sign in with your password",
-          "step2": "Receive a code via email",
-          "step3": "Enter the code to complete login"
+          "step1": "Banye na okwuntughe gị",
+          "step2": "Nata koodu site na email",
+          "step3": "Tinye koodu ahụ iji mechaa ịbanye"
         },
         "buttons": {
-          "enable": "Enable Email 2FA",
-          "enabling": "Enabling...",
-          "disable": "Disable 2FA",
-          "disabling": "Disabling..."
+          "enable": "Gbanye 2FA Email",
+          "enabling": "Na-agbanye...",
+          "disable": "Gbanyụọ 2FA",
+          "disabling": "Na-agbanyụ..."
         }
       },
       "authenticator": {
-        "title": "Authenticator App Setup",
-        "description": "Use an authenticator app for more secure verification.",
+        "title": "Nhazi Ngwa Nkwenye",
+        "description": "Jiri ngwa nkwenye maka nkwenye dị nchebe karị.",
         "step1": {
-          "title": "Step 1: Install an Authenticator App",
-          "description": "Download an authenticator app if you don't have one:",
+          "title": "Nzọụkwụ 1: Wụnye Ngwa Nkwenye",
+          "description": "Budata ngwa nkwenye ma ọ bụrụ na ịnweghị otu:",
           "apps": {
             "googleAuth": "Google Authenticator",
             "authy": "Authy",
@@ -1769,97 +2124,97 @@
           }
         },
         "step2": {
-          "title": "Step 2: Scan QR Code",
-          "description": "Open your authenticator app and scan this QR code:",
-          "manualEntry": "Can't scan? Enter this code manually:",
-          "copy": "Copy",
-          "copied": "Copied!"
+          "title": "Nzọụkwụ 2: Nyochaa Koodu QR",
+          "description": "Mepee ngwa nkwenye gị wee nyochaa koodu QR a:",
+          "manualEntry": "Enweghị ike ịnyocha? Tinye koodu a n'aka:",
+          "copy": "Detuo",
+          "copied": "Edetụrụ!"
         },
         "step3": {
-          "title": "Step 3: Verify Setup",
-          "description": "Enter the 6-digit code from your authenticator app:",
-          "placeholder": "Enter 6-digit code",
-          "verify": "Verify & Enable",
-          "verifying": "Verifying..."
+          "title": "Nzọụkwụ 3: Nyochaa Nhazi",
+          "description": "Tinye koodu ọnụọgụ 6 sitere na ngwa nkwenye gị:",
+          "placeholder": "Tinye koodu ọnụọgụ 6",
+          "verify": "Nyochaa & Gbanye",
+          "verifying": "Na-enyocha..."
         },
         "buttons": {
-          "cancel": "Cancel",
-          "disable": "Disable Authenticator 2FA",
-          "disabling": "Disabling..."
+          "cancel": "Kagbuo",
+          "disable": "Gbanyụọ Nkwenye Authenticator 2FA",
+          "disabling": "Na-agbanyụ..."
         }
       },
       "backupCodes": {
-        "title": "Backup Codes",
-        "description": "Save these backup codes in a secure place. Each code can only be used once.",
-        "warning": "Warning: Only {{count}} backup code(s) remaining. Generate new ones in Settings.",
-        "remaining": "{{count}} codes remaining",
+        "title": "Koodu Nchekwa",
+        "description": "Chekwaa koodu nchekwa ndị a n'ebe dị nchebe. Enwere ike iji koodu ọ bụla naanị otu ugboro.",
+        "warning": "Ịdọ aka ná ntị: Naanị {{count}} koodu nchekwa fọdụrụ. Mepụta ndị ọhụrụ na Ntọala.",
+        "remaining": "{{count}} koodu fọdụrụ",
         "buttons": {
-          "download": "Download Codes",
-          "copy": "Copy All Codes",
-          "copied": "Copied to clipboard!",
-          "regenerate": "Regenerate Codes",
-          "regenerating": "Regenerating..."
+          "download": "Budata Koodu",
+          "copy": "Detuo Koodu Niile",
+          "copied": "Edetụrụ na clipboard!",
+          "regenerate": "Mepụtagharịa Koodu",
+          "regenerating": "Na-emepụtagharị..."
         },
         "regenerateWarning": {
-          "title": "Regenerate Backup Codes?",
-          "message": "This will invalidate all existing backup codes. Make sure you've saved your current codes before proceeding.",
-          "confirm": "Regenerate",
-          "cancel": "Cancel"
+          "title": "Mepụtagharịa Koodu Nchekwa?",
+          "message": "Nke a ga-eme ka koodu nchekwa niile dị ugbu a ghara ịdị irè. Jide n'aka na ị chekwala koodu gị ugbu a tupu ịga n'ihu.",
+          "confirm": "Mepụtagharịa",
+          "cancel": "Kagbuo"
         }
       },
       "disable": {
         "warning": {
-          "title": "Disable Two-Factor Authentication?",
-          "message": "Your account will be less secure without 2FA. Are you sure you want to disable it?",
-          "confirm": "Yes, Disable 2FA",
-          "cancel": "Cancel"
+          "title": "Gbanyụọ Nkwenye Abụọ?",
+          "message": "Akaụntụ gị ga-adị nchebe obere na-enweghị 2FA. Ị ji n'aka na ịchọrọ ịgbanyụọ ya?",
+          "confirm": "Ee, Gbanyụọ 2FA",
+          "cancel": "Kagbuo"
         }
       },
       "success": {
-        "enabled": "Two-factor authentication enabled successfully!",
-        "disabled": "Two-factor authentication disabled",
-        "codesRegenerated": "Backup codes regenerated successfully"
+        "enabled": "Agbanyela nkwenye abụọ nke ọma!",
+        "disabled": "Agbanyụọla nkwenye abụọ",
+        "codesRegenerated": "E mepụtagharịrị koodu nchekwa nke ọma"
       },
       "error": {
-        "loadFailed": "Failed to load 2FA settings",
-        "enableFailed": "Failed to enable 2FA",
-        "disableFailed": "Failed to disable 2FA",
-        "verifyFailed": "Failed to verify code",
-        "regenerateFailed": "Failed to regenerate backup codes"
+        "loadFailed": "Enweghị ike ibu ntọala 2FA",
+        "enableFailed": "Enweghị ike ịgbanye 2FA",
+        "disableFailed": "Enweghị ike ịgbanyụọ 2FA",
+        "verifyFailed": "Enweghị ike ịchọpụta koodu",
+        "regenerateFailed": "Enweghị ike imepụtagharị koodu nchekwa"
       }
     }
   },
   "notifications": {
-    "title": "Notifications",
-    "bellButton": "Notifications",
-    "markAllRead": "Mark all as read",
-    "clearAll": "Clear all",
-    "loading": "Loading notifications...",
-    "empty": "No notifications yet",
-    "markedAsRead": "Marked as read",
-    "markAsReadError": "Failed to mark as read",
-    "allMarkedAsRead": "All notifications marked as read",
-    "markAllAsReadError": "Failed to mark all as read",
-    "allCleared": "All notifications cleared",
-    "clearAllError": "Failed to clear notifications",
+    "title": "Ịkwa ọkwa",
+    "bellButton": "Ịkwa ọkwa",
+    "markAllRead": "Kaa akara niile ka agụọ",
+    "clearAll": "Hichapụ ha niile",
+    "loading": "Na-ebu ọkwa...",
+    "empty": "Enweghị ọkwa ka",
+    "markedAsRead": "Aka akara dị ka agụọla",
+    "markAsReadError": "Enweghị ike ịka akara dị ka agụọla",
+    "allMarkedAsRead": "Aka akara ọkwa niile dị ka agụọla",
+    "markAllAsReadError": "Enweghị ike ịka akara niile dị ka agụọla",
+    "allCleared": "Ehichapụla ọkwa niile",
+    "clearAllError": "Enweghị ike ihichapụ ọkwa niile",
     "types": {
-      "NEW_TRIBUTE": "New Tribute",
-      "NEW_COMMENT": "New Comment",
-      "NEW_PHOTO": "New Photo",
-      "NEW_CANDLE": "New Candle",
-      "NEW_FLOWER": "New Flower",
-      "INVITATION": "Invitation",
-      "MEMORIAL_ANNIVERSARY": "Memorial Anniversary",
-      "BIRTHDAY_ANNIVERSARY": "Birthday Anniversary",
-      "EXPIRING_SOON": "Expiring Soon",
-      "SYSTEM": "System Notification"
+      "NEW_TRIBUTE": "Nkwanye Ùgwù Ọhụrụ",
+      "NEW_COMMENT": "Okwu Ọhụrụ",
+      "NEW_PHOTO": "Foto Ọhụrụ",
+      "NEW_CANDLE": "Kandụl Ọhụrụ",
+      "NEW_FLOWER": "Okooko Osisi Ọhụrụ",
+      "INVITATION": "Ọkpụkpọ",
+      "MEMORIAL_ANNIVERSARY": "Emume Ncheta Ncheta",
+      "BIRTHDAY_ANNIVERSARY": "Emume Ụbọchị Ọmụmụ",
+      "EXPIRING_SOON": "Na-agwụ n'oge na-adịghị anya",
+      "SYSTEM": "Ọkwa Sistemụ"
     }
   },
   "collaborators": {
     "title": "Ndị Nkwado Memorial",
     "subtitle": "Kpọọ ndị mmadụ ka ha nyere aka jikwaa peeji ncheta a",
     "invite": "Kpọọ Onye Nkwado",
-    "sendInvitation": "Ziga Ọkụ",
+    "sendInvitation": "Ziga Ọkpụkpọ",
     "accessRestricted": {
       "title": "Egbochiri Ohere",
       "description": "Ị nweghị ikike ịnweta njirimara a n'ọnọdụ gị ugbu a."
@@ -1882,8 +2237,8 @@
         "placeholder": "Họrọ ọrụ"
       },
       "message": {
-        "label": "Ozi Ọkụ Pụrụ Iche (Nhọrọ)",
-        "placeholder": "Tinye ozi pụrụ iche maka ọkụ a..."
+        "label": "Ozi Ọkpụkpọ Pụrụ Iche (Nhọrọ)",
+        "placeholder": "Tinye ozi pụrụ iche maka ọkpụkpọ a..."
       },
       "whatsapp": {
         "label": "Ziga na WhatsApp kwa",
@@ -1894,7 +2249,7 @@
         }
       },
       "cancel": "Kagbuo",
-      "send": "Ziga Ọkụ",
+      "send": "Ziga Ọkpụkpọ",
       "sending": "Na-eziga..."
     },
     "roles": {
@@ -1962,12 +2317,13 @@
       "role": "Ọrụ",
       "status": "Ọnọdụ",
       "invitedAt": "Akpọrọ Na",
-      "actions": "Omume"
+      "actions": "Omume",
+      "acceptedAt": "Anabatara"
     },
     "actions": {
       "changeRole": "Gbanwee Ọrụ",
       "remove": "Wepu Onye Nkwado",
-      "resendInvitation": "Ziga Ọkụ Ọzọ"
+      "resendInvitation": "Ziga Ọkpụkpọ Ọzọ"
     },
     "dialogs": {
       "changeRole": {
@@ -1976,33 +2332,54 @@
         "selectRole": "Họrọ ọrụ",
         "cancel": "Kagbuo",
         "save": "Chekwaa Mgbanwe",
-        "saving": "Na-echekwa..."
+        "saving": "Na-echekwa...",
+        "confirm": "Kwenye Mgbanwe",
+        "success": "Agbanweela ọrụ nke ọma",
+        "error": "Ọdịda n'ịmelite ọrụ"
       },
       "remove": {
         "title": "Wepu Onye Nkwado?",
         "description": "Ị ji n'aka na ị chọrọ iwepụ {{email}} na ncheta a? Omume a enweghị ike ịlaghachi azụ.",
         "cancel": "Kagbuo",
         "remove": "Wepu",
-        "removing": "Na-ewepụ..."
+        "removing": "Na-ewepụ...",
+        "confirm": "Wepu",
+        "success": "Ewepụrụ onye nkwado nke ọma",
+        "error": "Ọdịda n'iwepụ onye nkwado"
+      },
+      "resend": {
+        "success": "E zigatụla ọkpụkpọ nke ọma",
+        "error": "Ọdịda n'izigatụ ọkpụkpọ"
       }
     },
     "validation": {
       "atLeastOneEmail": "Biko tinye ma ọ dịkarịa ala otu adreesị email",
       "validEmails": "Biko tinye adreesị email ndị bara uru",
       "phoneRequired": "Biko tinye ma ọ dịkarịa ala otu nọmba WhatsApp mgbe agbanyere WhatsApp",
-      "validPhones": "Biko tinye nọmba ekwentị bara uru na koodu obodo (dịka ọmụmaatụ, +234...)"
+      "validPhones": "Biko tinye nọmba ekwentị bara uru na koodu obodo (dịka ọmụmaatụ, +234...)",
+      "emailRequired": "Biko tinye ma ọ dịkarịa ala otu adreesị email",
+      "invalidEmail": "Biko tinye adreesị email bara uru",
+      "invalidPhone": "Biko tinye nọmba ekwentị bara uru na koodu obodo"
     },
     "email": {
-      "subject": "Ọkụ Ka Ị Kwado {{memorialName}} Memorial",
+      "subject": "Ọkpụkpọ Ka Ị Kwado {{memorialName}} Memorial",
       "greeting": "Ndewo {{recipientName}},",
       "invitation": "{{inviterName}} akpọwo gị ka ị bụrụ {{role}} na peeji ncheta {{deceasedName}}.",
       "role": "Ọrụ gị: {{role}}",
       "permissions": "Ihe ị ga-enwe ike ime:",
       "customMessage": "Ozi si {{inviterName}}:",
-      "accept": "Nabata Ọkụ",
-      "decline": "Jụ Ọkụ",
-      "footer": "Ọ bụrụ na ịchọghị ịnabata ọkụ a, ị nwere ike ileghara email a anya.",
-      "questions": "Nwere ajụjụ? Kpọtụrụ {{inviterEmail}}"
+      "accept": "Nabata Ọkpụkpọ",
+      "decline": "Jụ Ọkpụkpọ",
+      "footer": "Ọ bụrụ na ịchọghị ịnabata ọkpụkpọ a, ị nwere ike ileghara email a anya.",
+      "questions": "Nwere ajụjụ? Kpọtụrụ {{inviterEmail}}",
+      "copyLink": "Ma ọ bụ detuo ma manye njikọ a:",
+      "important": "Dị mkpa:",
+      "expiryNote": "Ọkpụkpọ a ga-agwụ na {{date}}",
+      "accountNote": "Ị ga-achọ ịbanye ma ọ bụ mepụta akaụntụ ForeverPages iji nabata",
+      "accessNote": "Mgbe ị nabatara, ị ga-enwe ohere ozugbo na ibe ncheta",
+      "ignoreNote": "Ọ bụrụ na ị tụghị anya ọkpụkpọ a, ị nwere ike ileghara email a anya n'enweghị nsogbu.",
+      "copyright": "© {{year}} ForeverPages. Ikike niile echekwara.",
+      "securityNote": "Nke a bụ njikọ ọkpụkpọ echekwara. Maka nchekwa gị, egbula email a na ndị ọzọ."
     },
     "whatsapp": {
       "greeting": "🕊️ Ndewo {{recipientName}},",
@@ -2015,18 +2392,30 @@
       "role": "{{emoji}} *Ọrụ gị:* {{role}}",
       "permissions": "*Ihe ị ga-enwe ike ime:*",
       "customMessage": "💌 *Ozi si {{inviterName}}:*",
-      "accept": "✅ Nabata Ọkụ: {{acceptLink}}",
-      "decline": "❌ Jụ Ọkụ: {{declineLink}}",
-      "footer": "Ọ bụrụ na ịchọghị ịnabata ọkụ a, ị nwere ike ileghara ozi a anya."
+      "accept": "✅ Nabata Ọkpụkpọ: {{acceptLink}}",
+      "decline": "❌ Jụ Ọkpụkpọ: {{declineLink}}",
+      "footer": "Ọ bụrụ na ịchọghị ịnabata ọkpụkpọ a, ị nwere ike ileghara ozi a anya.",
+      "inviteMessage": "*{{inviterName}}* akpọọla gị ka i mekọrịta na peeji ncheta maka *{{memorialName}}*",
+      "roleTitle": "Ọrụ gị: {{roleEmoji}} {{role}}",
+      "acceptPrompt": "Nabata ọkpụkpọ a:",
+      "expiryNote": "⏰ Ọkpụkpọ a ga-agwụ na {{date}}",
+      "securityNote": "🔒 Biko debe njikọ a nchebe ma egbula ya.",
+      "roleEmojis": {
+        "ADMIN": "👑",
+        "EDITOR": "✏️",
+        "CONTRIBUTOR": "📝"
+      }
     },
     "toast": {
-      "invitationSent": "Ezigara ọkụ nke ọma",
-      "invitationsSent": "Ezigara ọkụ {{count}} nke ọma",
-      "invitationResent": "Ezigara ọkụ ọzọ nke ọma",
-      "roleChanged": "Gbanwere ọrụ nke ọma",
+      "invitationSent": "E zigara ọkpụkpọ nke ọma",
+      "invitationsSent": "E zigara ọkpụkpọ {{count}} nke ọma",
+      "invitationResent": "E zigatụla ọkpụkpọ nke ọma",
+      "roleChanged": "Agbanweela ọrụ nke ọma",
       "collaboratorRemoved": "Ewepụrụ onye nkwado nke ọma",
       "error": "Ihe mejọrọ mere. Biko nwaa ọzọ."
-    }
+    },
+    "noCollaborators": "Enwebeghị ndị nkwado",
+    "noCollaboratorsDescription": "Kpọọ ndị otu ka ha nyere aka jikwaa peeji ncheta a"
   },
   "livestream": {
     "broadcaster": {
@@ -2105,15 +2494,15 @@
       },
       "info": {
         "viewers": "ndị na-ekiri na-ekiri",
-        "viewerCount": "onye na-ekiri {count}",
-        "viewerCountPlural": "ndị na-ekiri {count}",
-        "startedAt": "Malitere {time} gara aga",
-        "scheduledFor": "Ahaziri maka {date}",
-        "duration": "Oge Ogologo: {duration}"
+        "viewerCount": "onye na-ekiri {{count}}",
+        "viewerCountPlural": "ndị na-ekiri {{count}}",
+        "startedAt": "Malitere {{time}} gara aga",
+        "scheduledFor": "Ahaziri maka {{date}}",
+        "duration": "Oge Ogologo: {{duration}}"
       },
       "quality": {
         "title": "Ogo",
-        "current": "Ugbu a: {quality}",
+        "current": "Ugbu a: {{quality}}",
         "change": "Gbanwee Ogo",
         "auto": "Akpaghị aka",
         "LOWEST": "144p (Na-echekwa data)",
@@ -2134,7 +2523,7 @@
       "chat": {
         "title": "Mkparịta Ụka Ugbu a",
         "sendMessage": "Zipu ozi",
-        "messagePlaceholder": "Kesaa ncheta gị nke {name}...",
+        "messagePlaceholder": "Kesaa ncheta gị nke {{name}}...",
         "reactions": {
           "heart": "Obi",
           "prayer": "Ekpere",
@@ -2146,9 +2535,9 @@
         "locked": "Tinye okwuntughe ka ị soro na mkparịta ụka",
         "noMessages": "Enweghị ozi ugbu a. Bụrụ onye mbụ kesaa ncheta.",
         "justNow": "Ugbu a",
-        "minutesAgo": "{count}m gara aga",
-        "hoursAgo": "{count}h gara aga",
-        "characterLimit": "{current}/{max} mkpụrụ edemede"
+        "minutesAgo": "{{count}}m gara aga",
+        "hoursAgo": "{{count}}h gara aga",
+        "characterLimit": "{{current}}/{{max}} mkpụrụ edemede"
       },
       "errors": {
         "connectionLost": "Njikọ furu efu. Na-anwa ijikọ ọzọ...",
@@ -2161,21 +2550,21 @@
         "title": "Lee Ndekọ",
         "available": "Ndekọ dị",
         "processing": "A na-edozi ndekọ...",
-        "expiresOn": "Dị ruo {date}",
+        "expiresOn": "Dị ruo {{date}}",
         "download": "Budata Ndekọ",
-        "downloadSize": "Nha: {size}",
+        "downloadSize": "Nha: {{size}}",
         "expired": "Ndekọ a agwụla"
       }
     },
     "notifications": {
       "streamScheduled": {
         "title": "Ahaziri Mgbasa Ozi",
-        "message": "Ahaziri mgbasa ozi ncheta ugbu a maka {memorial}",
-        "when": "Mgbe: {date}",
+        "message": "Ahaziri mgbasa ozi ncheta ugbu a maka {{memorial}}",
+        "when": "Mgbe: {{date}}",
         "action": "Tinye na Kalenda"
       },
       "streamLive": {
-        "title": "UGBU A: {memorial}",
+        "title": "UGBU A: {{memorial}}",
         "message": "Mgbasa ozi na-amalite ugbu a!",
         "action": "Lee Mgbasa Ozi Ugbu a",
         "urgent": "Atụfula ya - mgbasa ozi na-eme ugbu a!"
@@ -2184,37 +2573,111 @@
         "title": "Mgbasa Ozi Kwụsịrị",
         "message": "Daalụ maka ịbịa",
         "stats": "Nchịkọta Mgbasa Ozi",
-        "duration": "Oge Ogologo: {duration}",
-        "peakViewers": "Ndị Na-ekiri Kachasị: {count}",
-        "totalComments": "Okwu: {count}",
+        "duration": "Oge Ogologo: {{duration}}",
+        "peakViewers": "Ndị Na-ekiri Kachasị: {{count}}",
+        "totalComments": "Okwu: {{count}}",
         "recordingInfo": "Ndekọ ga-adị n'oge adịghị anya"
       },
       "recordingReady": {
         "title": "Ndekọ Dị Njikere",
         "message": "Ndekọ mgbasa ozi ncheta ugbu a dị ugbu a",
-        "availableUntil": "Dị ruo: {date}",
+        "availableUntil": "Dị ruo: {{date}}",
         "action": "Lee Ndekọ",
         "download": "Budata Ndekọ",
-        "warning": "A ga-ehichapụ ndekọ a na-akpaghị aka na {date}"
+        "warning": "A ga-ehichapụ ndekọ a na-akpaghị aka na {{date}}"
       },
       "recordingExpiring": {
         "title": "Ndekọ Na-agwụ N'oge Adịghị Anya",
-        "message": "Achọrọ omume! A ga-ehichapụ ndekọ n'ime ụbọchị {days}",
+        "message": "Achọrọ omume! A ga-ehichapụ ndekọ n'ime ụbọchị {{days}}",
         "action": "Budata Ugbu a",
         "urgent": "Ozugbo ehichapụrụ ya, enweghị ike iweghachi ndekọ a"
       },
       "recordingDeleted": {
         "title": "Ehichapụrụ Ndekọ",
         "message": "Ehichapụrụ ndekọ na-akpaghị aka dịka ahaziri",
-        "deletedOn": "Ehichapụrụ na: {date}",
+        "deletedOn": "Ehichapụrụ na: {{date}}",
         "info": "Ibe ncheta na-anọgide na-arụ ọrụ na ọdịnaya niile ọzọ"
       }
     },
+    "analytics": {
+      "title": "Dashboard Nchịkọta Data",
+      "subtitle": "Soro mmekọrịta na ọrụ na ibe ncheta gị",
+      "exportReport": "Bupụ Akụkọ",
+      "timeRanges": {
+        "7days": "Ụbọchị 7 gara aga",
+        "30days": "Ụbọchị 30 gara aga",
+        "90days": "Ụbọchị 90 gara aga",
+        "1year": "Afọ gara aga"
+      },
+      "fromLastPeriod": "site na oge gara aga",
+      "stats": {
+        "totalVisits": {
+          "title": "Mgbasa Ọbịa Nile",
+          "description": "Nlele ibe n'ọnwa a"
+        },
+        "uniqueVisitors": {
+          "title": "Ndị Ọbịa Pụrụ Iche",
+          "description": "Ndị ọbịa n'otu n'otu"
+        },
+        "tributeMessages": {
+          "title": "Ozi Ikwanye Ùgwù",
+          "description": "Ụkwanye ùgwù ọhụrụ n'izu a"
+        },
+        "memorialShares": {
+          "title": "Nkekọrịta Ncheta",
+          "description": "Nkekọrịta na mgbasa ozi ọha"
+        }
+      },
+      "visitorTrends": {
+        "title": "Ọnọdụ Ndị Ọbịa",
+        "description": "Ụkpụrụ ndị ọbịa kwa ụbọchị n'ime ụbọchị 30 gara aga"
+      },
+      "mostVisited": {
+        "title": "Ibe ndị a na-eleta kacha",
+        "description": "Ngalaba nke ncheta nwere okporo ụzọ kachasị elu",
+        "views": "nlele"
+      },
+      "recentActivity": {
+        "title": "Ọrụ Na-adịbeghị Anya",
+        "description": "Ọrụ kacha ọhụrụ na ibe ncheta gị"
+      },
+      "activity": {
+        "newTribute": "Ụkwanye ùgwù ọhụrụ sitere na {{author}} na {{memorial}}",
+        "memorialCreated": "Emepụtara ncheta \"{{memorial}}\""
+      },
+      "pages": {
+        "memorialHome": "Ụlọ Ncheta",
+        "photoGallery": "Ụlọ ngosi foto",
+        "tributeWall": "Mgbidi Ụkwanye Ùgwù",
+        "serviceInfo": "Ozi Ọrụ",
+        "biography": "Akụkọ ndụ"
+      },
+      "memorialSummary": {
+        "title": "Nchịkọta Ncheta",
+        "description": "Ozi dị mkpa n'otu ntabi anya",
+        "viewMemorial": "Lelee Ncheta",
+        "created": "Emepụtara",
+        "status": "Ọnọdụ",
+        "photos": "Foto",
+        "approvedTributes": "Ụkwanye Ùgwù Akwadoro",
+        "serviceRsvps": "Nkwenye Ọrụ",
+        "memorialPage": "Ibe Ncheta"
+      },
+      "collaboratorMemorials": {
+        "title": "Ncheta Ị Na-achịkwa",
+        "subtitle": "A kpọọla gị ka ị sonye na ọrụ na ncheta ndị a",
+        "ownedBy": "Nke {{owner}} nwe",
+        "manageMemorial": "Jikwaa Ncheta"
+      },
+      "loading": "Ịbugo nchịkọta data...",
+      "error": "Emebighị ibuga nchịkọta data",
+      "noData": "Enweghị data nchịkọta data dị ugbu a"
+    },
     "email": {
       "streamScheduled": {
-        "subject": "Ahaziri Mgbasa Ozi: {memorial}",
-        "greeting": "Ndewo {name},",
-        "intro": "Ahaziri mgbasa ozi ncheta ugbu a maka {memorial}.",
+        "subject": "Ahaziri Mgbasa Ozi: {{memorial}}",
+        "greeting": "Ndewo {{name}},",
+        "intro": "Ahaziri mgbasa ozi ncheta ugbu a maka {{memorial}}.",
         "details": "Nkọwa Mgbasa Ozi",
         "title": "Aha",
         "when": "Mgbe",
@@ -2223,16 +2686,16 @@
         "tip": "Ndụmọdụ: Jide n'aka na ị nwere njikọ ịntanetị kwụsiri ike maka ahụmahụ kachasị mma."
       },
       "streamLive": {
-        "subject": "🔴 UGBU A: {memorial}",
+        "subject": "🔴 UGBU A: {{memorial}}",
         "heading": "UGBU A",
         "intro": "Mgbasa ozi na-amalite ugbu a!",
         "action": "Lee Mgbasa Ozi Ugbu a",
         "urgent": "Atụfula ya! Mgbasa ozi na-eme ugbu a."
       },
       "streamEnded": {
-        "subject": "Mgbasa Ozi Kwụsịrị: {memorial}",
+        "subject": "Mgbasa Ozi Kwụsịrị: {{memorial}}",
         "greeting": "Daalụ maka ịbịa",
-        "intro": "Mgbasa ozi ncheta ugbu a nke {memorial} akwụsịla.",
+        "intro": "Mgbasa ozi ncheta ugbu a nke {{memorial}} akwụsịla.",
         "stats": "Nchịkọta Mgbasa Ozi",
         "duration": "Oge Ogologo",
         "peakViewers": "Ndị Na-ekiri Kachasị",
@@ -2241,37 +2704,37 @@
         "recordingAvailability": "Ndekọ: Ndekọ ga-adị ruo ọnwa 6 ma enwere ike ibudata ya mgbe ọ bụla."
       },
       "recordingReady": {
-        "subject": "Ndekọ Dị Njikere: {memorial}",
-        "greeting": "Ozi ọma, {name}!",
-        "intro": "Ndekọ mgbasa ozi ncheta ugbu a nke {memorial} dị ugbu a.",
+        "subject": "Ndekọ Dị Njikere: {{memorial}}",
+        "greeting": "Ozi ọma, {{name}}!",
+        "intro": "Ndekọ mgbasa ozi ncheta ugbu a nke {{memorial}} dị ugbu a.",
         "availableUntil": "Dị ruo",
         "watchAction": "Lee Ndekọ",
         "downloadAction": "Budata Ndekọ",
-        "warning": "Dị Mkpa: A ga-ehichapụ ndekọ a na-akpaghị aka na {date}. Budata ya ma ọ bụrụ na ịchọrọ idebe ya ruo mgbe ebighị ebi."
+        "warning": "Dị Mkpa: A ga-ehichapụ ndekọ a na-akpaghị aka na {{date}}. Budata ya ma ọ bụrụ na ịchọrọ idebe ya ruo mgbe ebighị ebi."
       },
       "recordingExpiring": {
-        "subject": "⚠️ Ndekọ Na-agwụ N'oge Adịghị Anya: {memorial}",
+        "subject": "⚠️ Ndekọ Na-agwụ N'oge Adịghị Anya: {{memorial}}",
         "heading": "Ndekọ Na-agwụ N'oge Adịghị Anya",
         "intro": "Achọrọ Omume: Budata Ndekọ Gị",
-        "countdown": "Ụbọchị {days} Fọdụrụ",
-        "message": "A ga-ehichapụ ndekọ na {date}",
-        "detail": "A ga-ehichapụ ndekọ mgbasa ozi ncheta ugbu a nke {memorial} na-akpaghị aka n'ime ụbọchị {days}.",
+        "countdown": "Ụbọchị {{days}} Fọdụrụ",
+        "message": "A ga-ehichapụ ndekọ na {{date}}",
+        "detail": "A ga-ehichapụ ndekọ mgbasa ozi ncheta ugbu a nke {{memorial}} na-akpaghị aka n'ime ụbọchị {{days}}.",
         "action": "Budata Ugbu a (Atụfula Ya!)",
         "urgent": "Dị Mkpa: Ozugbo ehichapụrụ ya, enweghị ike iweghachi ndekọ a. Budata ya ugbu a iji chekwaa ncheta ndị a dị oke ọnụ ahịa ruo mgbe ebighị ebi.",
         "help": "Ọ bụrụ na ịchọrọ oge karịa, biko kpọtụrụ anyị ma ọ bụ gbatịa nchekwa ndekọ gị na dashboard gị."
       },
       "recordingDeleted": {
-        "subject": "Ehichapụrụ Ndekọ: {memorial}",
+        "subject": "Ehichapụrụ Ndekọ: {{memorial}}",
         "heading": "Ehichapụrụ Ndekọ",
         "intro": "Oge Nchekwa Ndekọ Agwụla",
-        "message": "Ehichapụrụ ndekọ mgbasa ozi ncheta ugbu a nke {memorial} na-akpaghị aka dịka ahaziri.",
+        "message": "Ehichapụrụ ndekọ mgbasa ozi ncheta ugbu a nke {{memorial}} na-akpaghị aka dịka ahaziri.",
         "deletedOn": "Ehichapụrụ na",
         "note": "Rịba Ama: Nke a bụ akụkụ nke usoro nchekwa ọnwa 6 anyị. Anyị nwere olileanya na ị nwetara ohere ibudata ndekọ ma ọ bụrụ na achọrọ.",
         "info": "Ibe ncheta na-anọgide na-arụ ọrụ na ọdịnaya niile ọzọ (foto, nkwanye ùgwù na ncheta) echekwara."
       },
       "footer": {
-        "youreReceiving": "Ị na-enweta nke a n'ihi na ị jikọtara na ibe ncheta {memorial}.",
-        "copyright": "© {year} ForeverPages. Ikike niile echekwara."
+        "youreReceiving": "Ị na-enweta nke a n'ihi na ị jikọtara na ibe ncheta {{memorial}}.",
+        "copyright": "© {{year}} ForeverPages. Ikike niile echekwara."
       }
     },
     "templates": {
@@ -2298,7 +2761,7 @@
         "creating": "Na-emepụta..."
       },
       "list": {
-        "title": "Ndobe Gị ({count})",
+        "title": "Ndobe Gị ({{count}})",
         "subtitle": "Ndobe ị mepụtara ma hazie"
       },
       "error": {
@@ -2317,7 +2780,7 @@
       },
       "deleteDialog": {
         "title": "Hichapụ Ndobe",
-        "description": "Ị ji n'aka na ịchọrọ ihichapụ \"{name}\"? Omume a enweghị ike ịweghachi.",
+        "description": "Ị ji n'aka na ịchọrọ ihichapụ \"{{name}}\"? Omume a enweghị ike ịweghachi.",
         "deleting": "Na-ehichapụ...",
         "confirm": "Hichapụ Ndobe"
       },
@@ -2366,7 +2829,7 @@
           "nature": "Okike",
           "religious": "Okpukpe",
           "military": "Ndị Agha",
-          "sports": "Egwu",
+          "sports": "Egwuregwu",
           "music": "Egwu",
           "artistic": "Nka"
         },
@@ -2391,7 +2854,7 @@
       "purchase": {
         "dialog": {
           "title": "Zụta Ndobe",
-          "description": "Ị na-azụta \"{name}\" maka {price}",
+          "description": "Ị na-azụta \"{{name}}\" maka {{price}}",
           "confirm": "Kwenye Nzụta",
           "cancel": "Kagbuo",
           "processing": "Na-arụ ọrụ..."
@@ -2405,37 +2868,6 @@
       },
       "loading": "Na-ebubata ndobe...",
       "error": "Njehie n'ibubata ndobe"
-    },
-    "analytics": {
-      "title": "Ntụle Ndobe",
-      "subtitle": "Nyochaa omume na ojiji nke ndobe gị",
-      "metrics": {
-        "totalTemplates": "Ngụkọta Ndobe",
-        "totalDownloads": "Ngụkọta Mbubata",
-        "totalRevenue": "Ngụkọta Ego",
-        "averageRating": "Ntụle Nkezi",
-        "totalViews": "Ngụkọta Nlele",
-        "uniqueVisitors": "Ndị Ọbịa Pụrụ Iche",
-        "averageTime": "Oge Nkezi na Ibe",
-        "conversionRate": "Ọnụ Ọgụgụ Ntụgharị",
-        "popularTemplates": "Ndobe Ewu Ewu",
-        "usageTrends": "Ụzọ Ojiji"
-      },
-      "charts": {
-        "viewsOverTime": "Nlele N'oge",
-        "templateUsage": "Nkesa Ojiji Ndobe",
-        "visitorDemographics": "Ụdị Ndị Ọbịa",
-        "performanceMetrics": "Akara Ọrụ"
-      },
-      "periods": {
-        "7days": "Ụbọchị 7 gara aga",
-        "30days": "Ụbọchị 30 gara aga",
-        "90days": "Ụbọchị 90 gara aga",
-        "1year": "Afọ 1 gara aga"
-      },
-      "loading": "Na-ebubata ntụle...",
-      "error": "Njehie n'ibubata ntụle",
-      "noData": "Enweghị data ntụle ka"
     },
     "customization": {
       "title": "Nhazi Pụrụ Iche",

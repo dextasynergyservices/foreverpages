@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient, Prisma } from "@/generated/prisma";
 import { createPrForTemplate } from "@/lib/github/pr";
+import {
+  processTemplateAssets,
+  createTemplateSections,
+} from "@/lib/templates/process-template-assets";
 import fs from "fs";
 import os from "os";
 import path from "path";
@@ -135,6 +139,31 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
           zip.extractAllTo(tmpBase, true);
           console.log(`[build-callback] Extracted artifact to ${tmpBase}`);
 
+          // Process template assets (preview/thumbnail images)
+          console.log(`[build-callback] Processing template assets for ${id}`);
+          const assets = await processTemplateAssets(id, tmpBase);
+
+          // Create template sections from config.json
+          console.log(`[build-callback] Creating template sections for ${id}`);
+          await createTemplateSections(id, tmpBase);
+
+          // Process built dist folder and upload to Cloudinary
+          console.log(`[build-callback] Processing built template files for ${id}`);
+          const distPath = path.join(tmpBase, "dist");
+          let builtAssets: Record<string, string> = {};
+
+          try {
+            // Check if dist folder exists
+            await fs.promises.access(distPath);
+
+            // Upload built files to Cloudinary
+            const { uploadTemplateBuiltFiles } = await import("@/lib/templates/upload-built-files");
+            builtAssets = await uploadTemplateBuiltFiles(id, distPath);
+            console.log(`[build-callback] Uploaded ${Object.keys(builtAssets).length} built files`);
+          } catch (err) {
+            console.warn(`[build-callback] No dist folder or upload failed for ${id}:`, err);
+          }
+
           // Get template info for PR details
           const tpl = await prisma.template.findUnique({ where: { id } });
           if (!tpl) throw new Error("Template record not found");
@@ -189,7 +218,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
           console.log(`[build-callback] Creating PR for template ${id} with ${files.length} files`);
           const pr = await createPrForTemplate(branch, files, title, body, "develop");
 
-          // Update template with PR info
+          // Update template with PR info and asset URLs
           await prisma.template.update({
             where: { id },
             data: {
@@ -197,6 +226,9 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
               prUrl: pr.url,
               processingStatus: "VALIDATED",
               processingLogs: "PR created successfully",
+              ...(assets.previewImage && { previewImage: assets.previewImage }),
+              ...(assets.thumbnailImage && { thumbnailImage: assets.thumbnailImage }),
+              ...(Object.keys(builtAssets).length > 0 && { artifactAssets: builtAssets }),
             },
           });
 

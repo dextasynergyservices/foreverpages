@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Template, UserTemplate, Memorial } from "@/generated/prisma";
 import { getTemplateComponent, TemplateProps } from "@/lib/templates/registry";
+import { loadTemplateBySlug, ensureTemplateRegistered } from "@/lib/templates/dynamic-loader";
+import { applyDesignTokensToElement } from "@/lib/utils/designTokensUtils";
+import { DesignTokens } from "@/components/userDashboard/pageBuilder/TemplateCustomizer";
 // Import templates to ensure registration
 import "@/lib/templates";
 
@@ -21,20 +24,34 @@ export const TemplateRenderer: React.FC<TemplateRendererProps> = ({ userTemplate
     const loadTemplate = async () => {
       try {
         setLoading(true);
-        const component = getTemplateComponent(userTemplate.baseTemplate.slug);
+        const slug = userTemplate.baseTemplate.slug;
+
+        // First, check if already registered
+        const component = getTemplateComponent(slug);
 
         if (component) {
           setTemplateComponent(() => component.MemorialTemplate);
         } else {
-          // Fallback: try dynamic import
-          const templatePath = userTemplate.baseTemplate.componentPath;
-          if (templatePath) {
-            const templateModule = await import(
-              `@/components/templates/components/${templatePath}`
-            );
-            setTemplateComponent(() => templateModule.default || templateModule.MemorialTemplate);
+          // Try to dynamically load and register the template
+          console.log(`Dynamically loading template: ${slug}`);
+          const registered = await ensureTemplateRegistered(slug);
+
+          if (registered) {
+            const registeredComponent = getTemplateComponent(slug);
+            if (registeredComponent) {
+              setTemplateComponent(() => registeredComponent.MemorialTemplate);
+            } else {
+              throw new Error(`Template registered but component not found: ${slug}`);
+            }
           } else {
-            throw new Error(`No component found for template: ${userTemplate.baseTemplate.slug}`);
+            // Last resort: try direct dynamic import
+            console.log(`Attempting direct import for template: ${slug}`);
+            const TemplateModule = await loadTemplateBySlug(slug);
+            if (TemplateModule) {
+              setTemplateComponent(() => TemplateModule);
+            } else {
+              throw new Error(`No component found for template: ${slug}`);
+            }
           }
         }
       } catch (err) {
@@ -46,7 +63,22 @@ export const TemplateRenderer: React.FC<TemplateRendererProps> = ({ userTemplate
     };
 
     loadTemplate();
-  }, [userTemplate.baseTemplate.slug, userTemplate.baseTemplate.componentPath]);
+  }, [userTemplate.baseTemplate.slug]);
+
+  // Load and apply design tokens from UserTemplate config
+  useEffect(() => {
+    if (userTemplate.config) {
+      try {
+        // Parse config as DesignTokens, handling the JsonValue type
+        const config = userTemplate.config as unknown;
+        if (config && typeof config === "object") {
+          applyDesignTokensToElement(document.documentElement, config as DesignTokens);
+        }
+      } catch (err) {
+        console.error("Failed to apply design tokens:", err);
+      }
+    }
+  }, [userTemplate.config]);
 
   if (loading) {
     return (

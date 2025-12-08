@@ -99,13 +99,17 @@ model User {
   sentInvitations  Invitation[]     @relation("InvitedBy")
   receivedInvites  Invitation[]     @relation("InvitedUser")
   subscriptions    Subscription[]
-  activityLogs     ActivityLog[]
   verificationTokens VerificationToken[]
   streamViewers  StreamViewer[]
   streamComments StreamComment[]
   streamReactions StreamReaction[]
   // Template versioning: versions created by this user
   createdTemplateVersions TemplateVersion[]
+
+  // Real-time collaboration
+  memorialPresence MemorialPresence[]
+  editLocks        EditLock[]
+  activityLogs     ActivityLog[]
 
   @@index([email])
   @@index([role])
@@ -247,6 +251,11 @@ model Memorial {
   isPremium        Boolean  @default(false)
   expiresAt        DateTime?
 
+  // Version control for optimistic locking
+  version          Int      @default(1)
+  lastEditedBy     String?
+  lastEditedAt     DateTime @default(now())
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   publishedAt DateTime?
@@ -271,6 +280,12 @@ model Memorial {
   guestbook   GuestbookEntry[]
   tags        MemorialTag[]
   streams     MemorialStream[]  // Livestreams
+  drafts      MemorialDraft[]
+
+  // Real-time collaboration
+  presence    MemorialPresence[]
+  editLocks   EditLock[]
+  activityLog ActivityLog[]
 
   @@index([slug])
   @@index([ownerId])
@@ -278,6 +293,25 @@ model Memorial {
   @@index([isPublished])
   @@index([createdAt])
   @@index([userTemplateId])
+}
+
+model MemorialDraft {
+  id          String   @id @default(cuid())
+  memorialId  String
+  memorial    Memorial @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+
+  // Draft data as JSON
+  data        Json
+
+  // Version tracking for multi-version drafts
+  version     Int      @default(1)
+
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([memorialId])
+  @@index([createdAt])
 }
 
 enum MemorialVisibility {
@@ -380,6 +414,52 @@ enum RSVPStatus {
   ATTENDING
   NOT_ATTENDING
   MAYBE
+}
+
+// ============================================
+// REAL-TIME COLLABORATION
+// ============================================
+
+model MemorialPresence {
+  id          String       @id @default(cuid())
+  memorialId  String
+  memorial    Memorial     @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  userName    String       // Cache user name for faster display
+  userRole    MemorialRole // Cache user role
+
+  section     String?      // Which section they're viewing (biography, gallery, etc)
+  isEditing   Boolean      @default(false) // Are they actively editing?
+
+  lastSeen    DateTime     @default(now())
+
+  @@unique([memorialId, userId])
+  @@index([memorialId])
+  @@index([lastSeen])
+}
+
+model EditLock {
+  id          String   @id @default(cuid())
+  memorialId  String
+  memorial    Memorial @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+
+  section     String   // Which section is locked (biography, gallery, tributes, etc)
+
+  lockedById  String
+  lockedBy    User     @relation(fields: [lockedById], references: [id], onDelete: Cascade)
+
+  userName    String   // Cache user name for display
+  userRole    MemorialRole // Cache user role
+
+  lockedAt    DateTime @default(now())
+  expiresAt   DateTime // Auto-release after timeout (default 5 minutes)
+
+  @@unique([memorialId, section])
+  @@index([memorialId])
+  @@index([expiresAt])
 }
 
 // ============================================
@@ -635,6 +715,7 @@ model Upload {
   album        String?
   tags         String[]
   dateTaken    DateTime?
+  sortOrder    Int?       // Custom sort order for user's gallery
 
   isPublic     Boolean    @default(true)
 
@@ -654,6 +735,7 @@ model Upload {
   @@index([type])
   @@index([album])
   @@index([uploaderId])
+  @@index([uploaderId, sortOrder])
 }
 
 enum UploadType {
@@ -1397,6 +1479,15 @@ model ActivityLog {
   entityType  String       // "Memorial", "Post", "Comment", etc.
   entityId    String
 
+  // Memorial-specific tracking for collaboration
+  memorialId  String?
+  memorial    Memorial?    @relation(fields: [memorialId], references: [id], onDelete: Cascade)
+
+  userName    String?      // Cache user name for display
+  userRole    MemorialRole? // Cache user role if memorial action
+  section     String?      // Which section was affected
+  changes     Json?        // Detailed changes (before/after values)
+
   // Details
   description String?      @db.Text
   metadata    Json?        // Store additional data
@@ -1409,6 +1500,7 @@ model ActivityLog {
   user        User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@index([userId])
+  @@index([memorialId, createdAt])
   @@index([entityType, entityId])
   @@index([action])
   @@index([createdAt])
@@ -1429,6 +1521,11 @@ enum ActivityType {
   UPLOADED
   REPORTED
   MODERATED
+  PUBLISHED
+  UNPUBLISHED
+  APPROVED
+  REJECTED
+  REMOVED
   SUBSCRIPTION_REMINDER_7_DAYS
   SUBSCRIPTION_CRITICAL_ALERT
   SUBSCRIPTION_EXPIRED
