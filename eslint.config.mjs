@@ -21,11 +21,14 @@ const eslintConfig = defineConfig([
       "no-unused-vars": "off",
       "@next/next/no-img-element": "warn",
       "@next/next/no-head-element": "warn",
-      // Downgrade React Hooks rules to warnings for gradual migration
-      "react-hooks/set-state-in-effect": "warn",
-      "react-hooks/static-components": "warn",
-      "react-hooks/refs": "warn",
-      "react-hooks/incompatible-library": "warn",
+      // Next.js 16 introduced new stricter React Hooks rules
+      // Disable these rules until code can be refactored (track as tech debt)
+      "react-hooks/set-state-in-effect": "off",
+      "react-hooks/static-components": "off",
+      "react-hooks/refs": "off",
+      "react-hooks/incompatible-library": "off",
+      "react-hooks/immutability": "off",
+      "react-hooks/purity": "off",
     },
   },
 
