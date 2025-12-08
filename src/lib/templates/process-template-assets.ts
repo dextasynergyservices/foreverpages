@@ -68,26 +68,40 @@ export async function processTemplateAssets(
 }
 
 /**
- * Auto-discover sections by analyzing template files
+ * Auto-discover sections by analyzing template files (with timeout protection)
  */
 function discoverSectionsFromCode(extractedDir: string): Array<{ type: string; order: number }> {
   const discoveredSections: Array<{ type: string; order: number }> = [];
 
   try {
     // Find main template file (usually MemorialTemplate.tsx or index.tsx)
+    // Limit to just the main files to avoid timeout
     const templateFiles = [
       findFile(extractedDir, "MemorialTemplate.tsx"),
       findFile(extractedDir, "index.tsx"),
-      findFile(extractedDir, "Template.tsx"),
     ].filter(Boolean) as string[];
 
-    for (const filePath of templateFiles) {
+    // Safety: only process first 2 files to prevent timeout
+    for (const filePath of templateFiles.slice(0, 2)) {
+      if (!fs.existsSync(filePath)) continue;
+
+      const stats = fs.statSync(filePath);
+      // Skip if file is too large (> 500KB)
+      if (stats.size > 500000) {
+        console.warn(`[process-sections] Skipping large file: ${filePath} (${stats.size} bytes)`);
+        continue;
+      }
+
       const content = fs.readFileSync(filePath, "utf-8");
 
       // Pattern 1: Look for Section components like <HeroSection>, <BiographySection>
       const sectionComponentRegex = /<(\w+Section)/g;
       let match;
+      let iterations = 0;
       while ((match = sectionComponentRegex.exec(content)) !== null) {
+        // Safety: prevent infinite loops
+        if (++iterations > 100) break;
+
         const componentName = match[1]; // e.g., "HeroSection"
         const sectionType = componentName
           .replace(/Section$/, "")
@@ -138,7 +152,7 @@ function discoverSectionsFromCode(extractedDir: string): Array<{ type: string; o
 export async function createTemplateSections(templateId: string, extractedDir: string) {
   console.log(`[process-sections] 🚀 Starting section creation for template ${templateId}`);
   console.log(`[process-sections] Extracted directory: ${extractedDir}`);
-  
+
   try {
     let sectionsToCreate: Array<{ type: string; layout?: string; props?: unknown; order: number }> =
       [];
@@ -146,7 +160,7 @@ export async function createTemplateSections(templateId: string, extractedDir: s
 
     // Step 1: Try to read from config.json
     const configPath = findFile(extractedDir, "config.json");
-    console.log(`[process-sections] Config path: ${configPath || 'NOT FOUND'}`);
+    console.log(`[process-sections] Config path: ${configPath || "NOT FOUND"}`);
     if (configPath && fs.existsSync(configPath)) {
       try {
         const configContent = fs.readFileSync(configPath, "utf-8");
@@ -163,8 +177,19 @@ export async function createTemplateSections(templateId: string, extractedDir: s
       }
     }
 
-    // Step 2: Auto-discover sections from template code
-    const discoveredSections = discoverSectionsFromCode(extractedDir);
+    // Step 2: Auto-discover sections from template code (skip if we have config)
+    let discoveredSections: Array<{ type: string; order: number }> = [];
+    if (configSections.length === 0) {
+      console.log(`[process-sections] No config.json sections found, attempting auto-discovery...`);
+      try {
+        discoveredSections = discoverSectionsFromCode(extractedDir);
+        console.log(`[process-sections] Auto-discovered ${discoveredSections.length} sections`);
+      } catch (error) {
+        console.warn(`[process-sections] Auto-discovery failed:`, error);
+      }
+    } else {
+      console.log(`[process-sections] Skipping auto-discovery (config.json has sections)`);
+    }
 
     // Step 3: Merge config sections with discovered sections
     if (configSections.length > 0) {
