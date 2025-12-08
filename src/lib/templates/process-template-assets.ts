@@ -314,11 +314,22 @@ export async function createTemplateSections(templateId: string, extractedDir: s
       where: { templateId },
     });
 
+    // Track which section types we've already created to avoid duplicates
+    const createdTypes = new Set<TemplateSectionType>();
+
     // Create new sections
     for (let i = 0; i < sectionsToCreate.length; i++) {
       const section = sectionsToCreate[i];
       const sectionType = sectionTypeMap[section.type] || TemplateSectionType.CUSTOM;
       const layout = layoutMap[section.layout || "default"] || TemplateSectionLayout.DEFAULT;
+
+      // Skip if we've already created this type (handles multiple CUSTOM sections)
+      if (createdTypes.has(sectionType)) {
+        console.log(
+          `[process-sections] ⚠️  Skipping duplicate section type: ${section.type} (${sectionType})`
+        );
+        continue;
+      }
 
       await prisma.templateSection.create({
         data: {
@@ -339,6 +350,7 @@ export async function createTemplateSections(templateId: string, extractedDir: s
         },
       });
 
+      createdTypes.add(sectionType);
       console.log(`[process-sections] ✓ Created section: ${section.type} (${sectionType})`);
     }
 

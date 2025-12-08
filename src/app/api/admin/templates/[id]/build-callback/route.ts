@@ -152,29 +152,35 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             const sectionStartTime = Date.now();
             await createTemplateSections(id, tmpBase);
             const sectionDuration = Date.now() - sectionStartTime;
-            console.log(`[build-callback] ✓ Template sections created successfully in ${sectionDuration}ms`);
+            console.log(
+              `[build-callback] ✓ Template sections created successfully in ${sectionDuration}ms`
+            );
           } catch (sectionError) {
-            const errorMsg = sectionError instanceof Error ? sectionError.message : String(sectionError);
+            const errorMsg =
+              sectionError instanceof Error ? sectionError.message : String(sectionError);
             sectionCreationError = `Section creation failed: ${errorMsg}`;
             console.error(
               `[build-callback] ✗ Failed to create template sections for ${id}:`,
               sectionError
             );
-            
+
             // Store error in database so it appears in UI
             await prisma.template.update({
               where: { id },
               data: {
                 processingLogs: sectionCreationError,
-                processingStatus: "ERROR"
-              }
+                processingStatus: "ERROR",
+              },
             });
-            
+
             // Return early if section creation fails
-            return NextResponse.json({ 
-              message: "Section creation failed", 
-              error: sectionCreationError 
-            }, { status: 500 });
+            return NextResponse.json(
+              {
+                message: "Section creation failed",
+                error: sectionCreationError,
+              },
+              { status: 500 }
+            );
           }
 
           // Process built dist folder and upload to Cloudinary
