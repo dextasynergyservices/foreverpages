@@ -25,7 +25,7 @@
   },
   "include": [
     "next-env.d.ts",
-    "middleware.ts",
+    "proxy.ts",
     "next.config.ts",
     "tailwind.config.ts",
     "src/**/*.ts",

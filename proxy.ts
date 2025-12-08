@@ -20,7 +20,7 @@ import { paymentGuard } from "@/middleware/payment-guard";
  * - Provides defense-in-depth protection alongside individual API route authentication.
  * - Admin routes require explicit "admin" role in the JWT token.
  */
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Delegate signup/payment checks to the centralized payment guard helper
