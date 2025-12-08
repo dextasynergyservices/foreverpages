@@ -1,0 +1,58 @@
+{
+  "name": "Light Template",
+  "slug": "light-template",
+  "version": "1.0.0",
+  "description": "Basic Light Template",
+  "author": "Admin",
+  "main": "MemorialTemplate.tsx",
+  "preview": "preview.png",
+  "thumbnail": "thumbnail.png",
+  "layoutType": "modular",
+  "supportedSections": ["hero", "biography", "gallery", "timeline"],
+  "designTokens": {
+    "colors": { "brand": "#0b63d6", "muted": "#666666" },
+    "fontFamily": "Inter, system-ui, -apple-system"
+  },
+  "defaultConfig": {
+    "header": { "showLogo": true, "alignment": "center" },
+    "sections": [
+      {
+        "id": "s1",
+        "type": "hero",
+        "layout": "cover",
+        "props": { "showDate": false, "background": "hero-bg.jpg" }
+      },
+      { "id": "s2", "type": "biography", "layout": "two-column", "props": { "lead": true } },
+      {
+        "id": "s3",
+        "type": "gallery",
+        "layout": "masonry",
+        "props": { "columns": 3, "thumbnailSize": "medium" }
+      },
+      { "id": "s4", "type": "timeline", "layout": "compact", "props": { "groupByYear": true } },
+      {
+        "id": "s5",
+        "type": "testimonials",
+        "layout": "carousel",
+        "props": { "autoRotate": true, "intervalMs": 6000 }
+      },
+      {
+        "id": "s6",
+        "type": "contact",
+        "layout": "simple",
+        "props": { "showMap": false, "form": true }
+      },
+      { "id": "s7", "type": "playlist", "layout": "inline", "props": { "autoplay": false } },
+      { "id": "s8", "type": "footer", "layout": "basic", "props": { "showCredits": true } }
+    ],
+    "pageMeta": { "defaultTitle": "In memory of {{name}}" }
+  },
+  "requirements": {
+    "framework": "vite",
+    "buildCommand": "pnpm run build",
+    "devCommand": "pnpm run dev",
+    "publishDir": "dist",
+    "requiresNodeVersion": ">=18",
+    "blockedDependencies": ["child_process", "vm"]
+  }
+}
