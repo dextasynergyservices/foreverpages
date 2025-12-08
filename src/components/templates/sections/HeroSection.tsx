@@ -30,20 +30,77 @@ const HeroSectionComponent: React.FC<SectionProps & { config?: HeroSectionConfig
     overlayOpacity: config?.overlayOpacity ?? 0.4,
   } as HeroSectionConfig;
 
+  const heroImageContainerStyle: React.CSSProperties = {
+    position: "relative",
+    backgroundImage: `url(${memorial.coverPhoto})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  };
+
+  const heroOverlayStyle: React.CSSProperties = {
+    position: "absolute",
+    inset: 0,
+    backgroundColor: "black",
+    opacity: cfg.overlayOpacity,
+  };
+
+  const heroContentContainerStyle: React.CSSProperties = {
+    position: "absolute",
+    inset: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  };
+
+  const heroTextContainerStyle: React.CSSProperties = {
+    textAlign: "center",
+    color: "var(--color-header-text, white)",
+    zIndex: 10,
+  };
+
+  const heroTitleStyle: React.CSSProperties = {
+    fontSize: "var(--font-heading-size, 3rem)",
+    fontWeight: "bold",
+    marginBottom: "1rem",
+    color: "var(--color-header-text, white)",
+    fontFamily: "var(--font-family, ui-sans-serif, system-ui)",
+  };
+
+  const heroSubtitleStyle: React.CSSProperties = {
+    fontSize: "var(--font-body-size, 1.25rem)",
+    color: "var(--color-header-text, white)",
+    fontFamily: "var(--font-family, ui-sans-serif, system-ui)",
+  };
+
+  const epitaphContainerStyle: React.CSSProperties = {
+    maxWidth: "var(--container-width, 64rem)",
+    marginLeft: "auto",
+    marginRight: "auto",
+    paddingLeft: "var(--spacing, 1.5rem)",
+    paddingRight: "var(--spacing, 1.5rem)",
+    paddingTop: "var(--spacing, 1.5rem)",
+    paddingBottom: "var(--spacing, 1.5rem)",
+  };
+
+  const epitaphTextStyle: React.CSSProperties = {
+    textAlign: "center",
+    fontSize: "1.125rem",
+    color: "var(--color-body-text, #374151)",
+    lineHeight: "1.625",
+    fontFamily: "var(--font-family, ui-sans-serif, system-ui)",
+  };
+
   return (
-    <section className="relative">
+    <section style={{ position: "relative" }}>
       {cfg.showCoverPhoto && memorial.coverPhoto && (
-        <div
-          className={`${heightClasses[cfg.height]} bg-cover bg-center relative`}
-          style={{ backgroundImage: `url(${memorial.coverPhoto})` }}
-        >
-          <div className="absolute inset-0 bg-black" style={{ opacity: cfg.overlayOpacity }} />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center text-white z-10">
-              <h1 className="text-5xl font-bold mb-4">
+        <div style={heroImageContainerStyle} className={heightClasses[cfg.height]}>
+          <div style={heroOverlayStyle} />
+          <div style={heroContentContainerStyle}>
+            <div style={heroTextContainerStyle}>
+              <h1 style={heroTitleStyle}>
                 {memorial.firstName} {memorial.lastName}
               </h1>
-              <p className="text-xl">
+              <p style={heroSubtitleStyle}>
                 {memorial.birthDate && new Date(memorial.birthDate).getFullYear()} -{" "}
                 {memorial.deathDate && new Date(memorial.deathDate).getFullYear()}
               </p>
@@ -52,10 +109,10 @@ const HeroSectionComponent: React.FC<SectionProps & { config?: HeroSectionConfig
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div style={epitaphContainerStyle}>
         {cfg.showEpitaph && (
-          <div className="text-center">
-            <p className="text-lg text-gray-700 leading-relaxed">
+          <div style={{ textAlign: "center" }}>
+            <p style={epitaphTextStyle}>
               {memorial.epitaph ||
                 t(
                   "dashboard.pageBuilder.templates.content.epitaph.default",

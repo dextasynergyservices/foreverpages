@@ -87,6 +87,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "Base template not found" }, { status: 404 });
     }
 
+    // Check if user already has an active UserTemplate (single-selection constraint)
+    const existingActive = await prisma.userTemplate.findFirst({
+      where: {
+        userId: session.user.id,
+        isActive: true,
+      },
+    });
+
+    if (existingActive) {
+      return NextResponse.json(
+        {
+          message:
+            "You already have an active template. Please delete it before creating a new one.",
+          existingTemplateId: existingActive.id,
+        },
+        { status: 409 } // Conflict
+      );
+    }
+
     const userTemplate = await prisma.userTemplate.create({
       data: {
         userId: session.user.id,
@@ -95,6 +114,7 @@ export async function POST(request: NextRequest) {
         description,
         config,
         sections,
+        isActive: true, // Set as active since this is the only template
       },
       include: {
         baseTemplate: {

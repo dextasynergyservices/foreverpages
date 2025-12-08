@@ -413,6 +413,8 @@
       "video": "Video",
       "videos": "Videos",
       "view": "View",
+      "edit": "Edit",
+      "download": "Download",
       "delete": "Delete",
       "deleteTitle": "Delete Media?",
       "deleteDescription": "This action cannot be undone. This will permanently delete this media from your gallery.",
@@ -420,6 +422,9 @@
       "deleting": "Deleting media...",
       "deleteSuccess": "Media deleted successfully",
       "deleteFailed": "Failed to delete media",
+      "savingEdit": "Saving edited image...",
+      "editSuccess": "Image edited successfully",
+      "editFailed": "Failed to edit image",
       "cancel": "Cancel",
       "dropHere": "Drop files here...",
       "dragDropLibrary": "Upload photos & videos to your library",
@@ -458,7 +463,12 @@
       "downloadSuccess": "Download started",
       "downloadFailed": "Download failed",
       "loadingMore": "Loading more...",
-      "allLoaded": "All media loaded"
+      "allLoaded": "All media loaded",
+      "reorder": "Reorder",
+      "reorderSuccess": "Media reordered successfully",
+      "reorderFailed": "Failed to reorder media",
+      "reorderMode": "Reorder Mode",
+      "dragToReorder": "Drag to reorder"
     },
     "invitations": {
       "title": "Service Invitations",
@@ -1025,6 +1035,28 @@
         "title": "Create Memorial",
         "cancel": "Cancel"
       },
+      "basicInfo": {
+        "fullName": {
+          "label": "Full Name *",
+          "placeholder": "Enter the deceased's full name"
+        },
+        "birthDate": {
+          "label": "Birth Date"
+        },
+        "passingDate": {
+          "label": "Date of Passing"
+        },
+        "relationship": {
+          "label": "Your Relationship",
+          "placeholder": "e.g., Family member, Friend, Colleague"
+        }
+      },
+      "form": {
+        "saving": "Saving...",
+        "saved": "Saved",
+        "savedAt": "Saved at {{time}}",
+        "saveFailed": "Save failed"
+      },
       "steps": {
         "chooseTemplate": {
           "title": "Choose Template",
@@ -1033,6 +1065,10 @@
         "basicInfo": {
           "title": "Basic Information",
           "description": "Tell us about your loved one"
+        },
+        "customize": {
+          "title": "Customize Design",
+          "description": "Personalize colors and layout"
         },
         "details": {
           "title": "Memorial Details",
@@ -1109,6 +1145,109 @@
           "description": "Bright and uplifting design for joyful remembrance and celebration",
           "features": ["Vibrant colors", "Celebration focus", "Happy memories", "Uplifting tone"]
         }
+      },
+      "loadingTemplates": "Loading templates...",
+      "mustSignInTitle": "Please sign in",
+      "mustSignInMessage": "You must sign in to access templates and the Funeral Builder.",
+      "marketplace": {
+        "signIn": "Sign in",
+        "signinNeeded": "Sign in to access additional templates"
+      },
+      "publish": {
+        "title": "Publish Memorial",
+        "description": "Create a custom URL for your memorial page",
+        "memorialFor": "Memorial for:",
+        "slugLabel": "Memorial URL",
+        "slugPlaceholder": "beloved-mom",
+        "slugHint": "3-50 characters. Use letters, numbers, hyphens, underscores",
+        "invalidSlug": "Slug must be 3-50 characters, alphanumeric with hyphens/underscores",
+        "invalidSlugError": "Invalid URL format",
+        "error": "Publication failed",
+        "successDescription": "Your memorial has been successfully published. Share the link below:",
+        "copy": "Copy",
+        "view": "View",
+        "done": "Done",
+        "publishing": "Publishing...",
+        "publish": "Publish",
+        "cancel": "Cancel",
+        "urlCopied": "URL copied!",
+        "copyFailed": "Failed to copy",
+        "success": "Memorial Published!",
+        "validation": {
+          "slugRequired": "URL is required",
+          "slugTooShort": "URL must be at least 3 characters",
+          "slugTooLong": "URL cannot exceed 50 characters",
+          "slugInvalid": "URL can only contain letters, numbers, hyphens, and underscores",
+          "slugTaken": "This URL is already taken. Please try another."
+        }
+      },
+      "review": {
+        "title": "Ready to Create Memorial",
+        "description": "Your beautiful memorial page is ready to be created. You can always edit and add more content later.",
+        "templateLabel": "Template:",
+        "privacyLabel": "Privacy:",
+        "privacyValue": "Public",
+        "featuresLabel": "Features:",
+        "featuresValue": "Full Access",
+        "publishButton": "Publish Memorial"
+      },
+      "customizer": {
+        "title": "Customize Design",
+        "description": "Personalize colors, fonts, and layout for your memorial",
+        "stepDescription": "Personalize your memorial template with custom colors, fonts, and layout options. Preview your changes in real-time.",
+        "reset": "Reset",
+        "colors": "Colors",
+        "fonts": "Fonts",
+        "layout": "Layout",
+        "primaryColor": "Primary Color",
+        "secondaryColor": "Secondary Color",
+        "accentColor": "Accent Color",
+        "headerBg": "Header Background",
+        "headerText": "Header Text",
+        "bodyBg": "Body Background",
+        "bodyText": "Body Text",
+        "colorPreview": "Preview",
+        "fontFamily": "Font Family",
+        "headingSize": "Heading Size",
+        "bodyFontSize": "Body Font Size",
+        "fontPreview": "Preview",
+        "headingExample": "Heading Example",
+        "bodyExample": "This is body text that shows how your memorial page will look with the selected font settings.",
+        "spacing": "Spacing",
+        "borderRadius": "Border Radius",
+        "containerWidth": "Content Width",
+        "layoutPreview": "Layout Preview",
+        "showPreview": "Show Live Preview",
+        "hidePreview": "Hide Preview",
+        "backToEditor": "Back to Editor"
+      },
+      "autoSave": {
+        "saving": "Saving...",
+        "saved": "Saved",
+        "error": "Save failed",
+        "lastSaved": "Last saved {{time}}"
+      },
+      "subscription": {
+        "banner": {
+          "gracePeriod": {
+            "title": "Subscription Expiring Soon",
+            "message": "Your subscription expires in {{days}} days. Renew now to continue creating memorials."
+          },
+          "expired": {
+            "title": "Subscription Expired",
+            "message": "Your subscription has expired. Please renew to create and publish memorials."
+          },
+          "renewButton": "Renew"
+        },
+        "renewalRedirect": "Redirecting to subscription renewal...",
+        "renew": "Renew Subscription",
+        "createMemorialExpired": "Your subscription has expired. Please renew to create a new memorial."
+      },
+      "validation": {
+        "requiredField": "This field is required",
+        "invalidEmail": "Please enter a valid email address",
+        "alreadyPublished": "You already have a published memorial",
+        "subscriptionRequired": "Your subscription is not active"
       },
       "content": {
         "biography": {
@@ -1234,6 +1373,80 @@
           "signOut": "Sign Out"
         }
       }
+    },
+    "analytics": {
+      "title": "Analytics Dashboard",
+      "subtitle": "Track engagement and activity on your memorial pages",
+      "exportReport": "Export Report",
+      "timeRanges": {
+        "7days": "Last 7 Days",
+        "30days": "Last 30 Days",
+        "90days": "Last 90 Days",
+        "1year": "Last Year"
+      },
+      "fromLastPeriod": "from last period",
+      "stats": {
+        "totalVisits": {
+          "title": "Total Visits",
+          "description": "Page views this month"
+        },
+        "uniqueVisitors": {
+          "title": "Unique Visitors",
+          "description": "Individual visitors"
+        },
+        "tributeMessages": {
+          "title": "Tribute Messages",
+          "description": "New tributes this week"
+        },
+        "memorialShares": {
+          "title": "Memorial Shares",
+          "description": "Shares on social media"
+        }
+      },
+      "visitorTrends": {
+        "title": "Visitor Trends",
+        "description": "Daily visitor patterns over the last 30 days"
+      },
+      "mostVisited": {
+        "title": "Most Visited Pages",
+        "description": "Sections of the memorial with highest traffic",
+        "views": "views"
+      },
+      "recentActivity": {
+        "title": "Recent Activity",
+        "description": "Latest actions on your memorial pages"
+      },
+      "activity": {
+        "newTribute": "New tribute from {{author}} on {{memorial}}",
+        "memorialCreated": "Memorial \"{{memorial}}\" created"
+      },
+      "pages": {
+        "memorialHome": "Memorial Home",
+        "photoGallery": "Photo Gallery",
+        "tributeWall": "Tribute Wall",
+        "serviceInfo": "Service Information",
+        "biography": "Biography"
+      },
+      "memorialSummary": {
+        "title": "Memorial Summary",
+        "description": "Key information at a glance",
+        "viewMemorial": "View Memorial",
+        "created": "Created",
+        "status": "Status",
+        "photos": "Photos",
+        "approvedTributes": "Approved Tributes",
+        "serviceRsvps": "Service RSVPs",
+        "memorialPage": "Memorial Page"
+      },
+      "collaboratorMemorials": {
+        "title": "Memorials You're Managing",
+        "subtitle": "You've been invited to collaborate on these memorials",
+        "ownedBy": "Owned by {{owner}}",
+        "manageMemorial": "Manage Memorial"
+      },
+      "loading": "Loading analytics...",
+      "error": "Failed to load analytics",
+      "noData": "No analytics data available yet"
     },
     "tributes": {
       "title": "Tributes & Condolences",
@@ -1385,40 +1598,6 @@
       },
       "loading": "Loading templates...",
       "error": "Failed to load templates"
-    },
-    "analytics": {
-      "title": "Template Analytics",
-      "subtitle": "Track performance and usage of your templates",
-      "metrics": {
-        "totalTemplates": "Total Templates",
-        "totalDownloads": "Total Downloads",
-        "totalRevenue": "Total Revenue",
-        "averageRating": "Average Rating",
-        "totalViews": "Total Views",
-        "uniqueVisitors": "Unique Visitors",
-        "averageTime": "Avg. Time on Page",
-        "conversionRate": "Conversion Rate",
-        "popularTemplates": "Popular Templates",
-        "usageTrends": "Usage Trends",
-        "conversionRateLabel": "Conversion Rate",
-        "averageSessionDuration": "Avg. Session Duration",
-        "bounceRate": "Bounce Rate"
-      },
-      "charts": {
-        "viewsOverTime": "Views Over Time",
-        "templateUsage": "Template Usage Distribution",
-        "visitorDemographics": "Visitor Demographics",
-        "performanceMetrics": "Performance Metrics"
-      },
-      "periods": {
-        "7days": "Last 7 Days",
-        "30days": "Last 30 Days",
-        "90days": "Last 90 Days",
-        "1year": "Last Year"
-      },
-      "loading": "Loading analytics...",
-      "error": "Failed to load analytics",
-      "noData": "No analytics data available yet"
     },
     "customization": {
       "title": "Advanced Customization",

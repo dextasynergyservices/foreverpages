@@ -1,0 +1,31 @@
+Translation Export for: IG
+Generated: 2025-12-02T08:33:27.029Z
+Total untranslated keys: 740
+
+By Category:
+  dashboard: 248 keys
+  twoFactor: 85 keys
+  pricing: 52 keys
+  collaborators: 37 keys
+  register: 35 keys
+  testimonials: 25 keys
+  contact: 22 keys
+  howItWorks: 22 keys
+  notifications: 22 keys
+  termsAndConditions: 19 keys
+  resetPassword: 18 keys
+  faq: 17 keys
+  login: 17 keys
+  forgotPassword: 16 keys
+  emailVerification: 16 keys
+  offline: 16 keys
+  features: 10 keys
+  confirmEmail: 10 keys
+  navbar: 9 keys
+  allFuneralPage: 9 keys
+  funeralPages: 8 keys
+  livestream: 7 keys
+  common: 6 keys
+  cta: 5 keys
+  footer: 5 keys
+  hero: 4 keys

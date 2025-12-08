@@ -58,3 +58,13 @@ next-env.d.ts
 # Local starter templates (do not push to production)
 templates/fp-template-init/
 scripts/template-to-fix/
+
+artifact.zip
+
+# Template build artifacts - templates are built by GitHub Actions
+src/app/templates/*/node_modules
+src/app/templates/*/dist
+src/app/templates/*/build
+src/app/templates/*/.vite
+src/app/templates/*/package-lock.json
+src/app/templates/*/bun.lockb

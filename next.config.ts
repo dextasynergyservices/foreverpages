@@ -127,6 +127,10 @@ const nextConfig = {
   // Enable compression
   compress: true,
 
+  // Turbopack configuration (Next.js 16 default)
+  // Empty config silences the warning - templates are excluded via webpack for now
+  turbopack: {},
+
   // Optimize bundle
   webpack: (config, { dev, isServer }) => {
     // Skip entire src/app/templates directory - templates are self-contained

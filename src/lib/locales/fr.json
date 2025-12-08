@@ -1,208 +1,208 @@
 {
   "hero": {
-    "title": "Honor Their Memory",
-    "subtitle": "Create beautiful memorial websites where families and friends celebrate lives and share memories together",
+    "title": "Honorez Leur Mémoire",
+    "subtitle": "Créez de beaux sites commémoratifs où familles et amis célèbrent des vies et partagent des souvenirs ensemble",
     "buttons": {
-      "create": "Create a Memorial Page",
-      "view": "View Sample Memorial"
+      "create": "Créer une Page Commémorative",
+      "view": "Voir un Mémorial Exemple"
     }
   },
   "navbar": {
     "logo": "ForeverPages",
     "navigation": {
-      "features": "Features",
-      "home": "Home",
-      "memorials": "Memorial Pages",
-      "howItWorks": "How It Works",
+      "features": "Fonctionnalités",
+      "home": "Accueil",
+      "memorials": "Pages Commémoratives",
+      "howItWorks": "Comment ça Marche",
       "support": "Contact"
     },
     "buttons": {
-      "signIn": "Sign In",
-      "signOut": "Log Out",
-      "dashboard": "Dashboard"
+      "signIn": "Se Connecter",
+      "signOut": "Se Déconnecter",
+      "dashboard": "Tableau de Bord"
     }
   },
   "contact": {
-    "title": "Get In Touch",
-    "subtitle": "Have questions or need support? We're here to help you create a beautiful memorial.",
+    "title": "Contactez-Nous",
+    "subtitle": "Des questions ou besoin d'aide ? Nous sommes là pour vous aider à créer un beau mémorial.",
     "info": {
       "email": {
-        "title": "Email Us",
-        "description": "Send us an email anytime"
+        "title": "Envoyez-nous un E-mail",
+        "description": "Envoyez-nous un e-mail à tout moment"
       },
       "phone": {
-        "title": "Call Us",
-        "description": "Mon-Fri from 10am to 6pm (WAT)"
+        "title": "Appelez-Nous",
+        "description": "Lun-Ven de 10h à 18h (WAT)"
       },
       "address": {
-        "title": "Office Address"
+        "title": "Adresse du Bureau"
       },
       "hours": {
-        "title": "Business Hours",
-        "weekdays": "Monday - Friday",
-        "saturday": "Saturday",
-        "sunday": "Sunday",
-        "closed": "Closed"
+        "title": "Heures d'Ouverture",
+        "weekdays": "Lundi - Vendredi",
+        "saturday": "Samedi",
+        "sunday": "Dimanche",
+        "closed": "Fermé"
       }
     },
     "form": {
-      "name": "Full Name",
-      "namePlaceholder": "Enter your full name",
-      "email": "Email Address",
-      "emailPlaceholder": "Enter your email address",
-      "subject": "Subject",
-      "subjectPlaceholder": "What is this regarding?",
+      "name": "Nom Complet",
+      "namePlaceholder": "Entrez votre nom complet",
+      "email": "Adresse E-mail",
+      "emailPlaceholder": "Entrez votre adresse e-mail",
+      "subject": "Sujet",
+      "subjectPlaceholder": "De quoi s'agit-il ?",
       "message": "Message",
-      "messagePlaceholder": "Tell us how we can help you...",
-      "send": "Send Message",
-      "sending": "Sending..."
+      "messagePlaceholder": "Dites-nous comment nous pouvons vous aider...",
+      "send": "Envoyer le Message",
+      "sending": "Envoi en cours..."
     }
   },
   "features": {
-    "title": "Compassionate Features",
-    "subtitle": "Everything you need to create a beautiful, lasting tribute that brings people together",
+    "title": "Fonctionnalités Empathiques",
+    "subtitle": "Tout ce dont vous avez besoin pour créer un hommage beau et durable qui rassemble les gens",
     "items": {
       "memoryGallery": {
-        "title": "Memory Gallery",
-        "description": "Share unlimited photos, videos, and cherished memories in a beautifully organized collection that tells the complete story of your loved one's life journey and special moments captured over time."
+        "title": "Galerie de Souvenirs",
+        "description": "Partagez des photos, vidéos et souvenirs précieux en quantité illimitée dans une collection magnifiquement organisée qui raconte l'histoire complète du parcours de vie de votre proche et des moments spéciaux capturés au fil du temps."
       },
       "tributeWall": {
-        "title": "Tribute Wall",
-        "description": "Friends and family can leave heartfelt messages, share personal stories, and offer condolences in a dedicated space that becomes a digital gathering place for everyone who cared about your loved one."
+        "title": "Mur d'Hommages",
+        "description": "Amis et famille peuvent laisser des messages sincères, partager des histoires personnelles et offrir leurs condoléances dans un espace dédié qui devient un lieu de rassemblement numérique pour tous ceux qui tenaient à votre proche."
       },
       "privacyControls": {
-        "title": "Privacy Controls",
-        "description": "Maintain complete control over who can view and contribute to the memorial with our comprehensive privacy settings that ensure your family's comfort and security during this difficult time."
+        "title": "Contrôles de Confidentialité",
+        "description": "Gardez un contrôle total sur qui peut voir et contribuer au mémorial avec nos paramètres de confidentialité complets qui assurent le confort et la sécurité de votre famille pendant cette période difficile."
       },
       "foreverPreserved": {
-        "title": "Forever Preserved",
-        "description": "Your memorial pages are permanently preserved in our secure cloud storage, ensuring they remain accessible for future generations to visit, remember, and cherish forever without any time limitations."
+        "title": "Préservé pour Toujours",
+        "description": "Vos pages commémoratives sont conservées en permanence dans notre stockage cloud sécurisé, garantissant qu'elles restent accessibles pour les générations futures à visiter, se souvenir et chérir pour toujours sans limitation de temps."
       }
     }
   },
   "funeralPages": {
-    "title": "Community Memorials",
-    "subtitle": "See how others are honoring their loved ones with beautiful, personalized memorial pages",
-    "viewMore": "View More Memorials",
-    "featured": "Featured",
-    "tributes": "tributes",
-    "visits": "visits",
-    "by": "By",
-    "memorialImage": "Memorial Image"
+    "title": "Mémoriaux Communautaires",
+    "subtitle": "Découvrez comment d'autres honorent leurs proches avec de belles pages commémoratives personnalisées",
+    "viewMore": "Voir Plus de Mémoriaux",
+    "featured": "À la Une",
+    "tributes": "hommages",
+    "visits": "visites",
+    "by": "Par",
+    "memorialImage": "Image du Mémorial"
   },
   "allFuneralPage": {
-    "title": "Community Memorials",
-    "subtitle": "See how others are honoring their loved ones with beautiful, personalized memorial pages",
-    "by": "By",
-    "view": "View",
-    "noMemorials": "No memorial pages found.",
-    "previous": "Previous",
-    "next": "Next",
-    "searchPlaceholder": "Search by name or family...",
-    "search": "Search"
+    "title": "Mémoriaux Communautaires",
+    "subtitle": "Découvrez comment d'autres honorent leurs proches avec de belles pages commémoratives personnalisées",
+    "by": "Par",
+    "view": "Voir",
+    "noMemorials": "Aucune page commémorative trouvée.",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "searchPlaceholder": "Rechercher par nom ou famille...",
+    "search": "Rechercher"
   },
   "howItWorks": {
-    "title": "How It Works",
-    "subtitle": "Creating a beautiful memorial is simple and takes just a few minutes",
+    "title": "Comment ça Marche",
+    "subtitle": "Créer un beau mémorial est simple et ne prend que quelques minutes",
     "steps": {
       "create": {
         "number": "01",
-        "title": "Create Your Memorial",
-        "description": "Start by choosing a beautiful template and adding basic information about your loved one. Our intuitive interface makes it easy to get started in just minutes.",
+        "title": "Créez Votre Mémorial",
+        "description": "Commencez par choisir un beau modèle et ajoutez les informations de base sur votre proche. Notre interface intuitive facilite le démarrage en seulement quelques minutes.",
         "icon": "✍️"
       },
       "addContent": {
         "number": "02",
-        "title": "Add Photos & Stories",
-        "description": "Upload cherished photos, write meaningful stories, and organize memories in a way that truly honors their life and legacy.",
+        "title": "Ajoutez Photos & Histoires",
+        "description": "Téléchargez des photos précieuses, écrivez des histoires significatives et organisez les souvenirs d'une manière qui honore vraiment leur vie et leur héritage.",
         "icon": "📸"
       },
       "share": {
         "number": "03",
-        "title": "Share with Family",
-        "description": "Invite family and friends to contribute their own memories, photos, and tributes to create a comprehensive memorial together.",
+        "title": "Partagez avec la Famille",
+        "description": "Invitez famille et amis à contribuer avec leurs propres souvenirs, photos et hommages pour créer un mémorial complet ensemble.",
         "icon": "👥"
       },
       "preserve": {
         "number": "04",
-        "title": "Preserve Forever",
-        "description": "Your memorial is safely stored and will remain accessible for future generations to visit, remember, and cherish forever.",
+        "title": "Préservez pour Toujours",
+        "description": "Votre mémorial est stocké en sécurité et restera accessible pour que les générations futures puissent visiter, se souvenir et chérir pour toujours.",
         "icon": "💝"
       }
     },
     "buttons": {
-      "watchDemo": "Watch Demo Video"
+      "watchDemo": "Voir la Vidéo Démo"
     },
     "modal": {
-      "title": "How It Works - Demo",
-      "description": "Watch this quick demo to see how easy it is to create a beautiful memorial page",
-      "placeholder": "Replace this with your video player component"
+      "title": "Comment ça Marche - Démo",
+      "description": "Regardez cette courte démo pour voir à quel point il est facile de créer une belle page commémorative",
+      "placeholder": "Remplacez ceci par votre composant lecteur vidéo"
     }
   },
   "testimonials": {
-    "title": "What Families Are Saying",
-    "subtitle": "Real stories from families who have found comfort and healing through our platform",
+    "title": "Ce que Disent les Familles",
+    "subtitle": "Histoires réelles de familles qui ont trouvé du réconfort et de la guérison grâce à notre plateforme",
     "testimonials": {
       "sarah": {
         "name": "Sarah Johnson",
-        "role": "Daughter",
-        "content": "Creating a memorial for my father was one of the most healing experiences. The platform made it so easy to gather photos and stories from our entire family. It's become a place we all visit regularly."
+        "role": "Fille",
+        "content": "Créer un mémorial pour mon père a été l'une des expériences les plus réconfortantes. La plateforme a rendu si facile de rassembler des photos et des histoires de toute notre famille. C'est devenu un endroit que nous visitons tous régulièrement."
       },
       "michael": {
         "name": "Michael Chen",
-        "role": "Son",
-        "content": "The privacy controls gave us peace of mind, and the beautiful templates helped us create something truly special. Friends and family from around the world could contribute their memories."
+        "role": "Fils",
+        "content": "Les contrôles de confidentialité nous ont donné la tranquillité d'esprit, et les beaux modèles nous ont aidés à créer quelque chose de vraiment spécial. Amis et famille du monde entier ont pu contribuer avec leurs souvenirs."
       },
       "emily": {
         "name": "Emily Rodriguez",
-        "role": "Granddaughter",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+        "role": "Petite-fille",
+        "content": "J'ai pu préserver les histoires et recettes de ma grand-mère d'une manière qui durera pour toujours. L'équipe d'assistance a été incroyablement utile tout au long du processus."
       },
       "emanuel": {
         "name": "Emanuel Okeke",
-        "role": "Grandson",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+        "role": "Petit-fils",
+        "content": "J'ai pu préserver les histoires et recettes de ma grand-mère d'une manière qui durera pour toujours. L'équipe d'assistance a été incroyablement utile tout au long du processus."
       },
       "boma": {
         "name": "Boma George",
-        "role": "Granddaughter",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+        "role": "Petite-fille",
+        "content": "J'ai pu préserver les histoires et recettes de ma grand-mère d'une manière qui durera pour toujours. L'équipe d'assistance a été incroyablement utile tout au long du processus."
       },
       "tosin": {
         "name": "Tosin Ola",
-        "role": "Grandson",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+        "role": "Petit-fils",
+        "content": "J'ai pu préserver les histoires et recettes de ma grand-mère d'une manière qui durera pour toujours. L'équipe d'assistance a été incroyablement utile tout au long du processus."
       },
       "aish": {
         "name": "Aish Usman",
-        "role": "Granddaughter",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+        "role": "Petite-fille",
+        "content": "J'ai pu préserver les histoires et recettes de ma grand-mère d'une manière qui durera pour toujours. L'équipe d'assistance a été incroyablement utile tout au long du processus."
       }
     },
     "joinFamilies": {
-      "title": "Join Families",
-      "description": "Over 50,000 families have trusted us to help preserve their loved ones' memories. Start creating your memorial today and join our compassionate community."
+      "title": "Rejoignez les Familles",
+      "description": "Plus de 50 000 familles nous ont fait confiance pour les aider à préserver les souvenirs de leurs proches. Commencez à créer votre mémorial aujourd'hui et rejoignez notre communauté compatissante."
     }
   },
   "pricing": {
-    "getStarted": "Get Started",
-    "daysOfForever": "days of forever",
+    "getStarted": "Commencer",
+    "daysOfForever": "jours d'éternité",
     "modal": {
       "plan": "Plan",
-      "featuresIncluded": "Features Included:",
-      "termsAndConditions": "Terms & Conditions",
-      "proceedToPayment": "Proceed to Payment",
-      "agreeTermsMessage": "Please agree to the terms and conditions to proceed with payment"
+      "featuresIncluded": "Fonctionnalités Incluses :",
+      "termsAndConditions": "Conditions Générales",
+      "proceedToPayment": "Procéder au Paiement",
+      "agreeTermsMessage": "Veuillez accepter les conditions générales pour procéder au paiement"
     },
     "renewal": {
-      "oneTimePayment": "One-time Payment",
-      "whatYouGet": "What You Get",
-      "upgradeToLifetime": "Upgrade to Lifetime Access",
-      "loading": "Loading..."
+      "oneTimePayment": "Paiement Unique",
+      "whatYouGet": "Ce que Vous Obtenez",
+      "upgradeToLifetime": "Passer à l'Accès à Vie",
+      "loading": "Chargement..."
     },
     "payment": {
-      "initializing": "Initializing...",
-      "securePayment": "🔒 Secure payment powered by Paystack"
+      "initializing": "Initialisation...",
+      "securePayment": "🔒 Paiement sécurisé propulsé par Paystack"
     },
     "subscription": {
       "status": {
@@ -240,121 +240,121 @@
         "expired": "Votre abonnement a expiré. Renouvelez maintenant pour retrouver l'accès à toutes les fonctionnalités."
       }
     },
-    "title": "Choose Your Plan",
-    "subtitle": "Select the perfect plan to create a beautiful memorial website",
+    "title": "Choisissez Votre Plan",
+    "subtitle": "Sélectionnez le plan parfait pour créer un beau site commémoratif",
     "plans": {
       "basic": {
-        "name": "Basic",
+        "name": "Basique",
         "price": "120,000",
-        "period": "/60days",
-        "description": "Perfect for getting started",
+        "period": "/60jours",
+        "description": "Parfait pour commencer",
         "features": {
-          "photos": "Up to 50 photos",
-          "template": "Basic template",
-          "tributeWall": "Tribute wall",
-          "mobile": "Mobile responsive",
-          "privacy": "Basic privacy controls"
+          "photos": "Jusqu'à 50 photos",
+          "template": "Modèle de base",
+          "tributeWall": "Mur d'hommages",
+          "mobile": "Responsive mobile",
+          "privacy": "Contrôles de confidentialité basiques"
         },
-        "button": "Get Started Free"
+        "button": "Commencer Gratuitement"
       },
       "premium": {
         "name": "Premium",
         "price": "250,000",
-        "period": "/90days",
-        "description": "Most popular choice",
+        "period": "/90jours",
+        "description": "Choix le plus populaire",
         "features": {
-          "photos": "Unlimited photos & videos",
-          "template": "Premium templates",
-          "customization": "Advanced customization",
-          "support": "Priority support",
-          "backup": "Download & backup",
-          "analytics": "Analytics dashboard",
-          "domain": "Custom domain"
+          "photos": "Photos & vidéos illimitées",
+          "template": "Modèles premium",
+          "customization": "Personnalisation avancée",
+          "support": "Support prioritaire",
+          "backup": "Téléchargement & sauvegarde",
+          "analytics": "Tableau de bord analytique",
+          "domain": "Domaine personnalisé"
         },
-        "button": "Choose Premium",
-        "badge": "Most Popular"
+        "button": "Choisir Premium",
+        "badge": "Plus Populaire"
       },
       "family": {
-        "name": "Family",
+        "name": "Famille",
         "price": "350,000",
-        "period": "/365days",
-        "description": "For extended families",
+        "period": "/365jours",
+        "description": "Pour les familles élargies",
         "features": {
-          "photos": "Everything in Premium",
-          "template": "Multiple memorials",
-          "tributeWall": "Family tree integration",
-          "mobile": "Advanced privacy controls",
-          "privacy": "Dedicated support",
-          "support": "Custom branding",
-          "branding": "API access"
+          "photos": "Tout ce qu'il y a dans Premium",
+          "template": "Multiples mémoriaux",
+          "tributeWall": "Intégration arbre généalogique",
+          "mobile": "Contrôles de confidentialité avancés",
+          "privacy": "Support dédié",
+          "support": "Personnalisation de marque",
+          "branding": "Accès API"
         },
-        "button": "Choose Family"
+        "button": "Choisir Famille"
       }
     },
     "allPlansInclude": {
-      "title": "All Plans Include",
-      "description": "Free setup assistance, 24/7 customer support, and the peace of mind that your memorial will be preserved forever."
+      "title": "Tous les Plans Incluent",
+      "description": "Assistance à la configuration gratuite, support client 24h/24 et 7j/7, et la tranquillité d'esprit que votre mémorial sera préservé pour toujours."
     }
   },
   "cta": {
-    "title": "Start Creating a Memorial Today",
-    "subtitle": "Join thousands of families who have found comfort in preserving and sharing the memories of their loved ones.",
+    "title": "Commencez à Créer un Mémorial Aujourd'hui",
+    "subtitle": "Rejoignez des milliers de familles qui ont trouvé du réconfort en préservant et partageant les souvenirs de leurs proches.",
     "buttons": {
-      "getStarted": "Get Started Free",
-      "viewSample": "View Sample Memorial"
+      "getStarted": "Commencer Gratuitement",
+      "viewSample": "Voir un Mémorial Exemple"
     },
-    "reassurance": "No credit card required • Easy setup • Free forever plan available"
+    "reassurance": "Pas de carte de crédit requise • Configuration facile • Plan gratuit disponible"
   },
   "footer": {
     "links": {
-      "privacy": "Privacy Policy",
-      "terms": "Terms of Service",
+      "privacy": "Politique de Confidentialité",
+      "terms": "Conditions d'Utilisation",
       "support": "Support",
       "contact": "Contact"
     },
-    "copyright": "ForeverPages. Created with love to honor every life."
+    "copyright": "ForeverPages. Créé avec amour pour honorer chaque vie."
   },
   "common": {
-    "loading": "Loading...",
-    "error": "An error occurred",
-    "retry": "Retry",
-    "close": "Close",
-    "save": "Save",
-    "cancel": "Cancel"
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "retry": "Réessayer",
+    "close": "Fermer",
+    "save": "Enregistrer",
+    "cancel": "Annuler"
   },
   "faq": {
-    "title": "Frequently Asked Questions",
-    "subtitle": "Find answers to common questions about creating and managing memorial pages",
+    "title": "Questions Fréquentes",
+    "subtitle": "Trouvez des réponses aux questions courantes sur la création et la gestion des pages commémoratives",
     "items": {
       "memorialDuration": {
-        "question": "How long will the memorial page remain active?",
-        "answer": "Your memorial page will remain active forever. We are committed to preserving these digital legacies indefinitely, ensuring that future generations can always remember and celebrate the lives of their loved ones."
+        "question": "Combien de temps la page commémorative restera-t-elle active ?",
+        "answer": "Votre page commémorative restera active pour toujours. Nous nous engageons à préserver ces héritages numériques indéfiniment, garantissant que les générations futures pourront toujours se souvenir et célébrer la vie de leurs proches."
       },
       "contentTypes": {
-        "question": "What type of content can I add to a memorial page?",
-        "answer": "You can add photos, videos, written memories, audio recordings, and important life milestones. Our platform supports various media formats to help you create a comprehensive and meaningful tribute."
+        "question": "Quel type de contenu puis-je ajouter à une page commémorative ?",
+        "answer": "Vous pouvez ajouter des photos, des vidéos, des souvenirs écrits, des enregistrements audio et des étapes importantes de la vie. Notre plateforme prend en charge divers formats de médias pour vous aider à créer un hommage complet et significatif."
       },
       "privacyControl": {
-        "question": "Can I control who can view the memorial page?",
-        "answer": "Yes, you have full control over the privacy settings. You can make the page public, private with password protection, or share it only with specific people via invitation links."
+        "question": "Puis-je contrôler qui peut voir la page commémorative ?",
+        "answer": "Oui, vous avez un contrôle total sur les paramètres de confidentialité. Vous pouvez rendre la page publique, privée avec protection par mot de passe, ou la partager uniquement avec des personnes spécifiques via des liens d'invitation."
       },
       "multipleContributors": {
-        "question": "Can multiple people contribute to the same memorial page?",
-        "answer": "Absolutely. You can invite family members and friends to contribute their own memories, photos, and stories. This creates a collaborative space where everyone can share their unique perspective and memories."
+        "question": "Plusieurs personnes peuvent-elles contribuer à la même page commémorative ?",
+        "answer": "Absolument. Vous pouvez inviter des membres de la famille et des amis à contribuer avec leurs propres souvenirs, photos et histoires. Cela crée un espace collaboratif où chacun peut partager sa perspective et ses souvenirs uniques."
       },
       "changesAfterCreation": {
-        "question": "Can I make changes to the memorial page after it's created?",
-        "answer": "Yes, you can update and edit the memorial page at any time. Add new content, modify existing information, or update privacy settings whenever needed."
+        "question": "Puis-je apporter des modifications à la page commémorative après sa création ?",
+        "answer": "Oui, vous pouvez mettre à jour et modifier la page commémorative à tout moment. Ajoutez du nouveau contenu, modifiez les informations existantes ou mettez à jour les paramètres de confidentialité quand vous en avez besoin."
       },
       "cost": {
-        "question": "Is there a cost associated with creating a memorial page?",
-        "answer": "We offer both free and premium options. The free version includes essential features, while premium options provide additional storage, advanced customization, and enhanced privacy controls. Our goal is to make digital memorials accessible to everyone."
+        "question": "Y a-t-il un coût associé à la création d'une page commémorative ?",
+        "answer": "Nous proposons des options gratuites et premium. La version gratuite inclut les fonctionnalités essentielles, tandis que les options premium offrent un stockage supplémentaire, une personnalisation avancée et des contrôles de confidentialité améliorés. Notre objectif est de rendre les mémoriaux numériques accessibles à tous."
       }
     },
     "help": {
-      "title": "Still have questions?",
-      "description": "Our support team is here to help you create a beautiful and lasting tribute",
-      "button": "Contact Support"
+      "title": "Vous avez encore des questions ?",
+      "description": "Notre équipe de support est là pour vous aider à créer un hommage beau et durable",
+      "button": "Contacter le Support"
     }
   },
   "dashboard": {
@@ -387,78 +387,6 @@
         "settings": "Paramètres"
       }
     },
-    "analytics": {
-      "title": "Tableau de Bord Analytique",
-      "subtitle": "Suivez l'engagement et l'activité sur vos pages mémorielles",
-      "exportReport": "Exporter le Rapport",
-      "timeRanges": {
-        "7days": "7 derniers jours",
-        "30days": "30 derniers jours",
-        "90days": "90 derniers jours",
-        "1year": "Dernière année"
-      },
-      "fromLastPeriod": "de la période précédente",
-      "error": "Impossible de charger les données analytiques",
-      "stats": {
-        "totalVisits": {
-          "title": "Visites Totales",
-          "description": "Pages vues ce mois-ci"
-        },
-        "uniqueVisitors": {
-          "title": "Visiteurs Uniques",
-          "description": "Visiteurs individuels"
-        },
-        "tributeMessages": {
-          "title": "Messages d'Hommage",
-          "description": "Nouveaux hommages cette semaine"
-        },
-        "memorialShares": {
-          "title": "Partages du Mémorial",
-          "description": "Partages sur les réseaux sociaux"
-        }
-      },
-      "visitorTrends": {
-        "title": "Tendances des Visiteurs",
-        "description": "Visiteurs quotidiens au cours des 30 derniers jours"
-      },
-      "mostVisited": {
-        "title": "Pages Les Plus Visitées",
-        "description": "Sections populaires du mémorial",
-        "views": "vues"
-      },
-      "recentActivity": {
-        "title": "Activité Récente",
-        "description": "Dernières interactions avec vos pages mémorielles"
-      },
-      "activity": {
-        "newTribute": "Nouvel hommage de {{author}} sur {{memorial}}",
-        "memorialCreated": "Mémorial \"{{memorial}}\" créé"
-      },
-      "pages": {
-        "memorialHome": "Accueil du Mémorial",
-        "photoGallery": "Galerie de Photos",
-        "tributeWall": "Mur d'Hommages",
-        "serviceInfo": "Informations sur le Service",
-        "biography": "Biographie"
-      },
-      "memorialSummary": {
-        "title": "Résumé du Mémorial",
-        "description": "Informations clés en un coup d'œil",
-        "viewMemorial": "Voir la Page du Mémorial",
-        "created": "Créé",
-        "status": "Statut",
-        "photos": "Photos",
-        "approvedTributes": "Hommages Approuvés",
-        "serviceRsvps": "Confirmations du Service",
-        "memorialPage": "Page du Mémorial"
-      },
-      "collaboratorMemorials": {
-        "title": "Mémoriaux que Vous Aidez à Gérer",
-        "subtitle": "Vous avez été invité à collaborer sur ces mémoriaux",
-        "ownedBy": "Propriété de {{owner}}",
-        "manageMemorial": "Gérer le Mémorial"
-      }
-    },
     "gallery": {
       "title": "Galerie Multimédia",
       "subtitle": "Voir et gérer toutes vos photos et vidéos téléchargées",
@@ -484,6 +412,8 @@
       "video": "Vidéo",
       "videos": "Vidéos",
       "view": "Voir",
+      "edit": "Modifier",
+      "download": "Télécharger",
       "delete": "Supprimer",
       "deleteTitle": "Supprimer le Média ?",
       "deleteDescription": "Cette action est irréversible. Cela supprimera définitivement ce média de votre galerie.",
@@ -491,6 +421,9 @@
       "deleting": "Suppression du média...",
       "deleteSuccess": "Média supprimé avec succès",
       "deleteFailed": "Échec de la suppression du média",
+      "savingEdit": "Enregistrement de l'image modifiée...",
+      "editSuccess": "Image modifiée avec succès",
+      "editFailed": "Échec de la modification de l'image",
       "cancel": "Annuler",
       "dropHere": "Déposez les fichiers ici...",
       "dragDropLibrary": "Téléchargez photos et vidéos dans votre bibliothèque",
@@ -529,61 +462,12 @@
       "downloadSuccess": "Téléchargement commencé",
       "downloadFailed": "Échec du téléchargement",
       "loadingMore": "Chargement...",
-      "allLoaded": "Tous les médias chargés"
-    },
-    "templates": {
-      "title": "Modèles Personnalisés",
-      "subtitle": "Gérer vos modèles de mémorial personnalisés",
-      "createTemplate": "Créer un Modèle",
-      "createDialog": {
-        "title": "Créer un Nouveau Modèle",
-        "description": "Sauvegardez votre configuration actuelle comme modèle réutilisable",
-        "form": {
-          "name": {
-            "label": "Nom du Modèle",
-            "placeholder": "Entrez un nom pour votre modèle"
-          },
-          "description": {
-            "label": "Description (Optionnel)",
-            "placeholder": "Décrivez ce modèle..."
-          }
-        },
-        "actions": {
-          "create": "Créer le Modèle",
-          "creating": "Création...",
-          "cancel": "Annuler"
-        }
-      },
-      "list": {
-        "empty": {
-          "title": "Aucun modèle personnalisé",
-          "description": "Créez votre premier modèle personnalisé pour réutiliser vos configurations préférées"
-        },
-        "item": {
-          "created": "Créé le {{date}}",
-          "lastUsed": "Dernière utilisation: {{date}}",
-          "actions": {
-            "use": "Utiliser ce Modèle",
-            "edit": "Modifier",
-            "delete": "Supprimer"
-          }
-        }
-      },
-      "deleteDialog": {
-        "title": "Supprimer le Modèle",
-        "description": "Êtes-vous sûr de vouloir supprimer ce modèle? Cette action ne peut pas être annulée.",
-        "actions": {
-          "delete": "Supprimer",
-          "cancel": "Annuler"
-        }
-      },
-      "actions": {
-        "createSuccess": "Modèle créé avec succès",
-        "createError": "Échec de la création du modèle",
-        "deleteSuccess": "Modèle supprimé avec succès",
-        "deleteError": "Échec de la suppression du modèle",
-        "loadError": "Échec du chargement des modèles"
-      }
+      "allLoaded": "Tous les médias chargés",
+      "reorder": "Réorganiser",
+      "reorderSuccess": "Médias réorganisés avec succès",
+      "reorderFailed": "Échec de la réorganisation des médias",
+      "reorderMode": "Mode Réorganisation",
+      "dragToReorder": "Faites glisser pour réorganiser"
     },
     "invitations": {
       "title": "Invitations au Service",
@@ -1163,6 +1047,10 @@
           "title": "Détails du Mémorial",
           "description": "Ajoutez des photos et des souvenirs"
         },
+        "customize": {
+          "title": "Personnaliser le Design",
+          "description": "Personnalisez les couleurs et la mise en page"
+        },
         "review": {
           "title": "Révision",
           "description": "Réviser et créer votre mémorial"
@@ -1245,6 +1133,52 @@
           }
         }
       },
+      "form": {
+        "saving": "Sauvegarde...",
+        "saved": "Enregistré",
+        "savedAt": "Enregistré à {{time}}",
+        "saveFailed": "Échec de l'enregistrement"
+      },
+      "review": {
+        "title": "Prêt à Créer un Mémorial",
+        "description": "Votre belle page de mémorial est prête à être créée. Vous pouvez toujours modifier et ajouter plus de contenu plus tard.",
+        "templateLabel": "Modèle:",
+        "privacyLabel": "Confidentialité:",
+        "privacyValue": "Public",
+        "featuresLabel": "Caractéristiques:",
+        "featuresValue": "Accès Complet",
+        "publishButton": "Publier le Mémorial"
+      },
+      "customizer": {
+        "title": "Personnaliser le Design",
+        "description": "Personnalisez les couleurs, les polices et la mise en page de votre mémorial",
+        "stepDescription": "Personnalisez votre modèle de mémorial avec des couleurs, des polices et des options de mise en page personnalisées. Prévisualisez vos modifications en temps réel.",
+        "reset": "Réinitialiser",
+        "colors": "Couleurs",
+        "fonts": "Polices",
+        "layout": "Mise en Page",
+        "primaryColor": "Couleur Primaire",
+        "secondaryColor": "Couleur Secondaire",
+        "accentColor": "Couleur d'Accentuation",
+        "headerBg": "Fond de l'En-tête",
+        "headerText": "Texte de l'En-tête",
+        "bodyBg": "Fond du Corps",
+        "bodyText": "Texte du Corps",
+        "colorPreview": "Aperçu",
+        "fontFamily": "Famille de Polices",
+        "headingSize": "Taille des Titres",
+        "bodyFontSize": "Taille de la Police du Corps",
+        "fontPreview": "Aperçu",
+        "headingExample": "Exemple de Titre",
+        "bodyExample": "Ceci est un texte de corps qui montre à quoi ressemblera votre page de mémorial avec les paramètres de police sélectionnés.",
+        "spacing": "Espacement",
+        "borderRadius": "Rayon de la Bordure",
+        "containerWidth": "Largeur du Contenu",
+        "layoutPreview": "Aperçu de la Mise en Page",
+        "showPreview": "Afficher l'Aperçu en Direct",
+        "hidePreview": "Masquer l'Aperçu",
+        "backToEditor": "Retour à l'Éditeur"
+      },
       "templates": {
         "classic": {
           "name": "Mémorial Classique",
@@ -1287,26 +1221,99 @@
           ]
         }
       },
-      "review": {
-        "title": "Réviser Votre Mémorial",
-        "subtitle": "Vérifiez tous les détails avant de créer votre mémorial",
-        "sections": {
-          "template": "Modèle",
-          "basicInfo": "Informations de Base",
-          "memorialDetails": "Détails du Mémorial"
+      "loadingTemplates": "Chargement des modèles...",
+      "mustSignInTitle": "Veuillez vous connecter",
+      "mustSignInMessage": "Vous devez vous connecter pour accéder aux modèles et au Constructeur de Mémorial.",
+      "marketplace": {
+        "signIn": "Se connecter",
+        "signinNeeded": "Connectez-vous pour accéder aux modèles supplémentaires"
+      },
+      "publish": {
+        "title": "Publier le Mémorial",
+        "slug": "URL du Mémorial",
+        "slugPlaceholder": "Entrez l'URL personnalisée (3-50 caractères)",
+        "slugHint": "Ce sera l'adresse web unique de votre mémorial. Utilisez uniquement des lettres, des chiffres, des tirets et des traits de soulignement.",
+        "generateSlug": "Générer",
+        "deceased": "Défunt",
+        "publishing": "Publication en cours...",
+        "publish": "Publier",
+        "validation": {
+          "slugRequired": "L'URL est requise",
+          "slugTooShort": "L'URL doit contenir au moins 3 caractères",
+          "slugTooLong": "L'URL ne peut pas dépasser 50 caractères",
+          "slugInvalid": "L'URL ne peut contenir que des lettres, des chiffres, des tirets et des traits de soulignement",
+          "slugTaken": "Cette URL est déjà utilisée. Veuillez en essayer une autre."
         },
-        "messages": {
-          "templateSelected": "Modèle sélectionné avec succès",
-          "basicInfoComplete": "Informations de base complétées",
-          "memorialDetailsComplete": "Détails du mémorial complétés",
-          "readyToCreate": "Votre mémorial est prêt à être créé",
-          "creatingMemorial": "Création de votre mémorial...",
-          "memorialCreated": "Mémorial créé avec succès!",
-          "redirecting": "Redirection vers votre tableau de bord..."
+        "success": {
+          "title": "Mémorial Publié!",
+          "message": "Votre mémorial a été publié avec succès et est maintenant en ligne.",
+          "urlLabel": "URL du Mémorial:",
+          "copy": "Copier l'URL",
+          "copied": "Copié!",
+          "view": "Voir le Mémorial",
+          "share": "Partager"
         },
-        "actions": {
-          "edit": "Modifier",
-          "createMemorial": "Créer le Mémorial"
+        "error": {
+          "title": "Échec de la Publication",
+          "tryAgain": "Veuillez réessayer"
+        }
+      },
+      "autoSave": {
+        "saving": "Sauvegarde en cours...",
+        "saved": "Sauvegardé",
+        "error": "Erreur de sauvegarde",
+        "lastSaved": "Dernière sauvegarde {{time}}"
+      },
+      "subscription": {
+        "banner": {
+          "gracePeriod": {
+            "title": "Abonnement Expiration Prochaine",
+            "message": "Votre abonnement expire dans {{days}} jours. Renouvelez maintenant pour continuer à créer des mémoriaux."
+          },
+          "expired": {
+            "title": "Abonnement Expiré",
+            "message": "Votre abonnement a expiré. Veuillez le renouveler pour créer et publier des mémoriaux."
+          }
+        },
+        "renewalRedirect": "Redirection vers le renouvellement de l'abonnement...",
+        "renew": "Renouveler l'Abonnement",
+        "createMemorialExpired": "Votre abonnement a expiré. Veuillez le renouveler pour créer un nouveau mémorial."
+      },
+      "validation": {
+        "requiredField": "Ce champ est obligatoire",
+        "invalidEmail": "Veuillez entrer une adresse e-mail valide",
+        "alreadyPublished": "Vous avez déjà un mémorial publié",
+        "subscriptionRequired": "Votre abonnement n'est pas actif"
+      },
+      "content": {
+        "biography": {
+          "title": "Biographie"
+        },
+        "epitaph": {
+          "title": "Épitaphe",
+          "default": "À la mémoire"
+        },
+        "tributes": {
+          "title": "Hommages & Souvenirs",
+          "legacy": "Héritage",
+          "lifeStory": "Histoire de Vie"
+        },
+        "timeline": {
+          "title": "Chronologie de Vie",
+          "born": "Né",
+          "passedAway": "Décédé"
+        },
+        "gallery": {
+          "title": "Galerie Photo"
+        },
+        "familyTree": {
+          "title": "Arbre Généalogique"
+        },
+        "condolences": {
+          "title": "Condoléances"
+        },
+        "support": {
+          "title": "Soutien & Dons"
         }
       }
     },
@@ -1341,118 +1348,192 @@
         "title": "Soutien et Dons"
       }
     },
+    "analytics": {
+      "title": "Tableau de Bord Analytique",
+      "subtitle": "Suivez l'engagement et l'activité sur vos pages commémoratives",
+      "exportReport": "Exporter le Rapport",
+      "timeRanges": {
+        "7days": "7 derniers jours",
+        "30days": "30 derniers jours",
+        "90days": "90 derniers jours",
+        "1year": "Dernière année"
+      },
+      "fromLastPeriod": "par rapport à la période précédente",
+      "stats": {
+        "totalVisits": {
+          "title": "Total des Visites",
+          "description": "Pages vues ce mois"
+        },
+        "uniqueVisitors": {
+          "title": "Visiteurs Uniques",
+          "description": "Visiteurs individuels"
+        },
+        "tributeMessages": {
+          "title": "Messages d'Hommage",
+          "description": "Nouveaux hommages cette semaine"
+        },
+        "memorialShares": {
+          "title": "Partages Commémoratifs",
+          "description": "Partages sur les réseaux sociaux"
+        }
+      },
+      "visitorTrends": {
+        "title": "Tendances des Visiteurs",
+        "description": "Modèles de visiteurs quotidiens au cours des 30 derniers jours"
+      },
+      "mostVisited": {
+        "title": "Pages les Plus Visitées",
+        "description": "Sections du mémorial avec le plus de trafic",
+        "views": "vues"
+      },
+      "recentActivity": {
+        "title": "Activité Récente",
+        "description": "Dernières actions sur vos pages commémoratives"
+      },
+      "activity": {
+        "newTribute": "Nouvel hommage de {{author}} sur {{memorial}}",
+        "memorialCreated": "Mémorial \"{{memorial}}\" créé"
+      },
+      "pages": {
+        "memorialHome": "Accueil Commémoratif",
+        "photoGallery": "Galerie de Photos",
+        "tributeWall": "Mur d'Hommage",
+        "serviceInfo": "Information sur le Service",
+        "biography": "Biographie"
+      },
+      "memorialSummary": {
+        "title": "Résumé Commémoratif",
+        "description": "Informations clés en un coup d'œil",
+        "viewMemorial": "Voir le Mémorial",
+        "created": "Créé",
+        "status": "Statut",
+        "photos": "Photos",
+        "approvedTributes": "Hommages Approuvés",
+        "serviceRsvps": "RSVP du Service",
+        "memorialPage": "Page Commémorative"
+      },
+      "collaboratorMemorials": {
+        "title": "Mémoriaux que Vous Gérez",
+        "subtitle": "Vous avez été invité à collaborer sur ces mémoriaux",
+        "ownedBy": "Propriété de {{owner}}",
+        "manageMemorial": "Gérer le Mémorial"
+      },
+      "loading": "Chargement des analyses...",
+      "error": "Impossible de charger les analyses",
+      "noData": "Aucune donnée d'analyse disponible pour le moment"
+    },
     "settings": {
-      "title": "Settings",
-      "subtitle": "Manage your account and memorial page preferences",
+      "title": "Paramètres",
+      "subtitle": "Gérez votre compte et les préférences de votre page commémorative",
       "tabs": {
-        "profile": "Profile",
-        "memorial": "Memorial",
-        "privacy": "Privacy",
+        "profile": "Profil",
+        "memorial": "Mémorial",
+        "privacy": "Confidentialité",
         "notifications": "Notifications",
-        "advanced": "Advanced"
+        "advanced": "Avancé"
       },
       "profile": {
-        "title": "Profile Information",
-        "description": "Update your personal information and account details",
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "email": "Email Address",
-        "phone": "Phone Number",
-        "relationship": "Relationship to Deceased",
-        "save": "Save Profile Changes"
+        "title": "Informations du Profil",
+        "description": "Mettez à jour vos informations personnelles et les détails de votre compte",
+        "firstName": "Prénom",
+        "lastName": "Nom de Famille",
+        "email": "Adresse E-mail",
+        "phone": "Numéro de Téléphone",
+        "relationship": "Relation avec le Défunt",
+        "save": "Enregistrer les Modifications du Profil"
       },
       "memorial": {
-        "title": "Memorial Page Settings",
-        "description": "Configure your memorial page appearance and behavior",
-        "pageTitle": "Memorial Page Title",
-        "customUrl": "Custom URL (Optional)",
-        "theme": "Theme",
+        "title": "Paramètres de la Page Commémorative",
+        "description": "Configurez l'apparence et le comportement de votre page commémorative",
+        "pageTitle": "Titre de la Page Commémorative",
+        "customUrl": "URL Personnalisée (Optionnel)",
+        "theme": "Thème",
         "publicMemorial": {
-          "label": "Public Memorial",
-          "description": "Allow anyone to view the memorial page"
+          "label": "Mémorial Public",
+          "description": "Autoriser tout le monde à voir la page commémorative"
         },
         "allowTributes": {
-          "label": "Allow Tributes",
-          "description": "Let visitors leave tribute messages"
+          "label": "Autoriser les Hommages",
+          "description": "Permettre aux visiteurs de laisser des messages d'hommage"
         },
         "moderateTributes": {
-          "label": "Moderate Tributes",
-          "description": "Review tributes before they appear publicly"
+          "label": "Modérer les Hommages",
+          "description": "Examiner les hommages avant qu'ils n'apparaissent publiquement"
         },
-        "save": "Save Memorial Settings"
+        "save": "Enregistrer les Paramètres du Mémorial"
       },
       "privacy": {
-        "title": "Privacy & Security",
-        "description": "Control who can see and interact with your memorial",
-        "visibility": "Memorial Visibility",
-        "indexing": "Search Engine Indexing",
+        "title": "Confidentialité & Sécurité",
+        "description": "Contrôlez qui peut voir et interagir avec votre mémorial",
+        "visibility": "Visibilité du Mémorial",
+        "indexing": "Indexation par les Moteurs de Recherche",
         "access": {
-          "title": "Access Management",
-          "additionalAdmins": "Additional Administrators",
-          "sendAdminInvites": "Send Admin Invitations"
+          "title": "Gestion des Accès",
+          "additionalAdmins": "Administrateurs Supplémentaires",
+          "sendAdminInvites": "Envoyer des Invitations Administrateur"
         },
-        "save": "Save Privacy Settings"
+        "save": "Enregistrer les Paramètres de Confidentialité"
       },
       "notifications": {
-        "title": "Notification Preferences",
-        "description": "Choose how and when you want to be notified",
+        "title": "Préférences de Notifications",
+        "description": "Choisissez comment et quand vous souhaitez être notifié",
         "email": {
-          "label": "Email Notifications",
-          "description": "Receive updates via email"
+          "label": "Notifications par E-mail",
+          "description": "Recevoir des mises à jour par e-mail"
         },
         "types": {
-          "newTributes": "New Tributes",
-          "photoUploads": "Photo Uploads",
-          "rsvpUpdates": "RSVP Updates",
-          "weeklySummary": "Weekly Summary"
+          "newTributes": "Nouveaux Hommages",
+          "photoUploads": "Téléchargements de Photos",
+          "rsvpUpdates": "Mises à Jour RSVP",
+          "weeklySummary": "Résumé Hebdomadaire"
         },
-        "save": "Save Notification Settings"
+        "save": "Enregistrer les Paramètres de Notifications"
       },
       "advanced": {
-        "title": "Advanced Settings",
-        "description": "Advanced options and data management",
+        "title": "Paramètres Avancés",
+        "description": "Options avancées et gestion des données",
         "export": {
-          "title": "Data Export",
-          "description": "Download all your memorial data including photos, tributes, and information",
-          "button": "Export Memorial Data"
+          "title": "Exportation des Données",
+          "description": "Téléchargez toutes les données de votre mémorial, y compris les photos, hommages et informations",
+          "button": "Exporter les Données du Mémorial"
         },
         "domain": {
-          "title": "Custom Domain",
-          "description": "Connect your own domain name to this memorial (Premium feature)",
-          "connect": "Connect Domain"
+          "title": "Domaine Personnalisé",
+          "description": "Connectez votre propre nom de domaine à ce mémorial (Fonctionnalité Premium)",
+          "connect": "Connecter le Domaine"
         },
         "danger": {
-          "title": "Danger Zone",
-          "archive": "Archive Memorial",
-          "archiveDescription": "Make the memorial private and stop accepting new tributes",
-          "delete": "Delete Memorial",
-          "deleteDescription": "Permanently delete this memorial and all associated data. This cannot be undone."
+          "title": "Zone de Danger",
+          "archive": "Archiver le Mémorial",
+          "archiveDescription": "Rendre le mémorial privé et arrêter d'accepter de nouveaux hommages",
+          "delete": "Supprimer le Mémorial",
+          "deleteDescription": "Supprimer définitivement ce mémorial et toutes les données associées. Cette action ne peut pas être annulée."
         },
         "account": {
-          "title": "Account Actions",
-          "signOut": "Sign Out"
+          "title": "Actions du Compte",
+          "signOut": "Se Déconnecter"
         }
       }
     },
     "tributes": {
-      "title": "Tributes & Condolences",
-      "subtitle": "Manage and moderate tribute messages from visitors",
+      "title": "Hommages & Condoléances",
+      "subtitle": "Gérez et modérez les messages d'hommage des visiteurs",
       "tabs": {
-        "pending": "Pending Review",
-        "approved": "Approved",
-        "flagged": "Flagged",
-        "all": "All Tributes"
+        "pending": "En Attente de Revue",
+        "approved": "Approuvés",
+        "flagged": "Signalés",
+        "all": "Tous les Hommages"
       },
       "actions": {
-        "approve": "Approve",
-        "reject": "Reject",
-        "flag": "Flag"
+        "approve": "Approuver",
+        "reject": "Rejeter",
+        "flag": "Signaler"
       },
       "empty": {
-        "noPending": "No Pending Tributes",
-        "allReviewed": "All tributes have been reviewed"
+        "noPending": "Aucun Hommage en Attente",
+        "allReviewed": "Tous les hommages ont été revus"
       },
-      "live": "Live"
+      "live": "En Direct"
     },
     "templates": {
       "title": "Mes Modèles",
@@ -1478,7 +1559,7 @@
         "creating": "Création en cours..."
       },
       "list": {
-        "title": "Vos Modèles ({count})",
+        "title": "Vos Modèles {{count}}",
         "subtitle": "Modèles que vous avez créés et personnalisés"
       },
       "error": {
@@ -1498,7 +1579,7 @@
       },
       "deleteDialog": {
         "title": "Supprimer le Modèle",
-        "description": "Êtes-vous sûr de vouloir supprimer \"{name}\"? Cette action ne peut pas être annulée.",
+        "description": "Êtes-vous sûr de vouloir supprimer \"{{name}}\"? Cette action ne peut pas être annulée.",
         "deleting": "Suppression en cours...",
         "confirm": "Supprimer le Modèle"
       },
@@ -1571,7 +1652,7 @@
       "purchase": {
         "dialog": {
           "title": "Acheter le Modèle",
-          "description": "Vous êtes sur le point d'acheter \"{name}\" pour {price}",
+          "description": "Vous êtes sur le point d'acheter \"{{name}}\" pour {{price}}",
           "confirm": "Confirmer l'Achat",
           "cancel": "Annuler",
           "processing": "Traitement en cours..."
@@ -1585,37 +1666,6 @@
       },
       "loading": "Chargement des modèles...",
       "error": "Erreur de chargement des modèles"
-    },
-    "analytics": {
-      "title": "Analyses des Modèles",
-      "subtitle": "Suivez les performances et l'utilisation de vos modèles",
-      "metrics": {
-        "totalTemplates": "Total des Modèles",
-        "totalDownloads": "Total des Téléchargements",
-        "totalRevenue": "Revenus Totaux",
-        "averageRating": "Note Moyenne",
-        "totalViews": "Vues Totales",
-        "uniqueVisitors": "Visiteurs Uniques",
-        "averageTime": "Temps Moyen sur la Page",
-        "conversionRate": "Taux de Conversion",
-        "popularTemplates": "Modèles Populaires",
-        "usageTrends": "Tendances d'Utilisation"
-      },
-      "charts": {
-        "viewsOverTime": "Vues dans le Temps",
-        "templateUsage": "Distribution d'Utilisation des Modèles",
-        "visitorDemographics": "Démographie des Visiteurs",
-        "performanceMetrics": "Métriques de Performance"
-      },
-      "periods": {
-        "7days": "7 Derniers Jours",
-        "30days": "30 Derniers Jours",
-        "90days": "90 Derniers Jours",
-        "1year": "Dernière Année"
-      },
-      "loading": "Chargement des analyses...",
-      "error": "Erreur de chargement des analyses",
-      "noData": "Aucune donnée d'analyse disponible pour le moment"
     },
     "customization": {
       "title": "Personnalisation Avancée",
@@ -1711,65 +1761,65 @@
     }
   },
   "termsAndConditions": {
-    "agree": "I agree to the Terms and Conditions",
-    "title": "Memorial Website Service Terms and Conditions",
+    "agree": "J'accepte les Conditions Générales",
+    "title": "Conditions Générales du Service de Site Web Commémoratif",
     "sections": {
       "serviceDescription": {
-        "title": "1. Service Description",
-        "content": "Our memorial website service provides a platform to create and maintain online memorials for loved ones. This includes hosting, templates, and maintenance as specified in your chosen plan."
+        "title": "1. Description du Service",
+        "content": "Notre service de site web commémoratif fournit une plateforme pour créer et maintenir des mémoriaux en ligne pour les proches. Cela inclut l'hébergement, les modèles et la maintenance comme spécifié dans votre plan choisi."
       },
       "paymentTerms": {
-        "title": "2. Payment Terms",
-        "content": "All payments are one-time fees for the selected plan. Payment is required before service activation. Fees are non-refundable once the website has been created and published."
+        "title": "2. Conditions de Paiement",
+        "content": "Tous les paiements sont des frais uniques pour le plan sélectionné. Le paiement est requis avant l'activation du service. Les frais ne sont pas remboursables une fois que le site web a été créé et publié."
       },
       "contentGuidelines": {
-        "title": "3. Content Guidelines",
-        "content": "You agree to provide appropriate content that respects the memory of the deceased. We reserve the right to remove any content that violates our community guidelines or is deemed inappropriate."
+        "title": "3. Lignes Directrices de Contenu",
+        "content": "Vous acceptez de fournir un contenu approprié qui respecte la mémoire du défunt. Nous nous réservons le droit de supprimer tout contenu qui viole nos lignes directrices communautaires ou est jugé inapproprié."
       },
       "privacyAndData": {
-        "title": "4. Privacy and Data",
-        "content": "We respect your privacy and will handle all personal information in accordance with our privacy policy. Memorial content may be publicly accessible unless privacy settings are applied."
+        "title": "4. Confidentialité et Données",
+        "content": "Nous respectons votre vie privée et traiterons toutes les informations personnelles conformément à notre politique de confidentialité. Le contenu commémoratif peut être accessible publiquement à moins que des paramètres de confidentialité ne soient appliqués."
       },
       "serviceAvailability": {
-        "title": "5. Service Availability",
-        "content": "We strive to maintain 99% uptime but cannot guarantee uninterrupted service. Scheduled maintenance may occur with prior notice."
+        "title": "5. Disponibilité du Service",
+        "content": "Nous nous efforçons de maintenir une disponibilité de 99% mais ne pouvons pas garantir un service ininterrompu. Une maintenance planifiée peut survenir avec préavis."
       },
       "intellectualProperty": {
-        "title": "6. Intellectual Property",
-        "content": "You retain rights to the content you provide. We retain rights to the platform, templates, and technology. The memorial website design is licensed for your use."
+        "title": "6. Propriété Intellectuelle",
+        "content": "Vous conservez les droits sur le contenu que vous fournissez. Nous conservons les droits sur la plateforme, les modèles et la technologie. La conception du site web commémoratif est sous licence pour votre usage."
       },
       "termination": {
-        "title": "7. Termination",
-        "content": "You may request termination of service at any time. We reserve the right to terminate service for violation of terms. Memorial websites are maintained for the duration specified in your plan."
+        "title": "7. Résiliation",
+        "content": "Vous pouvez demander la résiliation du service à tout moment. Nous nous réservons le droit de résilier le service en cas de violation des conditions. Les sites web commémoratifs sont maintenus pour la durée spécifiée dans votre plan."
       },
       "limitationOfLiability": {
-        "title": "8. Limitation of Liability",
-        "content": "Our liability is limited to the amount paid for the service. We are not liable for indirect damages or losses resulting from service use."
+        "title": "8. Limitation de Responsabilité",
+        "content": "Notre responsabilité est limitée au montant payé pour le service. Nous ne sommes pas responsables des dommages ou pertes indirects résultant de l'utilisation du service."
       }
     },
-    "note": "Note: By checking the agreement box, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions."
+    "note": "Note : En cochant la case d'accord, vous reconnaissez avoir lu, compris et accepté d'être lié par ces Conditions Générales."
   },
   "register": {
-    "welcome": "Create Account",
-    "subtitle": "Create a lasting memory",
+    "welcome": "Créer un Compte",
+    "subtitle": "Créez un souvenir durable",
     "form": {
-      "name": "Full Name",
-      "email": "Email Address",
-      "phone": "Phone Number",
-      "password": "Password",
-      "confirmPassword": "Confirm Password"
+      "name": "Nom Complet",
+      "email": "Adresse E-mail",
+      "phone": "Numéro de Téléphone",
+      "password": "Mot de Passe",
+      "confirmPassword": "Confirmer le Mot de Passe"
     },
     "placeholders": {
-      "name": "Enter your full name",
-      "email": "Enter your email",
-      "phone": "WhatsApp number",
-      "password": "Enter your password",
-      "confirmPassword": "Confirm your password"
+      "name": "Entrez votre nom complet",
+      "email": "Entrez votre e-mail",
+      "phone": "Numéro WhatsApp",
+      "password": "Entrez votre mot de passe",
+      "confirmPassword": "Confirmez votre mot de passe"
     },
     "buttons": {
-      "createAccount": "Create Account",
-      "creatingAccount": "Creating Account...",
-      "loginHere": "Login here",
+      "createAccount": "Créer un Compte",
+      "creatingAccount": "Création du Compte...",
+      "loginHere": "Connectez-vous ici",
       "continueWithGoogle": "Continuer avec Google",
       "signingUpWithGoogle": "Inscription avec Google..."
     },
@@ -1777,48 +1827,48 @@
       "divider": "OU"
     },
     "errors": {
-      "nameRequired": "Name is required",
-      "emailRequired": "Email is required",
-      "invalidEmail": "Please enter a valid email",
-      "phoneRequired": "Phone number is required",
-      "passwordRequired": "Password is required",
-      "passwordLength": "Password must be at least 8 characters",
-      "passwordsDontMatch": "Passwords do not match",
-      "recaptchaRequired": "Please complete the reCAPTCHA verification",
-      "paymentRequired": "Payment required. Please complete payment first.",
-      "paymentVerificationFailed": "Payment verification failed. Please complete payment first.",
-      "paymentVerificationError": "Failed to verify payment. Please try again.",
-      "registrationFailed": "Registration failed",
-      "registrationError": "An error occurred during registration"
+      "nameRequired": "Le nom est requis",
+      "emailRequired": "L'e-mail est requis",
+      "invalidEmail": "Veuillez entrer un e-mail valide",
+      "phoneRequired": "Le numéro de téléphone est requis",
+      "passwordRequired": "Le mot de passe est requis",
+      "passwordLength": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordsDontMatch": "Les mots de passe ne correspondent pas",
+      "recaptchaRequired": "Veuillez compléter la vérification reCAPTCHA",
+      "paymentRequired": "Paiement requis. Veuillez d'abord compléter le paiement.",
+      "paymentVerificationFailed": "Échec de la vérification du paiement. Veuillez d'abord compléter le paiement.",
+      "paymentVerificationError": "Échec de la vérification du paiement. Veuillez réessayer.",
+      "registrationFailed": "Échec de l'inscription",
+      "registrationError": "Une erreur est survenue pendant l'inscription"
     },
     "success": {
-      "accountCreated": "Account created successfully! Please verify your email."
+      "accountCreated": "Compte créé avec succès ! Veuillez vérifier votre e-mail."
     },
-    "alreadyHaveAccount": "Already have an account?",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
     "terms": {
-      "byRegistering": "By registering, you agree to our",
-      "termsOfService": "Terms of Service",
-      "and": "and",
-      "privacyPolicy": "Privacy Policy"
+      "byRegistering": "En vous inscrivant, vous acceptez nos",
+      "termsOfService": "Conditions d'Utilisation",
+      "and": "et",
+      "privacyPolicy": "Politique de Confidentialité"
     },
-    "tagline": "A place to honor and remember those we love"
+    "tagline": "Un lieu pour honorer et se souvenir de ceux que nous aimons"
   },
   "login": {
-    "welcomeBack": "Welcome Back",
-    "subtitle": "Login to ForeverPages",
+    "welcomeBack": "Bon Retour",
+    "subtitle": "Connectez-vous à ForeverPages",
     "form": {
-      "email": "Email Address",
-      "emailOrPhone": "Email or Phone Number",
-      "password": "Password"
+      "email": "Adresse E-mail",
+      "emailOrPhone": "E-mail ou Numéro de Téléphone",
+      "password": "Mot de Passe"
     },
     "placeholders": {
-      "email": "Enter your email",
-      "emailOrPhone": "Enter your email or phone number",
-      "password": "Enter your password"
+      "email": "Entrez votre e-mail",
+      "emailOrPhone": "Entrez votre e-mail ou numéro de téléphone",
+      "password": "Entrez votre mot de passe"
     },
     "buttons": {
-      "login": "Login",
-      "registerHere": "Register here",
+      "login": "Se Connecter",
+      "registerHere": "Inscrivez-vous ici",
       "signInWithGoogle": "Se connecter avec Google",
       "signingInWithGoogle": "Connexion avec Google..."
     },
@@ -1826,73 +1876,73 @@
       "divider": "OU"
     },
     "errors": {
-      "emailRequired": "Email is required",
-      "invalidEmail": "Please enter a valid email",
-      "passwordRequired": "Password is required"
+      "emailRequired": "L'e-mail est requis",
+      "invalidEmail": "Veuillez entrer un e-mail valide",
+      "passwordRequired": "Le mot de passe est requis"
     },
-    "rememberMe": "Remember me",
-    "forgotPassword": "Forgot password?",
-    "noAccount": "Don't have an account?",
-    "tagline": "A place to honor and remember those we love",
+    "rememberMe": "Se souvenir de moi",
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "tagline": "Un lieu pour honorer et se souvenir de ceux que nous aimons",
     "loggingOut": "Déconnexion en cours..."
   },
   "forgotPassword": {
-    "title": "Forgot Password",
-    "subtitle": "Enter your email to reset your password",
+    "title": "Mot de Passe Oublié",
+    "subtitle": "Entrez votre e-mail pour réinitialiser votre mot de passe",
     "form": {
-      "email": "Email Address"
+      "email": "Adresse E-mail"
     },
     "placeholders": {
-      "email": "Enter your email address"
+      "email": "Entrez votre adresse e-mail"
     },
     "buttons": {
-      "resetPassword": "Reset Password",
-      "sending": "Sending..."
+      "resetPassword": "Réinitialiser le Mot de Passe",
+      "sending": "Envoi en cours..."
     },
     "errors": {
-      "emailRequired": "Email is required",
-      "invalidEmail": "Please enter a valid email address"
+      "emailRequired": "L'e-mail est requis",
+      "invalidEmail": "Veuillez entrer une adresse e-mail valide"
     },
-    "backToLogin": "Back to Login",
+    "backToLogin": "Retour à la Connexion",
     "success": {
-      "title": "Check Your Email",
-      "subtitle": "We've sent you a password reset link",
-      "checkEmail": "Check Your Email",
-      "instructions": "We've sent a password reset link to {{email}}. Please check your inbox and follow the instructions to reset your password.",
-      "tryAgain": "Try Another Email",
-      "backToLogin": "Back to Login"
+      "title": "Vérifiez Votre E-mail",
+      "subtitle": "Nous vous avons envoyé un lien de réinitialisation de mot de passe",
+      "checkEmail": "Vérifiez Votre E-mail",
+      "instructions": "Nous avons envoyé un lien de réinitialisation de mot de passe à {{email}}. Veuillez vérifier votre boîte de réception et suivre les instructions pour réinitialiser votre mot de passe.",
+      "tryAgain": "Essayer un Autre E-mail",
+      "backToLogin": "Retour à la Connexion"
     },
-    "tagline": "A place to honor and remember those we love"
+    "tagline": "Un lieu pour honorer et se souvenir de ceux que nous aimons"
   },
   "resetPassword": {
-    "title": "Reset Password",
-    "subtitle": "Create a new password for your account",
+    "title": "Réinitialiser le Mot de Passe",
+    "subtitle": "Créez un nouveau mot de passe pour votre compte",
     "form": {
-      "newPassword": "New Password",
-      "confirmPassword": "Confirm Password"
+      "newPassword": "Nouveau Mot de Passe",
+      "confirmPassword": "Confirmer le Mot de Passe"
     },
     "placeholders": {
-      "newPassword": "Enter your new password",
-      "confirmPassword": "Confirm your new password"
+      "newPassword": "Entrez votre nouveau mot de passe",
+      "confirmPassword": "Confirmez votre nouveau mot de passe"
     },
     "buttons": {
-      "resetPassword": "Reset Password",
-      "resetting": "Resetting..."
+      "resetPassword": "Réinitialiser le Mot de Passe",
+      "resetting": "Réinitialisation en cours..."
     },
     "errors": {
-      "passwordRequired": "Password is required",
-      "passwordLength": "Password must be at least 8 characters",
-      "passwordsDontMatch": "Passwords do not match"
+      "passwordRequired": "Le mot de passe est requis",
+      "passwordLength": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordsDontMatch": "Les mots de passe ne correspondent pas"
     },
-    "backToLogin": "Back to Login",
+    "backToLogin": "Retour à la Connexion",
     "success": {
-      "title": "Password Reset",
-      "subtitle": "Your password has been successfully reset",
-      "passwordReset": "Password Reset Successful",
-      "loginAgain": "You can now login with your new password",
-      "backToLogin": "Back to Login"
+      "title": "Mot de Passe Réinitialisé",
+      "subtitle": "Votre mot de passe a été réinitialisé avec succès",
+      "passwordReset": "Mot de Passe Réinitialisé avec Succès",
+      "loginAgain": "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe",
+      "backToLogin": "Retour à la Connexion"
     },
-    "tagline": "A place to honor and remember those we love"
+    "tagline": "Un lieu pour honorer et se souvenir de ceux que nous aimons"
   },
   "emailVerification": {
     "banner": {
@@ -1902,69 +1952,69 @@
       "resendEmail": "Renvoyer l'E-mail",
       "sending": "Envoi en cours..."
     },
-    "title": "Verify Your Email",
-    "subtitle": "Enter the 6-digit code sent to your email",
-    "enterCode": "Enter Verification Code",
-    "instructions": "Please enter the 6-digit verification code we sent to your email address.",
-    "spamWarning": "If you don't see the email, check your spam folder.",
-    "didntReceive": "Didn't receive the code?",
-    "resendIn": "Resend in",
-    "verifying": "Verifying your code...",
+    "title": "Vérifiez Votre E-mail",
+    "subtitle": "Entrez le code à 6 chiffres envoyé à votre e-mail",
+    "enterCode": "Entrez le Code de Vérification",
+    "instructions": "Veuillez entrer le code de vérification à 6 chiffres que nous avons envoyé à votre adresse e-mail.",
+    "spamWarning": "Si vous ne voyez pas l'e-mail, vérifiez votre dossier spam.",
+    "didntReceive": "Vous n'avez pas reçu le code ?",
+    "resendIn": "Renvoyer dans",
+    "verifying": "Vérification de votre code...",
     "buttons": {
-      "resend": "Resend Code",
-      "resendCode": "Resend Verification Code",
-      "sending": "Sending...",
-      "backToLogin": "Back to Login"
+      "resend": "Renvoyer le Code",
+      "resendCode": "Renvoyer le Code de Vérification",
+      "sending": "Envoi en cours...",
+      "backToLogin": "Retour à la Connexion"
     },
     "success": {
-      "toast": "Email verified successfully! Redirecting..."
+      "toast": "E-mail vérifié avec succès ! Redirection en cours..."
     },
     "error": {
-      "expired": "Verification code has expired. Please request a new one.",
-      "invalid": "Invalid code. Please check and try again."
+      "expired": "Le code de vérification a expiré. Veuillez en demander un nouveau.",
+      "invalid": "Code invalide. Veuillez vérifier et réessayer."
     },
-    "tagline": "A place to honor and remember those we love"
+    "tagline": "Un lieu pour honorer et se souvenir de ceux que nous aimons"
   },
   "confirmEmail": {
-    "title": "Confirming Your Email",
-    "subtitle": "We're verifying your email address",
-    "verifying": "Verifying your email address...",
-    "redirectNotice": "You will be redirected to login automatically",
+    "title": "Confirmation de Votre E-mail",
+    "subtitle": "Nous vérifions votre adresse e-mail",
+    "verifying": "Vérification de votre adresse e-mail...",
+    "redirectNotice": "Vous serez redirigé vers la connexion automatiquement",
     "success": {
-      "toast": "Email confirmed successfully!",
-      "redirecting": "Redirecting to login..."
+      "toast": "E-mail confirmé avec succès !",
+      "redirecting": "Redirection vers la connexion..."
     },
     "error": {
-      "toast": "Email confirmation failed",
-      "expired": "Confirmation link has expired",
-      "invalid": "Invalid confirmation link",
-      "network": "Network error. Please try again."
+      "toast": "Échec de la confirmation de l'e-mail",
+      "expired": "Le lien de confirmation a expiré",
+      "invalid": "Lien de confirmation invalide",
+      "network": "Erreur réseau. Veuillez réessayer."
     }
   },
   "offline": {
     "status": {
-      "online": "Online",
-      "offline": "Offline",
-      "syncing": "Syncing..."
+      "online": "En Ligne",
+      "offline": "Hors Ligne",
+      "syncing": "Synchronisation..."
     },
-    "pendingActions": "Pending actions: {count}",
+    "pendingActions": "Actions en attente : {{count}}",
     "syncProgress": {
-      "synchronizing": "Synchronizing...",
-      "progress": "Progress: {{current}}/{{total}}",
-      "title": "Sync Progress",
-      "complete": "Complete"
+      "synchronizing": "Synchronisation...",
+      "progress": "Progression : {{current}}/{{total}}",
+      "title": "Progression de la Synchronisation",
+      "complete": "Terminé"
     },
     "banner": {
-      "offlineMessage": "You're currently offline.",
-      "pendingActions": "You have {count} pending action{{count !== 1 ? 's' : ''}} that will sync when you're back online."
+      "offlineMessage": "Vous êtes actuellement hors ligne.",
+      "pendingActions": "Vous avez {{count}} action{{count !== 1 ? 's' : ''}} en attente qui se synchroniseront lorsque vous serez de nouveau en ligne."
     },
-    "lastSync": "Last sync: {{synced}} synced, {{failed}} failed",
+    "lastSync": "Dernière synchronisation : {{synced}} synchronisé, {{failed}} échoué",
     "loading": {
-      "offline": "Offline",
-      "viewingCached": "Viewing cached images",
-      "actionsQueued": "{count} action{{count !== 1 ? 's' : ''}} queued",
-      "willSyncWhenOnline": "will sync when online",
-      "savedLocally": "Will be saved locally and synced when online"
+      "offline": "Hors Ligne",
+      "viewingCached": "Visualisation des images en cache",
+      "actionsQueued": "{{count}} action{{count !== 1 ? 's' : ''}} en file d'attente",
+      "willSyncWhenOnline": "se synchronisera lorsqu'en ligne",
+      "savedLocally": "Sera sauvegardé localement et synchronisé lorsqu'en ligne"
     }
   },
   "twoFactor": {
@@ -1974,80 +2024,80 @@
       "enable": "Activer 2FA"
     },
     "verification": {
-      "title": "Two-Factor Authentication",
+      "title": "Authentification à Deux Facteurs",
       "subtitle": {
-        "email": "Enter the code sent to your email",
-        "authenticator": "Enter the code from your authenticator app"
+        "email": "Entrez le code envoyé à votre e-mail",
+        "authenticator": "Entrez le code de votre application d'authentification"
       },
-      "enterCode": "Enter Verification Code",
+      "enterCode": "Entrez le Code de Vérification",
       "instructions": {
-        "email": "Code sent to {{email}}",
-        "authenticator": "Open your authenticator app"
+        "email": "Code envoyé à {{email}}",
+        "authenticator": "Ouvrez votre application d'authentification"
       },
-      "verifying": "Verifying...",
-      "resendCode": "Resend code",
-      "useBackupCode": "Use backup code instead",
+      "verifying": "Vérification...",
+      "resendCode": "Renvoyer le code",
+      "useBackupCode": "Utiliser un code de secours à la place",
       "backupCode": {
-        "title": "Enter Backup Code",
-        "subtitle": "Enter one of your saved backup codes",
+        "title": "Entrez un Code de Secours",
+        "subtitle": "Entrez un de vos codes de secours sauvegardés",
         "placeholder": "XXXX-XXXX",
-        "verify": "Verify Backup Code",
-        "useVerificationCode": "Use verification code instead"
+        "verify": "Vérifier le Code de Secours",
+        "useVerificationCode": "Utiliser le code de vérification à la place"
       },
-      "backToLogin": "Back to login",
-      "success": "Verification successful!",
+      "backToLogin": "Retour à la connexion",
+      "success": "Vérification réussie !",
       "error": {
-        "invalidCode": "Invalid verification code",
-        "failed": "Failed to complete login"
+        "invalidCode": "Code de vérification invalide",
+        "failed": "Échec de la connexion"
       }
     },
     "settings": {
-      "title": "Two-Factor Authentication",
-      "description": "Add an extra layer of security to your account",
+      "title": "Authentification à Deux Facteurs",
+      "description": "Ajoutez une couche de sécurité supplémentaire à votre compte",
       "status": {
-        "enabled": "2FA Enabled",
-        "disabled": "2FA Disabled",
+        "enabled": "2FA Activée",
+        "disabled": "2FA Désactivée",
         "method": {
-          "email": "Email",
-          "authenticator": "Authenticator App"
+          "email": "E-mail",
+          "authenticator": "Application d'Authentification"
         }
       },
       "enable": {
-        "title": "Enable Two-Factor Authentication",
-        "selectMethod": "Select Authentication Method",
+        "title": "Activer l'Authentification à Deux Facteurs",
+        "selectMethod": "Sélectionnez la Méthode d'Authentification",
         "methods": {
           "email": {
-            "title": "Email Authentication",
-            "description": "Receive a verification code via email whenever you sign in"
+            "title": "Authentification par E-mail",
+            "description": "Recevez un code de vérification par e-mail chaque fois que vous vous connectez"
           },
           "authenticator": {
-            "title": "Authenticator App",
-            "description": "Use an authenticator app like Google Authenticator or Authy"
+            "title": "Application d'Authentification",
+            "description": "Utilisez une application d'authentification comme Google Authenticator ou Authy"
           }
         }
       },
       "email": {
-        "title": "Email Two-Factor Authentication",
-        "description": "You'll receive a verification code via email when signing in.",
-        "howItWorks": "How it works:",
+        "title": "Authentification à Deux Facteurs par E-mail",
+        "description": "Vous recevrez un code de vérification par e-mail lors de la connexion.",
+        "howItWorks": "Comment ça fonctionne :",
         "steps": {
-          "step1": "Sign in with your password",
-          "step2": "Receive a code via email",
-          "step3": "Enter the code to complete login"
+          "step1": "Connectez-vous avec votre mot de passe",
+          "step2": "Recevez un code par e-mail",
+          "step3": "Entrez le code pour compléter la connexion"
         },
         "buttons": {
-          "enable": "Enable Email 2FA",
-          "enabling": "Enabling...",
-          "disable": "Disable 2FA",
-          "disabling": "Disabling..."
+          "enable": "Activer 2FA par E-mail",
+          "enabling": "Activation en cours...",
+          "disable": "Désactiver 2FA",
+          "disabling": "Désactivation en cours..."
         }
       },
       "authenticator": {
-        "title": "Authenticator App Setup",
-        "description": "Use an authenticator app for more secure verification.",
+        "title": "Configuration de l'Application d'Authentification",
+        "description": "Utilisez une application d'authentification pour une vérification plus sécurisée.",
         "step1": {
-          "title": "Step 1: Install an Authenticator App",
-          "description": "Download an authenticator app if you don't have one:",
+          "title": "Étape 1 : Installez une Application d'Authentification",
+          "description": "Téléchargez une application d'authentification si vous n'en avez pas :",
           "apps": {
             "googleAuth": "Google Authenticator",
             "authy": "Authy",
@@ -2055,90 +2105,90 @@
           }
         },
         "step2": {
-          "title": "Step 2: Scan QR Code",
-          "description": "Open your authenticator app and scan this QR code:",
-          "manualEntry": "Can't scan? Enter this code manually:",
-          "copy": "Copy",
-          "copied": "Copied!"
+          "title": "Étape 2 : Scannez le Code QR",
+          "description": "Ouvrez votre application d'authentification et scannez ce code QR :",
+          "manualEntry": "Impossible de scanner ? Entrez ce code manuellement :",
+          "copy": "Copier",
+          "copied": "Copié !"
         },
         "step3": {
-          "title": "Step 3: Verify Setup",
-          "description": "Enter the 6-digit code from your authenticator app:",
-          "placeholder": "Enter 6-digit code",
-          "verify": "Verify & Enable",
-          "verifying": "Verifying..."
+          "title": "Étape 3 : Vérifiez la Configuration",
+          "description": "Entrez le code à 6 chiffres de votre application d'authentification :",
+          "placeholder": "Entrez le code à 6 chiffres",
+          "verify": "Vérifier & Activer",
+          "verifying": "Vérification..."
         },
         "buttons": {
-          "cancel": "Cancel",
-          "disable": "Disable Authenticator 2FA",
-          "disabling": "Disabling..."
+          "cancel": "Annuler",
+          "disable": "Désactiver 2FA par Authentification",
+          "disabling": "Désactivation en cours..."
         }
       },
       "backupCodes": {
-        "title": "Backup Codes",
-        "description": "Save these backup codes in a secure place. Each code can only be used once.",
-        "warning": "Warning: Only {{count}} backup code(s) remaining. Generate new ones in Settings.",
-        "remaining": "{{count}} codes remaining",
+        "title": "Codes de Secours",
+        "description": "Sauvegardez ces codes de secours dans un endroit sécurisé. Chaque code ne peut être utilisé qu'une seule fois.",
+        "warning": "Avertissement : Seulement {{count}} code{{count !== 1 ? 's' : ''}} de secours restant{{count !== 1 ? 's' : ''}}. Générez-en de nouveaux dans les Paramètres.",
+        "remaining": "{{count}} code{{count !== 1 ? 's' : ''}} restant{{count !== 1 ? 's' : ''}}",
         "buttons": {
-          "download": "Download Codes",
-          "copy": "Copy All Codes",
-          "copied": "Copied to clipboard!",
-          "regenerate": "Regenerate Codes",
-          "regenerating": "Regenerating..."
+          "download": "Télécharger les Codes",
+          "copy": "Copier Tous les Codes",
+          "copied": "Copié dans le presse-papiers !",
+          "regenerate": "Régénérer les Codes",
+          "regenerating": "Régénération en cours..."
         },
         "regenerateWarning": {
-          "title": "Regenerate Backup Codes?",
-          "message": "This will invalidate all existing backup codes. Make sure you've saved your current codes before proceeding.",
-          "confirm": "Regenerate",
-          "cancel": "Cancel"
+          "title": "Régénérer les Codes de Secours ?",
+          "message": "Cela invalidera tous les codes de secours existants. Assurez-vous d'avoir sauvegardé vos codes actuels avant de continuer.",
+          "confirm": "Régénérer",
+          "cancel": "Annuler"
         }
       },
       "disable": {
         "warning": {
-          "title": "Disable Two-Factor Authentication?",
-          "message": "Your account will be less secure without 2FA. Are you sure you want to disable it?",
-          "confirm": "Yes, Disable 2FA",
-          "cancel": "Cancel"
+          "title": "Désactiver l'Authentification à Deux Facteurs ?",
+          "message": "Votre compte sera moins sécurisé sans 2FA. Êtes-vous sûr de vouloir la désactiver ?",
+          "confirm": "Oui, Désactiver 2FA",
+          "cancel": "Annuler"
         }
       },
       "success": {
-        "enabled": "Two-factor authentication enabled successfully!",
-        "disabled": "Two-factor authentication disabled",
-        "codesRegenerated": "Backup codes regenerated successfully"
+        "enabled": "Authentification à deux facteurs activée avec succès !",
+        "disabled": "Authentification à deux facteurs désactivée",
+        "codesRegenerated": "Codes de secours régénérés avec succès"
       },
       "error": {
-        "loadFailed": "Failed to load 2FA settings",
-        "enableFailed": "Failed to enable 2FA",
-        "disableFailed": "Failed to disable 2FA",
-        "verifyFailed": "Failed to verify code",
-        "regenerateFailed": "Failed to regenerate backup codes"
+        "loadFailed": "Échec du chargement des paramètres 2FA",
+        "enableFailed": "Échec de l'activation de 2FA",
+        "disableFailed": "Échec de la désactivation de 2FA",
+        "verifyFailed": "Échec de la vérification du code",
+        "regenerateFailed": "Échec de la régénération des codes de secours"
       }
     }
   },
   "notifications": {
     "title": "Notifications",
     "bellButton": "Notifications",
-    "markAllRead": "Mark all as read",
-    "clearAll": "Clear all",
-    "loading": "Loading notifications...",
-    "empty": "No notifications yet",
-    "markedAsRead": "Marked as read",
-    "markAsReadError": "Failed to mark as read",
-    "allMarkedAsRead": "All notifications marked as read",
-    "markAllAsReadError": "Failed to mark all as read",
-    "allCleared": "All notifications cleared",
-    "clearAllError": "Failed to clear notifications",
+    "markAllRead": "Tout marquer comme lu",
+    "clearAll": "Tout effacer",
+    "loading": "Chargement des notifications...",
+    "empty": "Aucune notification pour le moment",
+    "markedAsRead": "Marqué comme lu",
+    "markAsReadError": "Échec du marquage comme lu",
+    "allMarkedAsRead": "Toutes les notifications marquées comme lues",
+    "markAllAsReadError": "Échec du marquage de toutes comme lues",
+    "allCleared": "Toutes les notifications effacées",
+    "clearAllError": "Échec de l'effacement des notifications",
     "types": {
-      "NEW_TRIBUTE": "New Tribute",
-      "NEW_COMMENT": "New Comment",
-      "NEW_PHOTO": "New Photo",
-      "NEW_CANDLE": "New Candle",
-      "NEW_FLOWER": "New Flower",
+      "NEW_TRIBUTE": "Nouvel Hommage",
+      "NEW_COMMENT": "Nouveau Commentaire",
+      "NEW_PHOTO": "Nouvelle Photo",
+      "NEW_CANDLE": "Nouvelle Bougie",
+      "NEW_FLOWER": "Nouvelle Fleur",
       "INVITATION": "Invitation",
-      "MEMORIAL_ANNIVERSARY": "Memorial Anniversary",
-      "BIRTHDAY_ANNIVERSARY": "Birthday Anniversary",
-      "EXPIRING_SOON": "Expiring Soon",
-      "SYSTEM": "System Notification"
+      "MEMORIAL_ANNIVERSARY": "Anniversaire du Mémorial",
+      "BIRTHDAY_ANNIVERSARY": "Anniversaire de Naissance",
+      "EXPIRING_SOON": "Expiration Prochaine",
+      "SYSTEM": "Notification Système"
     }
   },
   "collaborators": {
@@ -2391,11 +2441,11 @@
       },
       "info": {
         "viewers": "spectateurs en train de regarder",
-        "viewerCount": "{count} spectateur",
-        "viewerCountPlural": "{count} spectateurs",
-        "startedAt": "Commencé il y a {time}",
-        "scheduledFor": "Programmée pour {date}",
-        "duration": "Durée: {duration}"
+        "viewerCount": "{{count}} spectateur",
+        "viewerCountPlural": "{{count}} spectateurs",
+        "startedAt": "Commencé il y a {{time}}",
+        "scheduledFor": "Programmée pour {{date}}",
+        "duration": "Durée: {{duration}}"
       },
       "quality": {
         "title": "Qualité",
@@ -2420,7 +2470,7 @@
       "chat": {
         "title": "Chat en Direct",
         "sendMessage": "Envoyer un message",
-        "messagePlaceholder": "Partagez vos souvenirs de {name}...",
+        "messagePlaceholder": "Partagez vos souvenirs de {{name}}...",
         "reactions": {
           "heart": "Cœur",
           "prayer": "Prière",
@@ -2432,9 +2482,9 @@
         "locked": "Entrez le mot de passe pour participer au chat",
         "noMessages": "Pas encore de messages. Soyez le premier à partager un souvenir.",
         "justNow": "À l'instant",
-        "minutesAgo": "il y a {count}m",
-        "hoursAgo": "il y a {count}h",
-        "characterLimit": "{current}/{max} caractères"
+        "minutesAgo": "il y a {{count}}m",
+        "hoursAgo": "il y a {{count}}h",
+        "characterLimit": "{{current}}/{{max}} caractères"
       },
       "errors": {
         "connectionLost": "Connexion perdue. Tentative de reconnexion...",
@@ -2447,7 +2497,7 @@
         "title": "Regarder l'Enregistrement",
         "available": "Enregistrement disponible",
         "processing": "L'enregistrement est en cours de traitement...",
-        "expiresOn": "Disponible jusqu'au {date}",
+        "expiresOn": "Disponible jusqu'au {{date}}",
         "download": "Télécharger l'Enregistrement",
         "downloadSize": "Taille: {size}",
         "expired": "Cet enregistrement a expiré"
@@ -2456,12 +2506,12 @@
     "notifications": {
       "streamScheduled": {
         "title": "Diffusion Programmée",
-        "message": "Une diffusion commémorative en direct a été programmée pour {memorial}",
-        "when": "Quand: {date}",
+        "message": "Une diffusion commémorative en direct a été programmée pour {{memorial}}",
+        "when": "Quand: {{date}}",
         "action": "Ajouter au Calendrier"
       },
       "streamLive": {
-        "title": "EN DIRECT MAINTENANT: {memorial}",
+        "title": "EN DIRECT MAINTENANT: {{memorial}}",
         "message": "La diffusion commence maintenant!",
         "action": "Regarder en Direct",
         "urgent": "Ne le manquez pas - la diffusion se passe maintenant!"
@@ -2470,37 +2520,111 @@
         "title": "Diffusion Terminée",
         "message": "Merci de nous avoir rejoints",
         "stats": "Statistiques de la Diffusion",
-        "duration": "Durée: {duration}",
-        "peakViewers": "Spectateurs Maximum: {count}",
-        "totalComments": "Commentaires: {count}",
+        "duration": "Durée: {{duration}}",
+        "peakViewers": "Spectateurs Maximum: {{count}}",
+        "totalComments": "Commentaires: {{count}}",
         "recordingInfo": "L'enregistrement sera bientôt disponible"
       },
       "recordingReady": {
         "title": "Enregistrement Prêt",
         "message": "L'enregistrement de la diffusion commémorative est maintenant disponible",
-        "availableUntil": "Disponible jusqu'au: {date}",
+        "availableUntil": "Disponible jusqu'au: {{date}}",
         "action": "Regarder l'Enregistrement",
         "download": "Télécharger l'Enregistrement",
-        "warning": "Cet enregistrement sera automatiquement supprimé le {date}"
+        "warning": "Cet enregistrement sera automatiquement supprimé le {{date}}"
       },
       "recordingExpiring": {
         "title": "Enregistrement Bientôt Expiré",
-        "message": "Action requise! L'enregistrement sera supprimé dans {days} jours",
+        "message": "Action requise! L'enregistrement sera supprimé dans {{days}} jours",
         "action": "Télécharger Maintenant",
         "urgent": "Une fois supprimé, cet enregistrement ne peut pas être récupéré"
       },
       "recordingDeleted": {
         "title": "Enregistrement Supprimé",
         "message": "L'enregistrement a été automatiquement supprimé comme prévu",
-        "deletedOn": "Supprimé le: {date}",
+        "deletedOn": "Supprimé le: {{date}}",
         "info": "La page mémorielle reste active avec tout le contenu préservé"
       }
     },
+    "analytics": {
+      "title": "Tableau de bord analytique",
+      "subtitle": "Suivez l'engagement et l'activité sur vos pages commémoratives",
+      "exportReport": "Exporter le rapport",
+      "timeRanges": {
+        "7days": "7 derniers jours",
+        "30days": "30 derniers jours",
+        "90days": "90 derniers jours",
+        "1year": "Année dernière"
+      },
+      "fromLastPeriod": "par rapport à la période précédente",
+      "stats": {
+        "totalVisits": {
+          "title": "Visites totales",
+          "description": "Vues de page ce mois-ci"
+        },
+        "uniqueVisitors": {
+          "title": "Visiteurs uniques",
+          "description": "Visiteurs individuels"
+        },
+        "tributeMessages": {
+          "title": "Messages d'hommage",
+          "description": "Nouveaux hommages cette semaine"
+        },
+        "memorialShares": {
+          "title": "Partages commémoratifs",
+          "description": "Partages sur les réseaux sociaux"
+        }
+      },
+      "visitorTrends": {
+        "title": "Tendances des visiteurs",
+        "description": "Modèles de visiteurs quotidiens sur les 30 derniers jours"
+      },
+      "mostVisited": {
+        "title": "Pages les plus visitées",
+        "description": "Sections du mémorial avec le plus de trafic",
+        "views": "vues"
+      },
+      "recentActivity": {
+        "title": "Activité récente",
+        "description": "Dernières actions sur vos pages commémoratives"
+      },
+      "activity": {
+        "newTribute": "Nouvel hommage de {{author}} sur {{memorial}}",
+        "memorialCreated": "Mémorial \"{{memorial}}\" créé"
+      },
+      "pages": {
+        "memorialHome": "Accueil du mémorial",
+        "photoGallery": "Galerie photo",
+        "tributeWall": "Mur d'hommage",
+        "serviceInfo": "Informations sur la cérémonie",
+        "biography": "Biographie"
+      },
+      "memorialSummary": {
+        "title": "Résumé du mémorial",
+        "description": "Informations clés en un coup d'œil",
+        "viewMemorial": "Voir le mémorial",
+        "created": "Créé",
+        "status": "Statut",
+        "photos": "Photos",
+        "approvedTributes": "Hommages approuvés",
+        "serviceRsvps": "RSVP de la cérémonie",
+        "memorialPage": "Page commémorative"
+      },
+      "collaboratorMemorials": {
+        "title": "Mémoriaux que vous gérez",
+        "subtitle": "Vous avez été invité à collaborer sur ces mémoriaux",
+        "ownedBy": "Appartenant à {{owner}}",
+        "manageMemorial": "Gérer le mémorial"
+      },
+      "loading": "Chargement des analyses...",
+      "error": "Échec du chargement des analyses",
+      "noData": "Aucune donnée analytique disponible pour le moment"
+    },
     "email": {
       "streamScheduled": {
-        "subject": "Diffusion Programmée: {memorial}",
-        "greeting": "Bonjour {name},",
-        "intro": "Une diffusion commémorative en direct a été programmée pour {memorial}.",
+        "subject": "Diffusion Programmée: {{memorial}}",
+        "greeting": "Bonjour {{name}},",
+        "intro": "Une diffusion commémorative en direct a été programmée pour {{memorial}}.",
         "details": "Détails de la Diffusion",
         "title": "Titre",
         "when": "Quand",
@@ -2509,16 +2633,16 @@
         "tip": "Conseil: Assurez-vous d'avoir une connexion Internet stable pour la meilleure expérience."
       },
       "streamLive": {
-        "subject": "🔴 EN DIRECT MAINTENANT: {memorial}",
+        "subject": "🔴 EN DIRECT MAINTENANT: {{memorial}}",
         "heading": "EN DIRECT MAINTENANT",
         "intro": "La diffusion commence maintenant!",
         "action": "Regarder en Direct",
         "urgent": "Ne le manquez pas! La diffusion se passe maintenant."
       },
       "streamEnded": {
-        "subject": "Diffusion Terminée: {memorial}",
+        "subject": "Diffusion Terminée: {{memorial}}",
         "greeting": "Merci de nous avoir rejoints",
-        "intro": "La diffusion commémorative en direct de {memorial} est terminée.",
+        "intro": "La diffusion commémorative en direct de {{memorial}} est terminée.",
         "stats": "Statistiques de la Diffusion",
         "duration": "Durée",
         "peakViewers": "Spectateurs Maximum",
@@ -2527,37 +2651,37 @@
         "recordingAvailability": "Enregistrement: L'enregistrement sera disponible pendant 6 mois et peut être téléchargé à tout moment."
       },
       "recordingReady": {
-        "subject": "Enregistrement Prêt: {memorial}",
-        "greeting": "Bonnes nouvelles, {name}!",
-        "intro": "L'enregistrement de la diffusion commémorative de {memorial} est maintenant disponible.",
+        "subject": "Enregistrement Prêt: {{memorial}}",
+        "greeting": "Bonnes nouvelles, {{name}}!",
+        "intro": "L'enregistrement de la diffusion commémorative de {{memorial}} est maintenant disponible.",
         "availableUntil": "Disponible jusqu'au",
         "watchAction": "Regarder l'Enregistrement",
         "downloadAction": "Télécharger l'Enregistrement",
-        "warning": "Important: Cet enregistrement sera automatiquement supprimé le {date}. Téléchargez-le si vous souhaitez le conserver définitivement."
+        "warning": "Important: Cet enregistrement sera automatiquement supprimé le {{date}}. Téléchargez-le si vous souhaitez le conserver définitivement."
       },
       "recordingExpiring": {
-        "subject": "⚠️ Enregistrement Bientôt Expiré: {memorial}",
+        "subject": "⚠️ Enregistrement Bientôt Expiré: {{memorial}}",
         "heading": "Enregistrement Bientôt Expiré",
         "intro": "Action Requise: Téléchargez Votre Enregistrement",
-        "countdown": "{days} Jours Restants",
-        "message": "L'enregistrement sera supprimé le {date}",
-        "detail": "L'enregistrement de la diffusion commémorative de {memorial} sera automatiquement supprimé dans {days} jours.",
+        "countdown": "{{days}} Jours Restants",
+        "message": "L'enregistrement sera supprimé le {{date}}",
+        "detail": "L'enregistrement de la diffusion commémorative de {{memorial}} sera automatiquement supprimé dans {{days}} jours.",
         "action": "Télécharger Maintenant (Ne Le Perdez Pas!)",
         "urgent": "Important: Une fois supprimé, cet enregistrement ne peut pas être récupéré. Téléchargez-le maintenant pour préserver ces précieux souvenirs pour toujours.",
         "help": "Si vous avez besoin de plus de temps, contactez-nous ou prolongez la conservation de votre enregistrement dans votre tableau de bord."
       },
       "recordingDeleted": {
-        "subject": "Enregistrement Supprimé: {memorial}",
+        "subject": "Enregistrement Supprimé: {{memorial}}",
         "heading": "Enregistrement Supprimé",
         "intro": "Période de Conservation Terminée",
-        "message": "L'enregistrement de la diffusion commémorative de {memorial} a été automatiquement supprimé comme prévu.",
+        "message": "L'enregistrement de la diffusion commémorative de {{memorial}} a été automatiquement supprimé comme prévu.",
         "deletedOn": "Supprimé le",
         "note": "Note: Cela faisait partie de notre politique standard de conservation de 6 mois. Nous espérons que vous avez eu l'occasion de télécharger l'enregistrement si nécessaire.",
         "info": "La page mémorielle reste active avec tout le contenu (photos, hommages et souvenirs) préservé."
       },
       "footer": {
-        "youreReceiving": "Vous recevez ceci car vous êtes connecté à la page mémorielle de {memorial}.",
-        "copyright": "© {year} ForeverPages. Tous droits réservés."
+        "youreReceiving": "Vous recevez ceci car vous êtes connecté à la page mémorielle de {{memorial}}.",
+        "copyright": "© {{year}} ForeverPages. Tous droits réservés."
       }
     }
   }

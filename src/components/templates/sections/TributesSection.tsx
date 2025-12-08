@@ -15,30 +15,74 @@ export const TributesSection: React.FC<TributesSectionProps> = ({ memorial }) =>
 
   if (!hasTributes) return null;
 
+  const sectionStyle: React.CSSProperties = {
+    paddingTop: "var(--spacing, 3rem)",
+    paddingBottom: "var(--spacing, 3rem)",
+    backgroundColor: "var(--color-header-bg, white)",
+  };
+
+  const containerStyle: React.CSSProperties = {
+    maxWidth: "var(--container-width, 64rem)",
+    marginLeft: "auto",
+    marginRight: "auto",
+    paddingLeft: "var(--spacing, 1.5rem)",
+    paddingRight: "var(--spacing, 1.5rem)",
+  };
+
+  const titleStyle: React.CSSProperties = {
+    fontSize: "var(--font-heading-size, 1.875rem)",
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: "2rem",
+    color: "var(--color-header-text, #1f2937)",
+    fontFamily: "var(--font-family, ui-sans-serif, system-ui)",
+  };
+
+  const tributeBoxStyle: React.CSSProperties = {
+    backgroundColor: "var(--color-body-bg, #f3f4f6)",
+    borderRadius: "var(--border-radius, 0.5rem)",
+    padding: "1.5rem",
+    marginBottom: "2rem",
+  };
+
+  const tributeHeadingStyle: React.CSSProperties = {
+    fontSize: "1.25rem",
+    fontWeight: "600",
+    marginBottom: "1rem",
+    color: "var(--color-header-text, #1f2937)",
+    fontFamily: "var(--font-family, ui-sans-serif, system-ui)",
+  };
+
+  const tributeTextStyle: React.CSSProperties = {
+    color: "var(--color-body-text, #374151)",
+    lineHeight: "1.625",
+    whiteSpace: "pre-wrap",
+    fontFamily: "var(--font-family, ui-sans-serif, system-ui)",
+    fontSize: "var(--font-body-size, 1rem)",
+  };
+
   return (
-    <section className="py-12 bg-white">
-      <div className="max-w-4xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-8">
+    <section style={sectionStyle}>
+      <div style={containerStyle}>
+        <h2 style={titleStyle}>
           {t("dashboard.pageBuilder.templates.content.tributes.title", {}, "Tributes & Memories")}
         </h2>
-        <div className="space-y-8">
+        <div>
           {memorial.legacy && (
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-4">
+            <div style={tributeBoxStyle}>
+              <h3 style={tributeHeadingStyle}>
                 {t("dashboard.pageBuilder.templates.content.tributes.legacy", {}, "Legacy")}
               </h3>
-              <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{memorial.legacy}</p>
+              <p style={tributeTextStyle}>{memorial.legacy}</p>
             </div>
           )}
 
           {memorial.lifeStory && (
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-4">
+            <div style={tributeBoxStyle}>
+              <h3 style={tributeHeadingStyle}>
                 {t("dashboard.pageBuilder.templates.content.tributes.lifeStory", {}, "Life Story")}
               </h3>
-              <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                {memorial.lifeStory}
-              </p>
+              <p style={tributeTextStyle}>{memorial.lifeStory}</p>
             </div>
           )}
         </div>

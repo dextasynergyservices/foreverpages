@@ -1,360 +1,581 @@
 {
   "hero": {
-    "title": "Honor Their Memory",
-    "subtitle": "Create beautiful memorial websites where families and friends celebrate lives and share memories together",
+    "title": "Girmama Tarihinsu",
+
+    "subtitle": "Ƙirƙiri kyawawan gidajen yanar gizo na tunawa inda iyalai da abokai za su yi bikin rayuwa da raba abubuwan tunawa tare",
+
     "buttons": {
-      "create": "Create a Memorial Page",
-      "view": "View Sample Memorial"
+      "create": "Ƙirƙiri Shafin Tunawa",
+
+      "view": "Duba Misalin Tunawa"
     }
   },
+
   "navbar": {
     "logo": "ForeverPages",
+
     "navigation": {
-      "features": "Features",
-      "home": "Home",
-      "memorials": "Memorial Pages",
-      "howItWorks": "How It Works",
-      "support": "Contact"
+      "features": "Siffofi",
+
+      "home": "Gida",
+
+      "memorials": "Shafukan Tunawa",
+
+      "howItWorks": "Yadda Yake Aiki",
+
+      "support": "Tuntuɓi"
     },
+
     "buttons": {
-      "signIn": "Sign In",
-      "signOut": "Log Out",
-      "dashboard": "Dashboard"
+      "signIn": "Shiga",
+
+      "signOut": "Fita",
+
+      "dashboard": "Allon Gudanarwa"
     }
   },
+
   "contact": {
-    "title": "Get In Touch",
-    "subtitle": "Have questions or need support? We're here to help you create a beautiful memorial.",
+    "title": "Tuntuɓe Mu",
+
+    "subtitle": "Kuna da tambayoyi ko kuna buƙatar tallafi? Muna nan don taimaka muku ƙirƙirar kyakkyawan shafin tunawa.",
+
     "info": {
       "email": {
-        "title": "Email Us",
-        "description": "Send us an email anytime"
+        "title": "Yi Mana Imel",
+
+        "description": "Aiko mana da imel a kowane lokaci"
       },
+
       "phone": {
-        "title": "Call Us",
-        "description": "Mon-Fri from 10am to 6pm (WAT)"
+        "title": "Kira Mu",
+
+        "description": "Litinin-Juma'a daga 10 na safe zuwa 6 na yamma (WAT)"
       },
+
       "address": {
-        "title": "Office Address"
+        "title": "Adireshin Ofis"
       },
+
       "hours": {
-        "title": "Business Hours",
-        "weekdays": "Monday - Friday",
-        "saturday": "Saturday",
-        "sunday": "Sunday",
-        "closed": "Closed"
+        "title": "Lokutan Aiki",
+
+        "weekdays": "Litinin - Juma'a",
+
+        "saturday": "Asabar",
+
+        "sunday": "Lahadi",
+
+        "closed": "A Rufe"
       }
     },
+
     "form": {
-      "name": "Full Name",
-      "namePlaceholder": "Enter your full name",
-      "email": "Email Address",
-      "emailPlaceholder": "Enter your email address",
-      "subject": "Subject",
-      "subjectPlaceholder": "What is this regarding?",
-      "message": "Message",
-      "messagePlaceholder": "Tell us how we can help you...",
-      "send": "Send Message",
-      "sending": "Sending..."
+      "name": "Cikakken Suna",
+
+      "namePlaceholder": "Shigar da cikakken sunan ku",
+
+      "email": "Adireshin Imel",
+
+      "emailPlaceholder": "Shigar da adireshin imel na ku",
+
+      "subject": "Taken Magana",
+
+      "subjectPlaceholder": "Game da me kuke son magana?",
+
+      "message": "Saƙo",
+
+      "messagePlaceholder": "Faɗa mana yadda za mu iya taimaka muku...",
+
+      "send": "Aika Saƙo",
+
+      "sending": "Ana Aikawa..."
     }
   },
+
   "features": {
-    "title": "Compassionate Features",
-    "subtitle": "Everything you need to create a beautiful, lasting tribute that brings people together",
+    "title": "Siffofi Masu Tausayawa",
+
+    "subtitle": "Duk abin da kuke buƙata don ƙirƙirar girmamawa mai ɗorewa da ke haɗa kan mutane",
+
     "items": {
       "memoryGallery": {
-        "title": "Memory Gallery",
-        "description": "Share unlimited photos, videos, and cherished memories in a beautifully organized collection that tells the complete story of your loved one's life journey and special moments captured over time."
+        "title": "Gidan Tarihin Tunawa",
+
+        "description": "Raba hotuna marasa iyaka, bidiyoyi, da abubuwan tunawa masu daraja a cikin tsari mai kyau wanda ke ba da cikakken labarin rayuwar masoyinku da lokuta na musamman da aka kama."
       },
+
       "tributeWall": {
-        "title": "Tribute Wall",
-        "description": "Friends and family can leave heartfelt messages, share personal stories, and offer condolences in a dedicated space that becomes a digital gathering place for everyone who cared about your loved one."
+        "title": "Bangon Girmamawa",
+
+        "description": "Abokai da dangi na iya barin saƙonni masu ratsa zuciya, raba labarai na sirri, da mika ta'aziyya a wani keɓaɓɓen wuri wanda ke zama wurin taro na dijital ga duk wanda ya damu da masoyinku."
       },
+
       "privacyControls": {
-        "title": "Privacy Controls",
-        "description": "Maintain complete control over who can view and contribute to the memorial with our comprehensive privacy settings that ensure your family's comfort and security during this difficult time."
+        "title": "Ikon Sirri",
+
+        "description": "Kula da wanda zai iya duba da ba da gudummawa ga shafin tunawa tare da saitunan sirrinmu masu inganci waɗanda ke tabbatar da jin daɗin dangin ku da tsaro a wannan lokaci mai wuya."
       },
+
       "foreverPreserved": {
-        "title": "Forever Preserved",
-        "description": "Your memorial pages are permanently preserved in our secure cloud storage, ensuring they remain accessible for future generations to visit, remember, and cherish forever without any time limitations."
+        "title": "Adanawa Har Abada",
+
+        "description": "Shafukan tunawarku suna adane har abada a cikin amintaccen ajiyar girgije (cloud), yana tabbatar da cewa suna nan don tsararraki masu zuwa su ziyarta, su tuna, kuma su girmama har abada ba tare da iyakancewar lokaci ba."
       }
     }
   },
+
   "funeralPages": {
-    "title": "Community Memorials",
-    "subtitle": "See how others are honoring their loved ones with beautiful, personalized memorial pages",
-    "viewMore": "View More Memorials",
-    "featured": "Featured",
-    "tributes": "tributes",
-    "visits": "visits",
-    "by": "By",
-    "memorialImage": "Memorial Image"
+    "title": "Tunawa na Al'umma",
+
+    "subtitle": "Duba yadda wasu ke girmama masoyansu tare da kyawawan shafukan tunawa da aka keɓance",
+
+    "viewMore": "Duba Ƙarin Shafukan Tunawa",
+
+    "featured": "Wanda aka Fito da shi",
+
+    "tributes": "girmamawa",
+
+    "visits": "ziyara",
+
+    "by": "Daga",
+
+    "memorialImage": "Hoton Tunawa"
   },
+
   "allFuneralPage": {
-    "title": "Community Memorials",
-    "subtitle": "See how others are honoring their loved ones with beautiful, personalized memorial pages",
-    "by": "By",
-    "view": "View",
-    "noMemorials": "No memorial pages found.",
-    "previous": "Previous",
-    "next": "Next",
-    "searchPlaceholder": "Search by name or family...",
-    "search": "Search"
+    "title": "Tunawa na Al'umma",
+
+    "subtitle": "Duba yadda wasu ke girmama masoyansu tare da kyawawan shafukan tunawa da aka keɓance",
+
+    "by": "Daga",
+
+    "view": "Duba",
+
+    "noMemorials": "Ba a sami shafukan tunawa ba.",
+
+    "previous": "Baya",
+
+    "next": "Gaba",
+
+    "searchPlaceholder": "Bincika da suna ko iyali...",
+
+    "search": "Bincika"
   },
+
   "howItWorks": {
-    "title": "How It Works",
-    "subtitle": "Creating a beautiful memorial is simple and takes just a few minutes",
+    "title": "Yadda Yake Aiki",
+
+    "subtitle": "Ƙirƙirar kyakkyawan shafin tunawa yana da sauƙi kuma yana ɗaukar 'yan mintuna kaɗan",
+
     "steps": {
       "create": {
         "number": "01",
-        "title": "Create Your Memorial",
-        "description": "Start by choosing a beautiful template and adding basic information about your loved one. Our intuitive interface makes it easy to get started in just minutes.",
+
+        "title": "Ƙirƙiri Shafin Tunawa",
+
+        "description": "Fara da zaɓar kyakkyawan tsari da ƙara bayanai na asali game da masoyinku. Tsarinmu mai sauƙin fahimta yana ba ku damar farawa cikin mintuna.",
+
         "icon": "✍️"
       },
+
       "addContent": {
         "number": "02",
-        "title": "Add Photos & Stories",
-        "description": "Upload cherished photos, write meaningful stories, and organize memories in a way that truly honors their life and legacy.",
+
+        "title": "Sanya Hotuna & Labarai",
+
+        "description": "Loda hotuna masu daraja, rubuta labarai masu ma'ana, da tsara abubuwan tunawa a hanyar da ke girmama rayuwarsu da gadonsu da gaske.",
+
         "icon": "📸"
       },
+
       "share": {
         "number": "03",
-        "title": "Share with Family",
-        "description": "Invite family and friends to contribute their own memories, photos, and tributes to create a comprehensive memorial together.",
+
+        "title": "Raba tare da Iyali",
+
+        "description": "Gayyaci dangi da abokai don su ba da gudummawar abubuwan tunawarsu, hotuna, da girmamawa don ƙirƙirar cikakken shafin tunawa tare.",
+
         "icon": "👥"
       },
+
       "preserve": {
         "number": "04",
-        "title": "Preserve Forever",
-        "description": "Your memorial is safely stored and will remain accessible for future generations to visit, remember, and cherish forever.",
+
+        "title": "Adana Har Abada",
+
+        "description": "Shafin tunawarku yana adane lami lafiya kuma zai kasance mai sauƙin shiga don tsararraki masu zuwa su ziyarta, su tuna, kuma su girmama har abada.",
+
         "icon": "💝"
       }
     },
+
     "buttons": {
-      "watchDemo": "Watch Demo Video"
+      "watchDemo": "Kalli Bidiyon Gwaji"
     },
+
     "modal": {
-      "title": "How It Works - Demo",
-      "description": "Watch this quick demo to see how easy it is to create a beautiful memorial page",
-      "placeholder": "Replace this with your video player component"
+      "title": "Yadda Yake Aiki - Gwaji",
+
+      "description": "Kalli wannan ɗan gajeren bidiyo don ganin yadda yake da sauƙin ƙirƙirar kyakkyawan shafin tunawa",
+
+      "placeholder": "Maye gurbin wannan da na'urar kunna bidiyon ku"
     }
   },
+
   "testimonials": {
-    "title": "What Families Are Saying",
-    "subtitle": "Real stories from families who have found comfort and healing through our platform",
+    "title": "Abin da Iyalai ke Faɗa",
+
+    "subtitle": "Labaran gaskiya daga iyalai waɗanda suka sami ta'aziyya da waraka ta hanyar dandalinmu",
+
     "testimonials": {
       "sarah": {
         "name": "Sarah Johnson",
-        "role": "Daughter",
-        "content": "Creating a memorial for my father was one of the most healing experiences. The platform made it so easy to gather photos and stories from our entire family. It's become a place we all visit regularly."
+
+        "role": "Diya",
+
+        "content": "Ƙirƙirar shafin tunawa ga mahaifina yana ɗaya daga cikin abubuwan da suka fi ba ni waraka. Dandalin ya sauƙaƙe tattara hotuna da labarai daga duk danginmu. Ya zama wurin da dukanmu muke ziyarta akai-akai."
       },
+
       "michael": {
         "name": "Michael Chen",
-        "role": "Son",
-        "content": "The privacy controls gave us peace of mind, and the beautiful templates helped us create something truly special. Friends and family from around the world could contribute their memories."
+
+        "role": "Da",
+
+        "content": "Ikon sirri ya ba mu kwanciyar hankali, kuma kyawawan tsare-tsaren sun taimaka mana ƙirƙirar wani abu na musamman. Abokai da dangi daga ko'ina cikin duniya sun sami damar ba da gudummawar abubuwan tunawarsu."
       },
+
       "emily": {
         "name": "Emily Rodriguez",
-        "role": "Granddaughter",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+
+        "role": "Jikanya",
+
+        "content": "Na sami damar adana labaran kakata da girke-girken ta a hanyar da za ta dawwama har abada. Ƙungiyar tallafi sun taimaka sosai yayin gudanar da aikin."
       },
+
       "emanuel": {
         "name": "Emanuel Okeke",
-        "role": "Grandson",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+
+        "role": "Jika",
+
+        "content": "Na sami damar adana labaran kakata da girke-girken ta a hanyar da za ta dawwama har abada. Ƙungiyar tallafi sun taimaka sosai yayin gudanar da aikin."
       },
+
       "boma": {
         "name": "Boma George",
-        "role": "Granddaughter",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+
+        "role": "Jikanya",
+
+        "content": "Na sami damar adana labaran kakata da girke-girken ta a hanyar da za ta dawwama har abada. Ƙungiyar tallafi sun taimaka sosai yayin gudanar da aikin."
       },
+
       "tosin": {
         "name": "Tosin Ola",
-        "role": "Grandson",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+
+        "role": "Jika",
+
+        "content": "Na sami damar adana labaran kakata da girke-girken ta a hanyar da za ta dawwama har abada. Ƙungiyar tallafi sun taimaka sosai yayin gudanar da aikin."
       },
+
       "aish": {
         "name": "Aish Usman",
-        "role": "Granddaughter",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+
+        "role": "Jikanya",
+
+        "content": "Na sami damar adana labaran kakata da girke-girken ta a hanyar da za ta dawwama har abada. Ƙungiyar tallafi sun taimaka sosai yayin gudanar da aikin."
       }
     },
+
     "joinFamilies": {
-      "title": "Join Families",
-      "description": "Over 50,000 families have trusted us to help preserve their loved ones' memories. Start creating your memorial today and join our compassionate community."
+      "title": "Haɗu da Iyalai",
+
+      "description": "Sama da iyalai 50,000 sun amince da mu don taimakawa adana abubuwan tunawa na masoyansu. Fara ƙirƙirar shafin tunawarku yau kuma ku shiga cikin al'ummarmu masu tausayi."
     }
   },
+
   "pricing": {
-    "getStarted": "Get Started",
-    "daysOfForever": "days of forever",
+    "getStarted": "Fara Yanzu",
+
+    "daysOfForever": "kwanakin har abada",
+
     "modal": {
-      "plan": "Plan",
-      "featuresIncluded": "Features Included:",
-      "termsAndConditions": "Terms & Conditions",
-      "proceedToPayment": "Proceed to Payment",
-      "agreeTermsMessage": "Please agree to the terms and conditions to proceed with payment"
+      "plan": "Tsari",
+
+      "featuresIncluded": "Abubuwan da ke ciki:",
+
+      "termsAndConditions": "Sharuɗɗa & Ka'idoji",
+
+      "proceedToPayment": "Ci gaba zuwa Biya",
+
+      "agreeTermsMessage": "Da fatan za a amince da sharuɗɗa da ka'idoji don ci gaba da biya"
     },
+
     "renewal": {
-      "oneTimePayment": "One-time Payment",
-      "whatYouGet": "What You Get",
-      "upgradeToLifetime": "Upgrade to Lifetime Access",
-      "loading": "Loading..."
+      "oneTimePayment": "Biya na Sau Ɗaya",
+
+      "whatYouGet": "Abin da Zaku Samu",
+
+      "upgradeToLifetime": "Haɓaka zuwa Samun Dama na Har Abada",
+
+      "loading": "Ana lodawa..."
     },
+
     "payment": {
-      "initializing": "Initializing...",
-      "securePayment": "🔒 Secure payment powered by Paystack"
+      "initializing": "Ana farawa...",
+
+      "securePayment": "🔒 Amintaccen biya ta hannun Paystack"
     },
+
     "subscription": {
       "status": {
         "lifetime": "HAR ABADA",
+
         "active": "Mai Aiki",
+
         "expiringSoon": "Zai Ƙare Ba Da Daɗewa Ba",
+
         "warning": "Yana Ƙarewa",
+
         "critical": "Gaggawa",
+
         "grace": "Lokacin Jin Kai",
+
         "expired": "Ya Ƙare"
       },
+
       "collaboratorAccess": {
         "name": "Damar Mai Hada kai",
+
         "description": "An bai wa damar shiga a matsayin mai hada kai na memorial",
+
         "badge": "Mai Aiki"
       },
+
       "plan": "Shirin Ku",
+
       "description": "Sarrafa biyan kuɗin ku da lissafin kuɗi",
+
       "daysRemaining": "Kwanakin da Suka Rage",
+
       "days": "kwanaki",
+
       "expiresOn": "Yana ƙarewa a ranar",
+
       "lifetimeAccess": "Samun Damar Rayuwa Yana Aiki",
+
       "lifetimeMessage": "Kuna da samun dama ga duk fasalulluka har abada. Babu ƙarshe, babu buƙatar sabuntawa.",
+
       "loading": "Ana lodawa...",
+
       "renew": "Sabunta Yanzu",
+
       "upgrade": "Haɓaka Shiri",
+
       "viewPlans": "Duba Shirye-shiryen",
+
       "noActive": "Ba ku da biyan kuɗi mai aiki.",
+
       "errorTitle": "Ba za a iya loda biyan kuɗi ba",
+
       "errorMessage": "Da fatan za a sabunta shafin ko tuntuɓi tallafi.",
+
       "alert": {
         "warning": "Biyan kuɗin ku yana ƙarewa cikin kwanaki 7. Sabunta yanzu don guje wa katsewa.",
+
         "critical": "⚠️ Mai Muhimmanci: Biyan kuɗin ku yana ƙarewa cikin kwanaki 3! Sabunta nan da nan don ci gaba da samun dama.",
+
         "grace": "⏰ Lokacin Jinƙai Yana Aiki: Biyan kuɗin ku ya ƙare, amma kuna da kwanaki {{days}} don sabuntawa ba tare da rasa dama ba.",
+
         "expired": "Biyan kuɗin ku ya ƙare. Sabunta yanzu don dawo da dama ga duk fasalulluka."
       }
     },
-    "title": "Choose Your Plan",
-    "subtitle": "Select the perfect plan to create a beautiful memorial website",
+
+    "title": "Zaɓi Shirin Ku",
+
+    "subtitle": "Zaɓi cikakken tsari don ƙirƙirar kyakkyawan gidan yanar gizon tunawa",
+
     "plans": {
       "basic": {
-        "name": "Basic",
+        "name": "Na Farko",
+
         "price": "120,000",
-        "period": "/60days",
-        "description": "Perfect for getting started",
+
+        "period": "/kwana60",
+
+        "description": "Ya dace don farawa",
+
         "features": {
-          "photos": "Up to 50 photos",
-          "template": "Basic template",
-          "tributeWall": "Tribute wall",
-          "mobile": "Mobile responsive",
-          "privacy": "Basic privacy controls"
+          "photos": "Hotuna har 50",
+
+          "template": "Tsari na asali",
+
+          "tributeWall": "Bangon girmamawa",
+
+          "mobile": "Mai dacewa da wayar hannu",
+
+          "privacy": "Ikon sirri na asali"
         },
-        "button": "Get Started Free"
+
+        "button": "Fara Kyauta"
       },
+
       "premium": {
-        "name": "Premium",
+        "name": "Na Musamman",
+
         "price": "250,000",
-        "period": "/90days",
-        "description": "Most popular choice",
+
+        "period": "/kwana90",
+
+        "description": "Zaɓin da aka fi so",
+
         "features": {
-          "photos": "Unlimited photos & videos",
-          "template": "Premium templates",
-          "customization": "Advanced customization",
-          "support": "Priority support",
-          "backup": "Download & backup",
-          "analytics": "Analytics dashboard",
-          "domain": "Custom domain"
+          "photos": "Hotuna & bidiyoyi marasa iyaka",
+
+          "template": "Tsare-tsare na musamman",
+
+          "customization": "Babban gyare-gyare",
+
+          "support": "Tallafi na fifiko",
+
+          "backup": "Zazzagewa & madadin (backup)",
+
+          "analytics": "Allon nazari",
+
+          "domain": "Yanki na musamman (Custom domain)"
         },
-        "button": "Choose Premium",
-        "badge": "Most Popular"
+
+        "button": "Zaɓi Na Musamman",
+
+        "badge": "Mafi Shahara"
       },
+
       "family": {
-        "name": "Family",
+        "name": "Na Iyali",
+
         "price": "350,000",
-        "period": "/365days",
-        "description": "For extended families",
+
+        "period": "/kwana365",
+
+        "description": "Don manyan iyalai",
+
         "features": {
-          "photos": "Everything in Premium",
-          "template": "Multiple memorials",
-          "tributeWall": "Family tree integration",
-          "mobile": "Advanced privacy controls",
-          "privacy": "Dedicated support",
-          "support": "Custom branding",
-          "branding": "API access"
+          "photos": "Duk abin da ke cikin Na Musamman",
+
+          "template": "Shafukan tunawa da yawa",
+
+          "tributeWall": "Haɗin bishiyar iyali",
+
+          "mobile": "Ikon sirri mai zurfi",
+
+          "privacy": "Tallafi na musamman",
+
+          "support": "Sanya tambarin ku (Branding)",
+
+          "branding": "Samun damar API"
         },
-        "button": "Choose Family"
+
+        "button": "Zaɓi Na Iyali"
       }
     },
+
     "allPlansInclude": {
-      "title": "All Plans Include",
-      "description": "Free setup assistance, 24/7 customer support, and the peace of mind that your memorial will be preserved forever."
+      "title": "Duk Shirye-shiryen Sun Haɗa Da",
+
+      "description": "Taimakon saiti kyauta, tallafin abokin ciniki na 24/7, da kwanciyar hankali cewa za a adana shafin tunawarku har abada."
     }
   },
+
   "cta": {
-    "title": "Start Creating a Memorial Today",
-    "subtitle": "Join thousands of families who have found comfort in preserving and sharing the memories of their loved ones.",
+    "title": "Fara Ƙirƙirar Shafin Tunawa Yau",
+
+    "subtitle": "Haɗu da dubban iyalai waɗanda suka sami ta'aziyya wajen adanawa da raba abubuwan tunawa na masoyansu.",
+
     "buttons": {
-      "getStarted": "Get Started Free",
-      "viewSample": "View Sample Memorial"
+      "getStarted": "Fara Kyauta",
+
+      "viewSample": "Duba Misalin Tunawa"
     },
-    "reassurance": "No credit card required • Easy setup • Free forever plan available"
+
+    "reassurance": "Ba a buƙatar katin kuɗi • Sauƙin saiti • Akwai shirin kyauta na har abada"
   },
+
   "footer": {
     "links": {
-      "privacy": "Privacy Policy",
-      "terms": "Terms of Service",
-      "support": "Support",
-      "contact": "Contact"
+      "privacy": "Manufar Sirri",
+
+      "terms": "Sharuɗɗan Aiki",
+
+      "support": "Tallafi",
+
+      "contact": "Tuntuɓi"
     },
-    "copyright": "ForeverPages. Created with love to honor every life."
+
+    "copyright": "ForeverPages. An ƙirƙira da ƙauna don girmama kowace rayuwa."
   },
+
   "common": {
-    "loading": "Loading...",
-    "error": "An error occurred",
-    "retry": "Retry",
-    "close": "Close",
-    "save": "Save",
-    "cancel": "Cancel"
+    "loading": "Ana lodawa...",
+
+    "error": "An sami matsala",
+
+    "retry": "Sake gwadawa",
+
+    "close": "Rufe",
+
+    "save": "Ajiye",
+
+    "cancel": "Soke"
   },
+
   "faq": {
-    "title": "Frequently Asked Questions",
-    "subtitle": "Find answers to common questions about creating and managing memorial pages",
+    "title": "Tambayoyin da ake Yawan Yi",
+
+    "subtitle": "Nemo amsoshin tambayoyin gama gari game da ƙirƙira da sarrafa shafukan tunawa",
+
     "items": {
       "memorialDuration": {
-        "question": "How long will the memorial page remain active?",
-        "answer": "Your memorial page will remain active forever. We are committed to preserving these digital legacies indefinitely, ensuring that future generations can always remember and celebrate the lives of their loved ones."
+        "question": "Har yaushe shafin tunawa zai kasance yana aiki?",
+
+        "answer": "Shafin tunawarku zai kasance yana aiki har abada. Mun himmatu wajen adana waɗannan gadon dijital ba tare da iyakancewa ba, muna tabbatar da cewa tsararraki masu zuwa za su iya tunawa da kuma yin bikin rayuwar masoyansu koyaushe."
       },
+
       "contentTypes": {
-        "question": "What type of content can I add to a memorial page?",
-        "answer": "You can add photos, videos, written memories, audio recordings, and important life milestones. Our platform supports various media formats to help you create a comprehensive and meaningful tribute."
+        "question": "Wane irin abun ciki zan iya ƙarawa a shafin tunawa?",
+
+        "answer": "Kuna iya ƙara hotuna, bidiyoyi, abubuwan tunawa da aka rubuta, rikodin sauti, da muhimman lokuta na rayuwa. Dandalinmu yana tallafawa nau'ikan kafofin watsa labarai daban-daban don taimaka muku ƙirƙirar girmamawa mai ma'ana da cikakke."
       },
+
       "privacyControl": {
-        "question": "Can I control who can view the memorial page?",
-        "answer": "Yes, you have full control over the privacy settings. You can make the page public, private with password protection, or share it only with specific people via invitation links."
+        "question": "Shin zan iya sarrafa wanda zai iya ganin shafin tunawa?",
+
+        "answer": "Eh, kuna da cikakken iko kan saitunan sirri. Kuna iya sanya shafin ya zama na jama'a, na sirri tare da kariya ta kalmar sirri, ko raba shi kawai tare da takamaiman mutane ta hanyar hanyoyin gayyata."
       },
+
       "multipleContributors": {
-        "question": "Can multiple people contribute to the same memorial page?",
-        "answer": "Absolutely. You can invite family members and friends to contribute their own memories, photos, and stories. This creates a collaborative space where everyone can share their unique perspective and memories."
+        "question": "Shin mutane da yawa za su iya ba da gudummawa ga shafin tunawa ɗaya?",
+
+        "answer": "Tabbas. Kuna iya gayyatar 'yan uwa da abokai don ba da gudummawar abubuwan tunawarsu, hotuna, da labaransu. Wannan yana haifar da sararin haɗin gwiwa inda kowa zai iya raba ra'ayinsa na musamman da abubuwan tunawa."
       },
+
       "changesAfterCreation": {
-        "question": "Can I make changes to the memorial page after it's created?",
-        "answer": "Yes, you can update and edit the memorial page at any time. Add new content, modify existing information, or update privacy settings whenever needed."
+        "question": "Zan iya yin canje-canje ga shafin tunawa bayan an ƙirƙira shi?",
+
+        "answer": "Eh, kuna iya sabuntawa da gyara shafin tunawa a kowane lokaci. Ƙara sabon abun ciki, gyara bayanan da ke akwai, ko sabunta saitunan sirri a duk lokacin da ake buƙata."
       },
+
       "cost": {
-        "question": "Is there a cost associated with creating a memorial page?",
-        "answer": "We offer both free and premium options. The free version includes essential features, while premium options provide additional storage, advanced customization, and enhanced privacy controls. Our goal is to make digital memorials accessible to everyone."
+        "question": "Shin akwai farashi mai alaƙa da ƙirƙirar shafin tunawa?",
+
+        "answer": "Muna ba da zaɓuɓɓuka na kyauta da na musamman. Sigar kyauta ta haɗa da mahimman abubuwa, yayin da zaɓuɓɓuka na musamman ke ba da ƙarin ajiya, babban gyare-gyare, da ingantaccen ikon sirri. Burinmu shine sanya tunawar dijital ta zama mai sauƙi ga kowa."
       }
     },
+
     "help": {
-      "title": "Still have questions?",
-      "description": "Our support team is here to help you create a beautiful and lasting tribute",
-      "button": "Contact Support"
+      "title": "Har yanzu kuna da tambayoyi?",
+
+      "description": "Ƙungiyar tallafinmu tana nan don taimaka muku ƙirƙirar girmamawa mai kyau da ɗorewa",
+
+      "button": "Tuntuɓi Tallafi"
     }
   },
   "dashboard": {
@@ -457,7 +678,36 @@
         "subtitle": "An gayyace ku don hada kai akan wadannan abubuwan tunawa",
         "ownedBy": "Mallakin {{owner}}",
         "manageMemorial": "Sarrafa Abin Tunawa"
-      }
+      },
+      "metrics": {
+        "totalTemplates": "Total Templates",
+        "totalDownloads": "Total Downloads",
+        "totalRevenue": "Total Revenue",
+        "averageRating": "Average Rating",
+        "totalViews": "Total Views",
+        "uniqueVisitors": "Unique Visitors",
+        "averageTime": "Avg. Time on Page",
+        "conversionRate": "Conversion Rate",
+        "popularTemplates": "Popular Templates",
+        "usageTrends": "Usage Trends",
+        "conversionRateLabel": "Adadin Sauya",
+        "averageSessionDuration": "Tsawon Tunani na Jaki",
+        "bounceRate": "Adadin Dawo"
+      },
+      "charts": {
+        "viewsOverTime": "Views Over Time",
+        "templateUsage": "Template Usage Distribution",
+        "visitorDemographics": "Visitor Demographics",
+        "performanceMetrics": "Performance Metrics"
+      },
+      "periods": {
+        "7days": "Last 7 Days",
+        "30days": "Last 30 Days",
+        "90days": "Last 90 Days",
+        "1year": "Last Year"
+      },
+      "loading": "Loading analytics...",
+      "noData": "No analytics data available yet"
     },
     "gallery": {
       "title": "Gallery na Kafofin Watsa Labarai",
@@ -484,6 +734,8 @@
       "video": "Bidiyo",
       "videos": "Bidiyo",
       "view": "Duba",
+      "edit": "Gyara",
+      "download": "Sauke",
       "delete": "Goge",
       "deleteTitle": "Goge Kafofin Watsa Labarai?",
       "deleteDescription": "Ba za a iya soke wannan aikin ba. Wannan zai goge wannan kafofin watsa labarai daga gallery ɗinka har abada.",
@@ -491,6 +743,9 @@
       "deleting": "Ana goge kafofin watsa labarai...",
       "deleteSuccess": "An goge kafofin watsa labarai cikin nasara",
       "deleteFailed": "An gaza goge kafofin watsa labarai",
+      "savingEdit": "Ana adana hoton da aka gyara...",
+      "editSuccess": "An gyara hoton cikin nasara",
+      "editFailed": "An gaza gyara hoton",
       "cancel": "Soke",
       "dropHere": "Jefa fayiloli anan...",
       "dragDropLibrary": "Loda hotuna da bidiyo zuwa ɗakin karatu",
@@ -529,7 +784,12 @@
       "downloadSuccess": "An fara saukewa",
       "downloadFailed": "Saukewa ya gaza",
       "loadingMore": "Ana loda ƙari...",
-      "allLoaded": "An loda dukkan kafofin watsa labarai"
+      "allLoaded": "An loda dukkan kafofin watsa labarai",
+      "reorder": "Sake tsarawa",
+      "reorderSuccess": "An sake tsara kafofin watsa labarai cikin nasara",
+      "reorderFailed": "An kasa sake tsara kafofin watsa labarai",
+      "reorderMode": "Yanayin Sake Tsarawa",
+      "dragToReorder": "Ja don sake tsarawa"
     },
     "templates": {
       "title": "Samfura na Musamman",
@@ -567,7 +827,9 @@
             "edit": "Shirya",
             "delete": "Goge"
           }
-        }
+        },
+        "title": "Your Templates ({{count}})",
+        "subtitle": "Templates you've created and customized"
       },
       "deleteDialog": {
         "title": "Goge Samfuri",
@@ -575,14 +837,70 @@
         "actions": {
           "delete": "Goge",
           "cancel": "Soke"
-        }
+        },
+        "deleting": "Deleting...",
+        "confirm": "Delete Template"
       },
       "actions": {
         "createSuccess": "An ƙirƙiri samfuri cikin nasara",
         "createError": "An kasa ƙirƙiri samfuri",
         "deleteSuccess": "An goge samfuri cikin nasara",
         "deleteError": "An kasa goge samfuri",
-        "loadError": "An kasa loda samfura"
+        "loadError": "An kasa loda samfura",
+        "preview": "Preview",
+        "edit": "Edit",
+        "duplicate": "Duplicate",
+        "delete": "Delete"
+      },
+      "createButton": "Create Template",
+      "createButtonShort": "Create",
+      "form": {
+        "name": {
+          "label": "Template Name",
+          "placeholder": "Enter template name"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Optional description"
+        },
+        "baseTemplate": {
+          "label": "Base Template"
+        },
+        "creating": "Creating..."
+      },
+      "error": {
+        "title": "Failed to Load Templates"
+      },
+      "failedToLoadBaseTemplates": "Failed to load base templates",
+      "empty": {
+        "title": "No Templates Yet",
+        "description": "Create your first custom template to get started",
+        "createButton": "Create First Template"
+      },
+      "createSuccess": "Template created successfully",
+      "createError": "Failed to create template",
+      "deleteSuccess": "Template deleted successfully",
+      "deleteError": "Failed to delete template",
+      "validation": {
+        "nameRequired": "Template name is required",
+        "nameTooShort": "Template name must be at least 3 characters",
+        "nameTooLong": "Template name cannot exceed 100 characters",
+        "nameInvalidChars": "Template name contains invalid characters",
+        "descriptionTooLong": "Description cannot exceed 500 characters",
+        "descriptionInvalidChars": "Description contains invalid characters",
+        "searchQueryRequired": "Search query is required",
+        "searchQueryTooShort": "Search query must be at least 2 characters",
+        "searchQueryInvalidChars": "Search query contains invalid characters",
+        "colorInvalid": "Invalid color format",
+        "fontSizeInvalid": "Font size must be between 8px and 72px",
+        "spacingInvalid": "Spacing must be between 0px and 100px",
+        "borderRadiusInvalid": "Border radius must be between 0px and 50px",
+        "maxWidthInvalid": "Maximum width must be between 200px and 2000px",
+        "lineHeightInvalid": "Line height must be between 0.8 and 3.0",
+        "customizationInvalid": "Template customization contains invalid values",
+        "importInvalidFormat": "Invalid import file format",
+        "importInvalidData": "Import data contains invalid template configuration",
+        "importFileTooLarge": "Import file is too large (maximum 5MB)"
       }
     },
     "invitations": {
@@ -1163,6 +1481,10 @@
           "title": "Cikakkun Bayanai na Tunawa",
           "description": "Ƙara hotuna da abubuwan tunawa"
         },
+        "customize": {
+          "title": "Ƙarƙira Tsari",
+          "description": "Ƙarƙira launuka da tsari"
+        },
         "review": {
           "title": "Bita",
           "description": "Bita kuma ƙirƙiri tunawa ku"
@@ -1245,6 +1567,52 @@
           }
         }
       },
+      "form": {
+        "saving": "Ana Ajiyewa...",
+        "saved": "Adana",
+        "savedAt": "Adana a {{time}}",
+        "saveFailed": "Gazawan adana"
+      },
+      "review": {
+        "title": "Shirye Lati Ƙirƙiri Tunawa",
+        "description": "Shafin tunawa ku da kyau a shirye Lati ƙirƙira. Koyaushe zai iya gyara kuma ƙara karuwa lokacin gida.",
+        "templateLabel": "Samfuri:",
+        "privacyLabel": "Sirri:",
+        "privacyValue": "Jama'a",
+        "featuresLabel": "Fasaloni:",
+        "featuresValue": "Cikakkar Damar",
+        "publishButton": "Buga Tunawa"
+      },
+      "customizer": {
+        "title": "Ƙarƙira Tsari",
+        "description": "Ƙarƙira launuka, nau'ikan kula da tsari don tunawa ku",
+        "stepDescription": "Ƙarƙira samfurin tunawa ku tare da launuka, nau'ikan kula da zaɓubbukan tsari. Duban canja-canjin ku a cikin aiki.",
+        "reset": "Sake Saita",
+        "colors": "Launuka",
+        "fonts": "Nau'ikan Kula",
+        "layout": "Tsari",
+        "primaryColor": "Babbar Launi",
+        "secondaryColor": "Launi na Gari",
+        "accentColor": "Launi na Kadari",
+        "headerBg": "Baka na Sako",
+        "headerText": "Rubutu na Sako",
+        "bodyBg": "Baka na Jiki",
+        "bodyText": "Rubutu na Jiki",
+        "colorPreview": "Dubawa",
+        "fontFamily": "Dangin Nau'ikan Kula",
+        "headingSize": "Girman Sirim",
+        "bodyFontSize": "Girman Nau'ikan Kula na Jiki",
+        "fontPreview": "Dubawa",
+        "headingExample": "Misali na Sirim",
+        "bodyExample": "Wannan shine rubutu na jiki wanda ke nuna yadda shafin tunawa ku zai kasance tare da zaɓubbukan nau'ikan kula da aka zaɓa.",
+        "spacing": "Nisanci",
+        "borderRadius": "Kewayen Iyaka",
+        "containerWidth": "Girman Abubuwan",
+        "layoutPreview": "Dubawa na Tsari",
+        "showPreview": "Nuna Dubawa na Halin Yanzu",
+        "hidePreview": "Ɓoye Dubawa",
+        "backToEditor": "Koma Ga Mai Gyara"
+      },
       "templates": {
         "classic": {
           "name": "Tunawa na Gargajiya",
@@ -1282,26 +1650,98 @@
           ]
         }
       },
-      "review": {
-        "title": "Bita Tunawa Ku",
-        "subtitle": "Duba duk bayanai kafin ku ƙirƙiri tunawa ku",
-        "sections": {
-          "template": "Samfuri",
-          "basicInfo": "Bayanai na Asali",
-          "memorialDetails": "Cikakkun Bayanai na Tunawa"
+      "loadingTemplates": "Ana lodin Samfurori...",
+      "mustSignInTitle": "Dona Shiga",
+      "mustSignInMessage": "Dole ne ku shiga don samun damar su Samfurori da Gidan Tunawa.",
+      "marketplace": {
+        "signIn": "Shiga",
+        "signinNeeded": "Shiga don samun damar su ƙari Samfurori"
+      },
+      "publish": {
+        "title": "Buga Tunawa",
+        "description": "Ƙirƙiri URL na musamman don shafi tunawa ku",
+        "memorialFor": "Tunawa don:",
+        "slugLabel": "URL Tunawa",
+        "slugPlaceholder": "uwa-kwararau",
+        "slugHint": "3-50 haraffi. Yi amfani da haraffi, lambobi, ribaye, takaici",
+        "invalidSlug": "URL dole ne ya kasance da haraffi 3-50, alphanumeric tare da ribaye/takaici",
+        "invalidSlugError": "Siiyi URL ba daidai ba",
+        "error": "Buga ta gazawa",
+        "successDescription": "An buga tunawa ku cikin nasara. Raba hanyar gadini:",
+        "copy": "Kwafi",
+        "view": "Duba",
+        "done": "Gama",
+        "publishing": "Ana buga...",
+        "publish": "Buga",
+        "cancel": "Soke",
+        "urlCopied": "URL Kwafi!",
+        "copyFailed": "Gazawan kwafi",
+        "success": "Tunawa Bugata!",
+        "validation": {
+          "slugRequired": "URL ana buƙata",
+          "slugTooShort": "URL dole ne ya kasance da haraffi 3 ko fiye",
+          "slugTooLong": "URL ba zai iya wuce haraffi 50 ba",
+          "slugInvalid": "URL zai iya ɗaukar haraffi, lambobi, ribaye da takaici kawai",
+          "slugTaken": "Wannan URL an amfani da shi. Dona gida ɗaya."
+        }
+      },
+      "autoSave": {
+        "saving": "Ana adana...",
+        "saved": "Adana",
+        "error": "Gazawan adana",
+        "lastSaved": "Adana na ƙarshe {{time}}"
+      },
+      "subscription": {
+        "banner": {
+          "gracePeriod": {
+            "title": "Jami'a da ke Karfi",
+            "message": "Jami'a ku za ta karfi a {{days}} kwanaki. Sabunta yanzu don ci gaba da ƙirƙira tunawa."
+          },
+          "expired": {
+            "title": "Jami'a ta Karfi",
+            "message": "Jami'a ku ta karfi. Dona sabunta don ƙirƙira da buga tunawa."
+          },
+          "renewButton": "Sabunta"
         },
-        "messages": {
-          "templateSelected": "An zaɓi samfuri cikin nasara",
-          "basicInfoComplete": "An cika bayanai na asali",
-          "memorialDetailsComplete": "An cika cikakkun bayanai na tunawa",
-          "readyToCreate": "Tunawa ku yana shirye don ƙirƙira",
-          "creatingMemorial": "Ana ƙirƙira tunawa ku...",
-          "memorialCreated": "An ƙirƙiri tunawa cikin nasara!",
-          "redirecting": "Ana jagorantar ku zuwa dashboard ku..."
+        "renewalRedirect": "Ana jagorantar ku zuwa sabunta jami'a...",
+        "renew": "Sabunta Jami'a",
+        "createMemorialExpired": "Jami'a ku ta karfi. Dona sabunta don ƙirƙira sabuwar tunawa."
+      },
+      "validation": {
+        "requiredField": "Wannan fili ana buƙata",
+        "invalidEmail": "Dona shigar da adireshin imel da yake amfani",
+        "alreadyPublished": "Kina da tunawa da an buga ta",
+        "subscriptionRequired": "Jami'a ku ba ta da karfi"
+      },
+      "content": {
+        "biography": {
+          "title": "Tarihin Mutum"
         },
-        "actions": {
-          "edit": "Shirya",
-          "createMemorial": "Ƙirƙiri Tunawa"
+        "epitaph": {
+          "title": "Kamus na Miyi",
+          "default": "Tunawa"
+        },
+        "tributes": {
+          "title": "Girmamawa da Alaƙira",
+          "legacy": "Gada",
+          "lifeStory": "Labarin Rayuwa"
+        },
+        "timeline": {
+          "title": "Jerin Rayuwa",
+          "born": "An Haifi",
+          "passedAway": "Mutu"
+        },
+        "gallery": {
+          "title": "Gida Hotuna"
+        },
+        "familyTree": {
+          "title": "Bishiyar Iyali"
+        },
+        "condolences": {
+          "title": "Tastaba"
+        },
+        "support": {
+          "title": "Goyon Baya da Hadaya"
         }
       }
     },
@@ -1337,118 +1777,386 @@
       }
     },
     "settings": {
-      "title": "Settings",
-      "subtitle": "Manage your account and memorial page preferences",
+      "title": "Saiti",
+      "subtitle": "Sarrafa asusun ku da zaɓuɓɓukan shafin tunawa",
       "tabs": {
-        "profile": "Profile",
-        "memorial": "Memorial",
-        "privacy": "Privacy",
-        "notifications": "Notifications",
-        "advanced": "Advanced"
+        "profile": "Prọfaịlụ",
+        "memorial": "Tunawa",
+        "privacy": "Sirri",
+        "notifications": "Sanarwa",
+        "advanced": "Na Fasaha"
       },
       "profile": {
-        "title": "Profile Information",
-        "description": "Update your personal information and account details",
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "email": "Email Address",
-        "phone": "Phone Number",
-        "relationship": "Relationship to Deceased",
-        "save": "Save Profile Changes"
+        "title": "Bayanin Prọfaịlụ",
+        "description": "Sabunta bayananku na sirri da bayanan asusun ku",
+        "firstName": "Sunan Farko",
+        "lastName": "Sunan Iyali",
+        "email": "Adireshin Imel",
+        "phone": "Lambar Waya",
+        "relationship": "Dangantaka da Mai Mutuwa",
+        "save": "Ajiye Canje-canje na Prọfaịlụ"
       },
       "memorial": {
-        "title": "Memorial Page Settings",
-        "description": "Configure your memorial page appearance and behavior",
-        "pageTitle": "Memorial Page Title",
-        "customUrl": "Custom URL (Optional)",
-        "theme": "Theme",
+        "title": "Saitunan Shafin Tunawa",
+        "description": "Tsara bayar da siffar shafin tunawa ku da yanayin aiki",
+        "pageTitle": "Taken Shafin Tunawa",
+        "customUrl": "URL na Musamman (Na zaɓi)",
+        "theme": "Jigo",
         "publicMemorial": {
-          "label": "Public Memorial",
-          "description": "Allow anyone to view the memorial page"
+          "label": "Tunawa na Jama'a",
+          "description": "Bari kowa ya iya ganin shafin tunawa"
         },
         "allowTributes": {
-          "label": "Allow Tributes",
-          "description": "Let visitors leave tribute messages"
+          "label": "Bari Girmamawa",
+          "description": "Bari baƙi su bari saƙonni na girmamawa"
         },
         "moderateTributes": {
-          "label": "Moderate Tributes",
-          "description": "Review tributes before they appear publicly"
+          "label": "Duba Girmamawa",
+          "description": "Bita girmamawa kafin su bayyana jama'a"
         },
-        "save": "Save Memorial Settings"
+        "save": "Ajiye Saitunan Tunawa"
       },
       "privacy": {
-        "title": "Privacy & Security",
-        "description": "Control who can see and interact with your memorial",
-        "visibility": "Memorial Visibility",
-        "indexing": "Search Engine Indexing",
+        "title": "Sirri da Tsaro",
+        "description": "Sarrafa wanda zai iya ganin da haɗa gida tare da tunawarku",
+        "visibility": "Nuni na Tunawa",
+        "indexing": "Tsarin Injin Bincike",
         "access": {
-          "title": "Access Management",
-          "additionalAdmins": "Additional Administrators",
-          "sendAdminInvites": "Send Admin Invitations"
+          "title": "Sarrafa Shiga",
+          "additionalAdmins": "Mai Gudanarwasa Shi Kuma",
+          "sendAdminInvites": "Aika Gayyatar Mai Gudanarwa"
         },
-        "save": "Save Privacy Settings"
+        "save": "Ajiye Saitunan Sirri"
       },
       "notifications": {
-        "title": "Notification Preferences",
-        "description": "Choose how and when you want to be notified",
+        "title": "Zaɓuɓɓukan Sanarwa",
+        "description": "Zaɓi yadda da yaushe kuke son karɓar sanarwa",
         "email": {
-          "label": "Email Notifications",
-          "description": "Receive updates via email"
+          "label": "Sanarwar Imel",
+          "description": "Karɓi sabuntawa ta imel"
         },
         "types": {
-          "newTributes": "New Tributes",
-          "photoUploads": "Photo Uploads",
-          "rsvpUpdates": "RSVP Updates",
-          "weeklySummary": "Weekly Summary"
+          "newTributes": "Sabbin Girmamawa",
+          "photoUploads": "Loda Hotuna",
+          "rsvpUpdates": "Sabuntawarcin RSVP",
+          "weeklySummary": "Taƙaitaccen Bayani na Makon"
         },
-        "save": "Save Notification Settings"
+        "save": "Ajiye Saitunan Sanarwa"
       },
       "advanced": {
-        "title": "Advanced Settings",
-        "description": "Advanced options and data management",
+        "title": "Saitunan Na Fasaha",
+        "description": "Saitunan fasaha da sarrafa bayanai",
         "export": {
-          "title": "Data Export",
-          "description": "Download all your memorial data including photos, tributes, and information",
-          "button": "Export Memorial Data"
+          "title": "Fitarda Bayanai",
+          "description": "Sauke duk bayananku na tunawa ciki har da hotuna, girmamawa, da bayanai",
+          "button": "Fitarda Bayanan Tunawa"
         },
         "domain": {
-          "title": "Custom Domain",
-          "description": "Connect your own domain name to this memorial (Premium feature)",
-          "connect": "Connect Domain"
+          "title": "Yanki na Musamman",
+          "description": "Haɗa sunan yankin ku ga wannan tunawa (Fasalin Premium)",
+          "connect": "Haɗa Yanki"
         },
         "danger": {
-          "title": "Danger Zone",
-          "archive": "Archive Memorial",
-          "archiveDescription": "Make the memorial private and stop accepting new tributes",
-          "delete": "Delete Memorial",
-          "deleteDescription": "Permanently delete this memorial and all associated data. This cannot be undone."
+          "title": "Wuri Mai Hadari",
+          "archive": "Ajiye Tunawa",
+          "archiveDescription": "Sanya tunawa ta sirri da dakatar da karɓar sabuwar girmamawa",
+          "delete": "Share Tunawa",
+          "deleteDescription": "Goge tunawa da duk bayanai masu alaƙa cikin duri. Wannan aiki ba za a iya komawa ba."
         },
         "account": {
-          "title": "Account Actions",
-          "signOut": "Sign Out"
+          "title": "Ayyukan Asusun",
+          "signOut": "Fita"
         }
       }
     },
     "tributes": {
-      "title": "Tributes & Condolences",
-      "subtitle": "Manage and moderate tribute messages from visitors",
+      "title": "Girmamawa da Ta'aziyyar",
+      "subtitle": "Sarrafa da duba saƙonni na girmamawa daga baƙi",
       "tabs": {
-        "pending": "Pending Review",
-        "approved": "Approved",
-        "flagged": "Flagged",
-        "all": "All Tributes"
+        "pending": "Ana Jira Dubawa",
+        "approved": "An Amince",
+        "flagged": "An Taje",
+        "all": "Duk Girmamawa"
       },
       "actions": {
-        "approve": "Approve",
-        "reject": "Reject",
-        "flag": "Flag"
+        "approve": "Amince",
+        "reject": "Ƙi",
+        "flag": "Taje"
       },
       "empty": {
-        "noPending": "No Pending Tributes",
-        "allReviewed": "All tributes have been reviewed"
+        "noPending": "Babu Girmamawa Ana Jira",
+        "allReviewed": "An riga an duba duk girmamawa"
       },
-      "live": "Live"
+      "live": "Kai Tsaye"
+    },
+    "marketplace": {
+      "title": "Kasuwar Samfurori",
+      "subtitle": "Gano samfurori na premium don inganta tunawarku",
+      "search": {
+        "placeholder": "Bincika samfurori...",
+        "noResults": "Ba a sami samfurori da suka dace da binciken ku ba"
+      },
+      "filters": {
+        "all": "Duk Samfurori",
+        "free": "Kyauta",
+        "premium": "Premium",
+        "categories": {
+          "traditional": "Na Gargajiya",
+          "modern": "Na Zamani",
+          "nature": "Yanayi",
+          "religious": "Na Addini",
+          "military": "Na Soja",
+          "sports": "Wasanni",
+          "music": "Kiɗa",
+          "artistic": "Na Fasaha"
+        },
+        "sort": {
+          "popular": "Mafi Shahada",
+          "newest": "Mafi Sabuwa",
+          "rating": "Mafi Kyawun Ƙima",
+          "priceLow": "Farashi: Ƙarami zuwa Babba",
+          "priceHigh": "Farashi: Babba zuwa Ƙarami"
+        }
+      },
+      "template": {
+        "preview": "Dubawa",
+        "download": "Zazzage",
+        "purchased": "An Saya",
+        "price": "Farashi",
+        "category": "Rukuni",
+        "downloads": "Zazzagewa",
+        "rating": "Ƙima",
+        "features": "Fasali"
+      },
+      "purchase": {
+        "dialog": {
+          "title": "Saya Samfuri",
+          "description": "Kuna kan sayan \"{{name}}\" da {{price}}",
+          "confirm": "Tabbatar da Saya",
+          "cancel": "Soke",
+          "processing": "Ana aiki..."
+        },
+        "success": "An saya samfuri cikin nasara!",
+        "error": "Kuskure wajen sayan samfuri"
+      },
+      "download": {
+        "success": "An zazzage samfuri cikin nasara!",
+        "error": "Kuskure wajen zazzage samfuri"
+      },
+      "loading": "Ana loda samfurori...",
+      "error": "Kuskure wajen loda samfurori"
+    },
+    "customization": {
+      "title": "Keɓancewa na Fasaha",
+      "subtitle": "Keɓance samfurinku tare da saitunan fasaha",
+      "sections": {
+        "colors": "Launuka",
+        "typography": "Rubutu",
+        "layout": "Tsari",
+        "code": "Lambar Musamman"
+      },
+      "colors": {
+        "primary": "Launin Farko",
+        "secondary": "Launin Na Biyu",
+        "accent": "Launin Ƙarfafawa",
+        "background": "Launin Bango",
+        "text": "Launin Rubutu",
+        "reset": "Sake Saitawa zuwa Asali"
+      },
+      "typography": {
+        "fontFamily": "Iyalin Rubutu",
+        "fontSize": "Girman Rubutu",
+        "lineHeight": "Tsayin Layi",
+        "fontWeight": "Nauyin Rubutu",
+        "textAlign": "Daida Rubutu"
+      },
+      "layout": {
+        "containerWidth": "Faɗin Kwandon",
+        "spacing": "Tashi",
+        "borderRadius": "Radius na Iya",
+        "shadows": "Inuwa"
+      },
+      "code": {
+        "css": "CSS na Musamman",
+        "javascript": "JavaScript na Musamman",
+        "html": "HTML na Musamman",
+        "warning": "Gargadi: Lambar musamman na iya karya samfurinku. Yi amfani da shi tare da hankali."
+      },
+      "preview": {
+        "title": "Dubawa Kai Tsaye",
+        "mobile": "Wayar Hannu",
+        "tablet": "Tablet",
+        "desktop": "Kwamfuta",
+        "fullscreen": "Cikakken Allo"
+      },
+      "actions": {
+        "save": "Ajiye Canje-canje",
+        "reset": "Sake Saitawa Duka",
+        "export": "Fitarda Saiti",
+        "import": "Shigo da Saiti",
+        "saving": "Ana ajiyewa...",
+        "resetting": "Ana sake saita..."
+      },
+      "import": {
+        "dialog": {
+          "title": "Shigo da Saitin Keɓancewa",
+          "description": "Manna saitin fitarda ku a ƙasa",
+          "placeholder": "Manna JSON na saiti a nan...",
+          "import": "Shigo",
+          "cancel": "Soke"
+        },
+        "success": "An shigo da saiti cikin nasara!",
+        "error": "Kuskure wajen shigo da saiti. Don Allah duba tsari."
+      },
+      "export": {
+        "success": "An fitarda saiti zuwa allo!",
+        "error": "Kuskure wajen fitarda saiti"
+      },
+      "save": {
+        "success": "An ajiye keɓancewa cikin nasara!",
+        "error": "Kuskure wajen ajiye keɓancewa"
+      },
+      "reset": {
+        "confirm": {
+          "title": "Sake Saitawa Duk Keɓancewa?",
+          "description": "Wannan zai maido da duk saituna zuwa tsoffin su. Wannan aiki ba za a iya komawa ba.",
+          "confirm": "Sake Saitawa Duka",
+          "cancel": "Soke"
+        },
+        "success": "An sake saita duk keɓancewa cikin nasara!",
+        "error": "Kuskure wajen sake saita keɓancewa"
+      },
+      "validation": {
+        "invalidCss": "Tsarin CSS mara inganci",
+        "invalidJs": "Tsarin JavaScript mara inganci",
+        "invalidHtml": "Tsarin HTML mara inganci"
+      }
+    },
+    "tabs": {
+      "myTemplates": "Samfurorina",
+      "marketplace": "Kasuwa",
+      "analytics": "Bincike",
+      "customization": "Keɓancewa"
     }
+  },
+  "analytics": {
+    "title": "Allon Nazari",
+
+    "subtitle": "Bi diddigin hulɗa da ayyuka akan shafukan tunawarku",
+
+    "exportReport": "Fitad da Rahoto",
+
+    "timeRanges": {
+      "7days": "Kwanaki 7 na Ƙarshe",
+
+      "30days": "Kwanaki 30 na Ƙarshe",
+
+      "90days": "Kwanaki 90 na Ƙarshe",
+
+      "1year": "Shekarar da ta Gabata"
+    },
+
+    "fromLastPeriod": "daga lokacin ƙarshe",
+
+    "stats": {
+      "totalVisits": {
+        "title": "Jimlar Ziyara",
+
+        "description": "Dubawar shafi a wannan watan"
+      },
+
+      "uniqueVisitors": {
+        "title": "Masu Ziyara Daban-daban",
+
+        "description": "Baƙi ɗaya-ɗaya"
+      },
+
+      "tributeMessages": {
+        "title": "Saƙonnin Girmamawa",
+
+        "description": "Sabbin girmamawa a wannan makon"
+      },
+
+      "memorialShares": {
+        "title": "Raba Tunawa",
+
+        "description": "Rabawa a kafofin sada zumunta"
+      }
+    },
+
+    "visitorTrends": {
+      "title": "Yanayin Masu Ziyara",
+
+      "description": "Tsarin masu ziyara na yau da kullum a cikin kwanaki 30 da suka gabata"
+    },
+
+    "mostVisited": {
+      "title": "Shafukan da aka fi Ziyarta",
+
+      "description": "Sassan tunawa da ke da yawan zirga-zirga",
+
+      "views": "gani"
+    },
+
+    "recentActivity": {
+      "title": "Ayyukan Kwanan Nan",
+
+      "description": "Ayyukan baya-bayan nan akan shafukan tunawarku"
+    },
+
+    "activity": {
+      "newTribute": "Sabon girmamawa daga {{author}} akan {{memorial}}",
+
+      "memorialCreated": "An ƙirƙiri Tunawa \"{{memorial}}\""
+    },
+
+    "pages": {
+      "memorialHome": "Gidan Tunawa",
+
+      "photoGallery": "Gidan Hoto",
+
+      "tributeWall": "Bangon Girmamawa",
+
+      "serviceInfo": "Bayanin Hidima",
+
+      "biography": "Tarihin Rayuwa"
+    },
+
+    "memorialSummary": {
+      "title": "Takaitaccen Bayanin Tunawa",
+
+      "description": "Mahimman bayanai a kallo ɗaya",
+
+      "viewMemorial": "Duba Tunawa",
+
+      "created": "An Ƙirƙira",
+
+      "status": "Matsayi",
+
+      "photos": "Hotuna",
+
+      "approvedTributes": "Girmamawar da aka Amince",
+
+      "serviceRsvps": "RSVPs na Hidima",
+
+      "memorialPage": "Shafin Tunawa"
+    },
+
+    "collaboratorMemorials": {
+      "title": "Tunawar da Kuke Sarrafawa",
+
+      "subtitle": "An gayyace ku don haɗa kai akan waɗannan tunawar",
+
+      "ownedBy": "Mallakar {{owner}}",
+
+      "manageMemorial": "Sarrafa Tunawa"
+    },
+
+    "loading": "Ana loda nazari...",
+
+    "error": "An kasa loda nazari",
+
+    "noData": "Babu bayanan nazari tukuna"
   },
   "termsAndConditions": {
     "agree": "I agree to the Terms and Conditions",
@@ -1687,7 +2395,7 @@
       "offline": "Offline",
       "syncing": "Syncing..."
     },
-    "pendingActions": "Pending actions: {count}",
+    "pendingActions": "Pending actions: {{count}}",
     "syncProgress": {
       "synchronizing": "Synchronizing...",
       "progress": "Progress: {{current}}/{{total}}",
@@ -1696,13 +2404,13 @@
     },
     "banner": {
       "offlineMessage": "You're currently offline.",
-      "pendingActions": "You have {count} pending action{{count !== 1 ? 's' : ''}} that will sync when you're back online."
+      "pendingActions": "You have {{count}} pending action{{count !== 1 ? 's' : ''}} that will sync when you're back online."
     },
     "lastSync": "Last sync: {{synced}} synced, {{failed}} failed",
     "loading": {
       "offline": "Offline",
       "viewingCached": "Viewing cached images",
-      "actionsQueued": "{count} action{{count !== 1 ? 's' : ''}} queued",
+      "actionsQueued": "{{count}} action{{count !== 1 ? 's' : ''}} queued",
       "willSyncWhenOnline": "will sync when online",
       "savedLocally": "Will be saved locally and synced when online"
     }
@@ -1988,7 +2696,8 @@
       "role": "Matsayi",
       "status": "Hali",
       "invitedAt": "An Gayyata A",
-      "actions": "Ayyuka"
+      "actions": "Ayyuka",
+      "acceptedAt": "Accepted"
     },
     "actions": {
       "changeRole": "Canza Matsayi",
@@ -2002,21 +2711,34 @@
         "selectRole": "Zaɓi matsayi",
         "cancel": "Soke",
         "save": "Ajiye Canje-canje",
-        "saving": "Ana Ajiyewa..."
+        "saving": "Ana Ajiyewa...",
+        "confirm": "Confirm Change",
+        "success": "Role updated successfully",
+        "error": "Failed to update role"
       },
       "remove": {
         "title": "Cire Mai Hada kai?",
         "description": "Kuna tabbata kuna son cire {{email}} daga wannan memorial? Wannan aiki ba za a iya komawa ba.",
         "cancel": "Soke",
         "remove": "Cire",
-        "removing": "Ana Cirewa..."
+        "removing": "Ana Cirewa...",
+        "confirm": "Remove",
+        "success": "Collaborator removed successfully",
+        "error": "Failed to remove collaborator"
+      },
+      "resend": {
+        "success": "Invitation resent successfully",
+        "error": "Failed to resend invitation"
       }
     },
     "validation": {
       "atLeastOneEmail": "Don Allah shigar da aƙalla adireshin imel ɗaya",
       "validEmails": "Don Allah shigar da adiresoshin imel masu inganci",
       "phoneRequired": "Don Allah shigar da aƙalla lambar WhatsApp ɗaya lokacin da aka kunna WhatsApp",
-      "validPhones": "Don Allah shigar da lambobin rayuwa masu inganci tare da lambar ƙasa (misali, +234...)"
+      "validPhones": "Don Allah shigar da lambobin rayuwa masu inganci tare da lambar ƙasa (misali, +234...)",
+      "emailRequired": "Please enter at least one email address",
+      "invalidEmail": "Please enter valid email addresses",
+      "invalidPhone": "Please enter valid phone numbers with country codes"
     },
     "email": {
       "subject": "Gayyata Zuwa Haɗa kai kan {{memorialName}} Memorial",
@@ -2028,7 +2750,15 @@
       "accept": "Karɓi Gayyata",
       "decline": "Ƙi Gayyata",
       "footer": "Idan baku son karɓar gayyatar ba, kuna iya yin watsi da wannan imel.",
-      "questions": "Akwai tambayoyi? Tuntuɓi {{inviterEmail}}"
+      "questions": "Akwai tambayoyi? Tuntuɓi {{inviterEmail}}",
+      "copyLink": "Or copy and paste this link:",
+      "important": "Important:",
+      "expiryNote": "This invitation will expire on {{date}}",
+      "accountNote": "You'll need to sign in or create a ForeverPages account to accept",
+      "accessNote": "After accepting, you'll have immediate access to the memorial page",
+      "ignoreNote": "If you didn't expect this invitation, you can safely ignore this email.",
+      "copyright": "© {year} ForeverPages. All rights reserved.",
+      "securityNote": "This is a secure invitation link. For your security, do not share this email with others."
     },
     "whatsapp": {
       "greeting": "🕊️ Sannu {{recipientName}},",
@@ -2043,7 +2773,17 @@
       "customMessage": "💌 *Saƙo daga {{inviterName}}:*",
       "accept": "✅ Karɓi Gayyata: {{acceptLink}}",
       "decline": "❌ Ƙi Gayyata: {{declineLink}}",
-      "footer": "Idan baku son karɓar gayyatar ba, kuna iya yin watsi da wannan saƙo."
+      "footer": "Idan baku son karɓar gayyatar ba, kuna iya yin watsi da wannan saƙo.",
+      "inviteMessage": "*{inviterName}* has invited you to collaborate on the memorial page for *{memorialName}*",
+      "roleTitle": "Your Role: {roleEmoji} {role}",
+      "acceptPrompt": "Accept this invitation:",
+      "expiryNote": "⏰ This invitation expires on {{date}}",
+      "securityNote": "🔒 Please keep this link secure and do not share it.",
+      "roleEmojis": {
+        "ADMIN": "👑",
+        "EDITOR": "✏️",
+        "CONTRIBUTOR": "📝"
+      }
     },
     "toast": {
       "invitationSent": "Gayyata(r) an aika sauƙi",
@@ -2052,7 +2792,9 @@
       "roleChanged": "Matsayi an canza sauƙi",
       "collaboratorRemoved": "Mai hada kai an cire sauƙi",
       "error": "Wani kuskure ya faru. Don Allah sake gwadawa."
-    }
+    },
+    "noCollaborators": "No collaborators yet",
+    "noCollaboratorsDescription": "Invite team members to help manage this memorial page"
   },
   "livestream": {
     "broadcaster": {
@@ -2131,11 +2873,11 @@
       },
       "info": {
         "viewers": "masu kallo suna kallo",
-        "viewerCount": "mai kallo {count}",
-        "viewerCountPlural": "masu kallo {count}",
-        "startedAt": "Ya fara {time} da suka wuce",
-        "scheduledFor": "An tsara don {date}",
-        "duration": "Tsawon Lokaci: {duration}"
+        "viewerCount": "mai kallo {{count}}",
+        "viewerCountPlural": "masu kallo {{count}}",
+        "startedAt": "Ya fara {{time}} da suka wuce",
+        "scheduledFor": "An tsara don {{date}}",
+        "duration": "Tsawon Lokaci: {{duration}}"
       },
       "quality": {
         "title": "Inganci",
@@ -2160,7 +2902,7 @@
       "chat": {
         "title": "Hira Kai Tsaye",
         "sendMessage": "Aika saƙo",
-        "messagePlaceholder": "Raba tunanin ku na {name}...",
+        "messagePlaceholder": "Raba tunanin ku na {{name}}...",
         "reactions": {
           "heart": "Zuciya",
           "prayer": "Addu'a",
@@ -2172,9 +2914,9 @@
         "locked": "Shigar da kalmar sirri don shiga cikin hira",
         "noMessages": "Babu saƙon halin yanzu. Ku zama na farko da zai raba tunani.",
         "justNow": "Yanzu",
-        "minutesAgo": "{count}m da suka wuce",
-        "hoursAgo": "{count}h da suka wuce",
-        "characterLimit": "{current}/{max} haruffa"
+        "minutesAgo": "{{count}}m da suka wuce",
+        "hoursAgo": "{{count}}h da suka wuce",
+        "characterLimit": "{{current}}/{{max}} haruffa"
       },
       "errors": {
         "connectionLost": "An rasa haɗi. Ana ƙoƙarin sake haɗawa...",
@@ -2187,21 +2929,21 @@
         "title": "Kalli Rikodin",
         "available": "Rikodin yana samuwa",
         "processing": "Ana aiki akan rikodin...",
-        "expiresOn": "Yana samuwa har zuwa {date}",
+        "expiresOn": "Yana samuwa har zuwa {{date}}",
         "download": "Zazzage Rikodin",
-        "downloadSize": "Girma: {size}",
+        "downloadSize": "Girma: {{size}}",
         "expired": "Wannan rikodin ya ƙare"
       }
     },
     "notifications": {
       "streamScheduled": {
         "title": "An Tsara Watsa Shirye-shirye",
-        "message": "An tsara watsa shiryen tunawa kai tsaye don {memorial}",
-        "when": "Lokaci: {date}",
+        "message": "An tsara watsa shiryen tunawa kai tsaye don {{memorial}}",
+        "when": "Lokaci: {{date}}",
         "action": "Ƙara zuwa Kalanda"
       },
       "streamLive": {
-        "title": "KAI TSAYE YANZU: {memorial}",
+        "title": "KAI TSAYE YANZU: {{memorial}}",
         "message": "Watsa shirye-shirye yana farawa yanzu!",
         "action": "Kalli Watsa Shirye-shirye Kai Tsaye",
         "urgent": "Kada ku rasa shi - watsa shirye-shirye yana faruwa yanzu!"
@@ -2210,37 +2952,37 @@
         "title": "Watsa Shirye-shirye Ya Ƙare",
         "message": "Na gode da kasancewar ku tare da mu",
         "stats": "Ƙididdigan Watsa Shirye-shirye",
-        "duration": "Tsawon Lokaci: {duration}",
-        "peakViewers": "Mafi Yawan Masu Kallo: {count}",
-        "totalComments": "Sharhi: {count}",
+        "duration": "Tsawon Lokaci: {{duration}}",
+        "peakViewers": "Mafi Yawan Masu Kallo: {{count}}",
+        "totalComments": "Sharhi: {{count}}",
         "recordingInfo": "Rikodin zai kasance nan ba da jimawa ba"
       },
       "recordingReady": {
         "title": "Rikodin Yana Shirye",
         "message": "Rikodin watsa shiryen tunawa kai tsaye yanzu yana samuwa",
-        "availableUntil": "Yana samuwa har zuwa: {date}",
+        "availableUntil": "Yana samuwa har zuwa: {{date}}",
         "action": "Kalli Rikodin",
         "download": "Zazzage Rikodin",
-        "warning": "Za a share wannan rikodin ta atomatik a ranar {date}"
+        "warning": "Za a share wannan rikodin ta atomatik a ranar {{date}}"
       },
       "recordingExpiring": {
         "title": "Rikodin Yana Ƙarewa Ba Da Jimawa",
-        "message": "Ana buƙatar aiki! Za a share rikodin a cikin kwanaki {days}",
+        "message": "Ana buƙatar aiki! Za a share rikodin a cikin kwanaki {{days}}",
         "action": "Zazzage Yanzu",
         "urgent": "Da zarar an share shi, ba za a iya dawo da wannan rikodin ba"
       },
       "recordingDeleted": {
         "title": "An Share Rikodin",
         "message": "An share rikodin ta atomatik kamar yadda aka tsara",
-        "deletedOn": "An share a: {date}",
+        "deletedOn": "An share a: {{date}}",
         "info": "Shafin tunawa yana ci gaba da aiki tare da duk sauran abun ciki"
       }
     },
     "email": {
       "streamScheduled": {
-        "subject": "An Tsara Watsa Shirye-shirye: {memorial}",
-        "greeting": "Sannu {name},",
-        "intro": "An tsara watsa shiryen tunawa kai tsaye don {memorial}.",
+        "subject": "An Tsara Watsa Shirye-shirye: {{memorial}}",
+        "greeting": "Sannu {{name}},",
+        "intro": "An tsara watsa shiryen tunawa kai tsaye don {{memorial}}.",
         "details": "Bayanan Watsa Shirye-shirye",
         "title": "Taken",
         "when": "Lokaci",
@@ -2267,37 +3009,37 @@
         "recordingAvailability": "Rikodin: Rikodin zai kasance yana samuwa na watanni 6 kuma ana iya zazzage shi koyaushe."
       },
       "recordingReady": {
-        "subject": "Rikodin Yana Shirye: {memorial}",
-        "greeting": "Labari mai daɗi, {name}!",
-        "intro": "Rikodin watsa shiryen tunawa kai tsaye na {memorial} yanzu yana samuwa.",
+        "subject": "Rikodin Yana Shirye: {{memorial}}",
+        "greeting": "Labari mai daɗi, {{name}}!",
+        "intro": "Rikodin watsa shiryen tunawa kai tsaye na {{memorial}} yanzu yana samuwa.",
         "availableUntil": "Yana samuwa har zuwa",
         "watchAction": "Kalli Rikodin",
         "downloadAction": "Zazzage Rikodin",
-        "warning": "Muhimmi: Za a share wannan rikodin ta atomatik a ranar {date}. Zazzage shi idan kuna son ajiye shi har abada."
+        "warning": "Muhimmi: Za a share wannan rikodin ta atomatik a ranar {{date}}. Zazzage shi idan kuna son ajiye shi har abada."
       },
       "recordingExpiring": {
-        "subject": "⚠️ Rikodin Yana Ƙarewa Ba Da Jimawa: {memorial}",
+        "subject": "⚠️ Rikodin Yana Ƙarewa Ba Da Jimawa: {{memorial}}",
         "heading": "Rikodin Yana Ƙarewa Ba Da Jimawa",
         "intro": "Ana Buƙatar Aiki: Zazzage Rikodin Ku",
-        "countdown": "Kwanaki {days} Sauran",
-        "message": "Za a share rikodin a ranar {date}",
-        "detail": "Za a share rikodin watsa shiryen tunawa kai tsaye na {memorial} ta atomatik a cikin kwanaki {days}.",
+        "countdown": "Kwanaki {{days}} Sauran",
+        "message": "Za a share rikodin a ranar {{date}}",
+        "detail": "Za a share rikodin watsa shiryen tunawa kai tsaye na {{memorial}} ta atomatik a cikin kwanaki {{days}}.",
         "action": "Zazzage Yanzu (Kada Ku Rasa Shi!)",
         "urgent": "Muhimmi: Da zarar an share shi, ba za a iya dawo da wannan rikodin ba. Zazzage shi yanzu don adana waɗannan abubuwan tunawa masu daraja har abada.",
         "help": "Idan kuna buƙatar ƙarin lokaci, don Allah tuntuɓi mu ko tsawaita ajiyar rikodin ku a cikin dashboard ɗin ku."
       },
       "recordingDeleted": {
-        "subject": "An Share Rikodin: {memorial}",
+        "subject": "An Share Rikodin: {{memorial}}",
         "heading": "An Share Rikodin",
         "intro": "Lokacin Ajiyar Rikodin Ya Ƙare",
-        "message": "An share rikodin watsa shiryen tunawa kai tsaye na {memorial} ta atomatik kamar yadda aka tsara.",
+        "message": "An share rikodin watsa shiryen tunawa kai tsaye na {{memorial}} ta atomatik kamar yadda aka tsara.",
         "deletedOn": "An share a",
         "note": "Lura: Wannan yana cikin manufarmu ta yau da kullun na ajiyar watanni 6. Muna fata kun sami damar zazzage rikodin idan an buƙata.",
         "info": "Shafin tunawa yana ci gaba da aiki tare da duk sauran abun ciki (hotuna, girmamawa da abubuwan tunawa) da aka adana."
       },
       "footer": {
-        "youreReceiving": "Kuna karɓar wannan saboda kuna haɗe da shafin tunawa na {memorial}.",
-        "copyright": "© {year} ForeverPages. Duk haƙƙoƙin rajista."
+        "youreReceiving": "Kuna karɓar wannan saboda kuna haɗe da shafin tunawa na {{memorial}}.",
+        "copyright": "© {{year}} ForeverPages. Duk haƙƙoƙin rajista."
       }
     },
     "templates": {
@@ -2324,7 +3066,7 @@
         "creating": "Ana ƙirƙira..."
       },
       "list": {
-        "title": "Samfurorinku ({count})",
+        "title": "Samfurorinku {{count}}",
         "subtitle": "Samfurori da kuka ƙirƙira kuma keɓance"
       },
       "error": {
@@ -2343,7 +3085,7 @@
       },
       "deleteDialog": {
         "title": "Share Samfuri",
-        "description": "Shin kun tabbata kuna son share \"{name}\"? Wannan aiki ba za a iya komawa ba.",
+        "description": "Shin kun tabbata kuna son share \"{{name}}\"? Wannan aiki ba za a iya komawa ba.",
         "deleting": "Ana sharewa...",
         "confirm": "Share Samfuri"
       },
@@ -2417,7 +3159,7 @@
       "purchase": {
         "dialog": {
           "title": "Saya Samfuri",
-          "description": "Kuna kan sayan \"{name}\" da {price}",
+          "description": "Kuna kan sayan \"{{name}}\" da {price}",
           "confirm": "Tabbatar da Saya",
           "cancel": "Soke",
           "processing": "Ana aiki..."

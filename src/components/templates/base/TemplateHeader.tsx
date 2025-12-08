@@ -14,32 +14,75 @@ interface TemplateHeaderProps {
 }
 
 export const TemplateHeader: React.FC<TemplateHeaderProps> = ({ memorial }) => {
-  return (
-    <header className="relative">
-      {memorial.coverPhoto && (
-        <div
-          className="h-64 bg-cover bg-center"
-          style={{ backgroundImage: `url(${memorial.coverPhoto})` }}
-        />
-      )}
+  const headerContainerStyle: React.CSSProperties = {
+    backgroundColor: "var(--color-header-bg, white)",
+    boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+  };
 
-      <div className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-6 py-6">
-          <div className="flex items-center space-x-4">
+  const headerInnerStyle: React.CSSProperties = {
+    maxWidth: "var(--container-width, 64rem)",
+    marginLeft: "auto",
+    marginRight: "auto",
+    paddingLeft: "var(--spacing, 1.5rem)",
+    paddingRight: "var(--spacing, 1.5rem)",
+    paddingTop: "1.5rem",
+    paddingBottom: "1.5rem",
+  };
+
+  const profileContainerStyle: React.CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    gap: "1rem",
+  };
+
+  const nameTitleStyle: React.CSSProperties = {
+    fontSize: "var(--font-heading-size, 1.875rem)",
+    fontWeight: "bold",
+    color: "var(--color-header-text, #111827)",
+    fontFamily: "var(--font-family, ui-sans-serif, system-ui)",
+  };
+
+  const memoTextStyle: React.CSSProperties = {
+    color: "var(--color-secondary, #4b5563)",
+    marginTop: "0.25rem",
+    fontFamily: "var(--font-family, ui-sans-serif, system-ui)",
+  };
+
+  const coverImageContainerStyle: React.CSSProperties = {
+    height: "16rem",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundImage: memorial.coverPhoto ? `url(${memorial.coverPhoto})` : undefined,
+  };
+
+  return (
+    <header style={{ position: "relative" }}>
+      {memorial.coverPhoto && <div style={coverImageContainerStyle} />}
+
+      <div style={headerContainerStyle}>
+        <div style={headerInnerStyle}>
+          <div style={profileContainerStyle}>
             {memorial.profilePhoto && (
               <Image
                 src={memorial.profilePhoto}
                 alt={`${memorial.firstName} ${memorial.lastName}`}
-                className="w-20 h-20 rounded-full object-cover border-4 border-white shadow-lg"
+                style={{
+                  width: "5rem",
+                  height: "5rem",
+                  borderRadius: "9999px",
+                  objectFit: "cover",
+                  border: "4px solid white",
+                  boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+                }}
                 width={80}
                 height={80}
               />
             )}
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 style={nameTitleStyle}>
                 {memorial.firstName} {memorial.lastName}
               </h1>
-              <p className="text-gray-600 mt-1">In loving memory</p>
+              <p style={memoTextStyle}>In loving memory</p>
             </div>
           </div>
         </div>

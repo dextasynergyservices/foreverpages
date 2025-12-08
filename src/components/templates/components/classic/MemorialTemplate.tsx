@@ -18,13 +18,31 @@ export const ClassicMemorialTemplate: React.FC<TemplateProps> = ({
 }) => {
   const template = userTemplate.baseTemplate;
 
+  // Get default styles with CSS variables applied
+  const containerStyle: React.CSSProperties = {
+    backgroundColor: "var(--color-body-bg, #f9fafb)",
+    color: "var(--color-body-text, #1f2937)",
+    fontFamily:
+      "var(--font-family, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto)",
+  };
+
+  const mainStyle: React.CSSProperties = {
+    maxWidth: "var(--container-width, 64rem)",
+    marginLeft: "auto",
+    marginRight: "auto",
+    paddingLeft: "var(--spacing, 1.5rem)",
+    paddingRight: "var(--spacing, 1.5rem)",
+    paddingTop: "var(--spacing, 1.5rem)",
+    paddingBottom: "var(--spacing, 1.5rem)",
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={containerStyle}>
       <TemplateNavigation template={template} config={config?.navigation} />
 
       <TemplateHeader template={template} memorial={memorial} config={config?.header} />
 
-      <main className="max-w-4xl mx-auto px-6 py-8">
+      <main style={mainStyle}>
         <HeroSection memorial={memorial} layout="centered" />
 
         {memorial.biography && <BiographySection memorial={memorial} layout="default" />}

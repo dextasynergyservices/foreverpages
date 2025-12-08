@@ -12,16 +12,71 @@ cloudinary.config({
 });
 
 /**
- * DELETE: Remove media from user's library
+ * PATCH: Update media item (e.g., after editing)
  */
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id } = params;
+    const { id } = await params;
+    const body = await request.json();
+    const { url, publicId, thumbnailUrl } = body;
+
+    // Find the media item and verify ownership
+    const media = await prisma.upload.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        uploaderId: true,
+      },
+    });
+
+    if (!media) {
+      return NextResponse.json({ success: false, error: "Media not found" }, { status: 404 });
+    }
+
+    // Check if user is the uploader
+    if (media.uploaderId !== session.user.id) {
+      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 403 });
+    }
+
+    // Update the media record
+    const updatedMedia = await prisma.upload.update({
+      where: { id },
+      data: {
+        url,
+        publicId,
+        thumbnailUrl,
+      },
+    });
+
+    return NextResponse.json({
+      success: true,
+      media: updatedMedia,
+    });
+  } catch (error) {
+    console.error("Error updating media:", error);
+    return NextResponse.json({ success: false, error: "Failed to update media" }, { status: 500 });
+  }
+}
+
+/**
+ * DELETE: Remove media from user's library
+ */
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { id } = await params;
 
     // Find the media item and verify ownership or collaborator access
     const media = await prisma.upload.findUnique({

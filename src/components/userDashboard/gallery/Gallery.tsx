@@ -7,8 +7,25 @@ import { useTranslations } from "@/hooks/useTranslations";
 import { useTheme } from "@/hooks/useTheme";
 import { PlanLimitsCard } from "./PlanLimitsCard";
 import { MediaLightbox } from "./MediaLightbox";
+import { ImageEditorModal } from "./ImageEditorModal";
+import { SortableMediaItem } from "./SortableMediaItem";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  rectSortingStrategy,
+} from "@dnd-kit/sortable";
 
 import {
   DropdownMenu,
@@ -40,6 +57,7 @@ import {
   Grid3x3,
   List,
   ArrowUpDown,
+  Edit,
 } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -55,6 +73,7 @@ interface MediaItem {
   title?: string;
   originalName: string;
   type: "IMAGE" | "VIDEO";
+  sortOrder?: number | null;
   memorial?: {
     id: string;
     name: string;
@@ -105,7 +124,7 @@ interface UploadingFile {
   };
 }
 
-const Gallery = () => {
+const Gallery: React.FC = () => {
   const { t } = useTranslations();
   const { theme } = useTheme();
   const queryClient = useQueryClient();
@@ -119,9 +138,24 @@ const Gallery = () => {
   const [sortBy, setSortBy] = useState<"date" | "name" | "type" | "size">("date");
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [isSelectionMode, setIsSelectionMode] = useState(false);
+  const [editingImage, setEditingImage] = useState<MediaItem | null>(null);
+  const [isDragDropEnabled, setIsDragDropEnabled] = useState(false);
+  const [customOrder, setCustomOrder] = useState<string[]>([]);
 
   const isDark = theme === "dark";
   const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  // Drag & drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // Only activate after 8px movement to avoid conflicts with clicks
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   // Fetch user media with infinite query
   const {
@@ -149,6 +183,22 @@ const Gallery = () => {
     [galleryResponse?.pages]
   );
   const planData: PlanLimitsData | null = galleryResponse?.pages[0]?.data?.plan || null;
+
+  // Load custom order from database on mount
+  useEffect(() => {
+    if (media.length > 0 && customOrder.length === 0) {
+      // Check if media has sortOrder set
+      const mediaWithOrder = media.filter((m: MediaItem) => m.sortOrder != null);
+      if (mediaWithOrder.length > 0) {
+        // Sort by sortOrder and extract IDs
+        const orderedIds = [...media]
+          .filter((m: MediaItem) => m.sortOrder != null)
+          .sort((a: MediaItem, b: MediaItem) => (a.sortOrder || 0) - (b.sortOrder || 0))
+          .map((m: MediaItem) => m.id);
+        setCustomOrder(orderedIds);
+      }
+    }
+  }, [media, customOrder.length]);
 
   // Intersection observer for infinite scroll
   useEffect(() => {
@@ -187,21 +237,32 @@ const Gallery = () => {
       );
     }
 
-    // Sort
-    result = [...result].sort((a: MediaItem, b: MediaItem) => {
-      switch (sortBy) {
-        case "name":
-          return (a.title || a.originalName).localeCompare(b.title || b.originalName);
-        case "type":
-          return a.type.localeCompare(b.type);
-        case "date":
-        default:
-          return 0; // Already sorted by date from API
-      }
-    });
+    // Sort or use custom order
+    if (isDragDropEnabled && customOrder.length > 0) {
+      // Use custom order
+      const orderMap = new Map(customOrder.map((id, index) => [id, index]));
+      result = [...result].sort((a, b) => {
+        const orderA = orderMap.get(a.id) ?? Infinity;
+        const orderB = orderMap.get(b.id) ?? Infinity;
+        return orderA - orderB;
+      });
+    } else {
+      // Regular sorting
+      result = [...result].sort((a: MediaItem, b: MediaItem) => {
+        switch (sortBy) {
+          case "name":
+            return (a.title || a.originalName).localeCompare(b.title || b.originalName);
+          case "type":
+            return a.type.localeCompare(b.type);
+          case "date":
+          default:
+            return 0; // Already sorted by date from API
+        }
+      });
+    }
 
     return result;
-  }, [media, filterType, searchQuery, sortBy]);
+  }, [media, filterType, searchQuery, sortBy, isDragDropEnabled, customOrder]);
 
   // Compress image if needed (>10MB)
   const compressImage = useCallback(async (file: File): Promise<File> => {
@@ -494,6 +555,96 @@ const Gallery = () => {
     }
   };
 
+  const handleSaveEditedImage = async (blob: Blob) => {
+    if (!editingImage) return;
+
+    try {
+      toast.loading(t("dashboard.gallery.savingEdit"), { id: "edit-toast" });
+
+      // Upload edited image to Cloudinary
+      const formData = new FormData();
+      formData.append("file", blob, `edited-${editingImage.originalName}`);
+      formData.append(
+        "upload_preset",
+        process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET_IMAGE || ""
+      );
+      formData.append("folder", "foreverpages");
+
+      const cloudinaryResponse = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!cloudinaryResponse.ok) {
+        throw new Error("Failed to upload edited image");
+      }
+
+      const cloudinaryData = await cloudinaryResponse.json();
+
+      // Update the media item with new URL
+      const updateResponse = await fetch(`/api/user/library/media/${editingImage.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: cloudinaryData.secure_url,
+          publicId: cloudinaryData.public_id,
+          thumbnailUrl: cloudinaryData.secure_url,
+        }),
+      });
+
+      if (!updateResponse.ok) {
+        throw new Error("Failed to update media");
+      }
+
+      // Refresh gallery
+      queryClient.invalidateQueries({ queryKey: ["user-media"] });
+      toast.success(t("dashboard.gallery.editSuccess"), { id: "edit-toast" });
+      setEditingImage(null);
+    } catch (error) {
+      console.error("Error saving edited image:", error);
+      toast.error(t("dashboard.gallery.editFailed"), { id: "edit-toast" });
+    }
+  };
+
+  // Handle drag end for reordering
+  // Mutation to save media order
+  const saveOrderMutation = useMutation({
+    mutationFn: async (mediaOrder: string[]) => {
+      const res = await fetch("/api/user/media/order", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mediaOrder }),
+      });
+      if (!res.ok) throw new Error("Failed to save media order");
+      return res.json();
+    },
+    onSuccess: () => {
+      toast.success(t("dashboard.gallery.reorderSuccess"));
+    },
+    onError: () => {
+      toast.error(t("dashboard.gallery.reorderFailed"));
+    },
+  });
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = filteredMedia.findIndex((item: MediaItem) => item.id === active.id);
+      const newIndex = filteredMedia.findIndex((item: MediaItem) => item.id === over.id);
+
+      const newOrder = arrayMove(filteredMedia, oldIndex, newIndex);
+      const newOrderIds = newOrder.map((item: MediaItem) => item.id);
+      setCustomOrder(newOrderIds);
+
+      // Persist to database
+      saveOrderMutation.mutate(newOrderIds);
+    }
+  };
+
   const toggleSelection = (id: string) => {
     const newSelection = new Set(selectedItems);
     if (newSelection.has(id)) {
@@ -636,6 +787,17 @@ const Gallery = () => {
                   >
                     {t("dashboard.gallery.select")}
                   </Button>
+
+                  {/* Drag & Drop Reorder Mode */}
+                  <Button
+                    variant={isDragDropEnabled ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setIsDragDropEnabled(!isDragDropEnabled)}
+                    disabled={viewMode === "list"}
+                  >
+                    <ArrowUpDown className="h-4 w-4 mr-1" />
+                    Reorder
+                  </Button>
                 </div>
               </div>
 
@@ -713,270 +875,307 @@ const Gallery = () => {
 
       {/* Media Grid */}
       {!isLoadingMedia && !mediaError && (
-        <div
-          className={
-            viewMode === "grid"
-              ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mt-6"
-              : "flex flex-col gap-4 mt-6"
-          }
-        >
-          {/* Upload Card */}
-          <Card
-            className={`group relative overflow-hidden cursor-pointer border-2 border-dashed transition-colors ${
-              isDark
-                ? "bg-black border-white/20 hover:border-white/40"
-                : "bg-white border-gray-300 hover:border-gray-400"
-            }`}
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <div
+            className={
+              viewMode === "grid"
+                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mt-6"
+                : "flex flex-col gap-4 mt-6"
+            }
           >
-            <CardContent className="p-0">
-              <div
-                {...getRootProps()}
-                className={`relative aspect-square flex flex-col items-center justify-center ${
-                  isDragActive ? "bg-primary/10" : ""
-                }`}
-              >
-                <input {...getInputProps()} />
-                <Upload className="h-10 w-10 sm:h-12 sm:w-12 mb-3 sm:mb-4 text-muted-foreground" />
-                <h3 className="text-base sm:text-lg font-semibold mb-2 text-center px-2">
-                  {t("dashboard.gallery.uploadTitle")}
-                </h3>
-                <p className="text-xs sm:text-sm text-muted-foreground text-center px-4 mb-3 sm:mb-4">
-                  {isDragActive
-                    ? t("dashboard.gallery.dropHere")
-                    : t("dashboard.gallery.dragDropLibrary")}
-                </p>
-                <div className="flex gap-2">
-                  <Button
-                    variant={uploadType === "IMAGE" ? "default" : "outline"}
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setUploadType("IMAGE");
-                    }}
-                    className="text-xs sm:text-sm"
-                  >
-                    <ImageIcon className="h-4 w-4 mr-1" />
-                    {t("dashboard.gallery.photo")}
-                  </Button>
-                  <Button
-                    variant={uploadType === "VIDEO" ? "default" : "outline"}
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setUploadType("VIDEO");
-                    }}
-                    className="text-xs sm:text-sm"
-                  >
-                    <VideoIcon className="h-4 w-4 mr-1" />
-                    {t("dashboard.gallery.video")}
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Uploading Files */}
-          {uploadingFiles.map((file) => (
+            {/* Upload Card */}
             <Card
-              key={file.id}
-              className={`group relative overflow-hidden ${isDark ? "bg-black border-white/10" : "bg-white border-gray-200"}`}
-            >
-              <CardContent className="p-0">
-                <div className="relative aspect-square overflow-hidden bg-muted">
-                  <Image
-                    src={file.preview}
-                    alt={file.file.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                  />
-                  {/* Upload Status Overlay */}
-                  <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center p-4">
-                    {file.status === "uploading" && (
-                      <>
-                        <Loader2 className="h-8 w-8 animate-spin text-white mb-3" />
-                        <p className="text-white text-sm mb-3">
-                          {t("dashboard.gallery.uploading")}
-                        </p>
-                        <div className="w-full max-w-[200px]">
-                          <Progress value={file.progress} className="h-2" />
-                          <p className="text-white text-xs text-center mt-1">{file.progress}%</p>
-                        </div>
-                      </>
-                    )}
-                    {file.status === "success" && (
-                      <>
-                        <CheckCircle2 className="h-8 w-8 text-green-500 mb-2" />
-                        <p className="text-white text-sm">{t("dashboard.gallery.uploaded")}</p>
-                      </>
-                    )}
-                    {file.status === "error" && (
-                      <>
-                        <X className="h-8 w-8 text-red-500 mb-2" />
-                        <p className="text-white text-sm">{t("dashboard.gallery.uploadError")}</p>
-                        {file.error && <p className="text-white text-xs mt-1">{file.error}</p>}
-                      </>
-                    )}
-                  </div>
-                </div>
-                <div className="p-4">
-                  <p className="font-semibold truncate text-sm">{file.file.name}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-
-          {/* Existing Media */}
-          {filteredMedia.map((item: MediaItem) => (
-            <Card
-              key={item.id}
-              className={`group relative overflow-hidden ${
-                viewMode === "list" ? "flex flex-row" : ""
-              } ${isDark ? "bg-black border-white/10" : "bg-white border-gray-200"} ${
-                isSelectionMode && selectedItems.has(item.id) ? "ring-2 ring-primary" : ""
+              className={`group relative overflow-hidden cursor-pointer border-2 border-dashed transition-colors ${
+                isDark
+                  ? "bg-black border-white/20 hover:border-white/40"
+                  : "bg-white border-gray-300 hover:border-gray-400"
               }`}
             >
-              <CardContent className={viewMode === "list" ? "p-0 flex flex-row flex-1" : "p-0"}>
-                {/* Media Display */}
+              <CardContent className="p-0">
                 <div
-                  className={`relative ${viewMode === "list" ? "w-48 h-32" : "aspect-square"} overflow-hidden bg-muted`}
+                  {...getRootProps()}
+                  className={`relative aspect-square flex flex-col items-center justify-center ${
+                    isDragActive ? "bg-primary/10" : ""
+                  }`}
                 >
-                  {item.type === "VIDEO" ? (
-                    item.thumbnailUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={item.thumbnailUrl}
-                        alt={item.title || item.originalName}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
-                        <VideoIcon className="h-16 w-16 text-gray-400" />
-                      </div>
-                    )
-                  ) : (
-                    <Image
-                      src={item.thumbnailUrl || item.url}
-                      alt={item.title || item.originalName}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-110"
-                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                    />
-                  )}
-
-                  {/* Selection Checkbox */}
-                  {isSelectionMode && (
-                    <div className="absolute top-2 left-2 z-10">
-                      <input
-                        type="checkbox"
-                        checked={selectedItems.has(item.id)}
-                        onChange={() => toggleSelection(item.id)}
-                        className="w-5 h-5 cursor-pointer"
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                    </div>
-                  )}
-
-                  {/* Type Badge */}
-                  {!isSelectionMode && (
-                    <div className="absolute top-2 left-2">
-                      <div
-                        className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium ${
-                          isDark ? "bg-black/70 text-white" : "bg-white/90 text-black"
-                        }`}
-                      >
-                        {item.type === "IMAGE" ? (
-                          <ImageIcon className="h-3 w-3" />
-                        ) : (
-                          <VideoIcon className="h-3 w-3" />
-                        )}
-                        {item.type === "IMAGE"
-                          ? t("dashboard.gallery.photo")
-                          : t("dashboard.gallery.video")}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Hover Overlay */}
-                  {!isSelectionMode && (
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => setSelectedMedia(item)}
-                        className="mr-2"
-                      >
-                        <Eye className="h-4 w-4 mr-1" />
-                        {t("dashboard.gallery.view")}
-                      </Button>
-                    </div>
-                  )}
-
-                  {/* Actions Menu */}
-                  {!isSelectionMode && (
-                    <div className="absolute top-2 right-2">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="secondary" size="icon" className="h-8 w-8">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => setSelectedMedia(item)}>
-                            <Eye className="h-4 w-4 mr-2" />
-                            {t("dashboard.gallery.view")}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleDownload(item)}>
-                            <Download className="h-4 w-4 mr-2" />
-                            {t("dashboard.gallery.download")}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => setDeleteId(item.id)}
-                            className="text-red-600 focus:text-red-600"
-                          >
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            {t("dashboard.gallery.delete")}
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  )}
-                </div>
-
-                {/* Media Info */}
-                <div
-                  className={`p-3 sm:p-4 ${viewMode === "list" ? "flex-1 flex items-center justify-between" : ""}`}
-                >
-                  <div className="flex-1">
-                    <h3 className="font-semibold truncate mb-1 text-sm sm:text-base">
-                      {item.title || item.originalName}
-                    </h3>
-                    {item.memorial && (
-                      <div className="flex items-center gap-1 text-xs sm:text-sm">
-                        <span className={isDark ? "text-white/60" : "text-gray-500"}>
-                          {item.memorial.name}
-                        </span>
-                      </div>
-                    )}
+                  <input {...getInputProps()} />
+                  <Upload className="h-10 w-10 sm:h-12 sm:w-12 mb-3 sm:mb-4 text-muted-foreground" />
+                  <h3 className="text-base sm:text-lg font-semibold mb-2 text-center px-2">
+                    {t("dashboard.gallery.uploadTitle")}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground text-center px-4 mb-3 sm:mb-4">
+                    {isDragActive
+                      ? t("dashboard.gallery.dropHere")
+                      : t("dashboard.gallery.dragDropLibrary")}
+                  </p>
+                  <div className="flex gap-2">
+                    <Button
+                      variant={uploadType === "IMAGE" ? "default" : "outline"}
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setUploadType("IMAGE");
+                      }}
+                      className="text-xs sm:text-sm"
+                    >
+                      <ImageIcon className="h-4 w-4 mr-1" />
+                      {t("dashboard.gallery.photo")}
+                    </Button>
+                    <Button
+                      variant={uploadType === "VIDEO" ? "default" : "outline"}
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setUploadType("VIDEO");
+                      }}
+                      className="text-xs sm:text-sm"
+                    >
+                      <VideoIcon className="h-4 w-4 mr-1" />
+                      {t("dashboard.gallery.video")}
+                    </Button>
                   </div>
-                  {viewMode === "list" && !isSelectionMode && (
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm" onClick={() => setSelectedMedia(item)}>
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                      <Button variant="outline" size="sm" onClick={() => handleDownload(item)}>
-                        <Download className="h-4 w-4" />
-                      </Button>
-                      <Button variant="outline" size="sm" onClick={() => setDeleteId(item.id)}>
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  )}
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
+
+            {/* Uploading Files */}
+            {uploadingFiles.map((file) => (
+              <Card
+                key={file.id}
+                className={`group relative overflow-hidden ${isDark ? "bg-black border-white/10" : "bg-white border-gray-200"}`}
+              >
+                <CardContent className="p-0">
+                  <div className="relative aspect-square overflow-hidden bg-muted">
+                    <Image
+                      src={file.preview}
+                      alt={file.file.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                    />
+                    {/* Upload Status Overlay */}
+                    <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center p-4">
+                      {file.status === "uploading" && (
+                        <>
+                          <Loader2 className="h-8 w-8 animate-spin text-white mb-3" />
+                          <p className="text-white text-sm mb-3">
+                            {t("dashboard.gallery.uploading")}
+                          </p>
+                          <div className="w-full max-w-[200px]">
+                            <Progress value={file.progress} className="h-2" />
+                            <p className="text-white text-xs text-center mt-1">{file.progress}%</p>
+                          </div>
+                        </>
+                      )}
+                      {file.status === "success" && (
+                        <>
+                          <CheckCircle2 className="h-8 w-8 text-green-500 mb-2" />
+                          <p className="text-white text-sm">{t("dashboard.gallery.uploaded")}</p>
+                        </>
+                      )}
+                      {file.status === "error" && (
+                        <>
+                          <X className="h-8 w-8 text-red-500 mb-2" />
+                          <p className="text-white text-sm">{t("dashboard.gallery.uploadError")}</p>
+                          {file.error && <p className="text-white text-xs mt-1">{file.error}</p>}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <p className="font-semibold truncate text-sm">{file.file.name}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+
+            {/* Existing Media */}
+            <SortableContext
+              items={filteredMedia.map((item: MediaItem) => item.id)}
+              strategy={rectSortingStrategy}
+            >
+              {filteredMedia.map((item: MediaItem) => {
+                const mediaCard = (
+                  <Card
+                    key={item.id}
+                    className={`group relative overflow-hidden ${
+                      viewMode === "list" ? "flex flex-row" : ""
+                    } ${isDark ? "bg-black border-white/10" : "bg-white border-gray-200"} ${
+                      isSelectionMode && selectedItems.has(item.id) ? "ring-2 ring-primary" : ""
+                    }`}
+                  >
+                    <CardContent
+                      className={viewMode === "list" ? "p-0 flex flex-row flex-1" : "p-0"}
+                    >
+                      {/* Media Display */}
+                      <div
+                        className={`relative ${viewMode === "list" ? "w-48 h-32" : "aspect-square"} overflow-hidden bg-muted`}
+                      >
+                        {item.type === "VIDEO" ? (
+                          item.thumbnailUrl ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={item.thumbnailUrl}
+                              alt={item.title || item.originalName}
+                              className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                            />
+                          ) : (
+                            <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
+                              <VideoIcon className="h-16 w-16 text-gray-400" />
+                            </div>
+                          )
+                        ) : (
+                          <Image
+                            src={item.thumbnailUrl || item.url}
+                            alt={item.title || item.originalName}
+                            fill
+                            className="object-cover transition-transform duration-300 group-hover:scale-110"
+                            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                          />
+                        )}
+
+                        {/* Selection Checkbox */}
+                        {isSelectionMode && (
+                          <div className="absolute top-2 left-2 z-10">
+                            <input
+                              type="checkbox"
+                              checked={selectedItems.has(item.id)}
+                              onChange={() => toggleSelection(item.id)}
+                              className="w-5 h-5 cursor-pointer"
+                              onClick={(e) => e.stopPropagation()}
+                            />
+                          </div>
+                        )}
+
+                        {/* Type Badge */}
+                        {!isSelectionMode && (
+                          <div className="absolute top-2 left-2">
+                            <div
+                              className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium ${
+                                isDark ? "bg-black/70 text-white" : "bg-white/90 text-black"
+                              }`}
+                            >
+                              {item.type === "IMAGE" ? (
+                                <ImageIcon className="h-3 w-3" />
+                              ) : (
+                                <VideoIcon className="h-3 w-3" />
+                              )}
+                              {item.type === "IMAGE"
+                                ? t("dashboard.gallery.photo")
+                                : t("dashboard.gallery.video")}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Hover Overlay */}
+                        {!isSelectionMode && (
+                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <Button
+                              variant="secondary"
+                              size="sm"
+                              onClick={() => setSelectedMedia(item)}
+                              className="mr-2"
+                            >
+                              <Eye className="h-4 w-4 mr-1" />
+                              {t("dashboard.gallery.view")}
+                            </Button>
+                          </div>
+                        )}
+
+                        {/* Actions Menu */}
+                        {!isSelectionMode && (
+                          <div className="absolute top-2 right-2">
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="secondary" size="icon" className="h-8 w-8">
+                                  <MoreVertical className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={() => setSelectedMedia(item)}>
+                                  <Eye className="h-4 w-4 mr-2" />
+                                  {t("dashboard.gallery.view")}
+                                </DropdownMenuItem>
+                                {item.type === "IMAGE" && (
+                                  <DropdownMenuItem onClick={() => setEditingImage(item)}>
+                                    <Edit className="h-4 w-4 mr-2" />
+                                    {t("dashboard.gallery.edit")}
+                                  </DropdownMenuItem>
+                                )}
+                                <DropdownMenuItem onClick={() => handleDownload(item)}>
+                                  <Download className="h-4 w-4 mr-2" />
+                                  {t("dashboard.gallery.download")}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => setDeleteId(item.id)}
+                                  className="text-red-600 focus:text-red-600"
+                                >
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  {t("dashboard.gallery.delete")}
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Media Info */}
+                      <div
+                        className={`p-3 sm:p-4 ${viewMode === "list" ? "flex-1 flex items-center justify-between" : ""}`}
+                      >
+                        <div className="flex-1">
+                          <h3 className="font-semibold truncate mb-1 text-sm sm:text-base">
+                            {item.title || item.originalName}
+                          </h3>
+                          {item.memorial && (
+                            <div className="flex items-center gap-1 text-xs sm:text-sm">
+                              <span className={isDark ? "text-white/60" : "text-gray-500"}>
+                                {item.memorial.name}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        {viewMode === "list" && !isSelectionMode && (
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setSelectedMedia(item)}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleDownload(item)}
+                            >
+                              <Download className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setDeleteId(item.id)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+
+                return isDragDropEnabled && viewMode === "grid" ? (
+                  <SortableMediaItem key={item.id} id={item.id}>
+                    {mediaCard}
+                  </SortableMediaItem>
+                ) : (
+                  mediaCard
+                );
+              })}
+            </SortableContext>
+          </div>
+        </DndContext>
       )}
 
       {/* Load More Trigger */}
@@ -1050,6 +1249,16 @@ const Gallery = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Image Editor Modal */}
+      {editingImage && (
+        <ImageEditorModal
+          open={!!editingImage}
+          onClose={() => setEditingImage(null)}
+          imageUrl={editingImage.url}
+          onSave={handleSaveEditedImage}
+        />
+      )}
     </div>
   );
 };

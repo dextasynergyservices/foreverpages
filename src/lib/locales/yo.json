@@ -1,396 +1,396 @@
 {
   "hero": {
-    "title": "Honor Their Memory",
-    "subtitle": "Create beautiful memorial websites where families and friends celebrate lives and share memories together",
+    "title": "Bọwọ Fun Iranti Wọn",
+    "subtitle": "Ṣẹda awọn oju-iwe iranti olorekan nibiti awọn ẹbi ati awọn ọrẹ ṣe ayẹyẹ igbesi aye ati pin awọn iranti pẹlu ara",
     "buttons": {
-      "create": "Create a Memorial Page",
-      "view": "View Sample Memorial"
+      "create": "Ṣẹda Oju-iwe Iranti",
+      "view": "Wo Apẹẹrẹ Iranti"
     }
   },
   "navbar": {
     "logo": "ForeverPages",
     "navigation": {
-      "features": "Features",
-      "home": "Home",
-      "memorials": "Memorial Pages",
-      "howItWorks": "How It Works",
-      "support": "Contact"
+      "features": "Awọn Ẹya",
+      "home": "Ile",
+      "memorials": "Awọn Oju-iwe Iranti",
+      "howItWorks": "Bawo Ni O Ṣiṣẹ",
+      "support": "Kan Si Wa"
     },
     "buttons": {
-      "signIn": "Sign In",
-      "signOut": "Log Out",
-      "dashboard": "Dashboard"
+      "signIn": "Wọle",
+      "signOut": "Jade",
+      "dashboard": "Dasibodu"
     }
   },
   "contact": {
-    "title": "Get In Touch",
-    "subtitle": "Have questions or need support? We're here to help you create a beautiful memorial.",
+    "title": "Kan Si Wa",
+    "subtitle": "Ṣe o ni awọn ibeere tabi nilo atilẹyin? A wa nibi lati ran ọ lọwọ lati ṣẹda iranti olorekan.",
     "info": {
       "email": {
-        "title": "Email Us",
-        "description": "Send us an email anytime"
+        "title": "Firanṣẹ Imeeli Si Wa",
+        "description": "Firanṣẹ imeeli si wa nigbakugba"
       },
       "phone": {
-        "title": "Call Us",
-        "description": "Mon-Fri from 10am to 6pm (WAT)"
+        "title": "Pe Wa",
+        "description": "Ọjọ-iṣẹgun si Ọjọ-ẹti lati 10 aarọ si 6 ale (WAT)"
       },
       "address": {
-        "title": "Office Address"
+        "title": "Adirẹsi Ile-iṣẹ"
       },
       "hours": {
-        "title": "Business Hours",
-        "weekdays": "Monday - Friday",
-        "saturday": "Saturday",
-        "sunday": "Sunday",
-        "closed": "Closed"
+        "title": "Awọn Wakati Iṣẹ",
+        "weekdays": "Ọjọ-iṣẹgun si Ọjọ-ẹti",
+        "saturday": "Ọjọ Abameta",
+        "sunday": "Ọjọ Aiku",
+        "closed": "Ti Pa"
       }
     },
     "form": {
-      "name": "Full Name",
-      "namePlaceholder": "Enter your full name",
-      "email": "Email Address",
-      "emailPlaceholder": "Enter your email address",
-      "subject": "Subject",
-      "subjectPlaceholder": "What is this regarding?",
-      "message": "Message",
-      "messagePlaceholder": "Tell us how we can help you...",
-      "send": "Send Message",
-      "sending": "Sending..."
+      "name": "Orukọ Kikun",
+      "namePlaceholder": "Tẹ orukọ rẹ kikun sii",
+      "email": "Adirẹsi Imeeli",
+      "emailPlaceholder": "Tẹ adirẹsi imeeli rẹ sii",
+      "subject": "Koko-ọrọ",
+      "subjectPlaceholder": "Kini eyi ti o kan?",
+      "message": "Ifiranṣẹ",
+      "messagePlaceholder": "Sọ fun wa bi a ṣe le ran ọ lọwọ...",
+      "send": "Firanṣẹ Ifiranṣẹ",
+      "sending": "N firanṣẹ..."
     }
   },
   "features": {
-    "title": "Compassionate Features",
-    "subtitle": "Everything you need to create a beautiful, lasting tribute that brings people together",
+    "title": "Awọn Ẹya Anu",
+    "subtitle": "Ohun gbogbo ti o nilo lati ṣẹda ọwọ olorekan, ti o duro lailai ti o mu awọn eniyan papọ",
     "items": {
       "memoryGallery": {
-        "title": "Memory Gallery",
-        "description": "Share unlimited photos, videos, and cherished memories in a beautifully organized collection that tells the complete story of your loved one's life journey and special moments captured over time."
+        "title": "Ile-iṣẹ Iranti",
+        "description": "Pin awọn fọto ailopin, fidio, ati awọn iranti ti a ṣe ifẹ si ninu apapọ ti a ṣeto daradara ti o sọ itan kikun ti igbesi aye ẹni ti nifẹ ati awọn akoko pataki ti a mu ni akoko."
       },
       "tributeWall": {
-        "title": "Tribute Wall",
-        "description": "Friends and family can leave heartfelt messages, share personal stories, and offer condolences in a dedicated space that becomes a digital gathering place for everyone who cared about your loved one."
+        "title": "Ogiri Iyin",
+        "description": "Awọn ọrẹ ati ẹbi le fi awọn ifiranṣẹ inu-ọkàn silẹ, pin awọn itan ti ara wọn, ki o si pese awọn ifisọrọ ninu aye ti a pese ti o di ibi ajo aladani fun gbogbo eniyan ti o ṣe akẹkọọ nipa ẹni ti nifẹ rẹ."
       },
       "privacyControls": {
-        "title": "Privacy Controls",
-        "description": "Maintain complete control over who can view and contribute to the memorial with our comprehensive privacy settings that ensure your family's comfort and security during this difficult time."
+        "title": "Awọn Iṣakoso Iṣọkan",
+        "description": "Pa iṣakoso kikun lori eni ti o le wo ati ṣe ifowosowopo si iranti pẹlu awọn eto iṣọkan wa ti o rii daju igbadun ati aabo ẹbi rẹ nigba akoko le riri yii."
       },
       "foreverPreserved": {
-        "title": "Forever Preserved",
-        "description": "Your memorial pages are permanently preserved in our secure cloud storage, ensuring they remain accessible for future generations to visit, remember, and cherish forever without any time limitations."
+        "title": "Ti A Fipamọ Lai Lai",
+        "description": "Awọn oju-iwe iranti rẹ wa ni aifipamọ lailai ninu ibi ipamọ awọ-sanra wa, ti o rii daju pe wọn wa ni wiwa fun awọn iran ti n bọ lati ṣabẹwo, ranti, ati ṣe ifẹ si lailai laisi awọn opin akoko."
       }
     }
   },
   "funeralPages": {
-    "title": "Community Memorials",
-    "subtitle": "See how others are honoring their loved ones with beautiful, personalized memorial pages",
-    "viewMore": "View More Memorials",
-    "featured": "Featured",
-    "tributes": "tributes",
-    "visits": "visits",
-    "by": "By",
-    "memorialImage": "Memorial Image"
+    "title": "Awọn Iranti Agbegbe",
+    "subtitle": "Wo bi awọn elomiran ṣe n bọwọ fun awọn eniyan ti wọn nifẹ pẹlu awọn oju-iwe iranti olorekan, ti ara wọn",
+    "viewMore": "Wo Diẹ Si i Awọn Iranti",
+    "featured": "Ti A Ṣe IṢafihan",
+    "tributes": "awọn iyin",
+    "visits": "awọn ibẹwo",
+    "by": "Lọdọ",
+    "memorialImage": "Aworan Iranti"
   },
   "allFuneralPage": {
-    "title": "Community Memorials",
-    "subtitle": "See how others are honoring their loved ones with beautiful, personalized memorial pages",
-    "by": "By",
-    "view": "View",
-    "noMemorials": "No memorial pages found.",
-    "previous": "Previous",
-    "next": "Next",
-    "searchPlaceholder": "Search by name or family...",
-    "search": "Search"
+    "title": "Awọn Iranti Agbegbe",
+    "subtitle": "Wo bi awọn elomiran ṣe n bọwọ fun awọn eniyan ti wọn nifẹ pẹlu awọn oju-iwe iranti olorekan, ti ara wọn",
+    "by": "Lọdọ",
+    "view": "Wo",
+    "noMemorials": "Ko ri awọn oju-iwe iranti.",
+    "previous": "Ti Kọja",
+    "next": "Itele",
+    "searchPlaceholder": "Wa nipasẹ orukọ tabi ẹbi...",
+    "search": "Wa"
   },
   "howItWorks": {
-    "title": "How It Works",
-    "subtitle": "Creating a beautiful memorial is simple and takes just a few minutes",
+    "title": "Bawo Ni O Ṣiṣẹ",
+    "subtitle": "Ṣiṣẹda iranti olorekan rọrun ati gba awọn iṣẹju diẹ nikan",
     "steps": {
       "create": {
         "number": "01",
-        "title": "Create Your Memorial",
-        "description": "Start by choosing a beautiful template and adding basic information about your loved one. Our intuitive interface makes it easy to get started in just minutes.",
+        "title": "Ṣẹda Iranti Rẹ",
+        "description": "Bẹrẹ nipasẹ yiyan apẹẹrẹ olorekan ati fifikun alaye ipilẹ nipa ẹni ti nifẹ rẹ. Aaye olumulo wa ṣe irọrun lati bẹrẹ laarin awọn iṣẹju nikan.",
         "icon": "✍️"
       },
       "addContent": {
         "number": "02",
-        "title": "Add Photos & Stories",
-        "description": "Upload cherished photos, write meaningful stories, and organize memories in a way that truly honors their life and legacy.",
+        "title": "Fi Awọn Fọto & Awọn Itan",
+        "description": "Gbe awọn fọto ti a ṣe ifẹ si soke, kọ awọn itan ti o ni itumọ, ki o ṣeto awọn iranti ni ọna ti o bọwọ gangan fun igbesi aye ati ọla wọn.",
         "icon": "📸"
       },
       "share": {
         "number": "03",
-        "title": "Share with Family",
-        "description": "Invite family and friends to contribute their own memories, photos, and tributes to create a comprehensive memorial together.",
+        "title": "Pin Pẹlu Ẹbi",
+        "description": "Pe awọn ẹbi ati awọn ọrẹ lati ṣe ifowosowopo awọn iranti, awọn fọto, ati awọn ọwọ ti ara wọn lati ṣẹda iranti akọkọ pẹlu ara.",
         "icon": "👥"
       },
       "preserve": {
         "number": "04",
-        "title": "Preserve Forever",
-        "description": "Your memorial is safely stored and will remain accessible for future generations to visit, remember, and cherish forever.",
+        "title": "Fi Pamọ Lai Lai",
+        "description": "Iranti rẹ wa ni ipamọ lailewu ati yoo ma wa ni wiwa fun awọn iran ti n bọ lati ṣabẹwo, ranti, ati ṣe ifẹ si lailai.",
         "icon": "💝"
       }
     },
     "buttons": {
-      "watchDemo": "Watch Demo Video"
+      "watchDemo": "Wo Fidio Afihan"
     },
     "modal": {
-      "title": "How It Works - Demo",
-      "description": "Watch this quick demo to see how easy it is to create a beautiful memorial page",
-      "placeholder": "Replace this with your video player component"
+      "title": "Bawo Ni O Ṣiṣẹ - Afihan",
+      "description": "Wo afihan yinyin yii lati ri bi o ṣe rọrun lati ṣẹda oju-iwe iranti olorekan",
+      "placeholder": "Rọpo eyi pẹlu apakan olutẹwe fidio rẹ"
     }
   },
   "testimonials": {
-    "title": "What Families Are Saying",
-    "subtitle": "Real stories from families who have found comfort and healing through our platform",
+    "title": "Kini Awọn Ẹbi N Sọ",
+    "subtitle": "Awọn itan gidi lati awọn ẹbi ti o ti ri itunu ati iwosan nipasẹ pẹpẹ wa",
     "testimonials": {
       "sarah": {
         "name": "Sarah Johnson",
-        "role": "Daughter",
-        "content": "Creating a memorial for my father was one of the most healing experiences. The platform made it so easy to gather photos and stories from our entire family. It's become a place we all visit regularly."
+        "role": "Ọmọbinrin",
+        "content": "Ṣiṣẹda iranti fun baba mi jẹ ọkan ninu awọn iriri iwosan julọ. Pẹpẹ naa ṣe irọrun gidigidi lati kọja awọn fọto ati awọn itan lati gbogbo ẹbi wa. O ti di ibi ti a gbogbo ṣabẹwo ni deede."
       },
       "michael": {
         "name": "Michael Chen",
-        "role": "Son",
-        "content": "The privacy controls gave us peace of mind, and the beautiful templates helped us create something truly special. Friends and family from around the world could contribute their memories."
+        "role": "Ọmọkùnrin",
+        "content": "Awọn iṣakoso iṣọkan fun wa ni alaafia, ati awọn apẹẹrẹ olorekan ṣe iranlọwọ fun wa lati ṣẹda nkan pataki gan-an. Awọn ọrẹ ati ẹbi lati ayika agbaye le ṣe ifowosowopo awọn iranti wọn."
       },
       "emily": {
         "name": "Emily Rodriguez",
-        "role": "Granddaughter",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+        "role": "Ọmọ-ọmọbinrin",
+        "content": "Mo ni anfani lati fi awọn itan ati awọn ilana ounjẹ iya-agba mi pamọ ni ọna ti yoo duro lailai. Ẹgbẹ atilẹyin naa jẹ iranlọwọ pupọ ni gbogbo ilana naa."
       },
       "emanuel": {
         "name": "Emanuel Okeke",
-        "role": "Grandson",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+        "role": "Ọmọ-ọmọkùnrin",
+        "content": "Mo ni anfani lati fi awọn itan ati awọn ilana ounjẹ iya-agba mi pamọ ni ọna ti yoo duro lailai. Ẹgbẹ atilẹyin naa jẹ iranlọwọ pupọ ni gbogbo ilana naa."
       },
       "boma": {
         "name": "Boma George",
-        "role": "Granddaughter",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+        "role": "Ọmọ-ọmọbinrin",
+        "content": "Mo ni anfani lati fi awọn itan ati awọn ilana ounjẹ iya-agba mi pamọ ni ọna ti yoo duro lailai. Ẹgbẹ atilẹyin naa jẹ iranlọwọ pupọ ni gbogbo ilana naa."
       },
       "tosin": {
         "name": "Tosin Ola",
-        "role": "Grandson",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+        "role": "Ọmọ-ọmọkùnrin",
+        "content": "Mo ni anfani lati fi awọn itan ati awọn ilana ounjẹ iya-agba mi pamọ ni ọna ti yoo duro lailai. Ẹgbẹ atilẹyin naa jẹ iranlọwọ pupọ ni gbogbo ilana naa."
       },
       "aish": {
         "name": "Aish Usman",
-        "role": "Granddaughter",
-        "content": "I was able to preserve my grandmother's stories and recipes in a way that will last forever. The support team was incredibly helpful throughout the process."
+        "role": "Ọmọ-ọmọbinrin",
+        "content": "Mo ni anfani lati fi awọn itan ati awọn ilana ounjẹ iya-agba mi pamọ ni ọna ti yoo duro lailai. Ẹgbẹ atilẹyin naa jẹ iranlọwọ pupọ ni gbogbo ilana naa."
       }
     },
     "joinFamilies": {
-      "title": "Join Families",
-      "description": "Over 50,000 families have trusted us to help preserve their loved ones' memories. Start creating your memorial today and join our compassionate community."
+      "title": "Darapọ Mọ Awọn Ẹbi",
+      "description": "O pọ ju ẹbi 50,000 ti o fi igbakẹdun wa lati ran wọn lọwọ lati fi awọn iranti awọn eniyan ti wọn nifẹ pamọ. Bẹrẹ ṣiṣẹda iranti rẹ loni ki o si darapọ mọ agbegbe anu wa."
     }
   },
   "pricing": {
-    "getStarted": "Get Started",
-    "daysOfForever": "days of forever",
+    "getStarted": "Bẹrẹ",
+    "daysOfForever": "ọjọ ti lailai",
     "modal": {
-      "plan": "Plan",
-      "featuresIncluded": "Features Included:",
-      "termsAndConditions": "Terms & Conditions",
-      "proceedToPayment": "Proceed to Payment",
-      "agreeTermsMessage": "Please agree to the terms and conditions to proceed with payment"
+      "plan": "Eto",
+      "featuresIncluded": "Awọn Ẹya Ti A Ti Pẹlu:",
+      "termsAndConditions": "Awọn Ofin & Awọn Ọran",
+      "proceedToPayment": "Lọ Siṣanwo",
+      "agreeTermsMessage": "Jọwọ gba laaye si awọn ofin ati awọn Ọran lati tẹsiwaju pẹlu sisanwo"
     },
     "renewal": {
-      "oneTimePayment": "One-time Payment",
-      "whatYouGet": "What You Get",
-      "upgradeToLifetime": "Upgrade to Lifetime Access",
-      "loading": "Loading..."
+      "oneTimePayment": "Isanwo Lẹẹkan",
+      "whatYouGet": "Kini O Gba",
+      "upgradeToLifetime": "Gbegaa si Wiwa Lai Lai",
+      "loading": "N gbe soke..."
     },
     "payment": {
-      "initializing": "Initializing...",
-      "securePayment": "🔒 Secure payment powered by Paystack"
+      "initializing": "N bẹrẹ...",
+      "securePayment": "🔒 Isanwo aabo ti o ni agbara nipasẹ Paystack"
     },
     "subscription": {
       "status": {
         "lifetime": "LAILAI",
-        "active": "N Ṣiṣẹ",
-        "expiringSoon": "Yoo Pari Laipẹ",
-        "warning": "Yoo Pari Laipẹ",
-        "critical": "Kiakia",
-        "grace": "Akoko Aanu",
+        "active": "Ti NṢiṣẹ",
+        "expiringSoon": "Yoo Pari Laipe",
+        "warning": "Yoo Pari Laipe",
+        "critical": "KIAKIA",
+        "grace": "Akoko Anu",
         "expired": "Ti Pari"
       },
       "collaboratorAccess": {
-        "name": "Iwọle Oluranlọwọ",
-        "description": "Iwọle ti a fun ni bi oluranlọwọ iranti",
-        "badge": "N Ṣiṣẹ"
+        "name": "Wiwa Oluranlọwọ",
+        "description": "Wiwa ti a fun ni bi oluranlọwọ iranti",
+        "badge": "Ti NṢiṣẹ"
       },
       "plan": "Eto Rẹ",
       "description": "Ṣakoso iforukọsilẹ ati isanwo rẹ",
       "daysRemaining": "Awọn Ọjọ To Ku",
       "days": "ọjọ",
       "expiresOn": "Yoo pari ni",
-      "lifetimeAccess": "Iwọle Igbesi-aye N Ṣiṣẹ",
-      "lifetimeMessage": "O ni iwọle ailopin si gbogbo awọn ẹya titi lailai. Ko si ipari, ko si awọn isọdọtun ti o nilo.",
-      "loading": "N ṣiṣẹ...",
-      "renew": "Tun Ṣe Bayi",
-      "upgrade": "Gbega Eto",
+      "lifetimeAccess": "Wiwa Igbesi aye Ti NṢiṣẹ",
+      "lifetimeMessage": "O ni wiwa ailopin si gbogbo awọn ẹya titi lailai. Ko si opin, ko si awọn isọdọtun ti o nilo.",
+      "loading": "N gbe soke...",
+      "renew": "Tun Ṣe Nisisiyi",
+      "upgrade": "Gbegaa Eto",
       "viewPlans": "Wo Awọn Eto",
       "noActive": "O ko ni iforukọsilẹ ti nṣiṣẹ.",
       "errorTitle": "Ko le ṣe igbasilẹ iforukọsilẹ",
       "errorMessage": "Jọwọ sọ oju-iwe di titun tabi pe atilẹyin.",
       "alert": {
-        "warning": "Iforukọsilẹ rẹ yoo pari ni ọjọ 7. Tun ṣe bayi lati yago fun idaduro iṣẹ.",
-        "critical": "⚠️ Pataki: Iforukọsilẹ rẹ yoo pari ni ọjọ 3! Tun ṣe lẹsẹkẹsẹ lati ni iwọle.",
-        "grace": "⏰ Akoko Oore-ọfẹ N Ṣiṣẹ: Iforukọsilẹ rẹ ti pari, ṣugbọn o ni ọjọ {{days}} lati tun ṣe laisi isonu iwọle.",
-        "expired": "Iforukọsilẹ rẹ ti pari. Tun ṣe bayi lati gba iwọle pada si gbogbo awọn ẹya."
+        "warning": "Iforukọsilẹ rẹ yoo pari ni ọjọ 7. Tun ṣe nisisiyi lati yago fun idaduro iṣẹ.",
+        "critical": "⚠️ Pataki: Iforukọsilẹ rẹ yoo pari ni ọjọ 3! Tun ṣe lẹsẹkẹsẹ lati ni wiwa.",
+        "grace": "⏰ Akoko Oore-ọfẹ Ti NṢiṣẹ: Iforukọsilẹ rẹ ti pari, ṣugbọn o ni ọjọ {{days}} lati tun ṣe laisi isonu wiwa.",
+        "expired": "Iforukọsilẹ rẹ ti pari. Tun ṣe nisisiyi lati gba wiwa pada si gbogbo awọn ẹya."
       }
     },
-    "title": "Choose Your Plan",
-    "subtitle": "Select the perfect plan to create a beautiful memorial website",
+    "title": "Yan Eto Rẹ",
+    "subtitle": "Yan eto pipe lati ṣẹda oju-ori ayelujara iranti olorekan",
     "plans": {
       "basic": {
-        "name": "Basic",
+        "name": "Ipilẹ",
         "price": "120,000",
-        "period": "/60days",
-        "description": "Perfect for getting started",
+        "period": "/60ọjọ",
+        "description": "Pipe fun bẹrẹ",
         "features": {
-          "photos": "Up to 50 photos",
-          "template": "Basic template",
-          "tributeWall": "Tribute wall",
-          "mobile": "Mobile responsive",
-          "privacy": "Basic privacy controls"
+          "photos": "Titi de fọto 50",
+          "template": "Apẹẹrẹ ipilẹ",
+          "tributeWall": "Ogiri iyin",
+          "mobile": "Agbekalẹ alagbeka",
+          "privacy": "Awọn iṣakoso iṣọkan ipilẹ"
         },
-        "button": "Get Started Free"
+        "button": "Bẹrẹ Ọfẹ"
       },
       "premium": {
-        "name": "Premium",
+        "name": "Giga",
         "price": "250,000",
-        "period": "/90days",
-        "description": "Most popular choice",
+        "period": "/90ọjọ",
+        "description": "Yiyan ti o gbajumo julọ",
         "features": {
-          "photos": "Unlimited photos & videos",
-          "template": "Premium templates",
-          "customization": "Advanced customization",
-          "support": "Priority support",
-          "backup": "Download & backup",
-          "analytics": "Analytics dashboard",
-          "domain": "Custom domain"
+          "photos": "Awọn fọto & fidio ailopin",
+          "template": "Awọn apẹẹrẹ giga",
+          "customization": "Aṣa ilọsiwaju",
+          "support": "Atilẹyin iyipada",
+          "backup": "Ṣe igbasilẹ & ipamọ",
+          "analytics": "Dasibodu iṣiro",
+          "domain": "Agbegbe orukọ ara ẹni"
         },
-        "button": "Choose Premium",
-        "badge": "Most Popular"
+        "button": "Yan Giga",
+        "badge": "Ti o Gbajumo Julọ"
       },
       "family": {
-        "name": "Family",
+        "name": "Ẹbi",
         "price": "350,000",
-        "period": "/365days",
-        "description": "For extended families",
+        "period": "/365ọjọ",
+        "description": "Fun awọn ẹbi ti o fa gun",
         "features": {
-          "photos": "Everything in Premium",
-          "template": "Multiple memorials",
-          "tributeWall": "Family tree integration",
-          "mobile": "Advanced privacy controls",
-          "privacy": "Dedicated support",
-          "support": "Custom branding",
-          "branding": "API access"
+          "photos": "Ohun gbogbo ninu Giga",
+          "template": "Ọpọlọpọ awọn iranti",
+          "tributeWall": "Ifasokan igi ẹbi",
+          "mobile": "Awọn iṣakoso iṣọkan ilọsiwaju",
+          "privacy": "Atilẹyin ti a pese",
+          "support": "Aṣa ami iṣowo",
+          "branding": "Wiwa API"
         },
-        "button": "Choose Family"
+        "button": "Yan Ẹbi"
       }
     },
     "allPlansInclude": {
-      "title": "All Plans Include",
-      "description": "Free setup assistance, 24/7 customer support, and the peace of mind that your memorial will be preserved forever."
+      "title": "Gbogbo Awọn Eto Ni",
+      "description": "Irànlọwọ eto ọfẹ, atilẹyin onibara 24/7, ati alaafia ti iranti rẹ yoo fi pamọ lailai."
     }
   },
   "cta": {
-    "title": "Start Creating a Memorial Today",
-    "subtitle": "Join thousands of families who have found comfort in preserving and sharing the memories of their loved ones.",
+    "title": "Bẹrẹ Ṣiṣẹda Iranti Loni",
+    "subtitle": "Darapọ mọ ọpọlọpọ awọn ẹbi ti o ti ri itunu ninu fifipamọ ati pinpin awọn iranti awọn eniyan ti wọn nifẹ.",
     "buttons": {
-      "getStarted": "Get Started Free",
-      "viewSample": "View Sample Memorial"
+      "getStarted": "Bẹrẹ Ọfẹ",
+      "viewSample": "Wo Apẹẹrẹ Iranti"
     },
-    "reassurance": "No credit card required • Easy setup • Free forever plan available"
+    "reassurance": "Ko si kaadi igbakẹdun nilo • Eto rọrun • Eto ọfẹ lailai wa"
   },
   "footer": {
     "links": {
-      "privacy": "Privacy Policy",
-      "terms": "Terms of Service",
-      "support": "Support",
-      "contact": "Contact"
+      "privacy": "Ilana Iṣọkan",
+      "terms": "Awọn Ofin Iṣẹ",
+      "support": "Atilẹyin",
+      "contact": "Kan Si"
     },
-    "copyright": "ForeverPages. Created with love to honor every life."
+    "copyright": "ForeverPages. Ti a ṣẹda pẹlu ifẹ lati bọwọ fun gbogbo igbesi aye."
   },
   "common": {
-    "loading": "Loading...",
-    "error": "An error occurred",
-    "retry": "Retry",
-    "close": "Close",
-    "save": "Save",
-    "cancel": "Cancel"
+    "loading": "N gbe soke...",
+    "error": "Aṣiṣe kan ṣẹlẹ",
+    "retry": "Gbiyanju lẹẹkansi",
+    "close": "Pa",
+    "save": "Fi pamọ",
+    "cancel": "Fagilee"
   },
   "faq": {
-    "title": "Frequently Asked Questions",
-    "subtitle": "Find answers to common questions about creating and managing memorial pages",
+    "title": "Awọn Ibeere Ti o Wọpọ",
+    "subtitle": "Wa awọn idahun si awọn ibeere ti o wọpọ nipa ṣiṣẹda ati ṣiṣakoso awọn oju-iwe iranti",
     "items": {
       "memorialDuration": {
-        "question": "How long will the memorial page remain active?",
-        "answer": "Your memorial page will remain active forever. We are committed to preserving these digital legacies indefinitely, ensuring that future generations can always remember and celebrate the lives of their loved ones."
+        "question": "Bawo ni oju-iwe iranti yoo ṣiṣẹ titi?",
+        "answer": "Oju-iwe iranti rẹ yoo ma ṣiṣẹ lailai. A ṣe ifọkansi lati fi awọn ọla aladani wọnyi pamọ lailai, rii daju pe awọn iran ti n bọ le ma ranti ki o si ṣe ayẹyẹ awọn igbesi aye awọn eniyan ti wọn nifẹ nigbakigba."
       },
       "contentTypes": {
-        "question": "What type of content can I add to a memorial page?",
-        "answer": "You can add photos, videos, written memories, audio recordings, and important life milestones. Our platform supports various media formats to help you create a comprehensive and meaningful tribute."
+        "question": "Iru kini ti o le fi kun oju-iwe iranti?",
+        "answer": "O le fi awọn fọto, fidio, awọn iranti ti a kọ, awọn igbasilẹ ohun, ati awọn ipa igbesi aye pataki kun. Pẹpẹ wa ṣe atilẹyin awọn fọọmu media oriṣiriṣi lati ran ọ lọwọ lati ṣẹda ọwọ akọkọ ati ti o ni itumọ."
       },
       "privacyControl": {
-        "question": "Can I control who can view the memorial page?",
-        "answer": "Yes, you have full control over the privacy settings. You can make the page public, private with password protection, or share it only with specific people via invitation links."
+        "question": "Ṣe mo le ṣakoso eni ti o le wo oju-iwe iranti?",
+        "answer": "Bẹẹni, o ni iṣakoso kikun lori awọn eto iṣọkan. O le ṣe oju-iwe naa ni gbangba, iṣọkan pẹlu aabo ọrọ aṣina, tabi pin pẹlu awọn eniyan pataki nikan nipasẹ awọn ọna asopọ ipe."
       },
       "multipleContributors": {
-        "question": "Can multiple people contribute to the same memorial page?",
-        "answer": "Absolutely. You can invite family members and friends to contribute their own memories, photos, and stories. This creates a collaborative space where everyone can share their unique perspective and memories."
+        "question": "Ṣe ọpọlọpọ awọn eniyan le ṣe ifowosowopo si oju-iwe iranti kanna?",
+        "answer": "Lai ṣe akiyesi. O le pe awọn ara ẹbi ati awọn ọrẹ lati ṣe ifowosowopo awọn iranti, awọn fọto, ati awọn itan ti ara wọn. Eyi ṣẹda aye ti o ṣiṣẹpọ nibiti gbogbo eniyan le pin iwọn wọn alailẹgbẹ ati awọn iranti."
       },
       "changesAfterCreation": {
-        "question": "Can I make changes to the memorial page after it's created?",
-        "answer": "Yes, you can update and edit the memorial page at any time. Add new content, modify existing information, or update privacy settings whenever needed."
+        "question": "Ṣe mo le ṣe awọn ayipada si oju-iwe iranti lẹhin ti a ṣẹda rẹ?",
+        "answer": "Bẹẹni, o le ṣe imudojuiwọn ati ṣatunṣe oju-iwe iranti nigbakugba. Fi akoonu tuntun kun, ṣatunṣe alaye ti o wa tẹlẹ, tabi ṣe imudojuiwọn awọn eto iṣọkan nigbakugba ti o ba nilo."
       },
       "cost": {
-        "question": "Is there a cost associated with creating a memorial page?",
-        "answer": "We offer both free and premium options. The free version includes essential features, while premium options provide additional storage, advanced customization, and enhanced privacy controls. Our goal is to make digital memorials accessible to everyone."
+        "question": "Ṣe o ni idiyeji ti o ni ibatan pẹlu ṣiṣẹda oju-iwe iranti?",
+        "answer": "A pese awọn aṣayan ọfẹ ati giga. Ẹya ọfẹ naa pẹlu awọn ẹya pataki, lakoko ti awọn aṣayan giga pese ibi ipamọ afikun, aṣa ilọsiwaju, ati awọn iṣakoso iṣọkan ti o ni ilọsiwaju. Ète wa ni lati ṣe awọn iranti aladani ṣiṣe ni wiwa fun gbogbo eniyan."
       }
     },
     "help": {
-      "title": "Still have questions?",
-      "description": "Our support team is here to help you create a beautiful and lasting tribute",
-      "button": "Contact Support"
+      "title": "Ṣe o si ni awọn ibeere?",
+      "description": "Ẹgbẹ atilẹyin wa wa nibi lati ran ọ lọwọ lati ṣẹda ọwọ olorekan ati ti o duro titi",
+      "button": "Kan Si Atilẹyin"
     }
   },
   "dashboard": {
     "noSubscription": {
-      "title": "Kaabo si ForeverPages!",
-      "message": "O ko ni alabapin ti nṣiṣẹ. Jọwọ ra ero kan lati forukọsilẹ ki o si gbadun ForeverPages.",
-      "description": "Ṣẹda awọn oju-iwe iranti lẹwa, pin awọn iranti, ki o si bọwọ fun awọn olufẹ rẹ pẹlu awọn ẹya pataki wa.",
-      "button": "Wo Awọn Ero Ki O Forukọsilẹ"
+      "title": "Kaabọ si ForeverPages!",
+      "message": "O ko ni alabapin ti nṣiṣẹ. Jọwọ ra eto kan lati forukọsilẹ ki o si gbadun ForeverPages.",
+      "description": "Ṣẹda awọn oju-iwe iranti lẹwa, pin awọn iranti, ki o si bọwọ fun awọn eniyan ti o nifẹ rẹ pẹlu awọn ẹya pataki wa.",
+      "button": "Wo Awọn Eto Ki O Forukọsilẹ"
     },
     "accessRevoked": {
-      "title": "Wọnwọn Ti Fagile",
-      "message": "Olunilaja iranti ti fagile wọnwọn rẹ gẹgẹbi oluranlọwọ.",
-      "description": "Forukọsilẹ lati ṣẹda iranti tirẹ ki o si gbadun wọnwọn ni kikun si awọn ẹya ForeverPages.",
-      "button": "Wo Awọn Ero Alabapin"
+      "title": "Wiwa Ti A Ti Fagile",
+      "message": "Oninu iranti ti fagile wiwa rẹ gẹgẹbi oluranlọwọ.",
+      "description": "Forukọsilẹ lati ṣẹda iranti tirẹ ki o si gbadun wiwa ni kikun si awọn ẹya ForeverPages.",
+      "button": "Wo Awọn Eto Alabapin"
     },
     "sidebar": {
       "brand": "ForeverPages",
-      "collapse": "Pa sidebar ti",
-      "expand": "Fẹ sidebar",
+      "collapse": "Pa ẹgbẹ ẹgbẹ lile",
+      "expand": "Fẹ ẹgbẹ ẹgbẹ lile",
       "logout": "Jade kuro",
-      "close": "Pa akojọ aṣayan ti",
-      "navLabel": "Lilọ kiri dashboard",
+      "close": "Pa akojọ aṣayan",
+      "navLabel": "Lilọ kiri dasibodu",
       "nav": {
-        "analytics": "Itupalẹ",
-        "gallery": "Ile Iṣẹ",
-        "builder": "Olutunu Isinku",
-        "invitations": "Awọn Ifiwepe",
+        "analytics": "Iṣiro",
+        "gallery": "Ile-iṣẹ",
+        "builder": "Olutọpa Iranti",
+        "invitations": "Awọn Ipe",
         "tributes": "Awọn Ọwọ",
-        "templates": "Àwọn Àdàkọ",
+        "templates": "Awọn Apẹẹrẹ",
         "settings": "Awọn Eto"
       }
     },
     "analytics": {
-      "title": "Dashboard Itupalẹ",
-      "subtitle": "Tọpinpin ifaramọ ati iṣẹ lori awọn oju-iwe iranti rẹ",
-      "exportReport": "Gbe Ijabọ Jade",
+      "title": "Dasibodu Iṣiro",
+      "subtitle": "Tọpa ifaramọ ati iṣẹ lori awọn oju-iwe iranti rẹ",
+      "exportReport": "Ṣe Ijabọ Jade",
       "timeRanges": {
         "7days": "Ọjọ 7 to kọja",
         "30days": "Ọjọ 30 to kọja",
@@ -398,7 +398,7 @@
         "1year": "Ọdun to kọja"
       },
       "fromLastPeriod": "lati akoko to kọja",
-      "error": "Ko ṣee ṣe lati gbe data itupalẹ",
+      "error": "Ko ṣee ṣe lati gbe data iṣiro",
       "stats": {
         "totalVisits": {
           "title": "Apapọ Awọn Ibẹwo",
@@ -419,7 +419,7 @@
       },
       "visitorTrends": {
         "title": "Awọn Aṣa Alejo",
-        "description": "Awọn alejo ojoojumọ ni ọjọ 30 sẹyin"
+        "description": "Awọn alejo ojoojumọ ni ọjọ 30 sẹhin"
       },
       "mostVisited": {
         "title": "Awọn Oju-iwe Ti O Wọ Julọ",
@@ -436,7 +436,7 @@
       },
       "pages": {
         "memorialHome": "Ile Iranti",
-        "photoGallery": "Ile-ikawe Aworan",
+        "photoGallery": "Ile-iṣẹ Aworan",
         "tributeWall": "Ogiri Iyin",
         "serviceInfo": "Alaye Iṣẹ",
         "biography": "Itan-akọọlẹ Igbesi Aye"
@@ -453,14 +453,43 @@
         "memorialPage": "Oju-iwe Iranti"
       },
       "collaboratorMemorials": {
-        "title": "Awọn Iranti Ti O Nran Lọwọ Lati Sakoso",
+        "title": "Awọn Iranti Ti O Nran Lọwọ Lati Ṣakoso",
         "subtitle": "A ti pe ọ lati ṣe ifowosowopo lori awọn iranti wọnyi",
         "ownedBy": "Ti {{owner}} ni",
-        "manageMemorial": "Sakoso Iranti"
-      }
+        "manageMemorial": "Ṣakoso Iranti"
+      },
+      "metrics": {
+        "totalTemplates": "Apapọ Awọn Apẹẹrẹ",
+        "totalDownloads": "Apapọ Awọn Igbasilẹ",
+        "totalRevenue": "Apapọ Owó Wọlé",
+        "averageRating": "Iwọn Idaniloju Apapọ",
+        "totalViews": "Apapọ Awọn Wiwo",
+        "uniqueVisitors": "Awọn Alejo Alailẹgbẹ",
+        "averageTime": "Iwọn. Akoko Lori Oju-iwe",
+        "conversionRate": "Iwọn Iyipada",
+        "popularTemplates": "Awọn Apẹẹrẹ Gbajumo",
+        "usageTrends": "Awọn Iṣe Lilo",
+        "conversionRateLabel": "Iwọn Iyipada",
+        "averageSessionDuration": "Iwọn Apapọ Akoko Apaṣẹ",
+        "bounceRate": "Iwọn Gigba"
+      },
+      "charts": {
+        "viewsOverTime": "Awọn Wiwo Lori Akoko",
+        "templateUsage": "Ipinsisẹ Lilo Apẹẹrẹ",
+        "visitorDemographics": "Awọn Alaye Alejo",
+        "performanceMetrics": "Awọn Iwọn Iṣẹ"
+      },
+      "periods": {
+        "7days": "Ọjọ 7 Ti o Kọja",
+        "30days": "Ọjọ 30 Ti o Kọja",
+        "90days": "Ọjọ 90 Ti o Kọja",
+        "1year": "Ọdun Ti o Kọja"
+      },
+      "loading": "N gbe iṣiro soke...",
+      "noData": "Ko si data iṣiro ti o wa sibẹ sibẹ"
     },
     "gallery": {
-      "title": "Ile Iṣẹ Awọn Aworan ati Fidio",
+      "title": "Ile-iṣẹ Awọn Aworan ati Fidio",
       "subtitle": "Wo ati ṣakoso gbogbo awọn aworan ati fidio rẹ",
       "uploadMedia": "Gbe Aworan ati Fidio Soke",
       "uploadDialogTitle": "Gbe Aworan ati Fidio Soke",
@@ -472,9 +501,9 @@
       "uploadError": "Aṣiṣe ninu gbigbe soke",
       "uploading": "N gbe soke...",
       "uploaded": "Ti gbe soke!",
-      "loading": "N ṣiṣẹ awọn aworan ati fidio rẹ...",
-      "errorTitle": "Kuna lati ṣiṣẹ awọn aworan ati fidio",
-      "errorDesc": "Jọwọ gbiyanju lati tun oju-iwe naa ṣe",
+      "loading": "N gbe awọn aworan ati fidio rẹ soke...",
+      "errorTitle": "Kuna lati gbe awọn aworan ati fidio soke",
+      "errorDesc": "Jọwọ gbiyanju lati sọ oju-iwe naa di titun",
       "empty": "Ko si aworan ati fidio sibẹ",
       "emptyDesc": "Bẹrẹ gbigbe aworan ati fidio soke si awọn oju-iwe iranti rẹ",
       "search": "Wa awọn aworan ati fidio...",
@@ -484,6 +513,8 @@
       "video": "Fidio",
       "videos": "Awọn Fidio",
       "view": "Wo",
+      "edit": "Ṣatunkọ",
+      "download": "Gba silẹ",
       "delete": "Pa rẹ",
       "deleteTitle": "Pa Aworan/Fidio Rẹ?",
       "deleteDescription": "A ko le ṣe atunṣe iṣe yii. Eyi yoo pa aworan/fidio yii rẹ lailai lati ile-iṣẹ rẹ.",
@@ -491,9 +522,12 @@
       "deleting": "N pa aworan/fidio rẹ...",
       "deleteSuccess": "A ti pa aworan/fidio rẹ ni aṣeyọri",
       "deleteFailed": "Kuna lati pa aworan/fidio rẹ",
+      "savingEdit": "Nfipamọ aworan ti a ṣatunkọ...",
+      "editSuccess": "Aworan ti ṣatunkọ ni aṣeyọri",
+      "editFailed": "Kuna lati ṣatunkọ aworan",
       "cancel": "Fagilee",
       "dropHere": "Ju awọn faili silẹ nibi...",
-      "dragDropLibrary": "Gbe aworan ati fidio soke si ile-ikawe rẹ",
+      "dragDropLibrary": "Gbe aworan ati fidio soke si ile-iṣẹ rẹ",
       "labels": {
         "selectFiles": "Yan Awọn Faili",
         "titleOptional": "Akọle (Aṣayan)"
@@ -505,12 +539,12 @@
         "delete": "Pa rẹ"
       },
       "planLimits": {
-        "planUsage": "Lilo Ero",
+        "planUsage": "Lilo Eto",
         "photos": "Awọn Aworan",
         "videos": "Awọn Fidio",
-        "used": "lo",
-        "remaining": "to ku",
-        "storageWarning": "Ibi ipamọ rẹ n dinku. Ronu lati ṣe igbesoke ero rẹ."
+        "used": "ti a lo",
+        "remaining": "ti o ku",
+        "storageWarning": "Ibi ipamọ rẹ n dinku. Ronu lati ṣe igbegaa eto rẹ."
       },
       "sort": "Ṣeto",
       "sortDate": "Ṣeto nipasẹ Ọjọ",
@@ -525,65 +559,70 @@
       "bulkDeleteSingle": "A ti pa ohun {{count}} rẹ ni aṣeyọri",
       "bulkDeleteMultiple": "A ti pa awọn ohun {{count}} rẹ ni aṣeyọri",
       "bulkDeleteFailed": "Kuna lati pa awọn ohun ti a yan rẹ",
-      "download": "Gba Silẹ",
-      "downloadSuccess": "Gbigba silẹ ti bẹrẹ",
-      "downloadFailed": "Gbigba silẹ kuna",
-      "loadingMore": "N ṣiṣẹ diẹ sii...",
-      "allLoaded": "Gbogbo awọn aworan ati fidio ti wa"
+      "download": "Ṣe Igbasilẹ",
+      "downloadSuccess": "Gbigbasilẹ ti bẹrẹ",
+      "downloadFailed": "Gbigbasilẹ kuna",
+      "loadingMore": "N gbe diẹ sii soke...",
+      "allLoaded": "Gbogbo awọn aworan ati fidio ti wa",
+      "reorder": "Tun ṣe atunṣe",
+      "reorderSuccess": "A ti ṣe atunṣe awọn media ni ifiṣẹ",
+      "reorderFailed": "Kuna lati ṣe atunṣe awọn media",
+      "reorderMode": "Ipo Atunṣe",
+      "dragToReorder": "Fa lati ṣe atunṣe"
     },
     "invitations": {
-      "title": "Awọn Ifiwepe Isinmi",
-      "subtitle": "Firanṣẹ awọn ifiwepe ki o ṣakoso awọn idahun fun awọn isinmi iranti",
+      "title": "Awọn Ipe Iṣinmi",
+      "subtitle": "Firanṣẹ awọn ipe ki o ṣakoso awọn idahun fun awọn iṣinmi iranti",
       "tabs": {
-        "create": "Ṣẹda Ifiwepe",
-        "manage": "Ṣakoso Awọn Ifiwepe",
+        "create": "Ṣẹda Ipe",
+        "manage": "Ṣakoso Awọn Ipe",
         "guests": "Awọn Alejo",
-        "analytics": "Itupalẹ",
+        "analytics": "Iṣiro",
         "rsvp": "Awọn Idahun RSVP",
         "overview": "Akopọ"
       },
       "empty": {
         "noMemorials": {
           "title": "Ko Si Oju-iwe Iranti",
-          "description": "O nilo lati ṣẹda oju-iwe iranti ṣaaju ki o to le firanṣẹ awọn ifiwepe. Awọn oju-iwe iranti n bọwọ fun igbesi aye awọn olufe rẹ.",
+          "description": "O nilo lati ṣẹda oju-iwe iranti ṣaaju ki o to le firanṣẹ awọn ipe. Awọn oju-iwe iranti n bọwọ fun igbesi aye awọn eniyan ti o nifẹ rẹ.",
           "action": "Ṣẹda Oju-iwe Iranti"
         },
         "noInvitations": {
-          "title": "A Ko Ti Fi Ifiwepe Kankan Ranṣẹ",
-          "description": "Bẹrẹ lati pe awọn ẹbi ati ọrẹ lati wo ati ṣe alabapin si awọn oju-iwe iranti rẹ. O le firanṣẹ awọn ifiwepe nipasẹ imeeli tabi WhatsApp.",
-          "action": "Fi Ifiwepe Akọkọ Rẹ Ranṣẹ"
+          "title": "A Ko Ti Fi Ipe Kankan Ranṣẹ",
+          "description": "Bẹrẹ lati pe awọn ẹbi ati ọrẹ lati wo ati ṣe alabapin si awọn oju-iwe iranti rẹ. O le firanṣẹ awọn ipe nipasẹ imeeli tabi WhatsApp.",
+          "action": "Fi Ipe Akọkọ Rẹ Ranṣẹ"
         },
         "noRecipients": {
           "title": "Ko Si Olugba Ti A Ṣafikun",
-          "description": "Ṣafikun o kere ju olugba kan lati firanṣẹ awọn ifiwepe. O le ṣafikun imeeli wọn, nọmba foonu, tabi mejeji.",
+          "description": "Ṣafikun o kere ju olugba kan lati firanṣẹ awọn ipe. O le ṣafikun imeeli wọn, nọmba foonu, tabi mejeeji.",
           "hint": "Tẹ bọtini 'Ṣafikun Olugba' loke lati bẹrẹ"
         },
         "noResults": {
           "title": "Ko Ri Abajade Kankan",
-          "description": "Ko si ifiwepe ti o baamu pẹlu \"{{query}}\". Gbiyanju lati ṣatunṣe wiwa rẹ tabi awọn ajẹwo.",
+          "description": "Ko si ipe ti o baamu pẹlu \"{{query}}\". Gbiyanju lati ṣatunṣe wiwa rẹ tabi awọn ajẹwo.",
           "action": "Pa Wiwa Rẹ"
         }
       },
       "wizard": {
-        "step1Title": "Alaye Ifiwepe",
+        "step1Title": "Alaye Ipe",
         "step2Title": "Ṣafikun Awọn Olugba",
         "step3Title": "Ṣayẹwo ati Fi Ranṣẹ",
         "stepProgress": "Igbesẹ {{current}} ninu {{total}}",
-        "step1Info": "Yan oju-iwe iranti ki o ṣe adani ifiranṣẹ ifiwepe rẹ. O le ṣafikun ifọwọkan ti ara ẹni pẹlu akọle ati ifiranṣẹ adani.",
-        "step2Info": "Ṣafikun awọn alejo ti o fẹ lati pe si iṣẹ iranti. Wọn yoo gba ifiwepe lati jẹrisi wiwa wọn.",
-        "step3Info": "Wo awọn alaye ifiwepe rẹ ni isalẹ ki o tẹ Fi Ranṣẹ nigbati o ba ṣetan.",
+        "step1Info": "Yan oju-iwe iranti ki o ṣe adani ifiranṣẹ ipe rẹ. O le ṣafikun ifọwọkan ti ara ẹni pẹlu akọle ati ifiranṣẹ adani.",
+        "step2Info": "Ṣafikun awọn alejo ti o fẹ lati pe si iṣẹ iranti. Wọn yoo gba ipe lati jẹrisi wiwa wọn.",
+        "step3Info": "Wo awọn alaye ipe rẹ ni isalẹ ki o tẹ Fi Ranṣẹ nigbati o ba ṣetan.",
         "selectMemorial": "Oju-iwe Iranti",
         "selectMemorialPlaceholder": "Yan oju-iwe iranti...",
         "invitingGuests": "N pe awọn alejo si",
         "memorialPage": "oju-iwe iranti",
         "optional": "(Aṣayan)",
         "characters": "awọn ohun kikọ",
-        "subjectPlaceholder": "Apeere, A pe ọ lati ṣe ayẹyẹ igbesi aye to dara",
-        "cardDescription": "Gbe aworan kaadi ifiwepe adani soke (o to 5MB)",
+        "subjectPlaceholder": "Apeere, A pe ọ lati ṣe ayẹyẹ igbesi aye ti o dara",
+        "cardDescription": "Gbe aworan kaadi ipe adani soke (o to 5MB)",
         "uploadCard": "Gbe Aworan Soke",
         "back": "Pada",
-        "next": "Itẹsiwaju",
-        "send": "Fi Awọn Ifiwepe Ranṣẹ",
+        "next": "Tẹsiwaju",
+        "send": "Fi Awọn Ipe Ranṣẹ",
         "sending": "N firanṣẹ...",
         "readyToSend": "Ṣetan lati Fi Ranṣẹ!",
         "professionalEmail": "Alamọdaju ati irọrun lati wọle si",
@@ -597,10 +636,10 @@
         "email": "Imeeli",
         "phone": "Foonu",
         "addRecipient": "Ṣafikun Olugba Miiran",
-        "invitationDetails": "Alaye Ifiwepe",
+        "invitationDetails": "Alaye Ipe",
         "customSubject": "Akọle Adani",
         "personalMessage": "Ifiranṣẹ Ti Ara Ẹni",
-        "invitationCard": "Kaadi Ifiwepe",
+        "invitationCard": "Kaadi Ipe",
         "noCustomDetails": "Ko si alaye adani ti a ṣafikun (n lo awoṣe atilẹwa)",
         "deliveryMethod": "Ọna Ifijiṣẹ",
         "recipientsSummary": "Awọn Olugba ({{count}})",
@@ -621,29 +660,29 @@
         "aRecipient": "Olugba kan"
       },
       "success": {
-        "bulkSent": "A fi ifiwepe {{count}} ranṣẹ ni aṣeyọri",
+        "bulkSent": "A fi ipe {{count}} ranṣẹ ni aṣeyọri",
         "exported": "A gbe {{format}} jade ni aṣeyọri",
-        "deleted": "A pa ifiwepe si {{name}}",
-        "bulkDeleted": "A pa awọn ifiwepe {{count}}"
+        "deleted": "A pa ipe si {{name}}",
+        "bulkDeleted": "A pa awọn ipe {{count}}"
       },
       "toasts": {
-        "exportSuccess": "A gbe awọn ifiwepe jade bi {{format}}",
+        "exportSuccess": "A gbe awọn ipe jade bi {{format}}",
         "exportError": "Kuna lati gbe jade bi {{format}}",
-        "deleteSuccess": "A pa ifiwepe si {{name}}",
-        "bulkDeleteSuccess": "A pa awọn ifiwepe {{count}}"
+        "deleteSuccess": "A pa ipe si {{name}}",
+        "bulkDeleteSuccess": "A pa awọn ipe {{count}}"
       },
       "delete": {
-        "title": "Fagile Ifiwepe?",
-        "description": "A ko le ṣe atunṣe iṣẹ yii. A o fagile ifiwepe naa ki olugba ko le gba.",
+        "title": "Fagile Ipe?",
+        "description": "A ko le ṣe atunṣe iṣe yii. A o fagile ipe naa ki olugba ko le gba.",
         "cancel": "Fagile",
-        "confirm": "Fagile Ifiwepe"
+        "confirm": "Fagile Ipe"
       },
       "create": {
-        "invitationDetails": "Alaye Ifiwepe",
+        "invitationDetails": "Alaye Ipe",
         "emailSubject": "Akọle Imeeli",
         "personalMessage": "Ifiranṣẹ Ti Ara Ẹni",
         "templateStyle": "Aṣa Apẹẹrẹ",
-        "serviceInformation": "Alaye Isinmi",
+        "serviceInformation": "Alaye Iṣinmi",
         "dateTime": "Ọjọ ati Akoko",
         "venue": "Ibi Iṣẹlẹ",
         "address": "Adirẹsi",
@@ -665,19 +704,19 @@
         "sendViaEmail": "Firanṣẹ Nipasẹ Imeeli",
         "sendViaWhatsApp": "Firanṣẹ Nipasẹ WhatsApp",
         "message": "Ifiranṣẹ Ti Ara Ẹni",
-        "messageInfo": "Ṣatunkọ ifiranṣẹ naa ni isalẹ lati ṣe ifiwepe rẹ ni akanṣe",
-        "messagePlaceholder": "Fi akọsilẹ ti ara rẹ kun ifiwepe rẹ...",
+        "messageInfo": "Ṣatunkọ ifiranṣẹ naa ni isalẹ lati ṣe ipe rẹ ni akanṣe",
+        "messagePlaceholder": "Fi akọsilẹ ti ara rẹ kun ipe rẹ...",
         "defaultMessage": "A fi itara pe yin lati darapọ mọ wa lati bọwọ fun igbesi aye ati iranti {{memorialName}}. Wiwa rẹ yoo tọka pupọ fun wa bi a ṣe ṣe ayẹyẹ ohun aṣa wọn ati pin awọn iranti pataki papọ.",
-        "invitationCard": "Kaadi Ifiwepe (Aṣayan)",
+        "invitationCard": "Kaadi Ipe (Aṣayan)",
         "customSubject": "Akọle Imeeli Akanṣe (Aṣayan)",
         "enableRSVP": "Mu RSVP Ṣiṣẹ",
         "rsvpDescription": "Gba awọn alejo laaye lati jẹrisi wiwa",
-        "submit": "Firanṣẹ Ifiwepe",
+        "submit": "Firanṣẹ Ipe",
         "sending": "Nfiranṣẹ..."
       },
       "actions": {
         "importFromContacts": "Gba Lati Awọn Olubasọrọ",
-        "sendInvitations": "Firanṣẹ Awọn Ifiwepe",
+        "sendInvitations": "Firanṣẹ Awọn Ipe",
         "resend": "Tun Firanṣẹ",
         "remove": "Yọ Kuro",
         "delete": "Pa Rẹ",
@@ -690,8 +729,8 @@
         "refresh": "Sọdọtun"
       },
       "manage": {
-        "sentInvitations": "Awọn Ifiwepe Ti A Firanṣẹ",
-        "trackDelivery": "Tọpa ipo ifijiṣẹ ki o ṣakoso atokọ ifiwepe rẹ",
+        "sentInvitations": "Awọn Ipe Ti A Firanṣẹ",
+        "trackDelivery": "Tọpa ipo ifijiṣẹ ki o ṣakoso atokọ ipe rẹ",
         "table": {
           "guestName": "Orukọ Alejo",
           "email": "Imeeli",
@@ -701,7 +740,7 @@
           "sentDate": "Ọjọ Ti Firanṣẹ",
           "actions": "Awọn Iṣe",
           "anonymous": "Alaimọ",
-          "noInvitations": "Ko si awọn ifiwepe ti a ri.",
+          "noInvitations": "Ko si awọn ipe ti a ri.",
           "pending": "Nduro",
           "attending": "N Wa",
           "declined": "Ti Kọ",
@@ -715,7 +754,7 @@
           "page": "Oju-iwe",
           "of": "ti",
           "previous": "Tẹlẹ",
-          "next": "Itẹsiwaju",
+          "next": "Tẹsiwaju",
           "export": "Gbe Jade",
           "exportCSV": "Gbe Jade bi CSV",
           "exportPDF": "Gbe Jade bi PDF"
@@ -734,8 +773,8 @@
           "failed": "Kuna"
         },
         "emptyState": {
-          "title": "Ko si ifiwepe ti o firanṣẹ sibẹ",
-          "description": "Ṣẹda ifiwepe akọkọ rẹ lati bẹrẹ"
+          "title": "Ko si ipe ti o firanṣẹ sibẹ",
+          "description": "Ṣẹda ipe akọkọ rẹ lati bẹrẹ"
         }
       },
       "search": {
@@ -747,8 +786,8 @@
         "clearFilters": "Pa Awọn Àṣẹ",
         "showing": "Nfihan",
         "of": "ti",
-        "invitation": "ifiwepe",
-        "invitations": "awọn ifiwepe",
+        "invitation": "ipe",
+        "invitations": "awọn ipe",
         "matching": "ibaamu",
         "statusOptions": {
           "all": "Gbogbo Ipo",
@@ -868,18 +907,18 @@
         }
       },
       "analytics": {
-        "title": "Itupalẹ Ifiwepe",
-        "description": "Tọpa ati ṣe itupalẹ iṣẹ ifiwepe rẹ",
+        "title": "Iṣiro Ipe",
+        "description": "Tọpa ati ṣe iṣiro iṣẹ ipe rẹ",
         "exportData": "Gbe Data Jade",
-        "exportSuccess": "A gbe itupalẹ jade ni aṣeyọri",
-        "exportError": "Kuna lati gbe itupalẹ jade",
+        "exportSuccess": "A gbe iṣiro jade ni aṣeyọri",
+        "exportError": "Kuna lati gbe iṣiro jade",
         "stats": {
           "totalSent": "Gbogbo Ti A Firanṣẹ",
           "accepted": "Gba (Bẹẹni)",
           "declined": "Kọ (Rara)",
           "pending": "Ti Nduro",
-          "acceptanceRate": "{{rate}}% oṣuwọn gbigba",
-          "responseRate": "{{rate}}% oṣuwọn idahun"
+          "acceptanceRate": "{{rate}}% iwọn gbigba",
+          "responseRate": "{{rate}}% iwọn idahun"
         },
         "deliveryMethods": "Awọn Ọna Ifijiṣẹ",
         "deliveryMethodsDescription": "Pinpin awọn ikanni ifijiṣẹ",
@@ -896,27 +935,27 @@
           "noResponse": "Ko Si Idahun"
         },
         "metrics": {
-          "deliveryRate": "Oṣuwọn Ifijiṣẹ",
+          "deliveryRate": "Iwọn Ifijiṣẹ",
           "deliveryRateDescription": "{{delivered}} ninu {{total}} ti fijiṣẹ",
           "avgResponseTime": "Akoko Idahun Apapọ",
           "avgResponseTimeDescription": "Lati firanṣẹ si idahun",
-          "expiredInvitations": "Awọn Ifiwepe Ti Pari",
+          "expiredInvitations": "Awọn Ipe Ti Pari",
           "expiredDescription": "Kọja ọjọ ipari"
         }
       },
       "analyticsCharts": {
         "stats": {
           "totalSent": "Lapapọ Ti Ranṣẹ",
-          "allInvitations": "Gbogbo awọn ifiwepe",
+          "allInvitations": "Gbogbo awọn ipe",
           "accepted": "Ti Gba",
-          "acceptanceRate": "{{rate}}% oṣuwọn gbigba",
-          "responseRate": "Oṣuwọn Idahun",
+          "acceptanceRate": "{{rate}}% iwọn gbigba",
+          "responseRate": "Iwọn Idahun",
           "responses": "{{count}} awọn idahun",
           "pending": "Ti Nduro",
           "awaitingResponse": "Nduro fun idahun"
         },
         "timeline": {
-          "title": "Awọn Ifiwepe Ni Akoko Lọ",
+          "title": "Awọn Ipe Ni Akoko Lọ",
           "description": "Iṣẹ awọn ọjọ 30 ti o kọja",
           "sent": "Ti Ranṣẹ",
           "accepted": "Ti Gba",
@@ -932,12 +971,12 @@
         },
         "delivery": {
           "title": "Awọn Ọna Ifijiṣẹ",
-          "description": "Pinpin Email ati WhatsApp",
-          "email": "Email",
+          "description": "Pinpin Imeeli ati WhatsApp",
+          "email": "Imeeli",
           "whatsapp": "WhatsApp",
-          "invitations": "Awọn Ifiwepe"
+          "invitations": "Awọn Ipe"
         },
-        "export": "Ṣe Awọn Itupalẹ Jade"
+        "export": "Ṣe Awọn Iṣiro Jade"
       },
       "rsvpTab": {
         "stats": {
@@ -945,9 +984,9 @@
           "declined": "Ti Kọ",
           "maybe": "Boya",
           "pending": "Ti Nduro",
-          "responseRate": "Oṣuwọn Idahun",
+          "responseRate": "Iwọn Idahun",
           "responseRateDescription": "{{responded}} ninu {{total}} dahun",
-          "acceptanceRate": "Oṣuwọn Gbigba",
+          "acceptanceRate": "Iwọn Gbigba",
           "acceptanceRateDescription": "{{accepted}} ninu {{total}} wipe"
         },
         "filters": {
@@ -973,7 +1012,7 @@
         },
         "emptyState": {
           "noGuests": "Ko si awọn alejo {{filter}}",
-          "allResponded": "Gbogbo awọn alejo ti dahun si ifiwepe wọn",
+          "allResponded": "Gbogbo awọn alejo ti dahun si ipe wọn",
           "tryDifferentFilter": "Gbiyanju yan àṣẹ miiran"
         },
         "guestDetails": {
@@ -983,14 +1022,14 @@
         }
       },
       "rsvpPage": {
-        "title": "Jẹrisi Wiwa Fun Isinmi Iranti",
-        "subtitle": "O ti gba ifiwepe lati wa si isinmi iranti fun",
-        "loading": "Ngbasilẹ ifiwepe...",
+        "title": "Jẹrisi Wiwa Fun Iṣinmi Iranti",
+        "subtitle": "O ti gba ipe lati wa si iṣinmi iranti fun",
+        "loading": "Ngbasilẹ ipe...",
         "error": {
           "invalidLink": "Ọna asopọ RSVP ko wulo. Jọwọ ṣayẹwo URL naa ki o tun gbiyanju.",
           "expired": "Ọna asopọ RSVP yii ti pari. Jọwọ kan si oluṣeto.",
-          "notFound": "A ko ri ifiwepe naa.",
-          "loadFailed": "Kuna lati gbasilẹ alaye ifiwepe. Jọwọ tun gbiyanju nigbamii.",
+          "notFound": "A ko ri ipe naa.",
+          "loadFailed": "Kuna lati gbasilẹ alaye ipe. Jọwọ tun gbiyanju nigbamii.",
           "submitFailed": "Kuna lati firanṣẹ RSVP. Jọwọ tun gbiyanju.",
           "selectOption": "Jọwọ yan aṣayan RSVP kan"
         },
@@ -1015,7 +1054,7 @@
         },
         "success": {
           "title": "O Ṣeun!",
-          "attending": "A ti gba RSVP rẹ. A nireti lati ri ọ ni isinmi naa.",
+          "attending": "A ti gba RSVP rẹ. A nireti lati ri ọ ni iṣinmi naa.",
           "notAttending": "A ti gba RSVP rẹ. O ṣeun fun fifun wa ni imọ.",
           "maybe": "A ti gba RSVP rẹ. Jọwọ jẹ ka mọ ti awọn ero rẹ ba yipada."
         },
@@ -1028,7 +1067,7 @@
           "maybe": "O le wa"
         },
         "serviceDetails": {
-          "title": "Alaye Isinmi",
+          "title": "Alaye Iṣinmi",
           "date": "Ọjọ",
           "time": "Akoko",
           "location": "Ipo",
@@ -1039,8 +1078,8 @@
           "dates": "{{birthDate}} - {{deathDate}}"
         },
         "calendar": {
-          "attached": "Ifiwepe kalẹnda ti so pọ",
-          "description": "Fi isinmi iranti naa kun kalẹnda rẹ"
+          "attached": "Ipe kalẹnda ti so pọ",
+          "description": "Fi iṣinmi iranti naa kun kalẹnda rẹ"
         },
         "qrCode": {
           "scanToRSVP": "Ṣawari Lati Jẹrisi",
@@ -1048,429 +1087,731 @@
         }
       },
       "notifications": {
-        "invitationSent": "Ifiwepe ti firanṣẹ ni aṣeyọri",
-        "invitationResent": "Ifiwepe tun firanṣẹ ni aṣeyọri",
-        "invitationDeleted": "Ifiwepe ti pa ni aṣeyọri",
+        "invitationSent": "Ipe ti firanṣẹ ni aṣeyọri",
+        "invitationResent": "Ipe tun firanṣẹ ni aṣeyọri",
+        "invitationDeleted": "Ipe ti pa ni aṣeyọri",
         "rsvpReceived": "RSVP tuntun ti gba",
         "qrCodeDownloaded": "Koodu QR ti ṣe igbasilẹ",
         "exportComplete": "Iṣẹjade ti pari ni aṣeyọri",
         "errors": {
-          "sendFailed": "Kuna lati firanṣẹ ifiwepe",
-          "resendFailed": "Kuna lati tun firanṣẹ ifiwepe",
-          "deleteFailed": "Kuna lati pa ifiwepe",
+          "sendFailed": "Kuna lati firanṣẹ ipe",
+          "resendFailed": "Kuna lati tun firanṣẹ ipe",
+          "deleteFailed": "Kuna lati pa ipe",
           "exportFailed": "Kuna lati ṣe data jade",
           "qrCodeFailed": "Kuna lati ṣe igbasilẹ koodu QR"
         }
       },
       "emails": {
         "subject": {
-          "invitation": "{{inviterName}} pe ọ si isinmi iranti {{memorialName}}",
-          "rsvpNotification": "RSVP Tuntun: {{guestName}} dahun si ifiwepe iranti {{memorialName}}"
+          "invitation": "{{inviterName}} pe ọ si iṣinmi iranti {{memorialName}}",
+          "rsvpNotification": "RSVP Tuntun: {{guestName}} dahun si ipe iranti {{memorialName}}"
         },
         "invitation": {
-          "header": "Ifiwepe Isinmi Iranti",
+          "header": "Ipe Iṣinmi Iranti",
           "subheader": "A pe ọ lati ranti ati ṣe ayẹyẹ igbesi aye kan",
           "greeting": "Bawo {{recipientName}}",
-          "invitedBy": "{{inviterName}} ti pe ọ lati wa si isinmi iranti fun {{memorialName}}.",
+          "invitedBy": "{{inviterName}} ti pe ọ lati wa si iṣinmi iranti fun {{memorialName}}.",
           "rsvpPrompt": "Jọwọ jẹ ki a mọ boya iwọ yoo wa.",
-          "acceptButton": "Gba Ifiwepe",
+          "acceptButton": "Gba Ipe",
           "declineButton": "Kọ",
-          "expiresOn": "Ifiwepe yii yoo pari ni {{date}}",
-          "footer": "Ti o ko ba nireti ifiwepe yii, o le foju imeeli yii silẹ lailewu."
+          "expiresOn": "Ipe yii yoo pari ni {{date}}",
+          "footer": "Ti o ko ba nireti ipe yii, o le foju imeeli yii silẹ lailewu."
         },
         "rsvpNotification": {
           "header": "RSVP Tuntun",
           "greeting": "Bawo {{organizerName}}",
-          "body": "{{guestName}} ti dahun si ifiwepe isinmi iranti rẹ.",
+          "body": "{{guestName}} ti dahun si ipe iṣinmi iranti rẹ.",
           "viewButton": "Wo Gbogbo Awọn Idahun",
           "footer": "ForeverPages - Tọju awọn iranti, lailai."
         }
       },
       "whatsapp": {
-        "serviceInvitation": "A pe ọ si isinmi iranti {{memorialName}}. Jẹrisi nibi:",
-        "invitationMessage": "{{inviterName}} ti pe ọ lati wa si isinmi iranti fun {{memorialName}}. Jọwọ jẹrisi wiwa rẹ."
+        "serviceInvitation": "A pe ọ si iṣinmi iranti {{memorialName}}. Jẹrisi nibi:",
+        "invitationMessage": "{{inviterName}} ti pe ọ lati wa si iṣinmi iranti fun {{memorialName}}. Jọwọ jẹrisi wiwa rẹ."
       }
     },
     "pageBuilder": {
       "header": {
-        "title": "Ṣẹ̀dá Ìrántí",
-        "cancel": "Fagìlé"
+        "title": "Ṣẹda Iranti",
+        "cancel": "Fagile"
       },
       "steps": {
         "chooseTemplate": {
-          "title": "Yan Àdàkọ",
-          "description": "Yan ìrísí kan tí yóò bọlá fún ẹni tí o ti lọ"
+          "title": "Yan Apẹẹrẹ",
+          "description": "Yan apẹẹrẹ kan ti yoo bọwọ fun eniyan ti o ti lọ"
         },
         "basicInfo": {
-          "title": "Àlàyé Ìpìlẹ̀",
-          "description": "Sọ nípa ẹni tí o ti lọ fún wa"
+          "title": "Alaye Ipilẹ",
+          "description": "Sọ nipa eniyan ti o ti lọ fun wa"
         },
         "details": {
-          "title": "Àwọn Àlàyé Ìrántí",
-          "description": "Fi àwọn fọ́tò àti àwọn ìrántí kún"
+          "title": "Awọn Alaye Iranti",
+          "description": "Fi awọn fọto ati awọn iranti kun"
+        },
+        "customize": {
+          "title": "Ṣe Apẹẹrẹ Rẹ",
+          "description": "Ṣe awoṣe awọn nkan ati apẹẹrẹ"
         },
         "review": {
-          "title": "Àtúnyẹ̀wò",
-          "description": "Àtúnyẹ̀wò àti ṣẹ̀dá ìrántí rẹ"
+          "title": "Atunwo",
+          "description": "Atunwo ati ṣẹda iranti rẹ"
         }
       },
       "buttons": {
-        "previous": "Tẹ́lẹ̀",
-        "next": "Tókàn",
-        "create": "Ṣẹ̀dá Ìrántí",
-        "creating": "Ń Ṣẹ̀dá..."
+        "previous": "Tẹlẹ",
+        "next": "Tẹsiwaju",
+        "create": "Ṣẹda Iranti",
+        "creating": "N Ṣẹda..."
       },
       "sidebar": {
-        "title": "Àwọn ìgbésẹ̀ ìkọ́lé",
-        "hint1": "Ìmọ̀ràn: fi pamọ́ nígbà gbogbo",
-        "hint2": "Ìmọ̀ràn: ṣàgbẹ̀wò lórí àwọn ẹ̀rọ oríṣiríṣi"
+        "title": "Awọn igbesẹ kọle",
+        "hint1": "Imọran: fi pamọ nigbakugba",
+        "hint2": "Imọran: ṣabẹwo lori awọn ẹrọ oriṣiriṣi"
       },
       "basicInfo": {
         "firstName": {
-          "label": "Orúkọ Àkọ́bẹ̀rẹ̀",
-          "placeholder": "Tẹ orúkọ àkọ́bẹ̀rẹ̀ sí"
+          "label": "Orukọ Akọkọ",
+          "placeholder": "Tẹ orukọ akọkọ sii"
         },
         "lastName": {
-          "label": "Orúkọ Ìdílé",
-          "placeholder": "Tẹ orúkọ ìdílé sí"
+          "label": "Orukọ Idile",
+          "placeholder": "Tẹ orukọ idile sii"
         },
         "birthDate": {
-          "label": "Ọjọ́ Ìbí",
-          "placeholder": "Ọjọ́/MM/Ọdún"
+          "label": "Ọjọ Ibi",
+          "placeholder": "Ọjọ/Oṣu/Ọdun"
         },
         "deathDate": {
-          "label": "Ọjọ́ Ikú",
-          "placeholder": "Ọjọ́/MM/Ọdún"
+          "label": "Ọjọ Iku",
+          "placeholder": "Ọjọ/Oṣu/Ọdun"
         },
         "relationship": {
-          "label": "Ìbáṣepọ̀ Pẹ̀lú Ẹni Tí O Ti Lọ",
-          "placeholder": "Fún àpẹẹrẹ: ọmọ, ọmọbìnrin, aya, ọ̀rẹ́...",
+          "label": "Ibatan Pẹlu Eniyan Ti O Ti Lọ",
+          "placeholder": "Fun apeere: ọmọ, ọmọbinrin, aya, ọrẹ...",
           "options": {
-            "spouse": "Ọkọ/Ìyàwó",
+            "spouse": "Ọkọ/Iyawo",
             "child": "Ọmọ",
-            "parent": "Òbí",
-            "sibling": "Arákùnrin/Arábìnrin",
-            "grandparent": "Bàbá/Bàbá Àgbà",
-            "grandchild": "Ọmọ Ọmọ",
-            "friend": "Ọ̀rẹ́",
-            "colleague": "Alábàṣepọ̀",
-            "other": "Mìíràn"
+            "parent": "Obi",
+            "sibling": "Arabirin/Arakunrin",
+            "grandparent": "Baba ńla/Iya ńla",
+            "grandchild": "Ọmọ-ọmọ",
+            "friend": "Ọrẹ",
+            "colleague": "Alabaṣepọ",
+            "other": "Miiran"
           }
         },
         "location": {
-          "label": "Ibi (Ìlú, Orílẹ̀-Èdè)",
-          "placeholder": "Ìlú, Orílẹ̀-Èdè"
+          "label": "Ibi (Ilu, Orilẹ-ede)",
+          "placeholder": "Ilu, Orilẹ-ede"
         },
         "nationality": {
-          "label": "Orílẹ̀-Èdè",
-          "placeholder": "Orílẹ̀-Èdè"
+          "label": "Orilẹ-ede",
+          "placeholder": "Orilẹ-ede"
         },
-        "autoSaved": "A fi pamọ́ ní àìròtẹ́lẹ̀"
+        "autoSaved": "A fi pamọ ni airotẹlẹ"
       },
       "memorialDetails": {
-        "saving": "Ń Fi Pamọ́...",
-        "autoSaved": "A fi pamọ́ ní àìròtẹ́lẹ̀",
+        "saving": "N Fi Pamọ...",
+        "autoSaved": "A fi pamọ ni airotẹlẹ",
         "profilePhoto": {
-          "label": "Fọ́tò Pròfáìlì",
-          "helpText": "Gbé fọ́tò tó dára kan tí ó ṣàpẹẹrẹ rẹ̀"
+          "label": "Fọto Profaili",
+          "helpText": "Gbe fọto ti o dara kan ti o ṣapejuwe rẹ"
         },
         "backgroundImage": {
-          "label": "Àwòrán Ẹ̀yìn (Ìfẹ́)",
-          "helpText": "Ibi kan tàbí ìrántí tó ṣe pàtàkì"
+          "label": "Aworan Ẹhin (Ifẹ)",
+          "helpText": "Ibi kan tabi iranti ti o ṣe pataki"
         },
         "memorialMessage": {
-          "label": "Ìfiránṣẹ́ Ìrántí",
-          "placeholder": "Ìfiránṣẹ́ pàtàkì kan tàbí ọ̀rọ̀ kan tí ó ṣàpẹẹrẹ ẹ̀mí rẹ̀..."
+          "label": "Ifiranṣẹ Iranti",
+          "placeholder": "Ifiranṣẹ pataki kan tabi ọrọ kan ti o ṣapejuwe ẹmi rẹ..."
         },
         "privacySetting": {
-          "label": "Ètò Àṣírí",
+          "label": "Eto Iṣọkan",
           "options": {
-            "public": "Gbangba - Ẹnikẹ́ni lè wò",
-            "unlisted": "Kò sí àtòkọ - Pẹ̀lú ìjápọ̀ nìkan",
-            "private": "Ìkọ̀kọ̀ - Àwọn tí a pe nìkan"
+            "public": "Gbangba - Enikeni le wo",
+            "unlisted": "Ko si atokọ - Pẹlu ọna asopọ nikan",
+            "private": "Ikọkọ - Awọn ti a pe nikan"
           }
         }
       },
+      "form": {
+        "saving": "N Fi Pamọ...",
+        "saved": "Pamọ",
+        "savedAt": "Pamọ ni {{time}}",
+        "saveFailed": "Aisẹpọ fipamọ"
+      },
+      "customizer": {
+        "title": "Ṣe Apẹẹrẹ Rẹ",
+        "description": "Ṣe awoṣe awọn nkan, awọn ẹda ati iṣeto fun iranti rẹ",
+        "stepDescription": "Ṣe awoṣe apẹẹrẹ iranti rẹ pẹlu awọn nkan, awọn ẹda ati awọn nhọrọ iṣeto awoṣe. Wo awọn ayipada rẹ ni akoko duro.",
+        "reset": "Tun Ṣe Ìbòjúwọ̀",
+        "colors": "Awọn Nkan",
+        "fonts": "Awọn Ẹda",
+        "layout": "Iṣeto",
+        "primaryColor": "Nkan Akọkọ",
+        "secondaryColor": "Nkan Keji",
+        "accentColor": "Nkan Imudidun",
+        "headerBg": "Irin Akọle",
+        "headerText": "Ọrọ Akọle",
+        "bodyBg": "Irin Ara",
+        "bodyText": "Ọrọ Ara",
+        "colorPreview": "Wo",
+        "fontFamily": "Ile Ẹda",
+        "headingSize": "Gigun Akọle",
+        "bodyFontSize": "Gigun Ẹda Ara",
+        "fontPreview": "Wo",
+        "headingExample": "Iwo Akọle",
+        "bodyExample": "Eyi ni ọrọ ara ti o fi han idi ti iwe iranti rẹ ti yoo tun ri pẹlu awọn nhọrọ ẹda ti a yan.",
+        "spacing": "Alagbelepo",
+        "borderRadius": "Ita Eti",
+        "containerWidth": "Gigun Akoonu",
+        "layoutPreview": "Wo Iṣeto",
+        "showPreview": "Fi Wo Tẹlẹ Imọ",
+        "hidePreview": "Gizigizi Wo",
+        "backToEditor": "Pada si Olupilẹsun"
+      },
       "templates": {
         "classic": {
-          "name": "Ìrántí Àṣà",
-          "description": "Ìrísí àṣà àti ẹlẹ́wà pẹ̀lú àtòkọ àti ìṣètò fọ́màlì",
-          "features": ["Abala ìtàn ìgbésí ayé", "Àtòkọ fọ́tò", "Ògiri ìbọlá", "Àlàyé iṣẹ́"]
+          "name": "Iranti Aṣa",
+          "description": "Apẹẹrẹ aṣa ati olorekan pẹlu atokọ ati iṣeto fọma",
+          "features": ["Abala itan igbesi aye", "Atokọ fọto", "Ogiri iyin", "Alaye iṣẹ"]
         },
         "modern": {
-          "name": "Ìbọlá Ìgbàlódé",
-          "description": "Ìṣètò tó mọ́ pẹ̀lú ìdákẹ́jẹ́ẹ́ fọ́tò àti ìrísí aláìlẹ́gbẹ́",
+          "name": "Ọwọ Ojo Loni",
+          "description": "Iṣeto ti o mọ pẹlu idakeji fọto ati apẹẹrẹ alailẹgbẹ",
           "features": [
-            "Àkójọ fọ́tò tó tóbi",
-            "Ìṣẹ̀dá ìlà",
-            "Àwọn ìbọlá ìfọ̀rọ̀wérọ̀",
-            "Pínpín lórí àwọn nẹ́tiwọ́ọ̀kì"
+            "Atokọ fọto ti o tobi",
+            "Iṣẹda ila",
+            "Awọn ọwọ ijiroro",
+            "Pinpin lori awọn nẹtiwọọki"
           ]
         },
         "garden": {
-          "name": "Ọgbà Àwọn Ìrántí",
-          "description": "Thème tí ó ní ìsopọ̀ pẹ̀lú àdánidá pẹ̀lú àwọn àwọ̀ rírọ̀ àti àwọn èròjà aláìlẹ́gbẹ́",
-          "features": ["Àwọn ẹ̀yìn àdánidá", "Àwọn àwọ̀ rírọ̀", "Ọgbà ìrántí", "Ìrísí ìsinmi"]
+          "name": "Ogba Awọn Iranti",
+          "description": "Apẹẹrẹ ti o ni ibatan pẹlu adanida pẹlu awọn awọ rirọ ati awọn eroja alailẹgbẹ",
+          "features": ["Awọn ẹhin adanida", "Awọn awọ rirọ", "Ogba iranti", "Apẹẹrẹ isinmi"]
         },
         "celebration": {
-          "name": "Ayẹyẹ Ìgbésí Ayé",
-          "description": "Ìrísí tó mọ́lẹ̀ àti tó fúnni ní ìdùnnú fún ìrántí ayọ̀ àti ayẹyẹ",
+          "name": "Ayẹyẹ Igbesi Aye",
+          "description": "Apẹẹrẹ ti o mọlẹ ati ti o funni ni idunnu fun iranti ayo ati ayẹyẹ",
           "features": [
-            "Àwọn àwọ̀ tó mọ́lẹ̀",
-            "Ìdákẹ́jẹ́ẹ́ ayẹyẹ",
-            "Àwọn ìrántí ayọ̀",
-            "Tóni tó fúnni ní ìdùnnú"
+            "Awọn awọ ti o mọlẹ",
+            "Idakeji ayẹyẹ",
+            "Awọn iranti ayo",
+            "Tọni ti o funni ni idunnu"
           ]
         }
       },
+      "loadingTemplates": "N gbẹ Awọn Apẹẹrẹ...",
+      "mustSignInTitle": "Jọwọ wọle sinu akaun rẹ",
+      "mustSignInMessage": "O gbọdọ wọle lati ni ina si awọn apẹẹrẹ ati Ile-iṣẹ Iranti.",
+      "marketplace": {
+        "signIn": "Wọle",
+        "signinNeeded": "Wọle lati ni ina si awọn apẹẹrẹ ti o pọ"
+      },
       "review": {
-        "title": "Àtúnyẹ̀wò Ìrántí Rẹ",
-        "subtitle": "Ṣàyẹ̀wò gbogbo àlàyé ṣáájú ṣíṣẹ̀dá ìrántí rẹ",
-        "sections": {
-          "template": "Àdàkọ",
-          "basicInfo": "Àlàyé Ìpìlẹ̀",
-          "memorialDetails": "Àwọn Àlàyé Ìrántí"
-        },
-        "messages": {
-          "templateSelected": "A yan àdàkọ ní àṣeyọrí",
-          "basicInfoComplete": "Àlàyé ìpìlẹ̀ ti parí",
-          "memorialDetailsComplete": "Àwọn àlàyé ìrántí ti parí",
-          "readyToCreate": "Ìrántí rẹ ti ṣetán láti ṣẹ̀dá",
-          "creatingMemorial": "Ń ṣẹ̀dá ìrántí rẹ...",
-          "memorialCreated": "A ṣẹ̀dá ìrántí ní àṣeyọrí!",
-          "redirecting": "Ń dari rẹ sí dashboard rẹ..."
-        },
-        "actions": {
-          "edit": "Ṣàtúnṣe",
-          "createMemorial": "Ṣẹ̀dá Ìrántí"
+        "templateLabel": "Apẹẹrẹ:",
+        "privacyLabel": "Alagbara:",
+        "privacyValue": "Olanibi",
+        "featuresLabel": "Awọn Ẹka:",
+        "featuresValue": "Ina Kikun"
+      },
+      "publish": {
+        "title": "Gbe Iranti",
+        "description": "Ṣẹda URL akanṣe fun iwe iranti rẹ",
+        "memorialFor": "Iranti fun:",
+        "slugLabel": "URL Iranti",
+        "slugPlaceholder": "iya-mi-ologbo",
+        "slugHint": "3-50 arokọ. Lo awọ, nọ́mbà, ìbáṣepọ, ìbáṣepọ",
+        "invalidSlug": "URL gbọdọ ni arokọ 3-50, alphanumeric pelu ìbáṣepọ/ìbáṣepọ",
+        "invalidSlugError": "Eto URL ti o kere",
+        "error": "Aisẹpọ gbe",
+        "successDescription": "Iranti rẹ ti gbe ni aṣeyọri. Pin ibi asopọ elope:",
+        "copy": "Daako",
+        "view": "Wo",
+        "done": "Pari",
+        "publishing": "N gbe...",
+        "publish": "Gbe",
+        "cancel": "Fagile",
+        "urlCopied": "URL Daako!",
+        "copyFailed": "Aisẹpọ daako",
+        "success": "Iranti Gbera!",
+        "validation": {
+          "slugRequired": "URL wa ní ipa",
+          "slugTooShort": "URL gbọdọ ní arokọ keta ni kẹkẹ",
+          "slugTooLong": "URL ko le yọ arokọ 50 ju",
+          "slugInvalid": "URL le ni awọ nikan, nọ́mbà, ìbáṣepọ ati ìbáṣepọ",
+          "slugTaken": "URL yii ti wa ti gbe. Jọwọ gbalẹ omiran."
         }
       },
+      "autoSave": {
+        "saving": "N gbe...",
+        "saved": "Gbe",
+        "error": "Aisẹpọ gbe",
+        "lastSaved": "Gbe nikẹhin {{time}}"
+      },
+      "subscription": {
+        "banner": {
+          "gracePeriod": {
+            "title": "Ẹko Iṣẹ n Kòja",
+            "message": "Ẹko iṣẹ rẹ n kòja ni {{days}} awọjọ. Tunlokan ni bayi lati le ṣẹda iranti."
+          },
+          "expired": {
+            "title": "Ẹko Iṣẹ Ti Kòja",
+            "message": "Ẹko iṣẹ rẹ ti kòja. Jọwọ tunlokan lati le ṣẹda ati gbe iranti."
+          },
+          "renewButton": "Tunlokan"
+        },
+        "renewalRedirect": "N dari rẹ si tunlokan ẹko iṣẹ...",
+        "renew": "Tunlokan Ẹko Iṣẹ",
+        "createMemorialExpired": "Ẹko iṣẹ rẹ ti kòja. Jọwọ tunlokan lati le ṣẹda iranti tuntun."
+      },
+      "validation": {
+        "requiredField": "Awo yii wa ní ipa",
+        "invalidEmail": "Jọwọ tẹ adirẹsi imeli ti o dara",
+        "alreadyPublished": "O ti ni iranti ti o gbe",
+        "subscriptionRequired": "Ẹko iṣẹ rẹ ko wa ni ipa"
+      },
       "content": {
-        "biography": "Ìtàn Ìgbésí Ayé",
-        "epitaph": "Àkọlé Ìkẹyìn",
-        "tributes": "Ọlá",
-        "timeline": "Àtòkọ Àkókò",
-        "gallery": "Àtòkọ Àwòrán",
-        "familyTree": "Ìgbé Ẹbí",
-        "condolences": "Ìdùnnú",
-        "support": "Àtìlẹ́yìn"
+        "biography": {
+          "title": "Itan Akojọpọ"
+        },
+        "epitaph": {
+          "title": "Ọrọ Ẹsin",
+          "default": "Ni iranti"
+        },
+        "tributes": {
+          "title": "Ibu Ori & Iranti",
+          "legacy": "Ẹgbe Ijiko",
+          "lifeStory": "Itan Aye"
+        },
+        "timeline": {
+          "title": "Ikẹkọ Aye",
+          "born": "Ibi",
+          "passedAway": "Ọṣu"
+        },
+        "gallery": {
+          "title": "Ifihan Aworan"
+        },
+        "familyTree": {
+          "title": "Igi Ẹbi"
+        },
+        "condolences": {
+          "title": "Anfaani"
+        },
+        "support": {
+          "title": "Itije & Ẹbun"
+        }
       }
     },
     "settings": {
-      "title": "Settings",
-      "subtitle": "Manage your account and memorial page preferences",
+      "title": "Awọn Eto",
+      "subtitle": "Ṣakoso akọọlẹ rẹ ati awọn ayanfẹ oju-iwe iranti",
       "tabs": {
-        "profile": "Profile",
-        "memorial": "Memorial",
-        "privacy": "Privacy",
-        "notifications": "Notifications",
-        "advanced": "Advanced"
+        "profile": "Profaili",
+        "memorial": "Iranti",
+        "privacy": "Iṣọkan",
+        "notifications": "Awọn Iwifunni",
+        "advanced": "Ilọsiwaju"
       },
       "profile": {
-        "title": "Profile Information",
-        "description": "Update your personal information and account details",
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "email": "Email Address",
-        "phone": "Phone Number",
-        "relationship": "Relationship to Deceased",
-        "save": "Save Profile Changes"
+        "title": "Alaye Profaili",
+        "description": "Ṣe imudojuiwọn alaye ti ara ẹni rẹ ati awọn alaye akọọlẹ",
+        "firstName": "Orukọ Akọkọ",
+        "lastName": "Orukọ Idile",
+        "email": "Adirẹsi Imeeli",
+        "phone": "Nọmba Foonu",
+        "relationship": "Ibatan Pẹlu Alaigbe",
+        "save": "Fi Awọn Ayipada Profaili Pamọ"
       },
       "memorial": {
-        "title": "Memorial Page Settings",
-        "description": "Configure your memorial page appearance and behavior",
-        "pageTitle": "Memorial Page Title",
-        "customUrl": "Custom URL (Optional)",
-        "theme": "Theme",
+        "title": "Awọn Eto Oju-iwe Iranti",
+        "description": "Ṣeto irisi oju-iwe iranti rẹ ati iṣesi",
+        "pageTitle": "Akọle Oju-iwe Iranti",
+        "customUrl": "URL Akanṣe (Aṣayan)",
+        "theme": "Apẹẹrẹ",
         "publicMemorial": {
-          "label": "Public Memorial",
-          "description": "Allow anyone to view the memorial page"
+          "label": "Iranti Gbangba",
+          "description": "Gba enikeni laaye lati wo oju-iwe iranti"
         },
         "allowTributes": {
-          "label": "Allow Tributes",
-          "description": "Let visitors leave tribute messages"
+          "label": "Gba Awọn Ọwọ",
+          "description": "Jẹ ki awọn alejo fi awọn ifiranṣẹ iyin silẹ"
         },
         "moderateTributes": {
-          "label": "Moderate Tributes",
-          "description": "Review tributes before they appear publicly"
+          "label": "Ṣakoso Awọn Ọwọ",
+          "description": "Ṣe atunwo awọn iyin ṣaaju ki wọn to han gbangba"
         },
-        "save": "Save Memorial Settings"
+        "save": "Fi Awọn Eto Iranti Pamọ"
       },
       "privacy": {
-        "title": "Privacy & Security",
-        "description": "Control who can see and interact with your memorial",
-        "visibility": "Memorial Visibility",
-        "indexing": "Search Engine Indexing",
+        "title": "Iṣọkan & Aabo",
+        "description": "Ṣakoso eni ti o le ri ati ṣe ibaraẹnisọrọ pẹlu iranti rẹ",
+        "visibility": "Ifarahan Iranti",
+        "indexing": "Iṣiro Ẹrọ Wa",
         "access": {
-          "title": "Access Management",
-          "additionalAdmins": "Additional Administrators",
-          "sendAdminInvites": "Send Admin Invitations"
+          "title": "Iṣakoso Wiwa",
+          "additionalAdmins": "Awọn Alakoso Afikun",
+          "sendAdminInvites": "Firanṣẹ Awọn Ipe Alakoso"
         },
-        "save": "Save Privacy Settings"
+        "save": "Fi Awọn Eto Iṣọkan Pamọ"
       },
       "notifications": {
-        "title": "Notification Preferences",
-        "description": "Choose how and when you want to be notified",
+        "title": "Awọn Ayanfẹ Iwifunni",
+        "description": "Yan bi o ti fẹ ki a fi iwifunni fun ọ ati nigba ti o fẹ",
         "email": {
-          "label": "Email Notifications",
-          "description": "Receive updates via email"
+          "label": "Awọn Iwifunni Imeeli",
+          "description": "Gba awọn imudojuiwọn nipasẹ imeeli"
         },
         "types": {
-          "newTributes": "New Tributes",
-          "photoUploads": "Photo Uploads",
-          "rsvpUpdates": "RSVP Updates",
-          "weeklySummary": "Weekly Summary"
+          "newTributes": "Awọn Ọwọ Tuntun",
+          "photoUploads": "Awọn Gbigbe Fọto Soke",
+          "rsvpUpdates": "Awọn Imudojuiwọn RSVP",
+          "weeklySummary": "Akopọ Oṣẹ"
         },
-        "save": "Save Notification Settings"
+        "save": "Fi Awọn Eto Iwifunni Pamọ"
       },
       "advanced": {
-        "title": "Advanced Settings",
-        "description": "Advanced options and data management",
+        "title": "Awọn Eto Ilọsiwaju",
+        "description": "Awọn aṣayan ilọsiwaju ati iṣakoso data",
         "export": {
-          "title": "Data Export",
-          "description": "Download all your memorial data including photos, tributes, and information",
-          "button": "Export Memorial Data"
+          "title": "Jade Data",
+          "description": "Ṣe igbasilẹ gbogbo data iranti rẹ pẹlu awọn fọto, awọn iyin, ati alaye",
+          "button": "Jade Data Iranti"
         },
         "domain": {
-          "title": "Custom Domain",
-          "description": "Connect your own domain name to this memorial (Premium feature)",
-          "connect": "Connect Domain"
+          "title": "Agbegbe Orukọ Akanṣe",
+          "description": "So orukọ agbegbe tirẹ pọ si iranti yii (Ẹya Giga)",
+          "connect": "So Agbegbe Pọ"
         },
         "danger": {
-          "title": "Danger Zone",
-          "archive": "Archive Memorial",
-          "archiveDescription": "Make the memorial private and stop accepting new tributes",
-          "delete": "Delete Memorial",
-          "deleteDescription": "Permanently delete this memorial and all associated data. This cannot be undone."
+          "title": "Agbegbe Ewu",
+          "archive": "Ṣe Iwe Iranti",
+          "archiveDescription": "Ṣe iranti naa ni ikọkọ ki o si duro gbigba awọn iyin tuntun",
+          "delete": "Pa Iranti",
+          "deleteDescription": "Pa iranti yii patapata ati gbogbo data ti o ni ibatan. Ko le ṣe atunṣe eyi."
         },
         "account": {
-          "title": "Account Actions",
-          "signOut": "Sign Out"
+          "title": "Awọn Iṣe Akọọlẹ",
+          "signOut": "Jade"
         }
       }
     },
     "tributes": {
-      "title": "Tributes & Condolences",
-      "subtitle": "Manage and moderate tribute messages from visitors",
+      "title": "Awọn Ọwọ & Awọn Ifisọrọ",
+      "subtitle": "Ṣakoso ati ṣakoso awọn ifiranṣẹ iyin lati ọdọ awọn alejo",
       "tabs": {
-        "pending": "Pending Review",
-        "approved": "Approved",
-        "flagged": "Flagged",
-        "all": "All Tributes"
+        "pending": "Atunwo Ti o Nduro",
+        "approved": "Ti A Fọwọsi",
+        "flagged": "Ti A Fi Asia si",
+        "all": "Gbogbo Awọn Ọwọ"
       },
       "actions": {
-        "approve": "Approve",
-        "reject": "Reject",
-        "flag": "Flag"
+        "approve": "Fọwọsi",
+        "reject": "Kọ",
+        "flag": "Fi Asia si"
       },
       "empty": {
-        "noPending": "No Pending Tributes",
-        "allReviewed": "All tributes have been reviewed"
+        "noPending": "Ko si Awọn Ọwọ Ti o Nduro",
+        "allReviewed": "A ti ṣe atunwo gbogbo awọn iyin"
       },
-      "live": "Live"
+      "live": "Tẹlẹ"
     },
     "templates": {
-      "title": "Àwọn Àdàkọ",
-      "subtitle": "Ṣàkóso àwọn àdàkọ ìrántí fún ojú-ìwé rẹ",
+      "title": "Awọn Apẹẹrẹ",
+      "subtitle": "Ṣakoso awọn apẹẹrẹ iranti fun oju-iwe rẹ",
       "tabs": {
-        "available": "Àwọn Àdàkọ Tó Wà",
-        "custom": "Àwọn Àdàkọ Àkànṣe",
-        "preview": "Àkọ́yẹ̀wò"
+        "available": "Awọn Apẹẹrẹ Ti o Wa",
+        "custom": "Awọn Apẹẹrẹ Akanṣe",
+        "preview": "Atunwo"
       },
       "actions": {
-        "select": "Yan Àdàkọ",
-        "customize": "Ṣe Àtúnṣe",
-        "preview": "Wo Àkọ́yẹ̀wò",
-        "apply": "Lo Àdàkọ"
+        "select": "Yan Apẹẹrẹ",
+        "customize": "Ṣe Atunṣe",
+        "preview": "Wo Atunwo",
+        "apply": "Lo Apẹẹrẹ",
+        "edit": "Ṣatunṣe",
+        "duplicate": "Ṣe Apẹẹrẹ Miiran",
+        "delete": "Pa"
       },
       "empty": {
-        "noTemplates": "Kò sí àwọn àdàkọ ní báyì",
-        "noCustomTemplates": "Kò sí àwọn àdàkọ àkànṣe"
+        "noTemplates": "Ko si awọn apẹẹrẹ ni bayi",
+        "noCustomTemplates": "Ko si awọn apẹẹrẹ akanṣe",
+        "title": "Ko si Awọn Apẹẹrẹ Sibe",
+        "description": "Ṣẹda apẹẹrẹ akanṣe akọkọ rẹ lati bẹrẹ",
+        "createButton": "Ṣẹda Apẹẹrẹ Akọkọ"
       },
-      "selected": "Àdàkọ Tí A Yan",
+      "selected": "Apẹẹrẹ Ti A Yan",
       "validation": {
-        "nameRequired": "Orúkọ àdàkọ ni a nílò",
-        "nameTooShort": "Orúkọ àdàkọ gbọ́dọ̀ jẹ́ ó kéré jù ààmì 3",
-        "nameTooLong": "Orúkọ àdàkọ kò gbọ́dọ̀ ju ààmì 50 lọ",
-        "nameInvalidChars": "Orúkọ àdàkọ ní àwọn ààmì tí kò tọ̀",
-        "descriptionTooLong": "Àlàyé kò gbọ́dọ̀ ju ààmì 500 lọ",
-        "descriptionInvalidChars": "Àlàyé ní àwọn ààmì tí kò tọ̀",
-        "searchQueryRequired": "Ìwádìí ni a nílò",
-        "searchQueryTooShort": "Ìwádìí gbọ́dọ̀ jẹ́ ó kéré jù ààmì 2",
-        "searchQueryInvalidChars": "Ìwádìí ní àwọn ààmì tí kò tọ̀",
-        "colorInvalid": "Àwọ̀ HEX tí kò tọ̀",
-        "fontSizeInvalid": "Ìwọ̀n font tí kò tọ̀ (fún àpẹẹrẹ: 16px, 1.2em)",
-        "spacingInvalid": "Àlàfo tí kò tọ̀ (fún àpẹẹrẹ: 10px, 1rem)",
-        "borderRadiusInvalid": "Radius ààlà tí kò tọ̀ (fún àpẹẹrẹ: 4px, 50%)",
-        "maxWidthInvalid": "Ìbú tó pọ̀ jùlọ tí kò tọ̀ (fún àpẹẹrẹ: 1200px, 100%)",
-        "lineHeightInvalid": "Gígùn laini tí kò tọ̀ (fún àpẹẹrẹ: 1.5, 20px)",
-        "customizationInvalid": "Àtúnṣe àdàkọ ní àṣìṣe",
-        "importInvalidFormat": "Fáìlì ìgbéwọlé ní àṣìṣe tàbí tí kò wúlò",
-        "importInvalidData": "Dátà ìgbéwọlé ní àṣìṣe",
-        "importFileTooLarge": "Fáìlì ìgbéwọlé tóbi jù (òkè: 5MB)"
+        "nameRequired": "Orukọ apẹẹrẹ ni a nilo",
+        "nameTooShort": "Orukọ apẹẹrẹ gbọdọ jẹ o kere ju ami 3",
+        "nameTooLong": "Orukọ apẹẹrẹ ko gbọdọ ju ami 50 lọ",
+        "nameInvalidChars": "Orukọ apẹẹrẹ ni awọn ami ti ko tọ",
+        "descriptionTooLong": "Apejuwe ko gbọdọ ju ami 500 lọ",
+        "descriptionInvalidChars": "Apejuwe ni awọn ami ti ko tọ",
+        "searchQueryRequired": "Iwadi ni a nilo",
+        "searchQueryTooShort": "Iwadi gbọdọ jẹ o kere ju ami 2",
+        "searchQueryInvalidChars": "Iwadi ni awọn ami ti ko tọ",
+        "colorInvalid": "Awọ HEX ti ko tọ",
+        "fontSizeInvalid": "Iwọn font ti ko tọ (fun apeere: 16px, 1.2em)",
+        "spacingInvalid": "Alafo ti ko tọ (fun apeere: 10px, 1rem)",
+        "borderRadiusInvalid": "Radius aala ti ko tọ (fun apeere: 4px, 50%)",
+        "maxWidthInvalid": "Bubun ti o po julọ ti ko tọ (fun apeere: 1200px, 100%)",
+        "lineHeightInvalid": "Gigun laini ti ko tọ (fun apeere: 1.5, 20px)",
+        "customizationInvalid": "Atunṣe apẹẹrẹ ni aṣiṣe",
+        "importInvalidFormat": "Faili igbewọle ni aṣiṣe tabi ti ko wulo",
+        "importInvalidData": "Data igbewọle ni aṣiṣe",
+        "importFileTooLarge": "Faili igbewọle tobi ju (oke: 5MB)"
+      },
+      "createButton": "Ṣẹda Apẹẹrẹ",
+      "createButtonShort": "Ṣẹda",
+      "createDialog": {
+        "title": "Ṣẹda Apẹẹrẹ Tuntun",
+        "description": "Yan apẹẹrẹ ipilẹ ki o si ṣe atunṣe fun iranti rẹ"
+      },
+      "form": {
+        "name": {
+          "label": "Orukọ Apẹẹrẹ",
+          "placeholder": "Tẹ orukọ apẹẹrẹ sii"
+        },
+        "description": {
+          "label": "Apejuwe",
+          "placeholder": "Apejuwe aṣayan"
+        },
+        "baseTemplate": {
+          "label": "Apẹẹrẹ Ipilẹ"
+        },
+        "creating": "N ṣẹda..."
+      },
+      "list": {
+        "title": "Awọn Apẹẹrẹ Rẹ ({{count}})",
+        "subtitle": "Awọn apẹẹrẹ ti o ti ṣẹda ki o si ṣe atunṣe"
+      },
+      "error": {
+        "title": "Kuna lati Gbe Awọn Apẹẹrẹ Soke"
+      },
+      "failedToLoadBaseTemplates": "Kuna lati gbe awọn apẹẹrẹ ipilẹ soke",
+      "deleteDialog": {
+        "title": "Pa Apẹẹrẹ",
+        "description": "Ṣe o da ọ lọju pe o fẹ pa \"{{name}}\"? Iṣe yii ko le ṣe atunṣe.",
+        "deleting": "N pa...",
+        "confirm": "Pa Apẹẹrẹ"
+      },
+      "createSuccess": "A ṣẹda apẹẹrẹ ni aṣeyọri",
+      "createError": "Kuna lati ṣẹda apẹẹrẹ",
+      "deleteSuccess": "A pa apẹẹrẹ ni aṣeyọri",
+      "deleteError": "Kuna lati pa apẹẹrẹ"
+    },
+    "marketplace": {
+      "title": "Ọja Awọn Apẹẹrẹ",
+      "subtitle": "Ṣawari awọn apẹẹrẹ giga lati mu awọn iranti rẹ dara si",
+      "search": {
+        "placeholder": "Wa awọn apẹẹrẹ...",
+        "noResults": "Ko ri awọn apẹẹrẹ ti o baamu wiwa rẹ"
+      },
+      "filters": {
+        "all": "Gbogbo Awọn Apẹẹrẹ",
+        "free": "Ọfẹ",
+        "premium": "Giga",
+        "categories": {
+          "traditional": "Aṣa",
+          "modern": "Ojo Loni",
+          "nature": "Adanida",
+          "religious": "Isin",
+          "military": "Ogun",
+          "sports": "Ere Idaraya",
+          "music": "Orin",
+          "artistic": "Iṣẹ-ọnà"
+        },
+        "sort": {
+          "popular": "Ti o Gbajumo Julọ",
+          "newest": "Ti o Tuntun Julọ",
+          "rating": "Iwọn Idaniloju Ti o Ga Julọ",
+          "priceLow": "Iye Owo: Kere si Pọ",
+          "priceHigh": "Iye Owo: Pọ si Kere"
+        }
+      },
+      "template": {
+        "preview": "Atunwo",
+        "download": "Ṣe Igbasilẹ",
+        "purchased": "Ti A Ra",
+        "price": "Iye Owo",
+        "category": "Ẹka",
+        "downloads": "Awọn Igbasilẹ",
+        "rating": "Iwọn Idaniloju",
+        "features": "Awọn Ẹya"
+      },
+      "purchase": {
+        "dialog": {
+          "title": "Ra Apẹẹrẹ",
+          "description": "O n ra \"{{name}}\" fun {{price}}",
+          "confirm": "Jẹrisi Rira",
+          "cancel": "Fagilee",
+          "processing": "N ṣiṣẹ..."
+        },
+        "success": "A ra apẹẹrẹ ni aṣeyọri!",
+        "error": "Kuna lati ra apẹẹrẹ"
+      },
+      "download": {
+        "success": "A ṣe igbasilẹ apẹẹrẹ ni aṣeyọri!",
+        "error": "Kuna lati ṣe igbasilẹ apẹẹrẹ"
+      },
+      "loading": "N gbe awọn apẹẹrẹ soke...",
+      "error": "Kuna lati gbe awọn apẹẹrẹ soke"
+    },
+    "customization": {
+      "title": "Atunṣe Ilọsiwaju",
+      "subtitle": "Ṣe atunṣe apẹẹrẹ rẹ pẹlu awọn aṣayan ilọsiwaju",
+      "sections": {
+        "colors": "Awọn Awọ",
+        "typography": "Iṣẹda Lẹta",
+        "layout": "Itolẹsẹsẹ",
+        "code": "Koodu Akanṣe"
+      },
+      "colors": {
+        "primary": "Awọ Akọkọ",
+        "secondary": "Awọ Keji",
+        "accent": "Awọ Afikun",
+        "background": "Awọ Ẹhin",
+        "text": "Awọ Ọrọ",
+        "reset": "Tun Pada si Ipilẹṣẹ"
+      },
+      "typography": {
+        "fontFamily": "Ẹbi Font",
+        "fontSize": "Iwọn Font",
+        "lineHeight": "Gigun Laini",
+        "fontWeight": "Iwọn Font",
+        "textAlign": "Itolẹsẹsẹ Ọrọ"
+      },
+      "layout": {
+        "containerWidth": "Bubun Apoti",
+        "spacing": "Alafo",
+        "borderRadius": "Radius Aala",
+        "shadows": "Awọn Oji"
+      },
+      "code": {
+        "css": "CSS Akanṣe",
+        "javascript": "JavaScript Akanṣe",
+        "html": "HTML Akanṣe",
+        "warning": "Ikilo: Koodu akanṣe le pa apẹẹrẹ rẹ jẹ. Lo pẹlu iṣọra."
+      },
+      "preview": {
+        "title": "Atunwo Loni",
+        "mobile": "Alagbeka",
+        "tablet": "Tabulẹti",
+        "desktop": "Kọmputa",
+        "fullscreen": "Oju-iwe Kikun"
+      },
+      "actions": {
+        "save": "Fi Awọn Ayipada Pamọ",
+        "reset": "Tun Gbogbo Pada",
+        "export": "Jade Awọn Eto",
+        "import": "Gbewọle Awọn Eto",
+        "saving": "N fi pamọ...",
+        "resetting": "N tun pada..."
+      },
+      "import": {
+        "dialog": {
+          "title": "Gbewọle Awọn Eto Atunṣe",
+          "description": "Lẹta awọn eto jade rẹ si isalẹ",
+          "placeholder": "Lẹta awọn eto JSON nihin...",
+          "import": "Gbewọle",
+          "cancel": "Fagilee"
+        },
+        "success": "A gbewọle awọn eto ni aṣeyọri!",
+        "error": "Kuna lati gbewọle awọn eto. Jọwọ ṣayẹwo itolẹsẹsẹ."
+      },
+      "export": {
+        "success": "A jade awọn eto si faili!",
+        "error": "Kuna lati jade awọn eto"
+      },
+      "save": {
+        "success": "A fi atunṣe pamọ ni aṣeyọri!",
+        "error": "Kuna lati fi atunṣe pamọ"
+      },
+      "reset": {
+        "confirm": {
+          "title": "Tun Gbogbo Atunṣe Pada?",
+          "description": "Eyi yoo da gbogbo awọn eto pada si ipilẹṣẹ wọn. Iṣe yii ko le ṣe atunṣe.",
+          "confirm": "Tun Gbogbo Pada",
+          "cancel": "Fagilee"
+        },
+        "success": "A tun gbogbo atunṣe pada ni aṣeyọri!",
+        "error": "Kuna lati tun atunṣe pada"
+      },
+      "validation": {
+        "invalidCss": "Itolẹsẹsẹ CSS ti ko tọ",
+        "invalidJs": "Itolẹsẹsẹ JavaScript ti ko tọ",
+        "invalidHtml": "Itolẹsẹsẹ HTML ti ko tọ"
       }
+    },
+    "tabs": {
+      "myTemplates": "Awọn Apẹẹrẹ Mi",
+      "marketplace": "Ọja",
+      "analytics": "Iṣiro",
+      "customization": "Atunṣe"
     }
   },
   "termsAndConditions": {
-    "agree": "I agree to the Terms and Conditions",
-    "title": "Memorial Website Service Terms and Conditions",
+    "agree": "Mo gba laaye si Awọn Ofin ati Awọn Ọran",
+    "title": "Awọn Ofin ati Awọn Ọran Iṣẹ Oju-ori Ayelujara Iranti",
     "sections": {
       "serviceDescription": {
-        "title": "1. Service Description",
-        "content": "Our memorial website service provides a platform to create and maintain online memorials for loved ones. This includes hosting, templates, and maintenance as specified in your chosen plan."
+        "title": "1. Apejuwe Iṣẹ",
+        "content": "Iṣẹ oju-ori ayelujara iranti wa pese pẹpẹ lati ṣẹda ati ṣetọju awọn iranti ori ayelujara fun awọn eniyan ti a nifẹ. Eyi pẹlu gbigba, awọn apẹẹrẹ, ati itoju gẹgẹbi a ti sọ ni eto ti o yan."
       },
       "paymentTerms": {
-        "title": "2. Payment Terms",
-        "content": "All payments are one-time fees for the selected plan. Payment is required before service activation. Fees are non-refundable once the website has been created and published."
+        "title": "2. Awọn Ofin Sisanwo",
+        "content": "Gbogbo awọn sisanwo jẹ awọn idiyeji lẹẹkan fun eto ti a yan. Sisanwo ni a nilo ṣaaju ki iṣẹ to bẹrẹ. Awọn idiyeji ko ni pada nigbati oju-ori ayelujara ti ṣẹda ati ti a te."
       },
       "contentGuidelines": {
-        "title": "3. Content Guidelines",
-        "content": "You agree to provide appropriate content that respects the memory of the deceased. We reserve the right to remove any content that violates our community guidelines or is deemed inappropriate."
+        "title": "3. Awọn Itọsọna Akoonu",
+        "content": "O gba laaye lati pese akoonu ti o yẹ ti o bọwọ fun iranti alaigbe. A fipamọ ẹtọ lati yọ eyikeyi akoonu kuro ti o kọja awọn itọsọna agbegbe wa tabi ti a ka bi ko yẹ."
       },
       "privacyAndData": {
-        "title": "4. Privacy and Data",
-        "content": "We respect your privacy and will handle all personal information in accordance with our privacy policy. Memorial content may be publicly accessible unless privacy settings are applied."
+        "title": "4. Iṣọkan ati Data",
+        "content": "A bọwọ fun iṣọkan rẹ ati yoo ṣakoso gbogbo alaye ti ara ẹni gẹgẹbi ilana iṣọkan wa. Akoonu iranti le ṣee ṣe ni wiwa gbangba ayafi ti a lo awọn eto iṣọkan."
       },
       "serviceAvailability": {
-        "title": "5. Service Availability",
-        "content": "We strive to maintain 99% uptime but cannot guarantee uninterrupted service. Scheduled maintenance may occur with prior notice."
+        "title": "5. Wiwa Iṣẹ",
+        "content": "A ṣe aṣeyọri lati ṣetọju 99% igba iṣẹ ṣugbọn ko le ṣe ileri iṣẹ laisi idaduro. Itoju ti a ṣeto le ṣẹlẹ pẹlu ikilọ ṣaaju."
       },
       "intellectualProperty": {
-        "title": "6. Intellectual Property",
-        "content": "You retain rights to the content you provide. We retain rights to the platform, templates, and technology. The memorial website design is licensed for your use."
+        "title": "6. Ọja-ọgbin",
+        "content": "O fipamọ awọn ẹtọ si akoonu ti o pese. A fipamọ awọn ẹtọ si pẹpẹ, awọn apẹẹrẹ, ati ẹkọ. Apẹẹrẹ oju-ori ayelujara iranti ni a fi iwe-aṣẹ fun lilo rẹ."
       },
       "termination": {
-        "title": "7. Termination",
-        "content": "You may request termination of service at any time. We reserve the right to terminate service for violation of terms. Memorial websites are maintained for the duration specified in your plan."
+        "title": "7. Ipari",
+        "content": "O le beere ipari iṣẹ nigbakugba. A fipamọ ẹtọ lati pari iṣẹ fun ikọja awọn ofin. Awọn oju-ori ayelujara iranti wa ni itoju fun igba ti a sọ ni eto rẹ."
       },
       "limitationOfLiability": {
-        "title": "8. Limitation of Liability",
-        "content": "Our liability is limited to the amount paid for the service. We are not liable for indirect damages or losses resulting from service use."
+        "title": "8. Idinku Ẹtọ",
+        "content": "Ẹtọ wa ni o pọ to iye owo ti a san fun iṣẹ naa. A ko ni ẹtọ fun awọn ipalara tabi awọn ipadanu ti o jẹ esi lilo iṣẹ."
       }
     },
-    "note": "Note: By checking the agreement box, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions."
+    "note": "Akiyesi: Nipa ṣiṣayẹwo aaye ifọrọwa, o jẹri pe o ti ka, oye, ati gba laaye lati wa ni ifowosowọ pẹlu awọn Ofin ati Awọn Ọran wọnyi."
   },
   "register": {
-    "welcome": "Create Account",
-    "subtitle": "Create a lasting memory",
+    "welcome": "Ṣẹda Akọọlẹ",
+    "subtitle": "Ṣẹda iranti ti o duro titi",
     "form": {
-      "name": "Full Name",
-      "email": "Email Address",
-      "phone": "Phone Number",
-      "password": "Password",
-      "confirmPassword": "Confirm Password"
+      "name": "Orukọ Kikun",
+      "email": "Adirẹsi Imeeli",
+      "phone": "Nọmba Foonu",
+      "password": "Ọrọigbaniwọle",
+      "confirmPassword": "Jẹrisi Ọrọigbaniwọle"
     },
     "placeholders": {
-      "name": "Enter your full name",
-      "email": "Enter your email",
-      "phone": "WhatsApp number",
-      "password": "Enter your password",
-      "confirmPassword": "Confirm your password"
+      "name": "Tẹ orukọ rẹ kikun sii",
+      "email": "Tẹ imeeli rẹ sii",
+      "phone": "Nọmba WhatsApp",
+      "password": "Tẹ ọrọigbaniwọle rẹ sii",
+      "confirmPassword": "Jẹrisi ọrọigbaniwọle rẹ"
     },
     "buttons": {
-      "createAccount": "Create Account",
-      "creatingAccount": "Creating Account...",
-      "loginHere": "Login here",
+      "createAccount": "Ṣẹda Akọọlẹ",
+      "creatingAccount": "N Ṣẹda Akọọlẹ...",
+      "loginHere": "Wọle nibi",
       "continueWithGoogle": "Tẹsiwaju pẹlu Google",
       "signingUpWithGoogle": "N forukọsilẹ pẹlu Google..."
     },
@@ -1478,48 +1819,48 @@
       "divider": "TABI"
     },
     "errors": {
-      "nameRequired": "Name is required",
-      "emailRequired": "Email is required",
-      "invalidEmail": "Please enter a valid email",
-      "phoneRequired": "Phone number is required",
-      "passwordRequired": "Password is required",
-      "passwordLength": "Password must be at least 8 characters",
-      "passwordsDontMatch": "Passwords do not match",
-      "recaptchaRequired": "Please complete the reCAPTCHA verification",
-      "paymentRequired": "Payment required. Please complete payment first.",
-      "paymentVerificationFailed": "Payment verification failed. Please complete payment first.",
-      "paymentVerificationError": "Failed to verify payment. Please try again.",
-      "registrationFailed": "Registration failed",
-      "registrationError": "An error occurred during registration"
+      "nameRequired": "Orukọ nilo",
+      "emailRequired": "Imeeli nilo",
+      "invalidEmail": "Jọwọ tẹ imeeli ti o wulo sii",
+      "phoneRequired": "Nọmba foonu nilo",
+      "passwordRequired": "Ọrọigbaniwọle nilo",
+      "passwordLength": "Ọrọigbaniwọle gbọdọ jẹ o kere ju ami 8",
+      "passwordsDontMatch": "Awọn ọrọigbaniwọle ko baamu",
+      "recaptchaRequired": "Jọwọ pari ijẹrisi reCAPTCHA",
+      "paymentRequired": "Sisanwo nilo. Jọwọ pari sisanwo ni akọkọ.",
+      "paymentVerificationFailed": "Ijẹrisi sisanwo kuna. Jọwọ pari sisanwo ni akọkọ.",
+      "paymentVerificationError": "Kuna lati jẹrisi sisanwo. Jọwọ gbiyanju lẹẹkansi.",
+      "registrationFailed": "Iforukọsilẹ kuna",
+      "registrationError": "Aṣiṣe kan ṣẹlẹ nigba iforukọsilẹ"
     },
     "success": {
-      "accountCreated": "Account created successfully! Please verify your email."
+      "accountCreated": "A ṣẹda akọọlẹ ni aṣeyọri! Jọwọ jẹrisi imeeli rẹ."
     },
-    "alreadyHaveAccount": "Already have an account?",
+    "alreadyHaveAccount": "Ṣe o ti ni akọọlẹ tẹlẹ?",
     "terms": {
-      "byRegistering": "By registering, you agree to our",
-      "termsOfService": "Terms of Service",
-      "and": "and",
-      "privacyPolicy": "Privacy Policy"
+      "byRegistering": "Nipa iforukọsilẹ, o gba laaye si wa",
+      "termsOfService": "Awọn Ofin Iṣẹ",
+      "and": "ati",
+      "privacyPolicy": "Ilana Iṣọkan"
     },
-    "tagline": "A place to honor and remember those we love"
+    "tagline": "Ibi lati bọwọ ati ranti awọn ti a nifẹ"
   },
   "login": {
-    "welcomeBack": "Welcome Back",
-    "subtitle": "Login to ForeverPages",
+    "welcomeBack": "Kaabọ Pada",
+    "subtitle": "Wọle si ForeverPages",
     "form": {
-      "email": "Email Address",
-      "emailOrPhone": "Email or Phone Number",
-      "password": "Password"
+      "email": "Adirẹsi Imeeli",
+      "emailOrPhone": "Imeeli tabi Nọmba Foonu",
+      "password": "Ọrọigbaniwọle"
     },
     "placeholders": {
-      "email": "Enter your email",
-      "emailOrPhone": "Enter your email or phone number",
-      "password": "Enter your password"
+      "email": "Tẹ imeeli rẹ sii",
+      "emailOrPhone": "Tẹ imeeli rẹ tabi nọmba foonu sii",
+      "password": "Tẹ ọrọigbaniwọle rẹ sii"
     },
     "buttons": {
-      "login": "Login",
-      "registerHere": "Register here",
+      "login": "Wọle",
+      "registerHere": "Forukọsilẹ nibi",
       "signInWithGoogle": "Wọle pẹlu Google",
       "signingInWithGoogle": "N wọle pẹlu Google..."
     },
@@ -1527,145 +1868,145 @@
       "divider": "TABI"
     },
     "errors": {
-      "emailRequired": "Email is required",
-      "invalidEmail": "Please enter a valid email",
-      "passwordRequired": "Password is required"
+      "emailRequired": "Imeeli nilo",
+      "invalidEmail": "Jọwọ tẹ imeeli ti o wulo sii",
+      "passwordRequired": "Ọrọigbaniwọle nilo"
     },
-    "rememberMe": "Remember me",
-    "forgotPassword": "Forgot password?",
-    "noAccount": "Don't have an account?",
-    "tagline": "A place to honor and remember those we love",
+    "rememberMe": "Ranti Mi",
+    "forgotPassword": "Gbagbe ọrọigbaniwọle?",
+    "noAccount": "Ṣe o ko ni akọọlẹ?",
+    "tagline": "Ibi lati bọwọ ati ranti awọn ti a nifẹ",
     "loggingOut": "N jade lọ..."
   },
   "forgotPassword": {
-    "title": "Forgot Password",
-    "subtitle": "Enter your email to reset your password",
+    "title": "Gbagbe Ọrọigbaniwọle",
+    "subtitle": "Tẹ imeeli rẹ sii lati tun ọrọigbaniwọle rẹ ṣeto",
     "form": {
-      "email": "Email Address"
+      "email": "Adirẹsi Imeeli"
     },
     "placeholders": {
-      "email": "Enter your email address"
+      "email": "Tẹ adirẹsi imeeli rẹ sii"
     },
     "buttons": {
-      "resetPassword": "Reset Password",
-      "sending": "Sending..."
+      "resetPassword": "Tun Ọrọigbaniwọle Ṣeto",
+      "sending": "N firanṣẹ..."
     },
     "errors": {
-      "emailRequired": "Email is required",
-      "invalidEmail": "Please enter a valid email address"
+      "emailRequired": "Imeeli nilo",
+      "invalidEmail": "Jọwọ tẹ adirẹsi imeeli ti o wulo sii"
     },
-    "backToLogin": "Back to Login",
+    "backToLogin": "Pada si Wiwọle",
     "success": {
-      "title": "Check Your Email",
-      "subtitle": "We've sent you a password reset link",
-      "checkEmail": "Check Your Email",
-      "instructions": "We've sent a password reset link to {{email}}. Please check your inbox and follow the instructions to reset your password.",
-      "tryAgain": "Try Another Email",
-      "backToLogin": "Back to Login"
+      "title": "Ṣayẹwo Imeeli Rẹ",
+      "subtitle": "A ti firanṣẹ ọna asopọ tun ọrọigbaniwọle ṣeto si ọ",
+      "checkEmail": "Ṣayẹwo Imeeli Rẹ",
+      "instructions": "A ti firanṣẹ ọna asopọ tun ọrọigbaniwọle ṣeto si {{email}}. Jọwọ ṣayẹwo inbox rẹ ki o tẹle awọn itọsọna lati tun ọrọigbaniwọle rẹ ṣeto.",
+      "tryAgain": "Gbiyanju Imeeli Miiran",
+      "backToLogin": "Pada si Wiwọle"
     },
-    "tagline": "A place to honor and remember those we love"
+    "tagline": "Ibi lati bọwọ ati ranti awọn ti a nifẹ"
   },
   "resetPassword": {
-    "title": "Reset Password",
-    "subtitle": "Create a new password for your account",
+    "title": "Tun Ọrọigbaniwọle Ṣeto",
+    "subtitle": "Ṣẹda ọrọigbaniwọle tuntun fun akọọlẹ rẹ",
     "form": {
-      "newPassword": "New Password",
-      "confirmPassword": "Confirm Password"
+      "newPassword": "Ọrọigbaniwọle Tuntun",
+      "confirmPassword": "Jẹrisi Ọrọigbaniwọle"
     },
     "placeholders": {
-      "newPassword": "Enter your new password",
-      "confirmPassword": "Confirm your new password"
+      "newPassword": "Tẹ ọrọigbaniwọle tuntun rẹ sii",
+      "confirmPassword": "Jẹrisi ọrọigbaniwọle tuntun rẹ"
     },
     "buttons": {
-      "resetPassword": "Reset Password",
-      "resetting": "Resetting..."
+      "resetPassword": "Tun Ọrọigbaniwọle Ṣeto",
+      "resetting": "N tun ṣeto..."
     },
     "errors": {
-      "passwordRequired": "Password is required",
-      "passwordLength": "Password must be at least 8 characters",
-      "passwordsDontMatch": "Passwords do not match"
+      "passwordRequired": "Ọrọigbaniwọle nilo",
+      "passwordLength": "Ọrọigbaniwọle gbọdọ jẹ o kere ju ami 8",
+      "passwordsDontMatch": "Awọn ọrọigbaniwọle ko baamu"
     },
-    "backToLogin": "Back to Login",
+    "backToLogin": "Pada si Wiwọle",
     "success": {
-      "title": "Password Reset",
-      "subtitle": "Your password has been successfully reset",
-      "passwordReset": "Password Reset Successful",
-      "loginAgain": "You can now login with your new password",
-      "backToLogin": "Back to Login"
+      "title": "Ọrọigbaniwọle Ti a Tun Ṣeto",
+      "subtitle": "A ti tun ọrọigbaniwọle rẹ ṣeto ni aṣeyọri",
+      "passwordReset": "Ọrọigbaniwọle Ti a Tun Ṣeto Ni Aṣeyọri",
+      "loginAgain": "O le wọle nisisiyi pẹlu ọrọigbaniwọle tuntun rẹ",
+      "backToLogin": "Pada si Wiwọle"
     },
-    "tagline": "A place to honor and remember those we love"
+    "tagline": "Ibi lati bọwọ ati ranti awọn ti a nifẹ"
   },
   "emailVerification": {
     "banner": {
       "title": "Ijẹrisi Imeeli Nilo",
       "description": "Jọwọ jẹrisi adirẹsi imeeli rẹ lati ṣii gbogbo awọn ẹya ati gba awọn imudojuiwọn pataki.",
-      "verifyNow": "Jẹrisi Bayi",
+      "verifyNow": "Jẹrisi Nisisiyi",
       "resendEmail": "Tun Firanṣẹ Imeeli",
       "sending": "N firanṣẹ..."
     },
-    "title": "Verify Your Email",
-    "subtitle": "Enter the 6-digit code sent to your email",
-    "enterCode": "Enter Verification Code",
-    "instructions": "Please enter the 6-digit verification code we sent to your email address.",
-    "spamWarning": "If you don't see the email, check your spam folder.",
-    "didntReceive": "Didn't receive the code?",
-    "resendIn": "Resend in",
-    "verifying": "Verifying your code...",
+    "title": "Jẹrisi Imeeli Rẹ",
+    "subtitle": "Tẹ koodu ami 6 ti a firanṣẹ si imeeli rẹ sii",
+    "enterCode": "Tẹ Koodu Ijẹrisi Sii",
+    "instructions": "Jọwọ tẹ koodu ijẹrisi ami 6 ti a firanṣẹ si adirẹsi imeeli rẹ sii.",
+    "spamWarning": "Ti o ko ri imeeli naa, ṣayẹwo folder spam rẹ.",
+    "didntReceive": "Ṣe o ko gba koodu?",
+    "resendIn": "Tun firanṣẹ ni",
+    "verifying": "N jẹrisi koodu rẹ...",
     "buttons": {
-      "resend": "Resend Code",
-      "resendCode": "Resend Verification Code",
-      "sending": "Sending...",
-      "backToLogin": "Back to Login"
+      "resend": "Tun Firanṣẹ Koodu",
+      "resendCode": "Tun Firanṣẹ Koodu Ijẹrisi",
+      "sending": "N firanṣẹ...",
+      "backToLogin": "Pada si Wiwọle"
     },
     "success": {
-      "toast": "Email verified successfully! Redirecting..."
+      "toast": "A jẹrisi imeeli ni aṣeyọri! N dari pada..."
     },
     "error": {
-      "expired": "Verification code has expired. Please request a new one.",
-      "invalid": "Invalid code. Please check and try again."
+      "expired": "Koodu ijẹrisi ti pari. Jọwọ beere kan tuntun.",
+      "invalid": "Koodu ti ko wulo. Jọwọ ṣayẹwo ki o si gbiyanju lẹẹkansi."
     },
-    "tagline": "A place to honor and remember those we love"
+    "tagline": "Ibi lati bọwọ ati ranti awọn ti a nifẹ"
   },
   "confirmEmail": {
-    "title": "Confirming Your Email",
-    "subtitle": "We're verifying your email address",
-    "verifying": "Verifying your email address...",
-    "redirectNotice": "You will be redirected to login automatically",
+    "title": "N Jẹrisi Imeeli Rẹ",
+    "subtitle": "A n jẹrisi adirẹsi imeeli rẹ",
+    "verifying": "N jẹrisi adirẹsi imeeli rẹ...",
+    "redirectNotice": "A o dari ọ pada si wiwọle laifọwọyi",
     "success": {
-      "toast": "Email confirmed successfully!",
-      "redirecting": "Redirecting to login..."
+      "toast": "A jẹrisi imeeli ni aṣeyọri!",
+      "redirecting": "N dari pada si wiwọle..."
     },
     "error": {
-      "toast": "Email confirmation failed",
-      "expired": "Confirmation link has expired",
-      "invalid": "Invalid confirmation link",
-      "network": "Network error. Please try again."
+      "toast": "Ijẹrisi imeeli kuna",
+      "expired": "Ọna asopọ ijẹrisi ti pari",
+      "invalid": "Ọna asopọ ijẹrisi ti ko wulo",
+      "network": "Aṣiṣe nẹtiwọọki. Jọwọ gbiyanju lẹẹkansi."
     }
   },
   "offline": {
     "status": {
-      "online": "Online",
-      "offline": "Offline",
-      "syncing": "Syncing..."
+      "online": "Tẹlẹ",
+      "offline": "Laini",
+      "syncing": "N ṣe isopọ..."
     },
-    "pendingActions": "Pending actions: {count}",
+    "pendingActions": "Awọn iṣe ti o nduro: {{count}}",
     "syncProgress": {
-      "synchronizing": "Synchronizing...",
-      "progress": "Progress: {{current}}/{{total}}",
-      "title": "Sync Progress",
-      "complete": "Complete"
+      "synchronizing": "N ṣe isopọ...",
+      "progress": "Ilọsiwaju: {{current}}/{{total}}",
+      "title": "Ilọsiwaju Isopọ",
+      "complete": "Ti Pari"
     },
     "banner": {
-      "offlineMessage": "You're currently offline.",
-      "pendingActions": "You have {count} pending action{{count !== 1 ? 's' : ''}} that will sync when you're back online."
+      "offlineMessage": "O wa laini nisisiyi.",
+      "pendingActions": "O ni {{count}} iṣe ti o nduro {{count !== 1 ? 's' : ''}} ti yoo ṣe isopọ nigbati o ba pada tẹlẹ."
     },
-    "lastSync": "Last sync: {{synced}} synced, {{failed}} failed",
+    "lastSync": "Isopọ to kẹhin: {{synced}} ti a ṣe isopọ, {{failed}} ti kuna",
     "loading": {
-      "offline": "Offline",
-      "viewingCached": "Viewing cached images",
-      "actionsQueued": "{count} action{{count !== 1 ? 's' : ''}} queued",
-      "willSyncWhenOnline": "will sync when online",
-      "savedLocally": "Will be saved locally and synced when online"
+      "offline": "Laini",
+      "viewingCached": "N wo awọn aworan ti a fi pamọ",
+      "actionsQueued": "{{count}} iṣe {{count !== 1 ? 's' : ''}} ti o wa ni ila",
+      "willSyncWhenOnline": "yoo ṣe isopọ nigbati o ba tẹlẹ",
+      "savedLocally": "Yoo fi pamọ ni agbegbe ki o si ṣe isopọ nigbati o ba tẹlẹ"
     }
   },
   "twoFactor": {
@@ -1675,80 +2016,80 @@
       "enable": "Mu 2FA Ṣiṣẹ"
     },
     "verification": {
-      "title": "Two-Factor Authentication",
+      "title": "Ijẹrisi Ẹya-Meji",
       "subtitle": {
-        "email": "Enter the code sent to your email",
-        "authenticator": "Enter the code from your authenticator app"
+        "email": "Tẹ koodu ti a firanṣẹ si imeeli rẹ sii",
+        "authenticator": "Tẹ koodu lati ọdọ ohun elo ijẹrisi rẹ sii"
       },
-      "enterCode": "Enter Verification Code",
+      "enterCode": "Tẹ Koodu Ijẹrisi Sii",
       "instructions": {
-        "email": "Code sent to {{email}}",
-        "authenticator": "Open your authenticator app"
+        "email": "Koodu ti a firanṣẹ si {{email}}",
+        "authenticator": "Ṣi ohun elo ijẹrisi rẹ"
       },
-      "verifying": "Verifying...",
-      "resendCode": "Resend code",
-      "useBackupCode": "Use backup code instead",
+      "verifying": "N jẹrisi...",
+      "resendCode": "Tun firanṣẹ koodu",
+      "useBackupCode": "Lo koodu ipamọ dipo",
       "backupCode": {
-        "title": "Enter Backup Code",
-        "subtitle": "Enter one of your saved backup codes",
+        "title": "Tẹ Koodu Ipamọ Sii",
+        "subtitle": "Tẹ ọkan ninu awọn koodu ipamọ rẹ ti a fi pamọ sii",
         "placeholder": "XXXX-XXXX",
-        "verify": "Verify Backup Code",
-        "useVerificationCode": "Use verification code instead"
+        "verify": "Jẹrisi Koodu Ipamọ",
+        "useVerificationCode": "Lo koodu ijẹrisi dipo"
       },
-      "backToLogin": "Back to login",
-      "success": "Verification successful!",
+      "backToLogin": "Pada si wiwọle",
+      "success": "Ijẹrisi ni aṣeyọri!",
       "error": {
-        "invalidCode": "Invalid verification code",
-        "failed": "Failed to complete login"
+        "invalidCode": "Koodu ijẹrisi ti ko wulo",
+        "failed": "Kuna lati pari wiwọle"
       }
     },
     "settings": {
-      "title": "Two-Factor Authentication",
-      "description": "Add an extra layer of security to your account",
+      "title": "Ijẹrisi Ẹya-Meji",
+      "description": "Fi ipele aabo afikun kun akọọlẹ rẹ",
       "status": {
-        "enabled": "2FA Enabled",
-        "disabled": "2FA Disabled",
+        "enabled": "2FA Ti Ṣiṣẹ",
+        "disabled": "2FA Ti Pa",
         "method": {
-          "email": "Email",
-          "authenticator": "Authenticator App"
+          "email": "Imeeli",
+          "authenticator": "Ohun Elo Ijẹrisi"
         }
       },
       "enable": {
-        "title": "Enable Two-Factor Authentication",
-        "selectMethod": "Select Authentication Method",
+        "title": "Mu Ijẹrisi Ẹya-Meji Ṣiṣẹ",
+        "selectMethod": "Yan Ọna Ijẹrisi",
         "methods": {
           "email": {
-            "title": "Email Authentication",
-            "description": "Receive a verification code via email whenever you sign in"
+            "title": "Ijẹrisi Imeeli",
+            "description": "Gba koodu ijẹrisi nipasẹ imeeli nigbakugba ti o ba wọle"
           },
           "authenticator": {
-            "title": "Authenticator App",
-            "description": "Use an authenticator app like Google Authenticator or Authy"
+            "title": "Ohun Elo Ijẹrisi",
+            "description": "Lo ohun elo ijẹrisi bii Google Authenticator tabi Authy"
           }
         }
       },
       "email": {
-        "title": "Email Two-Factor Authentication",
-        "description": "You'll receive a verification code via email when signing in.",
-        "howItWorks": "How it works:",
+        "title": "Ijẹrisi Ẹya-Meji Imeeli",
+        "description": "Iwo yoo gba koodu ijẹrisi nipasẹ imeeli nigbati o ba wọle.",
+        "howItWorks": "Bawo ni o ṣiṣẹ:",
         "steps": {
-          "step1": "Sign in with your password",
-          "step2": "Receive a code via email",
-          "step3": "Enter the code to complete login"
+          "step1": "Wọle pẹlu ọrọigbaniwọle rẹ",
+          "step2": "Gba koodu nipasẹ imeeli",
+          "step3": "Tẹ koodu sii lati pari wiwọle"
         },
         "buttons": {
-          "enable": "Enable Email 2FA",
-          "enabling": "Enabling...",
-          "disable": "Disable 2FA",
-          "disabling": "Disabling..."
+          "enable": "Mu Imeeli 2FA Ṣiṣẹ",
+          "enabling": "N mu ṣiṣẹ...",
+          "disable": "Pa 2FA",
+          "disabling": "N pa..."
         }
       },
       "authenticator": {
-        "title": "Authenticator App Setup",
-        "description": "Use an authenticator app for more secure verification.",
+        "title": "Eto Ohun Elo Ijẹrisi",
+        "description": "Lo ohun elo ijẹrisi fun ijẹrisi ti o ni aabo diẹ sii.",
         "step1": {
-          "title": "Step 1: Install an Authenticator App",
-          "description": "Download an authenticator app if you don't have one:",
+          "title": "Igbesẹ 1: Fi Ohun Elo Ijẹrisi Sori Ẹrọ",
+          "description": "Ṣe igbasilẹ ohun elo ijẹrisi ti o ko ba ni ọkan:",
           "apps": {
             "googleAuth": "Google Authenticator",
             "authy": "Authy",
@@ -1756,354 +2097,388 @@
           }
         },
         "step2": {
-          "title": "Step 2: Scan QR Code",
-          "description": "Open your authenticator app and scan this QR code:",
-          "manualEntry": "Can't scan? Enter this code manually:",
-          "copy": "Copy",
-          "copied": "Copied!"
+          "title": "Igbesẹ 2: Ṣawari Koodu QR",
+          "description": "Ṣi ohun elo ijẹrisi rẹ ki o ṣawari koodu QR yii:",
+          "manualEntry": "Ṣe o ko le ṣawari? Tẹ koodu yii sii ni ọwọ:",
+          "copy": "Daakọ",
+          "copied": "A daakọ!"
         },
         "step3": {
-          "title": "Step 3: Verify Setup",
-          "description": "Enter the 6-digit code from your authenticator app:",
-          "placeholder": "Enter 6-digit code",
-          "verify": "Verify & Enable",
-          "verifying": "Verifying..."
+          "title": "Igbesẹ 3: Jẹrisi Eto",
+          "description": "Tẹ koodu ami 6 lati ọdọ ohun elo ijẹrisi rẹ sii:",
+          "placeholder": "Tẹ koodu ami 6 sii",
+          "verify": "Jẹrisi & Mu Ṣiṣẹ",
+          "verifying": "N jẹrisi..."
         },
         "buttons": {
-          "cancel": "Cancel",
-          "disable": "Disable Authenticator 2FA",
-          "disabling": "Disabling..."
+          "cancel": "Fagilee",
+          "disable": "Pa Ijẹrisi Authenticator 2FA",
+          "disabling": "N pa..."
         }
       },
       "backupCodes": {
-        "title": "Backup Codes",
-        "description": "Save these backup codes in a secure place. Each code can only be used once.",
-        "warning": "Warning: Only {{count}} backup code(s) remaining. Generate new ones in Settings.",
-        "remaining": "{{count}} codes remaining",
+        "title": "Awọn Koodu Ipamọ",
+        "description": "Fi awọn koodu ipamọ wọnyi pamọ ni aaye ailewu. Koodu kọọkan le lo ni lẹẹkan nikan.",
+        "warning": "Ikilo: Nikan {{count}} koodu ipamọ {{count}} ti o ku. Ṣẹda awọn tuntun ni Awọn Eto.",
+        "remaining": "{{count}} awọn koodu ti o ku",
         "buttons": {
-          "download": "Download Codes",
-          "copy": "Copy All Codes",
-          "copied": "Copied to clipboard!",
-          "regenerate": "Regenerate Codes",
-          "regenerating": "Regenerating..."
+          "download": "Ṣe Igbasilẹ Awọn Koodu",
+          "copy": "Daakọ Gbogbo Awọn Koodu",
+          "copied": "A daakọ si akojọ!",
+          "regenerate": "Tun Ṣẹda Awọn Koodu",
+          "regenerating": "N tun ṣẹda..."
         },
         "regenerateWarning": {
-          "title": "Regenerate Backup Codes?",
-          "message": "This will invalidate all existing backup codes. Make sure you've saved your current codes before proceeding.",
-          "confirm": "Regenerate",
-          "cancel": "Cancel"
+          "title": "Tun Ṣẹda Awọn Koodu Ipamọ?",
+          "message": "Eyi yoo ṣe awọn koodu ipamọ ti o wa tẹlẹ ni ailọra. Rii daju pe o ti fi awọn koodu rẹ lọwọlọwọ pamọ ṣaaju ki o to tẹsiwaju.",
+          "confirm": "Bẹẹni, Tun Ṣẹda",
+          "cancel": "Fagilee"
         }
       },
       "disable": {
         "warning": {
-          "title": "Disable Two-Factor Authentication?",
-          "message": "Your account will be less secure without 2FA. Are you sure you want to disable it?",
-          "confirm": "Yes, Disable 2FA",
-          "cancel": "Cancel"
+          "title": "Pa Ijẹrisi Ẹya-Meji?",
+          "message": "Akọọlẹ rẹ yoo di ailewu diẹ laisi 2FA. Ṣe o da ọ lọju pe o fẹ pa rẹ?",
+          "confirm": "Bẹẹni, Pa 2FA",
+          "cancel": "Fagilee"
         }
       },
       "success": {
-        "enabled": "Two-factor authentication enabled successfully!",
-        "disabled": "Two-factor authentication disabled",
-        "codesRegenerated": "Backup codes regenerated successfully"
+        "enabled": "A mu ijẹrisi ẹya-meji ṣiṣẹ ni aṣeyọri!",
+        "disabled": "A pa ijẹrisi ẹya-meji",
+        "codesRegenerated": "A tun ṣẹda awọn koodu ipamọ ni aṣeyọri"
       },
       "error": {
-        "loadFailed": "Failed to load 2FA settings",
-        "enableFailed": "Failed to enable 2FA",
-        "disableFailed": "Failed to disable 2FA",
-        "verifyFailed": "Failed to verify code",
-        "regenerateFailed": "Failed to regenerate backup codes"
+        "loadFailed": "Kuna lati gbe awọn eto 2FA soke",
+        "enableFailed": "Kuna lati mu 2FA ṣiṣẹ",
+        "disableFailed": "Kuna lati pa 2FA",
+        "verifyFailed": "Kuna lati jẹrisi koodu",
+        "regenerateFailed": "Kuna lati tun ṣẹda awọn koodu ipamọ"
       }
     }
   },
   "notifications": {
-    "title": "Notifications",
-    "bellButton": "Notifications",
-    "markAllRead": "Mark all as read",
-    "clearAll": "Clear all",
-    "loading": "Loading notifications...",
-    "empty": "No notifications yet",
-    "markedAsRead": "Marked as read",
-    "markAsReadError": "Failed to mark as read",
-    "allMarkedAsRead": "All notifications marked as read",
-    "markAllAsReadError": "Failed to mark all as read",
-    "allCleared": "All notifications cleared",
-    "clearAllError": "Failed to clear notifications",
+    "title": "Awọn Iwifunni",
+    "bellButton": "Awọn Iwifunni",
+    "markAllRead": "Fi gbogbo gẹgẹbi ti a ka",
+    "clearAll": "Pa Gbogbo",
+    "loading": "N gbe awọn iwifunni soke...",
+    "empty": "Ko si awọn iwifunni sibẹ",
+    "markedAsRead": "A fi gẹgẹbi ti a ka",
+    "markAsReadError": "Kuna lati fi gẹgẹbi ti a ka",
+    "allMarkedAsRead": "A fi gbogbo awọn iwifunni gẹgẹbi ti a ka",
+    "markAllAsReadError": "Kuna lati fi gbogbo gẹgẹbi ti a ka",
+    "allCleared": "A pa gbogbo awọn iwifunni",
+    "clearAllError": "Kuna lati pa gbogbo awọn iwifunni",
     "types": {
-      "NEW_TRIBUTE": "New Tribute",
-      "NEW_COMMENT": "New Comment",
-      "NEW_PHOTO": "New Photo",
-      "NEW_CANDLE": "New Candle",
-      "NEW_FLOWER": "New Flower",
-      "INVITATION": "Invitation",
-      "MEMORIAL_ANNIVERSARY": "Memorial Anniversary",
-      "BIRTHDAY_ANNIVERSARY": "Birthday Anniversary",
-      "EXPIRING_SOON": "Expiring Soon",
-      "SYSTEM": "System Notification"
+      "NEW_TRIBUTE": "Ọwọ Tuntun",
+      "NEW_COMMENT": "Ọrọ Asọye Tuntun",
+      "NEW_PHOTO": "Fọto Tuntun",
+      "NEW_CANDLE": "Abẹ Tuntun",
+      "NEW_FLOWER": "Ọdọdọ Tuntun",
+      "INVITATION": "Ipe",
+      "MEMORIAL_ANNIVERSARY": "Ọjọ Iye Iranti",
+      "BIRTHDAY_ANNIVERSARY": "Ọjọ Ibi",
+      "EXPIRING_SOON": "Yoo Pari Laipe",
+      "SYSTEM": "Iwifunni Ẹrọ"
     }
   },
   "collaborators": {
-    "title": "Àwọn Alábàṣepọ̀ Ìrántí",
-    "subtitle": "Pe àwọn ènìyàn láti ràn ọ́ lọ́wọ́ ṣàkóso ojú-ìwé ìrántí yìí",
-    "invite": "Pe Alábàṣepọ̀",
-    "sendInvitation": "Fi Ìfiránṣẹ́ Ránṣẹ́",
+    "title": "Awọn Alabaṣepọ Iranti",
+    "subtitle": "Pe awọn eniyan lati ran ọ lọwọ ṣakoso oju-iwe iranti yii",
+    "invite": "Pe Alabaṣepọ",
+    "sendInvitation": "Fi Ifiranṣẹ Ranṣẹ",
     "accessRestricted": {
-      "title": "Wíwọlé Ti Di Dídènà",
-      "description": "O kò ní àṣẹ láti wọlé sí ẹ̀yà yìí nínú ipò rẹ lọ́wọ́lọ́wọ́."
+      "title": "Wiwa Ti A Ti Dina",
+      "description": "O ko ni aṣẹ lati wọle si ẹya yii ninu ipo rẹ lọwọlọwọ."
     },
     "roleRestriction": {
-      "title": "Wíwọlé Ti Di Dídènà",
-      "description": "Ipò rẹ ({{role}}) kò ní àṣẹ láti ṣe iṣẹ́ yìí.",
-      "contactOwner": "Fún àwọn àṣẹ àfikún, jọ̀wọ́ kan sí oluwa ojú-ìwé ìrántí náà."
+      "title": "Wiwa Ti A Ti Dina",
+      "description": "Ipo rẹ ({{role}}) ko ni aṣẹ lati ṣe iṣẹ yii.",
+      "contactOwner": "Fun awọn aṣẹ afikun, jọwọ kan si oniwun oju-iwe iranti naa."
     },
     "form": {
-      "title": "Pe Alábàṣepọ̀ Tuntun",
-      "inviteAnotherPerson": "Pe Ẹni Mìíràn",
+      "title": "Pe Alabaṣepọ Tuntun",
+      "inviteAnotherPerson": "Pe Ẹni Miiran",
       "emails": {
-        "label": "Àdírẹ́sì Ímeèlì (Ọ̀kan Tàbí Púpọ̀)",
-        "placeholder": "Tẹ àwọn àdírẹ́sì ímeèlì sínú, pín wọn nípa comma tàbí ìlà tuntun",
-        "hint": "O lè tẹ ọ̀pọ̀lọpọ̀ àdírẹ́sì ímeèlì sínú nípa pípín wọn pẹ̀lú comma tàbí ìlà tuntun"
+        "label": "Awọn Adirẹsi Imeeli (Ọkan Tabi Pọ)",
+        "placeholder": "Tẹ awọn adirẹsi imeeli sinu, pin wọn nipasẹ comma tabi ila tuntun",
+        "hint": "O le tẹ ọpọlọpọ awọn adirẹsi imeeli sinu nipasẹ pipin wọn pẹlu comma tabi ila tuntun"
       },
       "role": {
-        "label": "Ipò",
-        "placeholder": "Yan ipò kan"
+        "label": "Ipo",
+        "placeholder": "Yan ipo kan"
       },
       "message": {
-        "label": "Ìfiránṣẹ́ Àkànṣe Ìfiránṣẹ́ (Ìyàn)",
-        "placeholder": "Ṣàfikún ìfiránṣẹ́ àkànṣe fún ìfiránṣẹ́ yìí..."
+        "label": "Ifiranṣẹ Akanṣe Ifiranṣẹ (Aṣayan)",
+        "placeholder": "Ṣafikun ifiranṣẹ akanṣe fun ifiranṣẹ yii..."
       },
       "whatsapp": {
-        "label": "Fi ránṣẹ́ lórí WhatsApp pẹ̀lú",
+        "label": "Fi ranṣẹ lori WhatsApp pẹlu",
         "phones": {
-          "label": "Nọ́mbà WhatsApp (Ọ̀kan Tàbí Púpọ̀)",
-          "placeholder": "Tẹ àwọn nọ́mbà WhatsApp sínú, pín wọn nípa comma tàbí ìlà tuntun",
-          "hint": "Tẹ nọ́mbà fóònù pípé pẹ̀lú kóòdù orílẹ̀-èdè (fún àpẹẹrẹ, +234 fún Nàìjíríà, +1 fún USA)"
+          "label": "Nọmba WhatsApp (Ọkan Tabi Pọ)",
+          "placeholder": "Tẹ awọn nọmba WhatsApp sinu, pin wọn nipasẹ comma tabi ila tuntun",
+          "hint": "Tẹ nọmba foonu pipe pẹlu koodu orilẹ-ede (fun apeere, +234 fun Naijiria, +1 fun USA)"
         }
       },
-      "cancel": "Fagìlé",
-      "send": "Fi Ìfiránṣẹ́ Ránṣẹ́",
-      "sending": "Ń Fi Ránṣẹ́..."
+      "cancel": "Fagile",
+      "send": "Fi Ifiranṣẹ Ranṣẹ",
+      "sending": "N fi ranṣẹ..."
     },
     "roles": {
       "ADMIN": {
-        "name": "Alábòójútó",
+        "name": "Alakoso",
         "short": "Admin",
-        "description": "Ìṣàkóso kíkún lórí ìrántí",
-        "longDescription": "Àwọn alábòójútó ní ìṣàkóso kíkún lórí ojú-ìwé ìrántí, pẹ̀lú ṣíṣàkóso àwọn alábàṣepọ̀ àti àwọn ààtò.",
+        "description": "Iṣakoso kikun lori iranti",
+        "longDescription": "Awọn alakoso ni iṣakoso kikun lori oju-iwe iranti, pẹlu ṣiṣakoso awọn alabaṣepọ ati awọn aṣẹ.",
         "permissions": {
-          "title": "Àwọn Àṣẹ:",
+          "title": "Awọn Aṣẹ:",
           "list": [
-            "Ṣàtúnṣe eyíkéyìí abala ti ìrántí",
-            "Fi kún, ṣàtúnṣe, tàbí pa àkóónú rẹ́ (àwọn fọ́tò, ìtàn, àwọn àkókò ayé)",
-            "Ṣàkóso gbogbo àwọn alábàṣepọ̀",
-            "Ṣàkóso àwọn ààtò ìrántí",
-            "Pa ojú-ìwé ìrántí rẹ́"
+            "Ṣatunṣe eyikeyi apakan ti iranti",
+            "Fi kun, ṣatunṣe, tabi pa akoonu rẹ (awọn fọto, itan, awọn akoko aye)",
+            "Ṣakoso gbogbo awọn alabaṣepọ",
+            "Ṣakoso awọn aṣẹ iranti",
+            "Pa oju-iwe iranti rẹ"
           ]
         }
       },
       "EDITOR": {
-        "name": "Olóòtú",
+        "name": "Olotunto",
         "short": "Editor",
-        "description": "Lè ṣàtúnṣe àkóónú àti àwọn fọ́tò",
-        "longDescription": "Àwọn olóòtú lè ṣàtúnṣe àkóónú àti àwọn fọ́tò ṣùgbọ́n wọn kò lè ṣàkóso àwọn alábàṣepọ̀ tàbí àwọn ààtò.",
+        "description": "Le ṣatunṣe akoonu ati awọn fọto",
+        "longDescription": "Awọn olotunto le ṣatunṣe akoonu ati awọn fọto ṣugbọn wọn ko le ṣakoso awọn alabaṣepọ tabi awọn aṣẹ.",
         "permissions": {
-          "title": "Àwọn Àṣẹ:",
+          "title": "Awọn Aṣẹ:",
           "list": [
-            "Ṣàtúnṣe ìtàn ìrántí",
-            "Fi kún, ṣàtúnṣe, tàbí pa àwọn fọ́tò rẹ́",
-            "Ṣàtúnṣe àwọn àkókò ayé",
-            "Dáhùn sí àwọn ọ̀rọ̀ àti ìkíni",
-            "Wo àwọn ìṣirò àti àwọn àkọsílẹ̀"
+            "Ṣatunṣe itan iranti",
+            "Fi kun, ṣatunṣe, tabi pa awọn fọto rẹ",
+            "Ṣatunṣe awọn akoko aye",
+            "Dahun si awọn ọrọ ati ikini",
+            "Wo awọn iṣiro ati awọn akosile"
           ]
         }
       },
       "CONTRIBUTOR": {
-        "name": "Olùdásí",
+        "name": "Oluranlọwọ",
         "short": "Contributor",
-        "description": "Lè fi àkóónú tuntun kún",
-        "longDescription": "Àwọn olùdásí lè fi àkóónú tuntun kún ṣùgbọ́n wọn kò lè ṣàtúnṣe àkóónú tí ó wà tẹ́lẹ̀.",
+        "description": "Le fi akoonu tuntun kun",
+        "longDescription": "Awọn oluranlọwọ le fi akoonu tuntun kun ṣugbọn wọn ko le ṣatunṣe akoonu ti o wa tẹlẹ.",
         "permissions": {
-          "title": "Àwọn Àṣẹ:",
+          "title": "Awọn Aṣẹ:",
           "list": [
-            "Fi àwọn fọ́tò tuntun kún",
-            "Fi àwọn àkókò ayé tuntun kún",
-            "Kọ àwọn ọ̀rọ̀ àti ìkíni",
-            "Wo gbogbo àkóónú ìrántí"
+            "Fi awọn fọto tuntun kun",
+            "Fi awọn akoko aye tuntun kun",
+            "Kọ awọn ọrọ ati ikini",
+            "Wo gbogbo akoonu iranti"
           ]
         }
       }
     },
     "roleRestrictions": {
-      "ADMIN": "Àwọn alábòójútó nìkan ni wọ́n lè ṣàkóso àwọn alábàṣepọ̀",
-      "EDITOR": "Àwọn olóòtú kò lè ṣàkóso àwọn alábàṣepọ̀. Kan sí oluwa ojú-ìwé fún àwọn àṣẹ àfikún.",
-      "CONTRIBUTOR": "Àwọn olùdásí kò lè ṣàkóso àwọn alábàṣepọ̀. Kan sí oluwa ojú-ìwé fún àwọn àṣẹ àfikún.",
-      "VIEWER": "Àwọn olùwò kò lè ṣàkóso àwọn alábàṣepọ̀. Kan sí oluwa ojú-ìwé fún àwọn àṣẹ àfikún."
+      "ADMIN": "Awọn alakoso nikan ni wọn le ṣakoso awọn alabaṣepọ",
+      "EDITOR": "Awọn olotunto ko le ṣakoso awọn alabaṣepọ. Kan si oniwun oju-iwe fun awọn aṣẹ afikun.",
+      "CONTRIBUTOR": "Awọn oluranlọwọ ko le ṣakoso awọn alabaṣepọ. Kan si oniwun oju-iwe fun awọn aṣẹ afikun.",
+      "VIEWER": "Awọn oluwo ko le ṣakoso awọn alabaṣepọ. Kan si oniwun oju-iwe fun awọn aṣẹ afikun."
     },
     "status": {
-      "accepted": "Tí A Gbà",
-      "pending": "Ń Dúró",
-      "declined": "Tí A Kọ̀"
+      "accepted": "Ti A Gba",
+      "pending": "Nduro",
+      "declined": "Ti A Kọ"
     },
     "table": {
-      "email": "Ímeèlì",
-      "role": "Ipò",
-      "status": "Ipò",
-      "invitedAt": "Tí A Pe Ní",
-      "actions": "Àwọn Iṣẹ́"
+      "email": "Imeeli",
+      "role": "Ipo",
+      "status": "Ipo",
+      "invitedAt": "Ti A Pe Ni",
+      "actions": "Awọn Iṣe",
+      "acceptedAt": "Ti A Gba"
     },
     "actions": {
-      "changeRole": "Yí Ipò Padà",
-      "remove": "Yọ Alábàṣepọ̀ Kúrò",
-      "resendInvitation": "Tún Fi Ìfiránṣẹ́ Ránṣẹ́"
+      "changeRole": "Yi Ipo Pada",
+      "remove": "Yọ Alabaṣepọ Kuro",
+      "resendInvitation": "Tun Fi Ifiranṣẹ Ranṣẹ"
     },
     "dialogs": {
       "changeRole": {
-        "title": "Yí Ipò Alábàṣepọ̀ Padà",
-        "description": "Yan ipò tuntun fún {{email}}",
-        "selectRole": "Yan ipò",
-        "cancel": "Fagìlé",
-        "save": "Fi Àyípadà Pamọ́",
-        "saving": "Ń Fi Pamọ́..."
+        "title": "Yi Ipo Alabaṣepọ Pada",
+        "description": "Yan ipo tuntun fun {{email}}",
+        "selectRole": "Yan ipo",
+        "cancel": "Fagile",
+        "save": "Fi Ayipada Pamọ",
+        "saving": "N fi pamọ...",
+        "confirm": "Jẹrisi Ayipada",
+        "success": "A ṣe imudojuiwọn ipo ni aṣeyọri",
+        "error": "Kuna lati ṣe imudojuiwọn ipo"
       },
       "remove": {
-        "title": "Yọ Alábàṣepọ̀ Kúrò?",
-        "description": "Ṣé o dá ọ lójú pé o fẹ́ yọ {{email}} kúrò lórí ìrántí yìí? Iṣẹ́ yìí kò lè padà sẹ́yìn.",
-        "cancel": "Fagìlé",
-        "remove": "Yọ Kúrò",
-        "removing": "Ń Yọ Kúrò..."
+        "title": "Yọ Alabaṣepọ Kuro?",
+        "description": "Ṣe o da ọ lọju pe o fẹ yọ {{email}} kuro lori iranti yii? Iṣe yii ko le pada sẹhin.",
+        "cancel": "Fagile",
+        "remove": "Yọ Kuro",
+        "removing": "N yọ kuro...",
+        "confirm": "Yọ Kuro",
+        "success": "A yọ alabaṣepọ kuro ni aṣeyọri",
+        "error": "Kuna lati yọ alabaṣepọ kuro"
+      },
+      "resend": {
+        "success": "A tun firanṣẹ ipe ni aṣeyọri",
+        "error": "Kuna lati tun firanṣẹ ipe"
       }
     },
     "validation": {
-      "atLeastOneEmail": "Jọ̀wọ́ tẹ ó kéré jù àdírẹ́sì ímeèlì kan sínú",
-      "validEmails": "Jọ̀wọ́ tẹ àwọn àdírẹ́sì ímeèlì tó wúlò sínú",
-      "phoneRequired": "Jọ̀wọ́ tẹ ó kéré jù nọ́mbà WhatsApp kan sínú nígbà tí a bá tan WhatsApp",
-      "validPhones": "Jọ̀wọ́ tẹ àwọn nọ́mbà fóònù tó wúlò pẹ̀lú kóòdù orílẹ̀-èdè sínú (fún àpẹẹrẹ, +234...)"
+      "atLeastOneEmail": "Jọwọ tẹ o kere ju adirẹsi imeeli kan sinu",
+      "validEmails": "Jọwọ tẹ awọn adirẹsi imeeli ti o wulo sinu",
+      "phoneRequired": "Jọwọ tẹ o kere ju nọmba WhatsApp kan sinu nigbati a ba tan WhatsApp",
+      "validPhones": "Jọwọ tẹ awọn nọmba foonu ti o wulo pẹlu koodu orilẹ-ede sinu (fun apeere, +234...)",
+      "emailRequired": "Jọwọ tẹ o kere ju adirẹsi imeeli kan sinu",
+      "invalidEmail": "Jọwọ tẹ awọn adirẹsi imeeli ti o wulo sinu",
+      "invalidPhone": "Jọwọ tẹ awọn nọmba foonu ti o wulo pẹlu awọn koodu orilẹ-ede sinu"
     },
     "email": {
-      "subject": "Ìfiránṣẹ́ Láti Bá {{memorialName}} Ṣiṣẹ́pọ̀",
-      "greeting": "Báwo ni {{recipientName}},",
-      "invitation": "{{inviterName}} ti pe ọ láti jẹ́ {{role}} lórí ojú-ìwé ìrántí {{deceasedName}}.",
-      "role": "Ipò rẹ: {{role}}",
-      "permissions": "Ohun tí o lè ṣe:",
-      "customMessage": "Ìfiránṣẹ́ láti ọ̀dọ̀ {{inviterName}}:",
-      "accept": "Gba Ìfiránṣẹ́",
-      "decline": "Kọ̀ Ìfiránṣẹ́",
-      "footer": "Tí o kò bá fẹ́ gba ìfiránṣẹ́ yìí, o lè fojú fo ímeèlì yìí.",
-      "questions": "Ṣé o ní ìbéèrè? Kan sí {{inviterEmail}}"
+      "subject": "Ifiranṣẹ Lati Ba {{memorialName}} Ṣiṣẹpọ",
+      "greeting": "Bawo ni {{recipientName}},",
+      "invitation": "{{inviterName}} ti pe ọ lati jẹ {{role}} lori oju-iwe iranti {{deceasedName}}.",
+      "role": "Ipo rẹ: {{role}}",
+      "permissions": "Ohun ti o le ṣe:",
+      "customMessage": "Ifiranṣẹ lati ọdọ {{inviterName}}:",
+      "accept": "Gba Ifiranṣẹ",
+      "decline": "Kọ Ifiranṣẹ",
+      "footer": "Ti o ko ba fẹ gba ifiranṣẹ yii, o le foju fo imeeli yii.",
+      "questions": "Ṣe o ni ibeere? Kan si {{inviterEmail}}",
+      "copyLink": "Tabi daakọ ki o si lẹta ọna asopọ yii:",
+      "important": "Pataki:",
+      "expiryNote": "Ipe yii yoo pari ni {{date}}",
+      "accountNote": "O nilo lati wọle tabi ṣẹda akọọlẹ ForeverPages lati gba",
+      "accessNote": "Lẹhin gbigba, iwo yoo ni wiwa lẹsẹkẹsẹ si oju-iwe iranti",
+      "ignoreNote": "Ti o ko ba reti ipe yii, o le foju fo imeeli yii lailewu.",
+      "copyright": "© {{year}} ForeverPages. Gbogbo awọn ẹtọ ni a fipamọ.",
+      "securityNote": "Eyi jẹ ọna asopọ ipe ailewu. Fun aabo rẹ, maṣe pin imeeli yii pẹlu awọn miiran."
     },
     "whatsapp": {
-      "greeting": "🕊️ Báwo ni {{recipientName}},",
-      "invitation": "*{{inviterName}}* ti pe ọ láti jẹ́ *{{role}}* lórí ojú-ìwé ìrántí *{{deceasedName}}*.",
+      "greeting": "🕊️ Bawo ni {{recipientName}},",
+      "invitation": "*{{inviterName}}* ti pe ọ lati jẹ *{{role}}* lori oju-iwe iranti *{{deceasedName}}*.",
       "roleEmoji": {
         "ADMIN": "👑",
         "EDITOR": "✏️",
         "CONTRIBUTOR": "📝"
       },
-      "role": "{{emoji}} *Ipò rẹ:* {{role}}",
-      "permissions": "*Ohun tí o lè ṣe:*",
-      "customMessage": "💌 *Ìfiránṣẹ́ láti ọ̀dọ̀ {{inviterName}}:*",
-      "accept": "✅ Gba Ìfiránṣẹ́: {{acceptLink}}",
-      "decline": "❌ Kọ̀ Ìfiránṣẹ́: {{declineLink}}",
-      "footer": "Tí o kò bá fẹ́ gba ìfiránṣẹ́ yìí, o lè fojú fo ìfiránṣẹ́ yìí."
+      "role": "{{emoji}} *Ipo rẹ:* {{role}}",
+      "permissions": "*Ohun ti o le ṣe:*",
+      "customMessage": "💌 *Ifiranṣẹ lati ọdọ {{inviterName}}:*",
+      "accept": "✅ Gba Ifiranṣẹ: {{acceptLink}}",
+      "decline": "❌ Kọ Ifiranṣẹ: {{declineLink}}",
+      "footer": "Ti o ko ba fẹ gba ifiranṣẹ yii, o le foju fo ifiranṣẹ yii.",
+      "inviteMessage": "*{inviterName}* ti pe ọ lati ṣe ifowosowọpọ lori oju-iwe iranti fun *{memorialName}*",
+      "roleTitle": "Ipo Rẹ: {{roleEmoji}} {{role}}",
+      "acceptPrompt": "Gba ipe yii:",
+      "expiryNote": "⏰ Ipe yii yoo pari ni {{date}}",
+      "securityNote": "🔒 Jọwọ pa ọna asopọ yii ni ailewu ki o maṣe pin rẹ.",
+      "roleEmojis": {
+        "ADMIN": "👑",
+        "EDITOR": "✏️",
+        "CONTRIBUTOR": "📝"
+      }
     },
     "toast": {
-      "invitationSent": "Ìfiránṣẹ́ ti rán ṣáájú",
-      "invitationsSent": "Ìfiránṣẹ́ {{count}} ti rán ṣáájú",
-      "invitationResent": "Ìfiránṣẹ́ tun rán ṣáájú",
-      "roleChanged": "Ipò ti yí padà ṣáájú",
-      "collaboratorRemoved": "Alábàṣepọ̀ ti yọ kúrò ṣáájú",
-      "error": "Ohun kan ti ṣubú. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i."
-    }
+      "invitationSent": "Ifiranṣẹ ti firanṣẹ ni aṣeyọri",
+      "invitationsSent": "Ifiranṣẹ {{count}} ti firanṣẹ ni aṣeyọri",
+      "invitationResent": "Ifiranṣẹ tun firanṣẹ ni aṣeyọri",
+      "roleChanged": "Ipo ti yi pada ni aṣeyọri",
+      "collaboratorRemoved": "A yọ alabaṣepọ kuro ni aṣeyọri",
+      "error": "Nkan kan ṣubu. Jọwọ gbiyanju lẹẹkansi."
+    },
+    "noCollaborators": "Ko si awọn alabaṣepọ sibẹ",
+    "noCollaboratorsDescription": "Pe awọn ẹgbẹ ẹgbẹ lati ran ọ lọwọ ṣakoso oju-iwe iranti yii"
   },
   "livestream": {
     "broadcaster": {
-      "title": "Bẹ̀rẹ̀ Ìgbàlódé Láìpẹ́",
-      "subtitle": "Gbàlódé iṣẹ́ ìrántí tàbí àjọyọ̀ ìgbésí ayé",
+      "title": "Bẹrẹ Igbesi Tẹlẹ Laipe",
+      "subtitle": "Gbesi iṣẹ iranti tabi ajọyọ igbesi aye tẹlẹ",
       "setup": {
-        "title": "Ètò Ìgbàlódé",
-        "streamTitle": "Àkọlé Ìgbàlódé",
-        "streamTitlePlaceholder": "Tẹ àkọlé fún ìgbàlódé rẹ sí",
-        "streamDescription": "Àpèjúwe (Ìfẹ́)",
-        "streamDescriptionPlaceholder": "Ṣàfikún àwọn àlàyé nípa ìgbàlódé",
-        "scheduleStream": "Ṣètò Ìgbàlódé",
-        "scheduledFor": "Ṣètò Fún",
-        "privateStream": "Ìgbàlódé Ìkọ̀kọ̀",
-        "privateStreamDescription": "Nílò ọ̀rọ̀ aṣínà láti wò",
-        "password": "Ọ̀rọ̀ Aṣínà Ìgbàlódé",
-        "passwordPlaceholder": "Tẹ ọ̀rọ̀ aṣínà sí (ìfẹ́)",
-        "recordStream": "Ṣe Ìgbàsílẹ̀ Ìgbàlódé",
-        "recordStreamDescription": "Fi ìgbàsílẹ̀ pamọ́ fún oṣù 6"
+        "title": "Eto Igbesi Tẹlẹ",
+        "streamTitle": "Akọle Igbesi Tẹlẹ",
+        "streamTitlePlaceholder": "Tẹ akọle fun igbesi tẹlẹ rẹ sii",
+        "streamDescription": "Apejuwe (Ifẹ)",
+        "streamDescriptionPlaceholder": "Ṣafikun awọn alaye nipa igbesi tẹlẹ",
+        "scheduleStream": "Ṣeto Igbesi Tẹlẹ",
+        "scheduledFor": "Ṣeto Fun",
+        "privateStream": "Igbesi Tẹlẹ Ikọkọ",
+        "privateStreamDescription": "Nilo ọrọ aṣina lati wo",
+        "password": "Ọrọ Aṣina Igbesi Tẹlẹ",
+        "passwordPlaceholder": "Tẹ ọrọ aṣina sii (ifẹ)",
+        "recordStream": "Ṣe Igbasilẹ Igbesi Tẹlẹ",
+        "recordStreamDescription": "Fi igbasilẹ pamọ fun oṣu 6"
       },
       "mediaPreview": {
-        "title": "Kámẹ́rà àti Ẹ̀rọ Ohùn",
-        "selectCamera": "Yan Kámẹ́rà",
-        "selectMicrophone": "Yan Ẹ̀rọ Ohùn",
-        "selectQuality": "Ìdára Ìgbàlódé",
-        "testDevices": "Ṣe Ìdánwò Àwọn Ẹ̀rọ Rẹ",
-        "noCamera": "Kò rí kámẹ́rà",
-        "noMicrophone": "Kò rí ẹ̀rọ ohùn",
-        "permissionDenied": "Kò gba àṣẹ kámẹ́rà/ẹ̀rọ ohùn",
+        "title": "Kamẹra ati Ẹrọ Ohun",
+        "selectCamera": "Yan Kamẹra",
+        "selectMicrophone": "Yan Ẹrọ Ohun",
+        "selectQuality": "Didara Igbesi Tẹlẹ",
+        "testDevices": "Ṣe Idanwo Awọn Ẹrọ Rẹ",
+        "noCamera": "Ko ri kamẹra",
+        "noMicrophone": "Ko ri ẹrọ ohun",
+        "permissionDenied": "Ko gba aṣẹ kamẹra/ẹrọ ohun",
         "quality": {
-          "LOWEST": "Kékeré jùlọ (144p) - Ìsopọ̀ kò yára",
-          "LOW": "Kékeré (240p) - Ìsopọ̀ kò tó",
-          "MEDIUM": "Àárín (360p) - Dátà fóònù",
-          "SD": "SD (480p) - Ìbámu",
-          "HD": "HD (720p) - A ṣàdábà",
-          "FULL_HD": "Full HD (1080p) - Ìdára tó dára jùlọ"
+          "LOWEST": "Kekere julọ (144p) - Asopọ ko yara",
+          "LOW": "Kekere (240p) - Asopọ ko to",
+          "MEDIUM": "Aarin (360p) - Data foonu",
+          "SD": "SD (480p) - Ibaamu",
+          "HD": "HD (720p) - A ṣadaba",
+          "FULL_HD": "Full HD (1080p) - Didara ti o dara julọ"
         }
       },
       "controls": {
-        "startStream": "Bẹ̀rẹ̀ Ìgbàlódé",
-        "pauseStream": "Dúró Ìgbàlódé",
-        "resumeStream": "Tẹ̀síwájú Ìgbàlódé",
-        "endStream": "Parí Ìgbàlódé",
-        "viewers": "Àwọn Olùwò",
-        "duration": "Ìgbà Gígùn",
-        "confirmEnd": "Ṣé o dájú pé o fẹ́ parí ìgbàlódé yìí?",
-        "confirmEndDescription": "Kò ṣeé yípàdà iṣẹ́ yìí. Ìgbàlódé yóò parí fún gbogbo àwọn olùwò.",
+        "startStream": "Bẹrẹ Igbesi Tẹlẹ",
+        "pauseStream": "Duro Igbesi Tẹlẹ",
+        "resumeStream": "Tẹsiwaju Igbesi Tẹlẹ",
+        "endStream": "Pari Igbesi Tẹlẹ",
+        "viewers": "Awọn Oluwo",
+        "duration": "Igba Gigun",
+        "confirmEnd": "Ṣe o daju pe o fẹ pari igbesi tẹlẹ yii?",
+        "confirmEndDescription": "Ko ṣee ṣe ayipada iṣe yii. Igbesi tẹlẹ yoo pari fun gbogbo awọn oluwo.",
         "cancel": "Fagilee",
-        "endNow": "Parí Ìgbàlódé"
+        "endNow": "Pari Igbesi Tẹlẹ"
       },
       "status": {
-        "connecting": "Ń Sopọ̀...",
-        "connected": "Ti Sopọ̀",
-        "live": "LÁÌPẸ́",
-        "paused": "DÚRÓ",
-        "ended": "PARÍ",
-        "error": "Àṣìṣe Ìsopọ̀"
+        "connecting": "N sopọ...",
+        "connected": "Ti Sopọ",
+        "live": "TẸLẸ",
+        "paused": "DURO",
+        "ended": "PARI",
+        "error": "Aṣiṣe Asopọ"
       },
       "chat": {
-        "title": "Ìbánisọ̀rọ̀ Láìpẹ́",
-        "viewers": "Àwọn Olùwò",
-        "reactions": "Àwọn Ìdáhùn",
-        "noMessages": "Kò sí ìfiránsí ní báyì",
-        "firstMessage": "Jẹ́ ẹni àkọ́kọ́ láti pín ìrántí"
+        "title": "Ibanisọrọ Tẹlẹ",
+        "viewers": "Awọn Oluwo",
+        "reactions": "Awọn Idahun",
+        "noMessages": "Ko si ifiranṣẹ ni bayi",
+        "firstMessage": "Jẹ ẹni akọkọ lati pin iranti"
       }
     },
     "viewer": {
-      "title": "Ìgbàlódé Ìrántí Láìpẹ́",
+      "title": "Igbesi Tẹlẹ Iranti",
       "status": {
-        "live": "LÁÌPẸ́",
-        "paused": "DÚRÓ",
-        "ended": "Ìgbàlódé Ti Parí",
-        "scheduled": "Ṣètò",
-        "private": "Ìgbàlódé Ìkọ̀kọ̀",
-        "recording": "Ń Ṣe Ìgbàsílẹ̀"
+        "live": "TẸLẸ",
+        "paused": "DURO",
+        "ended": "Igbesi Tẹlẹ Ti Pari",
+        "scheduled": "Ṣeto",
+        "private": "Igbesi Tẹlẹ Ikọkọ",
+        "recording": "N Ṣe Igbasilẹ"
       },
       "info": {
-        "viewers": "àwọn olùwò ń wò",
-        "viewerCount": "olùwò {count}",
-        "viewerCountPlural": "àwọn olùwò {count}",
-        "startedAt": "Ó bẹ̀rẹ̀ {time} sẹ́yìn",
-        "scheduledFor": "Ṣètò fún {date}",
-        "duration": "Ìgbà Gígùn: {duration}"
+        "viewers": "awọn oluwo n wo",
+        "viewerCount": "oluwo {{count}}",
+        "viewerCountPlural": "awọn oluwo {{count}}",
+        "startedAt": "O bẹrẹ {{time}} sẹhin",
+        "scheduledFor": "Ṣeto fun {{date}}",
+        "duration": "Igba Gigun: {{duration}}"
       },
       "quality": {
-        "title": "Ìdára",
-        "current": "Báyìí: {quality}",
-        "change": "Yí Ìdára Padà",
-        "auto": "Aládàáṣe",
-        "LOWEST": "144p (Ń fi dátà pamọ́)",
+        "title": "Didara",
+        "current": "Bayi: {{quality}}",
+        "change": "Yi Didara Pada",
+        "auto": "Adaṣe",
+        "LOWEST": "144p (N fi data pamọ)",
         "LOW": "240p",
         "MEDIUM": "360p",
         "SD": "480p",
@@ -2111,407 +2486,450 @@
         "FULL_HD": "1080p"
       },
       "password": {
-        "title": "Ìgbàlódé Ìkọ̀kọ̀",
-        "description": "Ìgbàlódé yìí wà lábẹ́ àṣẹ ọ̀rọ̀ aṣínà",
-        "placeholder": "Tẹ ọ̀rọ̀ aṣínà sí",
-        "submit": "Ṣí Ìgbàlódé",
-        "error": "Ọ̀rọ̀ aṣínà kò tọ̀nà. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i.",
-        "help": "Bá olùṣètò ìrántí sọ̀rọ̀ bí o bá nílò ọ̀rọ̀ aṣínà"
+        "title": "Igbesi Tẹlẹ Ikọkọ",
+        "description": "Igbesi tẹlẹ yii wa labẹ aṣẹ ọrọ aṣina",
+        "placeholder": "Tẹ ọrọ aṣina sii",
+        "submit": "Ṣi Igbesi Tẹlẹ",
+        "error": "Ọrọ aṣina ko tọna. Jọwọ gbiyanju lẹẹkansi.",
+        "help": "Ba oluseto iranti sọrọ bi o ba nilo ọrọ aṣina"
       },
       "chat": {
-        "title": "Ìbánisọ̀rọ̀ Láìpẹ́",
-        "sendMessage": "Firánsẹ́ ránṣẹ́",
-        "messagePlaceholder": "Pín àwọn ìrántí rẹ ti {name}...",
+        "title": "Ibanisọrọ Tẹlẹ",
+        "sendMessage": "Firanṣẹ ranṣẹ",
+        "messagePlaceholder": "Pin awọn iranti rẹ ti {{name}}...",
         "reactions": {
-          "heart": "Ọkàn",
-          "prayer": "Àdúrà",
-          "candle": "Fìtílà",
-          "flower": "Òdòdó",
-          "dove": "Àdàbà",
-          "applause": "Ìfọ̀wọ́pọ̀"
+          "heart": "Okan",
+          "prayer": "Adura",
+          "candle": "Fitila",
+          "flower": "Ododo",
+          "dove": "Adaba",
+          "applause": "Ifọwọpọ"
         },
-        "locked": "Tẹ ọ̀rọ̀ aṣínà sí láti kópa nínú ìbánisọ̀rọ̀",
-        "noMessages": "Kò sí ìfiránsí ní báyì. Jẹ́ ẹni àkọ́kọ́ láti pín ìrántí.",
-        "justNow": "Ní báyìí",
-        "minutesAgo": "{count}m sẹ́yìn",
-        "hoursAgo": "{count}h sẹ́yìn",
-        "characterLimit": "{current}/{max} àmì"
+        "locked": "Tẹ ọrọ aṣina sii lati kopa ninu ibanisọrọ",
+        "noMessages": "Ko si ifiranṣẹ ni bayi. Jẹ ẹni akọkọ lati pin iranti.",
+        "justNow": "Ni bayi",
+        "minutesAgo": "{{count}}m sẹhin",
+        "hoursAgo": "{{count}}h sẹhin",
+        "characterLimit": "{{current}}/{{max}} ami"
       },
       "errors": {
-        "connectionLost": "Ìsopọ̀ ti sọnù. Ń gbìyànjú láti tún sopọ̀...",
-        "loadFailed": "Kò ṣe é gbé ìgbàlódé",
-        "notFound": "Kò rí ìgbàlódé",
-        "ended": "Ìgbàlódé yìí ti parí",
-        "retry": "Gbìyànjú Lẹ́ẹ̀kan Sí i"
+        "connectionLost": "Asopọ ti sọnu. N gbiyanju lati tun sopọ...",
+        "loadFailed": "Ko ṣe e gbe igbesi tẹlẹ",
+        "notFound": "Ko ri igbesi tẹlẹ",
+        "ended": "Igbesi tẹlẹ yii ti pari",
+        "retry": "Gbiyanju Lẹẹkansi"
       },
       "recording": {
-        "title": "Wo Ìgbàsílẹ̀",
-        "available": "Ìgbàsílẹ̀ wà",
-        "processing": "Ń ṣe ìgbàsílẹ̀...",
-        "expiresOn": "Wà títí di {date}",
-        "download": "Gbé Ìgbàsílẹ̀ Sílẹ̀",
-        "downloadSize": "Ìwọ̀n: {size}",
-        "expired": "Ìgbàsílẹ̀ yìí ti parí"
+        "title": "Wo Igbasilẹ",
+        "available": "Igbasilẹ wa",
+        "processing": "N ṣe igbasilẹ...",
+        "expiresOn": "Wa titi di {{date}}",
+        "download": "Gbe Igbasilẹ Silẹ",
+        "downloadSize": "Iwọn: {{size}}",
+        "expired": "Igbasilẹ yii ti pari"
       }
+    },
+    "analytics": {
+      "title": "Dasibodu Alaye-Ẹṣiro",
+      "subtitle": "Ṣe iṣesile awọn ifarada ati iṣe lori awọn oju-ewu ifiṣura rẹ",
+      "exportReport": "Jade Iroyin",
+      "timeRanges": {
+        "7days": "Awọn Ọjọ 7 ti Kọjìn",
+        "30days": "Awọn Ọjọ 30 ti Kọjìn",
+        "90days": "Awọn Ọjọ 90 ti Kọjìn",
+        "1year": "Ọdun ti Kọjìn"
+      },
+      "fromLastPeriod": "lati akoko ti kọjìn",
+      "stats": {
+        "totalVisits": {
+          "title": "Lapapọ Awọn Ibẹwọ",
+          "description": "Awọn iwoju oju-ewu ni osu yii"
+        },
+        "uniqueVisitors": {
+          "title": "Awọn Alabẹwọ Alailọgbọ",
+          "description": "Alabẹwọ enikọọkan"
+        },
+        "tributeMessages": {
+          "title": "Awọn Ifiranṣẹ Ifisẹyin",
+          "description": "Awọn ifisẹyin tuntun ni ọsẹ yii"
+        },
+        "memorialShares": {
+          "title": "Awọn Ipinnu Ifiṣura",
+          "description": "Pipin lori awọn media awujọ"
+        }
+      },
+      "visitorTrends": {
+        "title": "Awọn Iṣesi Alabẹwọ",
+        "description": "Awọn apẹẹrẹ alabẹwọ ojoojumọ lori awọn ọjọ 30 ti kọjìn"
+      },
+      "mostVisited": {
+        "title": "Awọn Oju-ewu Ti A Bẹwọ Ju Lọ",
+        "description": "Awọn apakan ifiṣura pẹlu iwọn igbẹkẹle ti o ga julọ",
+        "views": "awọn iwoju"
+      },
+      "recentActivity": {
+        "title": "Iṣe Laipe",
+        "description": "Awọn iṣe tuntun lori awọn oju-ewu ifiṣura rẹ"
+      },
+      "activity": {
+        "newTribute": "Ifisẹyin tuntun lati {{author}} lori {{memorial}}",
+        "memorialCreated": "Ifiṣura \"{{memorial}}\" ti a ṣẹda"
+      },
+      "pages": {
+        "memorialHome": "Ile Ifiṣura",
+        "photoGallery": "Ile aworan",
+        "tributeWall": "Odi Ifisẹyin",
+        "serviceInfo": "Alaye Isin",
+        "biography": "Itan-ayoloji"
+      },
+      "memorialSummary": {
+        "title": "Akojọ Ifiṣura",
+        "description": "Alaye pataki ni iwojumọ",
+        "viewMemorial": "Wo Ifiṣura",
+        "created": "Ti a ṣẹda",
+        "status": "Ipo",
+        "photos": "Aworan",
+        "approvedTributes": "Awọn Ifisẹyin Ti A Gba",
+        "serviceRsvps": "Awọn Idaniloju Isin",
+        "memorialPage": "Oju-ewu Ifiṣura"
+      },
+      "collaboratorMemorials": {
+        "title": "Awọn Ifiṣura Ti O NṢakoso",
+        "subtitle": "Wọ́n ti pe ọ lati baṣepọ lori awọn ifiṣura wọnyi",
+        "ownedBy": "Onini {{owner}}",
+        "manageMemorial": "Ṣakoso Ifiṣura"
+      },
+      "loading": "O n gba awọn alaye-ẹṣiro mọlẹ...",
+      "error": "Aṣiṣe nipa gbigba awọn alaye-ẹṣiro mọlẹ",
+      "noData": "Ko si alaye-ẹṣiro ti o wa sibẹsibẹ"
     },
     "notifications": {
       "streamScheduled": {
-        "title": "Ìgbàlódé Ti Ṣètò",
-        "message": "Ìgbàlódé ìrántí láìpẹ́ ti ṣètò fún {memorial}",
-        "when": "Ìgbà: {date}",
-        "action": "Fikún Sí Kálẹ́ǹdà"
+        "title": "Igbesi Tẹlẹ Ti Ṣeto",
+        "message": "Igbesi tẹlẹ iranti ti ṣeto fun {{memorial}}",
+        "when": "Igba: {{date}}",
+        "action": "Fikun Si Kalẹnda"
       },
       "streamLive": {
-        "title": "LÁÌPẸ́ BÁYÌÍ: {memorial}",
-        "message": "Ìgbàlódé ń bẹ̀rẹ̀ báyìí!",
-        "action": "Wo Ìgbàlódé Láìpẹ́",
-        "urgent": "Má ṣe pàdánù rẹ̀ - ìgbàlódé ń ṣẹlẹ̀ báyìí!"
+        "title": "TẸLẸ BAYI: {{memorial}}",
+        "message": "Igbesi tẹlẹ n bẹrẹ bayi!",
+        "action": "Wo Igbesi Tẹlẹ",
+        "urgent": "Ma ṣe padanu rẹ - igbesi tẹlẹ n ṣẹlẹ bayi!"
       },
       "streamEnded": {
-        "title": "Ìgbàlódé Ti Parí",
-        "message": "A dúpẹ́ fún wíwá pẹ̀lú wa",
-        "stats": "Àwọn Ìtumọ̀ Ìgbàlódé",
-        "duration": "Ìgbà Gígùn: {duration}",
-        "peakViewers": "Àwọn Olùwò Tó Pọ̀ Jùlọ: {count}",
-        "totalComments": "Àwọn Àsọyé: {count}",
-        "recordingInfo": "Ìgbàsílẹ̀ yóò wà láìpẹ́"
+        "title": "Igbesi Tẹlẹ Ti Pari",
+        "message": "A dupe fun wiwa pẹlu wa",
+        "stats": "Awọn Itumọ Igbesi Tẹlẹ",
+        "duration": "Igba Gigun: {{duration}}",
+        "peakViewers": "Awọn Oluwo To Pọ Julọ: {{count}}",
+        "totalComments": "Awọn Asoye: {{count}}",
+        "recordingInfo": "Igbasilẹ yoo wa laipe"
       },
       "recordingReady": {
-        "title": "Ìgbàsílẹ̀ Ti Ṣetán",
-        "message": "Ìgbàsílẹ̀ ìgbàlódé ìrántí láìpẹ́ wà nísinsin yìí",
-        "availableUntil": "Wà títí di: {date}",
-        "action": "Wo Ìgbàsílẹ̀",
-        "download": "Gbé Ìgbàsílẹ̀ Sílẹ̀",
-        "warning": "A ó pa ìgbàsílẹ̀ yìí rẹ́ láìṣe ọ̀wọ́ ní {date}"
+        "title": "Igbasilẹ Ti Ṣetan",
+        "message": "Igbasilẹ igbesi tẹlẹ iranti wa nisinsin yii",
+        "availableUntil": "Wa titi di: {{date}}",
+        "action": "Wo Igbasilẹ",
+        "download": "Gbe Igbasilẹ Silẹ",
+        "warning": "A o pa igbasilẹ yii rẹ laiṣe ọwọ ni {{date}}"
       },
       "recordingExpiring": {
-        "title": "Ìgbàsílẹ̀ Ń Parí Láìpẹ́",
-        "message": "Iṣẹ́ nílò! A ó pa ìgbàsílẹ̀ rẹ́ ní ọjọ́ {days}",
-        "action": "Gbé Sílẹ̀ Báyìí",
-        "urgent": "Tí a bá pa á rẹ́, kò ṣeé dá ìgbàsílẹ̀ yìí padà"
+        "title": "Igbasilẹ N Pari Laipe",
+        "message": "Iṣẹ nilọ! A o pa igbasilẹ rẹ ni ọjọ {{days}}",
+        "action": "Gbe Silẹ Bayi",
+        "urgent": "Ti a ba pa a rẹ, ko ṣee da igbasilẹ yii pada"
       },
       "recordingDeleted": {
-        "title": "Ìgbàsílẹ̀ Ti Pa Rẹ́",
-        "message": "A ti pa ìgbàsílẹ̀ rẹ́ láìṣe ọ̀wọ́ bí a ṣe ṣètò",
-        "deletedOn": "A pa á rẹ́ ní: {date}",
-        "info": "Ojú-ìwé ìrántí ṣì ń ṣiṣẹ́ pẹ̀lú gbogbo àkóónú tókù"
+        "title": "Igbasilẹ Ti Pa Rẹ",
+        "message": "A ti pa igbasilẹ rẹ laiṣe ọwọ bi a ṣe ṣeto",
+        "deletedOn": "A pa a rẹ ni: {{date}}",
+        "info": "Oju-iwe iranti ṣi n ṣiṣẹ pẹlu gbogbo akoonu toku (awọn aworan, ọla ati awọn iranti) ti a fi pamọ"
       }
     },
     "email": {
       "streamScheduled": {
-        "subject": "Ìgbàlódé Ti Ṣètò: {memorial}",
-        "greeting": "Pẹ́lẹ́ o {name},",
-        "intro": "Ìgbàlódé ìrántí láìpẹ́ ti ṣètò fún {memorial}.",
-        "details": "Àwọn Àlàyé Ìgbàlódé",
-        "title": "Àkọlé",
-        "when": "Ìgbà",
-        "reminder": "Ìwọ yóò gba ímeèlì míràn nígbà tí ìgbàlódé bá bẹ̀rẹ̀.",
-        "action": "Fikún Sí Kálẹ́ǹdà",
-        "tip": "Ìmọ̀ràn: Rí i dájú pé o ní ìsopọ̀ íńtánẹ́ẹ̀tì tó dára fún ìrírí tó dára jùlọ."
+        "subject": "Igbesi Tẹlẹ Ti Ṣeto: {{memorial}}",
+        "greeting": "Pẹlẹ o {{name}},",
+        "intro": "Igbesi tẹlẹ iranti ti ṣeto fun {{memorial}}.",
+        "details": "Awọn Alaye Igbesi Tẹlẹ",
+        "title": "Akọle",
+        "when": "Igba",
+        "reminder": "Iwo yoo gba imeeli miiran nigbati igbesi tẹlẹ ba bẹrẹ.",
+        "action": "Fikun Si Kalẹnda",
+        "tip": "Imọran: Ri i daju pe o ni asopọ intanẹẹti ti o dara fun iriri ti o dara julọ."
       },
       "streamLive": {
-        "subject": "🔴 LÁÌPẸ́ BÁYÌÍ: {memorial}",
-        "heading": "LÁÌPẸ́ BÁYÌÍ",
-        "intro": "Ìgbàlódé ń bẹ̀rẹ̀ báyìí!",
-        "action": "Wo Ìgbàlódé Láìpẹ́",
-        "urgent": "Má ṣe pàdánù rẹ̀! Ìgbàlódé ń ṣẹlẹ̀ báyìí."
+        "subject": "🔴 TẸLẸ BAYI: {{memorial}}",
+        "heading": "TẸLẸ BAYI",
+        "intro": "Igbesi tẹlẹ n bẹrẹ bayi!",
+        "action": "Wo Igbesi Tẹlẹ",
+        "urgent": "Ma ṣe padanu rẹ! Igbesi tẹlẹ n ṣẹlẹ bayi."
       },
       "streamEnded": {
-        "subject": "Ìgbàlódé Ti Parí: {memorial}",
-        "greeting": "A dúpẹ́ fún wíwá pẹ̀lú wa",
-        "intro": "Ìgbàlódé ìrántí láìpẹ́ ti {memorial} ti parí.",
-        "stats": "Àwọn Ìtumọ̀ Ìgbàlódé",
-        "duration": "Ìgbà Gígùn",
-        "peakViewers": "Àwọn Olùwò Tó Pọ̀ Jùlọ",
-        "comments": "Àwọn Àsọyé",
-        "recordingInfo": "A ń ṣe ìgbàsílẹ̀ yóò sì wà láìpẹ́.",
-        "recordingAvailability": "Ìgbàsílẹ̀: Ìgbàsílẹ̀ yóò wà fún oṣù 6 a sì lè gbé e sílẹ̀ nígbàkúgbà."
+        "subject": "Igbesi Tẹlẹ Ti Pari: {{memorial}}",
+        "greeting": "A dupe fun wiwa pẹlu wa",
+        "intro": "Igbesi tẹlẹ iranti ti {{memorial}} ti pari.",
+        "stats": "Awọn Itumọ Igbesi Tẹlẹ",
+        "duration": "Igba Gigun",
+        "peakViewers": "Awọn Oluwo To Pọ Julọ",
+        "comments": "Awọn Asoye",
+        "recordingInfo": "A n ṣe igbasilẹ yoo si wa laipe.",
+        "recordingAvailability": "Igbasilẹ: Igbasilẹ yoo wa fun oṣu 6 a si le gbe e silẹ nigbakugba."
       },
       "recordingReady": {
-        "subject": "Ìgbàsílẹ̀ Ti Ṣetán: {memorial}",
-        "greeting": "Ìròyìn ayọ̀, {name}!",
-        "intro": "Ìgbàsílẹ̀ ìgbàlódé ìrántí láìpẹ́ ti {memorial} wà nísinsin yìí.",
-        "availableUntil": "Wà títí di",
-        "watchAction": "Wo Ìgbàsílẹ̀",
-        "downloadAction": "Gbé Ìgbàsílẹ̀ Sílẹ̀",
-        "warning": "Pàtàkì: A ó pa ìgbàsílẹ̀ yìí rẹ́ láìṣe ọ̀wọ́ ní {date}. Gbé e sílẹ̀ bí o bá fẹ́ fi pamọ́ títí láé."
+        "subject": "Igbasilẹ Ti Ṣetan: {{memorial}}",
+        "greeting": "Iroyin ayo, {{name}}!",
+        "intro": "Igbasilẹ igbesi tẹlẹ iranti ti {{memorial}} wa nisinsin yii.",
+        "availableUntil": "Wa titi di",
+        "watchAction": "Wo Igbasilẹ",
+        "downloadAction": "Gbe Igbasilẹ Silẹ",
+        "warning": "Pataki: A o pa igbasilẹ yii rẹ laiṣe ọwọ ni {{date}}. Gbe e silẹ bi o ba fẹ fi pamọ titi lae."
       },
       "recordingExpiring": {
-        "subject": "⚠️ Ìgbàsílẹ̀ Ń Parí Láìpẹ́: {memorial}",
-        "heading": "Ìgbàsílẹ̀ Ń Parí Láìpẹ́",
-        "intro": "Iṣẹ́ Nílò: Gbé Ìgbàsílẹ̀ Rẹ Sílẹ̀",
-        "countdown": "Ọjọ́ {days} Ló Kù",
-        "message": "A ó pa ìgbàsílẹ̀ rẹ́ ní {date}",
-        "detail": "A ó pa ìgbàsílẹ̀ ìgbàlódé ìrántí láìpẹ́ ti {memorial} rẹ́ láìṣe ọ̀wọ́ ní ọjọ́ {days}.",
-        "action": "Gbé Sílẹ̀ Báyìí (Má Ṣe Pàdánù Rẹ̀!)",
-        "urgent": "Pàtàkì: Tí a bá pa á rẹ́, kò ṣeé dá ìgbàsílẹ̀ yìí padà. Gbé e sílẹ̀ báyìí láti fi àwọn ìrántí iyebíye wọ̀nyí pamọ́ títí láé.",
-        "help": "Bí o bá nílò àkókò sí i, jọ̀wọ́ bá wa sọ̀rọ̀ tàbí fa ìpamọ́ ìgbàsílẹ̀ rẹ sí i ní dashboard rẹ."
+        "subject": "⚠️ Igbasilẹ N Pari Laipe: {{memorial}}",
+        "heading": "Igbasilẹ N Pari Laipe",
+        "intro": "Iṣẹ Nilo: Gbe Igbasilẹ Rẹ Silẹ",
+        "countdown": "Ọjọ {{days}} Lo Ku",
+        "message": "A o pa igbasilẹ rẹ ni {{date}}",
+        "detail": "A o pa igbasilẹ igbesi tẹlẹ iranti ti {{memorial}} rẹ laiṣe ọwọ ni ọjọ {{days}}.",
+        "action": "Gbe Silẹ Bayi (Ma Ṣe Padanu Rẹ!)",
+        "urgent": "Pataki: Ti a ba pa a rẹ, ko ṣee da igbasilẹ yii pada. Gbe e silẹ bayi lati fi awọn iranti iyebiye wọnyi pamọ titi lae.",
+        "help": "Bi o ba nilo akoko si i, jọwọ ba wa sọrọ tabi fa ipamọ igbasilẹ rẹ si i ni dasibodu rẹ."
       },
       "recordingDeleted": {
-        "subject": "Ìgbàsílẹ̀ Ti Pa Rẹ́: {memorial}",
-        "heading": "Ìgbàsílẹ̀ Ti Pa Rẹ́",
-        "intro": "Àkókò Ìpamọ́ Ìgbàsílẹ̀ Ti Parí",
-        "message": "A ti pa ìgbàsílẹ̀ ìgbàlódé ìrántí láìpẹ́ ti {memorial} rẹ́ láìṣe ọ̀wọ́ bí a ṣe ṣètò.",
-        "deletedOn": "A pa á rẹ́ ní",
-        "note": "Àkíyèsí: Èyí jẹ́ apá kan nínú ìlànà ìpamọ́ oṣù 6 wa. A ní ìrètí pé o ní ànfààní láti gbé ìgbàsílẹ̀ sílẹ̀ bí o bá nílò.",
-        "info": "Ojú-ìwé ìrántí ṣì ń ṣiṣẹ́ pẹ̀lú gbogbo àkóónú tókù (àwọn àwòrán, ọlá àti àwọn ìrántí) tí a fi pamọ́."
+        "subject": "Igbasilẹ Ti Pa Rẹ: {{memorial}}",
+        "heading": "Igbasilẹ Ti Pa Rẹ",
+        "intro": "Akoko Ipamọ Igbasilẹ Ti Pari",
+        "message": "A ti pa igbasilẹ igbesi tẹlẹ iranti ti {{memorial}} rẹ laiṣe ọwọ bi a ṣe ṣeto.",
+        "deletedOn": "A pa a rẹ ni",
+        "note": "Akiyesi: Eyi jẹ apakan ninu ilana ipamọ oṣu 6 wa. A ni ireti pe o ni anfaani lati gbe igbasilẹ silẹ bi o ba nilọ.",
+        "info": "Oju-iwe iranti ṣi n ṣiṣẹ pẹlu gbogbo akoonu toku (awọn aworan, ọla ati awọn iranti) ti a fi pamọ"
       },
       "footer": {
-        "youreReceiving": "Ìwọ ń gba èyí nítorí o sopọ̀ mọ́ ojú-ìwé ìrántí {memorial}.",
-        "copyright": "© {year} ForeverPages. Gbogbo ẹ̀tọ́ ni a dáàbò bò."
+        "youreReceiving": "Iwo n gba eyi nitori o sopọ mọ oju-iwe iranti {{memorial}}.",
+        "copyright": "© {{year}} ForeverPages. Gbogbo ẹtọ ni a daabo bọ."
       }
     },
     "templates": {
-      "title": "Àwọn Àdàkọ",
-      "subtitle": "Ṣẹ̀dá kí o sì ṣàkóso àwọn àdàkọ ìrántí àkànṣe rẹ",
-      "createButton": "Ṣẹ̀dá Àdàkọ",
-      "createButtonShort": "Ṣẹ̀dá",
+      "title": "Awọn Apẹẹrẹ",
+      "subtitle": "Ṣẹda ki o si ṣakoso awọn apẹẹrẹ iranti akanṣe rẹ",
+      "createButton": "Ṣẹda Apẹẹrẹ",
+      "createButtonShort": "Ṣẹda",
       "createDialog": {
-        "title": "Ṣẹ̀dá Àdàkọ Tuntun",
-        "description": "Yan àdàkọ ìpìlẹ̀ kí o sì ṣe àtúnṣe fún ìrántí rẹ"
+        "title": "Ṣẹda Apẹẹrẹ Tuntun",
+        "description": "Yan apẹẹrẹ ipilẹ ki o si ṣe atunṣe fun iranti rẹ"
       },
       "form": {
         "name": {
-          "label": "Orúkọ Àdàkọ",
-          "placeholder": "Tẹ orúkọ àdàkọ sí i"
+          "label": "Orukọ Apẹẹrẹ",
+          "placeholder": "Tẹ orukọ apẹẹrẹ sii"
         },
         "description": {
-          "label": "Àlàyé",
-          "placeholder": "Àlàyé yiyan"
+          "label": "Apejuwe",
+          "placeholder": "Apejuwe aṣayan"
         },
         "baseTemplate": {
-          "label": "Àdàkọ Ìpìlẹ̀"
+          "label": "Apẹẹrẹ Ipilẹ"
         },
-        "creating": "Ń ṣẹ̀dá..."
+        "creating": "N ṣẹda..."
       },
       "list": {
-        "title": "Àwọn Àdàkọ Rẹ ({count})",
-        "subtitle": "Àwọn àdàkọ tí o ṣẹ̀dá kí o sì ṣe àtúnṣe"
+        "title": "Awọn Apẹẹrẹ Rẹ ({{count}})",
+        "subtitle": "Awọn apẹẹrẹ ti o ti ṣẹda ki o si ṣe atunṣe"
       },
       "error": {
-        "title": "Àṣìṣe Nínú Gbigbé Àwọn Àdàkọ"
+        "title": "Kuna lati Gbe Awọn Apẹẹrẹ Soke"
       },
       "empty": {
-        "title": "Kò Sí Àdàkọ Kankan Síbẹ̀",
-        "description": "Ṣẹ̀dá àdàkọ àkànṣe rẹ àkọ́kọ́ láti bẹ̀rẹ̀",
-        "createButton": "Ṣẹ̀dá Àdàkọ Àkọ́kọ́"
+        "title": "Ko Si Apẹẹrẹ Kankan Sibe",
+        "description": "Ṣẹda apẹẹrẹ akanṣe rẹ akọkọ lati bẹrẹ",
+        "createButton": "Ṣẹda Apẹẹrẹ Akọkọ"
       },
       "actions": {
-        "preview": "Àkọ́yẹ̀wò",
-        "edit": "Ṣàtúnṣe",
-        "duplicate": "Ṣẹ̀dá Ọ̀kan Mìíràn",
-        "delete": "Pa Rẹ́"
+        "preview": "Atunwo",
+        "edit": "Ṣatunṣe",
+        "duplicate": "Ṣẹda Ọkan Miiran",
+        "delete": "Pa Rẹ"
       },
       "deleteDialog": {
-        "title": "Pa Àdàkọ Rẹ́",
-        "description": "Ṣé o dá jù báyàn pé o fẹ́ pa \"{name}\"? Iṣẹ́ yìí kò ṣeé yí padà.",
-        "deleting": "Ń pa rẹ́...",
-        "confirm": "Pa Àdàkọ Rẹ́"
+        "title": "Pa Apẹẹrẹ Rẹ",
+        "description": "Ṣe o da ju bayi pe o fẹ pa \"{{name}}\"? Iṣe yii ko ṣee ṣe ayipada.",
+        "deleting": "N pa rẹ...",
+        "confirm": "Pa Apẹẹrẹ Rẹ"
       },
-      "createSuccess": "A ṣẹ̀dá àdàkọ ní àṣeyọrí",
-      "createError": "Àṣìṣe nínú ṣíṣẹ̀dá àdàkọ",
-      "deleteSuccess": "A pa àdàkọ rẹ́ ní àṣeyọrí",
-      "deleteError": "Àṣìṣe nínú pípà àdàkọ rẹ́",
-      "validationError": "Jọ̀wọ́ tẹ orúkọ àdàkọ sí i kí o sì yan àdàkọ ìpìlẹ̀",
+      "createSuccess": "A ṣẹda apẹẹrẹ ni aṣeyọri",
+      "createError": "Aṣiṣe ninu ṣiṣẹda apẹẹrẹ",
+      "deleteSuccess": "A pa apẹẹrẹ rẹ ni aṣeyọri",
+      "deleteError": "Aṣiṣe ninu pipa apẹẹrẹ rẹ",
+      "validationError": "Jọwọ tẹ orukọ apẹẹrẹ sii ki o si yan apẹẹrẹ ipilẹ",
       "validation": {
-        "nameRequired": "Orúkọ àdàkọ ni a nílò",
-        "nameTooShort": "Orúkọ àdàkọ gbọ́dọ̀ jẹ́ ó kéré jù ààmì 3",
-        "nameTooLong": "Orúkọ àdàkọ kò gbọ́dọ̀ ju ààmì 50 lọ",
-        "nameInvalid": "Orúkọ àdàkọ ní àwọn ààmì tí kò tọ̀",
-        "descriptionTooLong": "Àlàyé kò gbọ́dọ̀ ju ààmì 500 lọ",
-        "descriptionInvalid": "Àlàyé ní àwọn ààmì tí kò tọ̀",
-        "searchQueryInvalid": "Ìwádìí ní àwọn ààmì tí kò tọ̀",
-        "colorInvalid": "Àwọ̀ HEX tí kò tọ̀",
-        "fontSizeInvalid": "Ìwọ̀n font tí kò tọ̀ (fún àpẹẹrẹ: 16px, 1.2em)",
-        "spacingInvalid": "Àlàfo tí kò tọ̀ (fún àpẹẹrẹ: 10px, 1rem)",
-        "borderRadiusInvalid": "Radius ààlà tí kò tọ̀ (fún àpẹẹrẹ: 4px, 50%)",
-        "maxWidthInvalid": "Ìbú tó pọ̀ jùlọ tí kò tọ̀ (fún àpẹẹrẹ: 1200px, 100%)",
-        "lineHeightInvalid": "Gígùn laini tí kò tọ̀ (fún àpẹẹrẹ: 1.5, 20px)",
-        "customizationInvalid": "Àtúnṣe àdàkọ ní àṣìṣe",
-        "importInvalid": "Fáìlì ìgbéwọlé ní àṣìṣe tàbí tí kò wúlò",
-        "exportFailed": "Àṣìṣe nínú ṣíṣe ìfitárí ètò àdàkọ"
+        "nameRequired": "Orukọ apẹẹrẹ ni a nilo",
+        "nameTooShort": "Orukọ apẹẹrẹ gbọdọ jẹ o kere ju ami 3",
+        "nameTooLong": "Orukọ apẹẹrẹ ko gbọdọ ju ami 50 lọ",
+        "nameInvalid": "Orukọ apẹẹrẹ ni awọn ami ti ko tọ",
+        "descriptionTooLong": "Apejuwe ko gbọdọ ju ami 500 lọ",
+        "descriptionInvalid": "Apejuwe ni awọn ami ti ko tọ",
+        "searchQueryInvalid": "Iwadi ni awọn ami ti ko tọ",
+        "colorInvalid": "Awọ HEX ti ko tọ",
+        "fontSizeInvalid": "Iwọn font ti ko tọ (fun apeere: 16px, 1.2em)",
+        "spacingInvalid": "Alafo ti ko tọ (fun apeere: 10px, 1rem)",
+        "borderRadiusInvalid": "Radius aala ti ko tọ (fun apeere: 4px, 50%)",
+        "maxWidthInvalid": "Bubun to po julọ ti ko tọ (fun apeere: 1200px, 100%)",
+        "lineHeightInvalid": "Gigun laini ti ko tọ (fun apeere: 1.5, 20px)",
+        "customizationInvalid": "Atunṣe apẹẹrẹ ni aṣiṣe",
+        "importInvalid": "Faili igbewọle ni aṣiṣe tabi ti ko wulo",
+        "exportFailed": "Aṣiṣe ninu ṣiṣe itari eto apẹẹrẹ"
       },
-      "failedToLoadBaseTemplates": "Ó kùnà láti gbé àwọn àdàkọ ìpìlẹ̀"
+      "failedToLoadBaseTemplates": "O kuna lati gbe awọn apẹẹrẹ ipilẹ soke"
     },
     "marketplace": {
-      "title": "Ọjà Àwọn Àdàkọ",
-      "subtitle": "Ṣàwárí àwọn àdàkọ premium láti mú ìrántí rẹ dára sí i",
+      "title": "Ọja Awọn Apẹẹrẹ",
+      "subtitle": "Ṣawari awọn apẹẹrẹ giga lati mu iranti rẹ dara si",
       "search": {
-        "placeholder": "Ṣàwárí àwọn àdàkọ...",
-        "noResults": "A kò rí àwọn àdàkọ tó bá ìwádìí rẹ"
+        "placeholder": "Ṣawari awọn apẹẹrẹ...",
+        "noResults": "A ko ri awọn apẹẹrẹ to ba iwadi rẹ"
       },
       "filters": {
-        "all": "Gbogbo Àwọn Àdàkọ",
-        "free": "Ọ̀fẹ̀",
-        "premium": "Premium",
+        "all": "Gbogbo Awọn Apẹẹrẹ",
+        "free": "Ọfẹ",
+        "premium": "Giga",
         "categories": {
-          "traditional": "Àṣà",
-          "modern": "Ìgbàlódé",
-          "nature": "Àdánidá",
-          "religious": "Ìsìn",
-          "military": "Ologun",
-          "sports": "Eré ìdárayá",
+          "traditional": "Aṣa",
+          "modern": "Ojo Loni",
+          "nature": "Adanida",
+          "religious": "Isin",
+          "military": "Ogun",
+          "sports": "Ere Idaraya",
           "music": "Orin",
-          "artistic": "Ìṣẹ̀ọ̀nà"
+          "artistic": "Iṣẹ-ọna"
         },
         "sort": {
-          "popular": "Tó Gbajúmọ̀ Jùlọ",
-          "newest": "Tó Tuntun Jùlọ",
-          "rating": "Ìdíyelé Tó Dára Jùlọ",
-          "priceLow": "Iye Owó: Kéré Sí Púpọ̀",
-          "priceHigh": "Iye Owó: Púpọ̀ Sí Kéré"
+          "popular": "To Gbajumo Julọ",
+          "newest": "To Tuntun Julọ",
+          "rating": "Idiyele To Dara Julọ",
+          "priceLow": "Iye Owo: Kere Si Pọ",
+          "priceHigh": "Iye Owo: Pọ Si Kere"
         }
       },
       "template": {
-        "preview": "Àkọ́yẹ̀wò",
-        "download": "Gbé Sílẹ̀",
+        "preview": "Atunwo",
+        "download": "Gbe Silẹ",
         "purchased": "A Ti Ra",
-        "price": "Iye Owó",
-        "category": "Ẹ̀ka",
-        "downloads": "Àwọn Ìgbàsílẹ̀",
-        "rating": "Ìdíyelé",
-        "features": "Àwọn Ẹ̀yà"
+        "price": "Iye Owo",
+        "category": "Ẹka",
+        "downloads": "Awọn Igbasilẹ",
+        "rating": "Idiyele",
+        "features": "Awọn Ẹya"
       },
       "purchase": {
         "dialog": {
-          "title": "Ra Àdàkọ",
-          "description": "O ń ra \"{name}\" fún {price}",
-          "confirm": "Fìdí Rẹ̀ Mú Lára",
+          "title": "Ra Apẹẹrẹ",
+          "description": "O n ra \"{{name}}\" fun {{price}}",
+          "confirm": "Fidi Rẹ Mu Lara",
           "cancel": "Fagilee",
-          "processing": "Ń ṣiṣẹ́..."
+          "processing": "N ṣiṣẹ..."
         },
-        "success": "A ra àdàkọ ní àṣeyọrí!",
-        "error": "Àṣìṣe nínú rírà àdàkọ"
+        "success": "A ra apẹẹrẹ ni aṣeyọri!",
+        "error": "Aṣiṣe ninu rirà apẹẹrẹ"
       },
       "download": {
-        "success": "A gbé àdàkọ sílẹ̀ ní àṣeyọrí!",
-        "error": "Àṣìṣe nínú gbígbé àdàkọ sílẹ̀"
+        "success": "A gbe apẹẹrẹ silẹ ni aṣeyọri!",
+        "error": "Aṣiṣe ninu gbigbe apẹẹrẹ silẹ"
       },
-      "loading": "Ń gbé àwọn àdàkọ...",
-      "error": "Àṣìṣe nínú gbígbe àwọn àdàkọ"
-    },
-    "analytics": {
-      "title": "Ìtúpalẹ̀ Àwọn Àdàkọ",
-      "subtitle": "Ṣàyẹ̀wò ìṣe àti ìlò àwọn àdàkọ rẹ",
-      "metrics": {
-        "totalTemplates": "Àpapọ̀ Àwọn Àdàkọ",
-        "totalDownloads": "Àpapọ̀ Àwọn Ìgbàsílẹ̀",
-        "totalRevenue": "Àpapọ̀ Owó Wọlé",
-        "averageRating": "Ìdíyelé Àpapọ̀",
-        "totalViews": "Àpapọ̀ Àwọn Ìwò",
-        "uniqueVisitors": "Àwọn Àlẹ̀wò Àkànṣe",
-        "averageTime": "Àkókò Àpapọ̀ Lórí Ojú-ìwé",
-        "conversionRate": "Ọ̀nà Ìyípadà",
-        "popularTemplates": "Àwọn Àdàkọ Gbajúmọ̀",
-        "usageTrends": "Àwọn Ìṣe Ìlò"
-      },
-      "charts": {
-        "viewsOverTime": "Àwọn Ìwò Ní Àkókò",
-        "templateUsage": "Ìpín Ìlò Àdàkọ",
-        "visitorDemographics": "Àwọn Àlàyé Àwọn Àlẹ̀wò",
-        "performanceMetrics": "Àwọn Ìṣe Ìṣẹ́"
-      },
-      "periods": {
-        "7days": "Ọjọ́ 7 Tó Kọjá",
-        "30days": "Ọjọ́ 30 Tó Kọjá",
-        "90days": "Ọjọ́ 90 Tó Kọjá",
-        "1year": "Ọdún 1 Tó Kọjá"
-      },
-      "loading": "Ń gbé ìtúpalẹ̀...",
-      "error": "Àṣìṣe nínú gbígbe ìtúpalẹ̀",
-      "noData": "Kò sí dátà ìtúpalẹ̀ síbẹ̀"
+      "loading": "N gbe awọn apẹẹrẹ soke...",
+      "error": "Aṣiṣe ninu gbigbe awọn apẹẹrẹ soke"
     },
     "customization": {
-      "title": "Àtúnṣe Àkànṣe",
-      "subtitle": "Ṣe àtúnṣe apá kọ̀ọ̀kan ti àdàkọ rẹ pẹ̀lú àwọn àṣàyàn àkànṣe",
+      "title": "Atunṣe Akanṣe",
+      "subtitle": "Ṣe atunṣe apakan kọọkan ti apẹẹrẹ rẹ pẹlu awọn aṣayan akanṣe",
       "sections": {
-        "colors": "Àwọn Àwọ̀",
-        "typography": "Ìṣẹ̀dá Lẹ́tà",
-        "layout": "Ìtòlẹ́sẹẹsẹ",
-        "code": "Kọ́dù Àkànṣe"
+        "colors": "Awọn Awọ",
+        "typography": "Iṣẹda Lẹta",
+        "layout": "Itolẹsẹsẹ",
+        "code": "Koodu Akanṣe"
       },
       "colors": {
-        "primary": "Àwọ̀ Àkọ́kọ́",
-        "secondary": "Àwọ̀ Kejì",
-        "accent": "Àwọ̀ Àfikún",
-        "background": "Àwọ̀ Èbúté",
-        "text": "Àwọ̀ Ọ̀rọ̀",
-        "reset": "Tún Padà Sí Ìpilẹ̀ṣẹ̀"
+        "primary": "Awọ Akọkọ",
+        "secondary": "Awọ Keji",
+        "accent": "Awọ Afikun",
+        "background": "Awọ Ebute",
+        "text": "Awọ Ọrọ",
+        "reset": "Tun Pada Si Ipilẹṣẹ"
       },
       "typography": {
-        "fontFamily": "Ẹbí Font",
-        "fontSize": "Ìwọ̀n Font",
-        "lineHeight": "Gígùn Laini",
-        "fontWeight": "Ìwúwo Font",
-        "textAlign": "Ìtòlẹ́sẹẹsẹ Ọ̀rọ̀"
+        "fontFamily": "Ẹbi Font",
+        "fontSize": "Iwọn Font",
+        "lineHeight": "Gigun Laini",
+        "fontWeight": "Iwọn Font",
+        "textAlign": "Itolẹsẹsẹ Ọrọ"
       },
       "layout": {
-        "containerWidth": "Ìbú Apoti",
-        "spacing": "Àlàfo",
-        "borderRadius": "Radius Ààlà",
-        "shadows": "Àwọn Òjìji"
+        "containerWidth": "Bubun Apoti",
+        "spacing": "Alafo",
+        "borderRadius": "Radius Aala",
+        "shadows": "Awọn Oji"
       },
       "code": {
-        "css": "CSS Àkànṣe",
-        "javascript": "JavaScript Àkànṣe",
-        "html": "HTML Àkànṣe",
-        "warning": "Ìkìlọ̀: Kọ́dù àkànṣe lè ba àdàkọ rẹ jẹ́. Lo ó pẹ̀lú ìṣọ́ra."
+        "css": "CSS Akanṣe",
+        "javascript": "JavaScript Akanṣe",
+        "html": "HTML Akanṣe",
+        "warning": "Ikilo: Koodu akanṣe le pa apẹẹrẹ rẹ jẹ. Lo pẹlu iṣọra."
       },
       "preview": {
-        "title": "Àkọ́yẹ̀wò Lónìí",
-        "mobile": "Ẹ̀rọ Alágbèéká",
-        "tablet": "Táblẹ́ẹ̀tì",
-        "desktop": "Kọ̀ǹpútà",
-        "fullscreen": "Ojú-ìwé Kíkún"
+        "title": "Atunwo Loni",
+        "mobile": "Ẹrọ Alagbeka",
+        "tablet": "Tabulẹti",
+        "desktop": "Kọmputa",
+        "fullscreen": "Oju-iwe Kikun"
       },
       "actions": {
-        "save": "Fi Àwọn Àyípadà Pamọ́",
-        "reset": "Tún Gbogbo Rẹ̀ Padà",
-        "export": "Ṣe Ìfitárí Ètò",
-        "import": "Ṣe Ìgbéwọlé Ètò",
-        "saving": "Ń fi pamọ́...",
-        "resetting": "Ń tún padà..."
+        "save": "Fi Awọn Ayipada Pamọ",
+        "reset": "Tun Gbogbo Rẹ Pada",
+        "export": "Ṣe Itari Eto",
+        "import": "Ṣe Igbewọle Eto",
+        "saving": "N fi pamọ...",
+        "resetting": "N tun pada..."
       },
       "import": {
         "dialog": {
-          "title": "Ṣe Ìgbéwọlé Ètò Àtúnṣe",
-          "description": "Lẹ́tà ètò ìfitárí rẹ sí ìsàlẹ̀",
-          "placeholder": "Lẹ́tà JSON ètò níhìn-ín...",
-          "import": "Ṣe Ìgbéwọlé",
+          "title": "Ṣe Igbewọle Eto Atunṣe",
+          "description": "Lẹta eto itari rẹ si isalẹ",
+          "placeholder": "Lẹta JSON eto nihin...",
+          "import": "Ṣe Igbewọle",
           "cancel": "Fagilee"
         },
-        "success": "A ṣe ìgbéwọlé ètò ní àṣeyọrí!",
-        "error": "Àṣìṣe nínú ṣíṣe ìgbéwọlé ètò. Jọ̀wọ́ ṣàyẹ̀wò ìtòlẹ́sẹẹsẹ."
+        "success": "A ṣe igbewọle eto ni aṣeyọri!",
+        "error": "Aṣiṣe ninu ṣiṣe igbewọle eto. Jọwọ ṣayẹwo itolẹsẹsẹ."
       },
       "export": {
-        "success": "A ṣe ìfitárí ètò sí fáìlì!",
-        "error": "Àṣìṣe nínú ṣíṣe ìfitárí ètò"
+        "success": "A ṣe itari eto si faili!",
+        "error": "Aṣiṣe ninu ṣiṣe itari eto"
       },
       "save": {
-        "success": "A fi àtúnṣe pamọ́ ní àṣeyọrí!",
-        "error": "Àṣìṣe nínú fífi àtúnṣe pamọ́"
+        "success": "A fi atunṣe pamọ ni aṣeyọri!",
+        "error": "Aṣiṣe ninu fifi atunṣe pamọ"
       },
       "reset": {
         "confirm": {
-          "title": "Tún Gbogbo Àtúnṣe Padà?",
-          "description": "Èyí yóò dá gbogbo ètò padà sí ìpilẹ̀ṣẹ̀ wọn. Iṣẹ́ yìí kò ṣeé yí padà.",
-          "confirm": "Tún Gbogbo Rẹ̀ Padà",
+          "title": "Tun Gbogbo Atunṣe Pada?",
+          "description": "Eyi yoo da gbogbo eto pada si ipilẹṣẹ wọn. Iṣe yii ko ṣee ṣe ayipada.",
+          "confirm": "Tun Gbogbo Rẹ Pada",
           "cancel": "Fagilee"
         },
-        "success": "A tún gbogbo àtúnṣe padà ní àṣeyọrí!",
-        "error": "Àṣìṣe nínú tútún àtúnṣe padà"
+        "success": "A tun gbogbo atunṣe pada ni aṣeyọri!",
+        "error": "Aṣiṣe ninu tutun atunṣe pada"
       },
       "validation": {
-        "invalidCss": "Ìtòlẹ́sẹẹsẹ CSS tí kò tọ̀",
-        "invalidJs": "Ìtòlẹ́sẹẹsẹ JavaScript tí kò tọ̀",
-        "invalidHtml": "Ìtòlẹ́sẹẹsẹ HTML tí kò tọ̀"
+        "invalidCss": "Itolẹsẹsẹ CSS ti ko tọ",
+        "invalidJs": "Itolẹsẹsẹ JavaScript ti ko tọ",
+        "invalidHtml": "Itolẹsẹsẹ HTML ti ko tọ"
       }
     },
     "tabs": {
-      "myTemplates": "Àwọn Àdàkọ Mi",
-      "marketplace": "Ọjà",
-      "analytics": "Ìtúpalẹ̀",
-      "customization": "Àtúnṣe"
+      "myTemplates": "Awọn Apẹẹrẹ Mi",
+      "marketplace": "Ọja",
+      "analytics": "Iṣiro",
+      "customization": "Atunṣe"
     }
   }
 }
