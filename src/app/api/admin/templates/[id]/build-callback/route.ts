@@ -145,7 +145,13 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
 
           // Create template sections from config.json
           console.log(`[build-callback] Creating template sections for ${id}`);
-          await createTemplateSections(id, tmpBase);
+          try {
+            await createTemplateSections(id, tmpBase);
+            console.log(`[build-callback] ✓ Template sections created successfully for ${id}`);
+          } catch (sectionError) {
+            console.error(`[build-callback] ✗ Failed to create template sections for ${id}:`, sectionError);
+            // Don't fail the entire process if section creation fails
+          }
 
           // Process built dist folder and upload to Cloudinary
           console.log(`[build-callback] Processing built template files for ${id}`);

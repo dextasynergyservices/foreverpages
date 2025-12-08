@@ -136,6 +136,9 @@ function discoverSectionsFromCode(extractedDir: string): Array<{ type: string; o
  * Also auto-discovers sections from code as fallback/validation
  */
 export async function createTemplateSections(templateId: string, extractedDir: string) {
+  console.log(`[process-sections] 🚀 Starting section creation for template ${templateId}`);
+  console.log(`[process-sections] Extracted directory: ${extractedDir}`);
+  
   try {
     let sectionsToCreate: Array<{ type: string; layout?: string; props?: unknown; order: number }> =
       [];
@@ -143,6 +146,7 @@ export async function createTemplateSections(templateId: string, extractedDir: s
 
     // Step 1: Try to read from config.json
     const configPath = findFile(extractedDir, "config.json");
+    console.log(`[process-sections] Config path: ${configPath || 'NOT FOUND'}`);
     if (configPath && fs.existsSync(configPath)) {
       try {
         const configContent = fs.readFileSync(configPath, "utf-8");
@@ -325,6 +329,13 @@ export async function createTemplateSections(templateId: string, extractedDir: s
     }
   } catch (error) {
     console.error(`[process-sections] Error creating template sections:`, error);
+    // Log full error details for debugging
+    if (error instanceof Error) {
+      console.error(`[process-sections] Error name: ${error.name}`);
+      console.error(`[process-sections] Error message: ${error.message}`);
+      console.error(`[process-sections] Error stack: ${error.stack}`);
+    }
+    throw error; // Re-throw to see the error in build-callback logs
   }
 }
 
