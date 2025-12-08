@@ -330,7 +330,27 @@ export default function TemplateManagementDashboard() {
                   <div className="text-sm text-muted-foreground">{t.description}</div>
                 </div>
                 <div className="text-sm flex items-center gap-2">
-                  <Badge>{t.processingStatus ?? "UNKNOWN"}</Badge>
+                  <Badge
+                    variant={
+                      t.processingStatus === "ERROR"
+                        ? "destructive"
+                        : t.processingStatus === "VALIDATED"
+                          ? "default"
+                          : "secondary"
+                    }
+                  >
+                    {t.processingStatus ?? "UNKNOWN"}
+                  </Badge>
+                  {t.processingStatus === "ERROR" && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setLogsModalFor(t.id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      View Error
+                    </Button>
+                  )}
                   {/* Template type badge (modular/single) - manifest may include `type` */}
                   <Badge variant="secondary">{t.type ?? "modular"}</Badge>
                   {/* Preview mode badge (iframe/static) */}
@@ -561,9 +581,45 @@ export default function TemplateManagementDashboard() {
           <div className="mt-3">
             {logsLoading && <div>Queueing...</div>}
             {!logsLoading && (
-              <pre className="bg-slate-100 p-3 rounded max-h-80 overflow-auto">
-                {logsContent || "No logs yet"}
-              </pre>
+              <div>
+                {/* Show error prominently if status is ERROR */}
+                {(() => {
+                  const tpl = templates.find((x) => x.id === logsModalFor);
+                  if (tpl?.processingStatus === "ERROR") {
+                    return (
+                      <div className="bg-red-50 border border-red-200 rounded p-4 mb-3">
+                        <div className="flex items-start gap-2">
+                          <span className="text-red-600 text-2xl">⚠️</span>
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-red-800 mb-2">
+                              Template Processing Failed
+                            </h3>
+                            <p className="text-red-700 text-sm">
+                              {logsContent?.includes("section")
+                                ? "Failed to create template sections. Check if config.json is valid."
+                                : "An error occurred during template processing."}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
+
+                <pre className="bg-slate-100 p-3 rounded max-h-80 overflow-auto text-xs">
+                  {logsContent || "No logs yet"}
+                </pre>
+
+                {/* Show helpful debugging info */}
+                {logsContent && logsContent.includes("[process-sections]") && (
+                  <div className="mt-3 text-sm text-muted-foreground bg-blue-50 p-3 rounded">
+                    <strong>💡 Tip:</strong> Look for lines starting with{" "}
+                    <code className="bg-blue-100 px-1 rounded">[process-sections]</code> to see
+                    section creation details
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </DialogContent>
