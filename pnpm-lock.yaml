@@ -246,8 +246,14 @@ importers:
         version: 4.1.12
     devDependencies:
       "@eslint/eslintrc":
-        specifier: ^3
-        version: 3.3.1
+        specifier: ^3.3.3
+        version: 3.3.3
+      "@eslint/js":
+        specifier: ^9.39.1
+        version: 9.39.1
+      "@next/eslint-plugin-next":
+        specifier: ^16.0.7
+        version: 16.0.7
       "@tailwindcss/postcss":
         specifier: ^4
         version: 4.1.13
@@ -290,9 +296,18 @@ importers:
       eslint-config-prettier:
         specifier: ^10.1.8
         version: 10.1.8(eslint@9.36.0(jiti@2.6.1))
+      eslint-plugin-jsx-a11y:
+        specifier: ^6.10.2
+        version: 6.10.2(eslint@9.36.0(jiti@2.6.1))
       eslint-plugin-prettier:
         specifier: ^5.5.4
         version: 5.5.4(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.36.0(jiti@2.6.1)))(eslint@9.36.0(jiti@2.6.1))(prettier@3.6.2)
+      eslint-plugin-react:
+        specifier: ^7.37.5
+        version: 7.37.5(eslint@9.36.0(jiti@2.6.1))
+      eslint-plugin-react-hooks:
+        specifier: ^7.0.1
+        version: 7.0.1(eslint@9.36.0(jiti@2.6.1))
       glob:
         specifier: ^10.3.10
         version: 10.4.5
@@ -1527,10 +1542,10 @@ packages:
       }
     engines: { node: ^12.22.0 || ^14.17.0 || >=16.0.0 }
 
-  "@eslint/eslintrc@3.3.1":
+  "@eslint/eslintrc@3.3.3":
     resolution:
       {
-        integrity: sha512-gtF186CXhIl1p4pJNGZw8Yc6RlshoePRvE0X91oPGb3vZ8pM3qOS9W9NGPat9LziaBV7XrJWGylNQXkGcnM3IQ==,
+        integrity: sha512-Kr+LPIUVKz2qkx1HAMH8q1q6azbqBAsXJUxBl/ODDuVPX45Z9DfwB8tPjTi6nNZ8BuM3nbJxC5zCAg5elnBUTQ==,
       }
     engines: { node: ^18.18.0 || ^20.9.0 || >=21.1.0 }
 
@@ -1545,6 +1560,13 @@ packages:
     resolution:
       {
         integrity: sha512-uhCbYtYynH30iZErszX78U+nR3pJU3RHGQ57NXy5QupD4SBVwDeU8TNBy+MjMngc1UyIW9noKqsRqfjQTBU2dw==,
+      }
+    engines: { node: ^18.18.0 || ^20.9.0 || >=21.1.0 }
+
+  "@eslint/js@9.39.1":
+    resolution:
+      {
+        integrity: sha512-S26Stp4zCy88tH94QbBv3XCuzRQiZ9yXofEILmglYTh/Ug/a9/umqvgFtYBAo3Lp0nsI/5/qH1CCrbdK3AP1Tw==,
       }
     engines: { node: ^18.18.0 || ^20.9.0 || >=21.1.0 }
 
@@ -2212,6 +2234,20 @@ packages:
       {
         integrity: sha512-aFT2yemJJo+TZCmieA7qnYGQooOS7QfNmYrzGtsYd3g9j5iDP8AimYYAesf79ohjbLG12XxC4nG5DyEnC88AsQ==,
       }
+
+  "@isaacs/balanced-match@4.0.1":
+    resolution:
+      {
+        integrity: sha512-yzMTt9lEb8Gv7zRioUilSglI0c0smZ9k5D65677DLWLtWJaXIS3CqcGyUFByYKlnUj6TkjLVs54fBl6+TiGQDQ==,
+      }
+    engines: { node: 20 || >=22 }
+
+  "@isaacs/brace-expansion@5.0.0":
+    resolution:
+      {
+        integrity: sha512-ZT55BDLV0yv0RBm2czMiZ+SqCGO7AvmOM3G/w2xhVPH+te0aKgFjmBvGlL1dH+ql2tgGO3MVrbb3jCKyvpgnxA==,
+      }
+    engines: { node: 20 || >=22 }
 
   "@isaacs/cliui@8.0.2":
     resolution:
@@ -7238,6 +7274,13 @@ packages:
       }
     hasBin: true
 
+  js-yaml@4.1.1:
+    resolution:
+      {
+        integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==,
+      }
+    hasBin: true
+
   jsdom@27.2.0:
     resolution:
       {
@@ -7755,6 +7798,13 @@ packages:
         integrity: sha512-xRc4oEhT6eaBpU1XF7AjpOFD+xQmXNB5OVKwp4tqCuBpHLS/ZbBDrc07mYTDqVMg6PfxUjjNp85O6Cd2Z/5HWA==,
       }
     engines: { node: ">= 0.6" }
+
+  minimatch@10.1.1:
+    resolution:
+      {
+        integrity: sha512-enIvLvRAFZYXJzkCYG5RKmPfrFArdLv+R+lbQ53BmIMLIry74bjKzX6iHAm8WYamJkhSSEabrWN5D97XnKObjQ==,
+      }
+    engines: { node: 20 || >=22 }
 
   minimatch@3.1.2:
     resolution:
@@ -10610,7 +10660,7 @@ snapshots:
       "@babel/helper-plugin-utils": 7.27.1
       debug: 4.4.3
       lodash.debounce: 4.0.8
-      resolve: 1.22.10
+      resolve: 1.22.11
     transitivePeerDependencies:
       - supports-color
 
@@ -11376,7 +11426,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  "@eslint/eslintrc@3.3.1":
+  "@eslint/eslintrc@3.3.3":
     dependencies:
       ajv: 6.12.6
       debug: 4.4.3
@@ -11384,7 +11434,7 @@ snapshots:
       globals: 14.0.0
       ignore: 5.3.2
       import-fresh: 3.3.1
-      js-yaml: 4.1.0
+      js-yaml: 4.1.1
       minimatch: 3.1.2
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
@@ -11393,6 +11443,8 @@ snapshots:
   "@eslint/js@8.57.1": {}
 
   "@eslint/js@9.36.0": {}
+
+  "@eslint/js@9.39.1": {}
 
   "@eslint/object-schema@2.1.6": {}
 
@@ -11876,6 +11928,12 @@ snapshots:
     optional: true
 
   "@ioredis/commands@1.4.0": {}
+
+  "@isaacs/balanced-match@4.0.1": {}
+
+  "@isaacs/brace-expansion@5.0.0":
+    dependencies:
+      "@isaacs/balanced-match": 4.0.1
 
   "@isaacs/cliui@8.0.2":
     dependencies:
@@ -12996,7 +13054,7 @@ snapshots:
 
   "@types/minimatch@6.0.0":
     dependencies:
-      minimatch: 9.0.5
+      minimatch: 10.1.1
 
   "@types/ms@2.1.0": {}
 
@@ -14426,7 +14484,7 @@ snapshots:
       "@eslint/config-array": 0.21.0
       "@eslint/config-helpers": 0.3.1
       "@eslint/core": 0.15.2
-      "@eslint/eslintrc": 3.3.1
+      "@eslint/eslintrc": 3.3.3
       "@eslint/js": 9.36.0
       "@eslint/plugin-kit": 0.3.5
       "@humanfs/node": 0.16.7
@@ -15160,6 +15218,10 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
+  js-yaml@4.1.1:
+    dependencies:
+      argparse: 2.0.1
+
   jsdom@27.2.0:
     dependencies:
       "@acemir/cssom": 0.9.23
@@ -15429,6 +15491,10 @@ snapshots:
   mime-types@3.0.1:
     dependencies:
       mime-db: 1.54.0
+
+  minimatch@10.1.1:
+    dependencies:
+      "@isaacs/brace-expansion": 5.0.0
 
   minimatch@3.1.2:
     dependencies:
