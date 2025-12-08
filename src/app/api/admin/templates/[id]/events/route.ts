@@ -9,7 +9,7 @@ function serializeEvent(data: unknown) {
   return `data: ${JSON.stringify(data)}\n\n`;
 }
 
-export async function GET(_: Request, { params }: { params: { id: string } }) {
+export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id || !["ADMIN", "SUPER_ADMIN"].includes(session.user.role || "USER")) {
@@ -19,7 +19,7 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const { id } = params;
+  const { id } = await params;
 
   const stream = new ReadableStream({
     async start(controller) {

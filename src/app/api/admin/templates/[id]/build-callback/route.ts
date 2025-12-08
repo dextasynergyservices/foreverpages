@@ -12,13 +12,15 @@ import AdmZip from "adm-zip";
 
 const prisma = new PrismaClient();
 export const runtime = "nodejs";
+export const maxDuration = 300; // 5 minutes max
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   console.log("[build-callback] 🔔 CALLBACK RECEIVED - Request method:", request.method);
-  console.log("[build-callback] 🔔 Params:", params);
+
+  const { id } = await params;
+  console.log("[build-callback] 🔔 Template ID:", id);
 
   try {
-    const id = params?.id;
     if (!id) {
       console.log("[build-callback] ❌ Missing template id in params");
       return NextResponse.json({ message: "Missing template id" }, { status: 400 });
@@ -145,12 +147,34 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
 
           // Create template sections from config.json
           console.log(`[build-callback] Creating template sections for ${id}`);
+          let sectionCreationError: string | null = null;
           try {
+            const sectionStartTime = Date.now();
             await createTemplateSections(id, tmpBase);
-            console.log(`[build-callback] ✓ Template sections created successfully for ${id}`);
+            const sectionDuration = Date.now() - sectionStartTime;
+            console.log(`[build-callback] ✓ Template sections created successfully in ${sectionDuration}ms`);
           } catch (sectionError) {
-            console.error(`[build-callback] ✗ Failed to create template sections for ${id}:`, sectionError);
-            // Don't fail the entire process if section creation fails
+            const errorMsg = sectionError instanceof Error ? sectionError.message : String(sectionError);
+            sectionCreationError = `Section creation failed: ${errorMsg}`;
+            console.error(
+              `[build-callback] ✗ Failed to create template sections for ${id}:`,
+              sectionError
+            );
+            
+            // Store error in database so it appears in UI
+            await prisma.template.update({
+              where: { id },
+              data: {
+                processingLogs: sectionCreationError,
+                processingStatus: "ERROR"
+              }
+            });
+            
+            // Return early if section creation fails
+            return NextResponse.json({ 
+              message: "Section creation failed", 
+              error: sectionCreationError 
+            }, { status: 500 });
           }
 
           // Process built dist folder and upload to Cloudinary

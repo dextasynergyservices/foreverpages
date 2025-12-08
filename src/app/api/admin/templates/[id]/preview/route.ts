@@ -3,12 +3,15 @@ import { prisma } from "@/lib/prisma";
 import { PreviewMode } from "@/generated/prisma";
 
 interface RouteParams {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function GET(request: NextRequest, { params }: RouteParams) {
-  const { id } = params;
+  const { id } = await params;
   try {
+    if (!id) {
+      return NextResponse.json({ error: "Template ID is required" }, { status: 400 });
+    }
     const tpl = await prisma.template.findUnique({ where: { id } });
     if (!tpl) return NextResponse.json({ error: "Template not found" }, { status: 404 });
 
