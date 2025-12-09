@@ -249,31 +249,23 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             return out;
           }
 
-          const files = collectRelativeFiles(tmpBase);
-          if (!files.length) throw new Error("No files extracted from artifact");
+          // NOTE: PR creation is handled by the queue's handleRemoteBuildWithPolling function
+          // We only process assets here to avoid duplicate PRs
+          console.log(`[build-callback] Asset processing complete for template ${id}`);
 
-          const title = `Add template ${slug}`;
-          const body = `Automated template upload for ${slug} (id: ${id}).\n\nBuild logs:\n${logs || "(no logs)"}\n`;
-
-          // Create PR
-          console.log(`[build-callback] Creating PR for template ${id} with ${files.length} files`);
-          const pr = await createPrForTemplate(branch, files, title, body, "develop");
-
-          // Update template with PR info and asset URLs
+          // Update template with asset URLs only (PR already created by queue)
           await prisma.template.update({
             where: { id },
             data: {
-              prNumber: pr.number.toString(),
-              prUrl: pr.url,
               processingStatus: "VALIDATED",
-              processingLogs: "PR created successfully",
+              processingLogs: "Assets processed successfully",
               ...(assets.previewImage && { previewImage: assets.previewImage }),
               ...(assets.thumbnailImage && { thumbnailImage: assets.thumbnailImage }),
               ...(Object.keys(builtAssets).length > 0 && { artifactAssets: builtAssets }),
             },
           });
 
-          console.log(`[build-callback] ✓ PR created successfully for template ${id}: ${pr.url}`);
+          console.log(`[build-callback] ✓ Assets processed successfully for template ${id}`);
 
           // Cleanup temp directory
           try {
@@ -282,18 +274,18 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             console.warn("Failed to cleanup temp directory", e);
           }
 
-          return NextResponse.json({ message: "OK - PR created", prUrl: pr.url });
+          return NextResponse.json({ message: "OK - Assets processed" });
         } catch (e) {
           const errorMsg = e instanceof Error ? e.message : String(e);
-          console.error(`[build-callback] ✗ Failed to create PR for template ${id}:`, e);
+          console.error(`[build-callback] ✗ Failed to process assets for template ${id}:`, e);
           await prisma.template.update({
             where: { id },
             data: {
               processingStatus: "ERROR",
-              processingLogs: `Failed to create PR: ${errorMsg}`,
+              processingLogs: `Failed to process assets: ${errorMsg}`,
             },
           });
-          return NextResponse.json({ message: "OK - PR creation failed", error: errorMsg });
+          return NextResponse.json({ message: "OK - Asset processing failed", error: errorMsg });
         }
       }
     } catch (e) {
