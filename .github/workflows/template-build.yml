@@ -72,13 +72,40 @@ jobs:
         if: ${{ always() }}
         run: |
           if [ -d template ]; then
-            cd template
-            if [ -f package.json ] && grep -q 'vite' package.json; then
-              echo "Detected Vite-based template"
-              pnpm build || pnpm vite build || true
+            # Find the actual template directory (might be template/ or template/light-template/ etc)
+            TEMPLATE_DIR=""
+            if [ -f template/package.json ]; then
+              TEMPLATE_DIR="template"
+            elif [ -d template/light-template ] && [ -f template/light-template/package.json ]; then
+              TEMPLATE_DIR="template/light-template"
             else
-              echo "No known build command found; attempting pnpm build"
-              pnpm build || true
+              # Find first directory with package.json
+              TEMPLATE_DIR=$(find template -maxdepth 2 -name "package.json" -type f | head -n 1 | xargs dirname)
+            fi
+
+            if [ -z "$TEMPLATE_DIR" ]; then
+              echo "No package.json found in template directory"
+              exit 0
+            fi
+
+            echo "Building template in: $TEMPLATE_DIR"
+            cd "$TEMPLATE_DIR"
+
+            if grep -q 'vite' package.json; then
+              echo "Detected Vite-based template"
+              pnpm build || pnpm vite build || echo "Build failed"
+            else
+              echo "Attempting pnpm build"
+              pnpm build || echo "Build failed"
+            fi
+
+            # Move dist/build folder to template root for easier access
+            if [ -d dist ]; then
+              echo "Moving dist to template root"
+              mv dist ../../template-dist || cp -r dist ../../template-dist
+            elif [ -d build ]; then
+              echo "Moving build to template root"
+              mv build ../../template-dist || cp -r build ../../template-dist
             fi
           else
             echo "No template directory to build"
@@ -129,12 +156,18 @@ jobs:
         if: ${{ always() }}
         id: upload-built-files
         run: |
-          # Check if dist folder exists
+          # Check if dist folder exists (moved to template-dist by build step)
           DIST_FOLDER=""
-          if [ -d template/dist ]; then
+          if [ -d template-dist ]; then
+            DIST_FOLDER="template-dist"
+          elif [ -d template/dist ]; then
             DIST_FOLDER="template/dist"
           elif [ -d template/build ]; then
             DIST_FOLDER="template/build"
+          elif [ -d template/light-template/dist ]; then
+            DIST_FOLDER="template/light-template/dist"
+          elif [ -d template/light-template/build ]; then
+            DIST_FOLDER="template/light-template/build"
           fi
 
           if [ -z "$DIST_FOLDER" ]; then
