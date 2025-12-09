@@ -210,16 +210,24 @@ jobs:
           cd ..
           rm -rf temp-zip
 
-          # Upload the dist.zip to Cloudinary
+          # Upload the dist.zip to Cloudinary with proper signature
+          TIMESTAMP=$(date +%s)
+          PUBLIC_ID="templates/${TEMPLATE_ID}/dist"
+          SIGNATURE=$(echo -n "public_id=${PUBLIC_ID}&timestamp=${TIMESTAMP}${CLOUDINARY_API_SECRET}" | openssl dgst -sha1 -hex | cut -d' ' -f2)
+          
+          echo "Uploading to Cloudinary with timestamp: $TIMESTAMP"
           curl -X POST "https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/raw/upload" \
             -F "file=@dist.zip" \
-            -F "public_id=templates/${TEMPLATE_ID}/dist" \
+            -F "public_id=${PUBLIC_ID}" \
             -F "api_key=${CLOUDINARY_API_KEY}" \
-            -F "timestamp=$(date +%s)" \
-            -F "signature=$(echo -n "public_id=templates/${TEMPLATE_ID}/dist&timestamp=$(date +%s)${CLOUDINARY_API_SECRET}" | openssl dgst -sha1 -hex | cut -d' ' -f2)" \
+            -F "timestamp=${TIMESTAMP}" \
+            -F "signature=${SIGNATURE}" \
             -F "resource_type=raw" \
             -F "overwrite=true" > cloudinary_response.json || true
-
+          
+          echo "Cloudinary response:"
+          cat cloudinary_response.json
+          
           # Extract the secure_url from response
           BUILT_URL=$(cat cloudinary_response.json | jq -r '.secure_url' 2>/dev/null || echo "")
 
