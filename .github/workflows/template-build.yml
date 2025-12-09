@@ -217,7 +217,7 @@ jobs:
               templateId: $id,
               status: $status,
               runUrl: $runUrl,
-              artifactUrl: $ARTIFACT_URL,
+              artifactUrl: $artifactUrl,
               builtArtifactUrl: $builtUrl,
               logs: $logs
             }')
