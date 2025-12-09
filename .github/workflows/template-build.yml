@@ -62,7 +62,24 @@ jobs:
         if: ${{ always() }}
         run: |
           if [ -d template ]; then
-            cd template
+            # Find the actual template directory (might be template/ or template/light-template/ etc)
+            TEMPLATE_DIR=""
+            if [ -f template/package.json ]; then
+              TEMPLATE_DIR="template"
+            elif [ -d template/light-template ] && [ -f template/light-template/package.json ]; then
+              TEMPLATE_DIR="template/light-template"
+            else
+              # Find first directory with package.json
+              TEMPLATE_DIR=$(find template -maxdepth 2 -name "package.json" -type f | head -n 1 | xargs dirname)
+            fi
+
+            if [ -z "$TEMPLATE_DIR" ]; then
+              echo "No package.json found in template directory"
+              exit 0
+            fi
+
+            echo "Installing dependencies in: $TEMPLATE_DIR"
+            cd "$TEMPLATE_DIR"
             pnpm install --frozen-lockfile || pnpm install
           else
             echo "No template directory to install"
@@ -184,10 +201,14 @@ jobs:
           # Upload all files from dist folder
           TEMPLATE_ID="${{ github.event.client_payload.templateId }}"
 
-          # Create a temporary zip of the built files
-          cd "$DIST_FOLDER"
-          zip -r ../../dist.zip .
-          cd ../..
+          # Create a temporary zip of the built files with dist/ folder structure
+          # The callback expects: dist/index.html, dist/assets/, etc.
+          mkdir -p temp-zip/dist
+          cp -r "$DIST_FOLDER"/* temp-zip/dist/
+          cd temp-zip
+          zip -r ../dist.zip .
+          cd ..
+          rm -rf temp-zip
 
           # Upload the dist.zip to Cloudinary
           curl -X POST "https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/raw/upload" \
