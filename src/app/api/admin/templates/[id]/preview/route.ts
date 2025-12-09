@@ -42,7 +42,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     // IFRAME: redirect to a viewer route (rendered in the app) that can mount sandboxed runtime viewer
     // We use a simple internal viewer path which exists in the app: /templates/preview/:id
-    const viewerUrl = `${process.env.NEXTAUTH_URL || ""}/templates/preview/${tpl.slug || tpl.id}`;
+    const viewerUrl = `${process.env.NEXTAUTH_URL || ""}/templates/preview/${tpl.id}`;
     return NextResponse.redirect(viewerUrl);
   } catch (err) {
     console.error("Preview route error", err);

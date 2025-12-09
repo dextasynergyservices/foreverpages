@@ -125,12 +125,65 @@ jobs:
             template.zip
             build_output.txt
 
+      - name: Upload built files to Cloudinary
+        if: ${{ always() }}
+        id: upload-built-files
+        run: |
+          # Check if dist folder exists
+          DIST_FOLDER=""
+          if [ -d template/dist ]; then
+            DIST_FOLDER="template/dist"
+          elif [ -d template/build ]; then
+            DIST_FOLDER="template/build"
+          fi
+
+          if [ -z "$DIST_FOLDER" ]; then
+            echo "No dist/build folder found, skipping Cloudinary upload"
+            echo "built_url=" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "Uploading built files from $DIST_FOLDER to Cloudinary..."
+
+          # Install cloudinary CLI if needed (lightweight alternative)
+          npm install -g cloudinary-cli 2>/dev/null || true
+
+          # Upload all files from dist folder
+          TEMPLATE_ID="${{ github.event.client_payload.templateId }}"
+
+          # Create a temporary zip of the built files
+          cd "$DIST_FOLDER"
+          zip -r ../../dist.zip .
+          cd ../..
+
+          # Upload the dist.zip to Cloudinary
+          curl -X POST "https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/raw/upload" \
+            -F "file=@dist.zip" \
+            -F "public_id=templates/${TEMPLATE_ID}/dist" \
+            -F "api_key=${CLOUDINARY_API_KEY}" \
+            -F "timestamp=$(date +%s)" \
+            -F "signature=$(echo -n "public_id=templates/${TEMPLATE_ID}/dist&timestamp=$(date +%s)${CLOUDINARY_API_SECRET}" | openssl dgst -sha1 -hex | cut -d' ' -f2)" \
+            -F "resource_type=raw" \
+            -F "overwrite=true" > cloudinary_response.json || true
+
+          # Extract the secure_url from response
+          BUILT_URL=$(cat cloudinary_response.json | jq -r '.secure_url' 2>/dev/null || echo "")
+
+          if [ -n "$BUILT_URL" ] && [ "$BUILT_URL" != "null" ]; then
+            echo "Built files uploaded to: $BUILT_URL"
+            echo "built_url=$BUILT_URL" >> $GITHUB_OUTPUT
+          else
+            echo "Failed to upload built files to Cloudinary"
+            echo "built_url=" >> $GITHUB_OUTPUT
+          fi
+
       - name: Validate extracted template and POST callback with artifact
         if: ${{ always() }}
         env:
           TEMPLATE_ID: ${{ github.event.client_payload.templateId }}
           CALLBACK_URL: ${{ github.event.client_payload.callbackUrl }}
           PACKAGE_URL: ${{ github.event.client_payload.packageUrl }}
+          BUILT_URL: ${{ steps.upload-built-files.outputs.built_url }}
           GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           CALLBACK_SECRET: ${{ secrets.TEMPLATE_BUILD_CALLBACK_SECRET }}
         run: |
@@ -139,14 +192,18 @@ jobs:
           LOGS=""
           if [ -d template ] && [ "$(ls -A template | wc -l)" -gt 0 ]; then
             LOGS="template directory exists and is non-empty"
+            if [ -d template/dist ] || [ -d template/build ]; then
+              LOGS="$LOGS, built successfully"
+            else
+              LOGS="$LOGS, but no build output found"
+            fi
           else
             STATUS="ERROR"
             LOGS="Extracted template directory missing or empty"
           fi
 
-          # The artifact URL is the original package URL uploaded by the client
-          # (GitHub Actions artifact URLs require auth and are not suitable for callback)
-          ARTIFACT_URL="$PACKAGE_URL"
+          # Use built URL if available, otherwise fall back to source package URL
+          ARTIFACT_URL="${BUILT_URL:-$PACKAGE_URL}"
 
           # Construct callback payload with all necessary info
           PAYLOAD=$(jq -n \
@@ -154,17 +211,21 @@ jobs:
             --arg status "$STATUS" \
             --arg runUrl "$GITHUB_RUN_URL" \
             --arg artifactUrl "$ARTIFACT_URL" \
+            --arg builtUrl "$BUILT_URL" \
             --arg logs "$LOGS" \
             '{
               templateId: $id,
               status: $status,
               runUrl: $runUrl,
-              artifactUrl: $artifactUrl,
+              artifactUrl: $ARTIFACT_URL,
+              builtArtifactUrl: $builtUrl,
               logs: $logs
             }')
 
           if [ -n "$CALLBACK_URL" ]; then
-            echo "Posting callback to $CALLBACK_URL with packageUrl: $ARTIFACT_URL"
+            echo "Posting callback to $CALLBACK_URL"
+            echo "  Source URL: $PACKAGE_URL"
+            echo "  Built URL: ${BUILT_URL:-none}"
             curl -s -X POST \
               -H "Content-Type: application/json" \
               -H "X-BUILD-CALLBACK-SECRET: $CALLBACK_SECRET" \
