@@ -57,6 +57,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
     const logs = body.logs || body.buildLog || null;
     const artifactUrl = body.artifactUrl || body.artifactsUrl || null;
+    const builtArtifactUrl = body.builtArtifactUrl || null; // Built dist.zip from GitHub Actions
     const assetsMap = body.assetsMap || body.artifactAssets || null;
     const runUrl = body.runUrl || null;
     const status = body.status || (logs ? "VALIDATED" : "ERROR");
@@ -93,8 +94,8 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           },
         });
 
-        // Prefer artifactUrl returned by the build; fall back to the template.packageUrl stored earlier.
-        let candidateUrl: string | null = artifactUrl || null;
+        // Prefer builtArtifactUrl (contains dist folder), then artifactUrl (source), then DB packageUrl
+        let candidateUrl: string | null = builtArtifactUrl || artifactUrl || null;
         if (!candidateUrl) {
           const tplRec = await prisma.template.findUnique({
             where: { id },
@@ -102,6 +103,10 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           });
           candidateUrl = tplRec?.packageUrl || null;
         }
+
+        console.log(
+          `[build-callback] Using artifact URL: ${candidateUrl?.slice(0, 80)}... (built: ${!!builtArtifactUrl})`
+        );
 
         if (!candidateUrl) {
           console.warn(
