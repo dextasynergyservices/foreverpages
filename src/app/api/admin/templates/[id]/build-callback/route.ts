@@ -222,22 +222,34 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
               throw new Error("No build script found in package.json");
             }
 
-            // Install and build
-            console.log(`[build-callback] 📥 Installing dependencies in ${templateDir}...`);
+            // Install and build using pnpm (the template's package manager)
+            console.log(
+              `[build-callback] 📥 Installing dependencies with pnpm in ${templateDir}...`
+            );
             const installStart = Date.now();
+
             try {
-              // Use npm ci for faster, cleaner installs (uses package-lock.json)
-              const installOutput = execSync("npm ci --prefer-offline --loglevel=error", {
+              // First ensure pnpm is available
+              execSync("npx pnpm --version", {
                 cwd: templateDir,
                 encoding: "utf-8",
-                maxBuffer: 10 * 1024 * 1024, // 10MB buffer
-                timeout: 120000, // 2 minute timeout (ci is faster than install)
+                timeout: 30000,
+              });
+              console.log(`[build-callback] pnpm available via npx`);
+
+              // Install dependencies with pnpm
+              const installOutput = execSync("npx pnpm install --no-frozen-lockfile", {
+                cwd: templateDir,
+                encoding: "utf-8",
+                maxBuffer: 10 * 1024 * 1024,
+                timeout: 150000, // 2.5 minutes
               });
               console.log(
                 `[build-callback] ✓ Dependencies installed in ${Date.now() - installStart}ms`
               );
-              if (installOutput)
-                console.log(`[build-callback] Install output: ${installOutput.substring(0, 500)}`);
+              if (installOutput && installOutput.trim()) {
+                console.log(`[build-callback] Install output: ${installOutput.substring(0, 300)}`);
+              }
             } catch (installErr: unknown) {
               const err = installErr as {
                 message?: string;
@@ -246,7 +258,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
                 killed?: boolean;
               };
               console.error(
-                `[build-callback] ❌ npm install FAILED:`,
+                `[build-callback] ❌ pnpm install FAILED:`,
                 err.message || String(installErr)
               );
               if (err.killed) console.error(`[build-callback] KILLED by timeout/memory`);
@@ -254,13 +266,13 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
                 console.error(`[build-callback] stdout:`, err.stdout.toString().substring(0, 500));
               if (err.stderr)
                 console.error(`[build-callback] stderr:`, err.stderr.toString().substring(0, 500));
-              throw new Error(`npm install failed: ${err.message || "Unknown error"}`);
+              throw new Error(`pnpm install failed: ${err.message || "Unknown error"}`);
             }
 
-            console.log(`[build-callback] 🏗️  Running build command...`);
+            console.log(`[build-callback] 🏗️  Running build command with pnpm...`);
             const buildStart = Date.now();
             try {
-              const buildOutput = execSync("npm run build", {
+              const buildOutput = execSync("npx pnpm run build", {
                 cwd: templateDir,
                 encoding: "utf-8",
                 maxBuffer: 10 * 1024 * 1024, // 10MB buffer
