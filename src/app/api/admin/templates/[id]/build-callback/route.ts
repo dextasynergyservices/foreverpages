@@ -134,12 +134,48 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           const tmpBase = fs.mkdtempSync(path.join(tmpDir, `template-${id}-`));
           const zipPath = path.join(tmpBase, "artifact.zip");
 
-          // Download artifact
-          const res = await fetch(candidateUrl);
-          if (!res.ok) throw new Error(`Failed to fetch artifact: ${res.status}`);
-          const ab = await res.arrayBuffer();
-          await fs.promises.writeFile(zipPath, Buffer.from(ab));
-          console.log(`[build-callback] Downloaded artifact (${ab.byteLength} bytes)`);
+          // Download artifact with retry logic for Cloudinary signed URLs
+          let downloadUrl = candidateUrl;
+
+          // If builtArtifactUrl is from Cloudinary and gets 401, try generating signed URL
+          if (builtArtifactUrl && candidateUrl === builtArtifactUrl) {
+            try {
+              const { generateCloudinarySignedUrl } = await import("@/lib/cloudinary");
+              // Extract public_id from URL (e.g., templates/xxx/dist)
+              const match = candidateUrl.match(/\/raw\/upload\/v\d+\/(.+)\.zip$/);
+              if (match) {
+                const publicId = match[1];
+                downloadUrl = generateCloudinarySignedUrl(`${publicId}.zip`, "raw");
+                console.log(`[build-callback] Using signed URL for download`);
+              }
+            } catch (signErr) {
+              console.warn(
+                `[build-callback] Could not generate signed URL, trying direct download`
+              );
+            }
+          }
+
+          const res = await fetch(downloadUrl);
+          if (!res.ok) {
+            // If built artifact fails, fall back to source artifact
+            if (builtArtifactUrl && artifactUrl && downloadUrl === builtArtifactUrl) {
+              console.warn(
+                `[build-callback] Built artifact download failed (${res.status}), falling back to source`
+              );
+              const fallbackRes = await fetch(artifactUrl);
+              if (!fallbackRes.ok)
+                throw new Error(`Failed to fetch fallback artifact: ${fallbackRes.status}`);
+              const ab = await fallbackRes.arrayBuffer();
+              await fs.promises.writeFile(zipPath, Buffer.from(ab));
+              console.log(`[build-callback] Downloaded fallback artifact (${ab.byteLength} bytes)`);
+            } else {
+              throw new Error(`Failed to fetch artifact: ${res.status}`);
+            }
+          } else {
+            const ab = await res.arrayBuffer();
+            await fs.promises.writeFile(zipPath, Buffer.from(ab));
+            console.log(`[build-callback] Downloaded artifact (${ab.byteLength} bytes)`);
+          }
 
           // Extract
           const zip = new AdmZip(zipPath);
