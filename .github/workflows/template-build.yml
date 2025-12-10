@@ -58,102 +58,13 @@ jobs:
 
       # Debug step removed — validation now focuses on the extracted `template/` directory
 
-      - name: Install deps
-        if: ${{ always() }}
-        run: |
-          if [ -d template ]; then
-            # Find the actual template directory (might be template/ or template/light-template/ etc)
-            TEMPLATE_DIR=""
-            if [ -f template/package.json ]; then
-              TEMPLATE_DIR="template"
-            elif [ -d template/light-template ] && [ -f template/light-template/package.json ]; then
-              TEMPLATE_DIR="template/light-template"
-            else
-              # Find first directory with package.json
-              TEMPLATE_DIR=$(find template -maxdepth 2 -name "package.json" -type f | head -n 1 | xargs dirname)
-            fi
+      # Removed: Install deps - queue handles building locally
 
-            if [ -z "$TEMPLATE_DIR" ]; then
-              echo "No package.json found in template directory"
-              exit 0
-            fi
+      # Removed: Build template - queue handles this after download
 
-            echo "Installing dependencies in: $TEMPLATE_DIR"
-            cd "$TEMPLATE_DIR"
-            pnpm install --frozen-lockfile || pnpm install
-          else
-            echo "No template directory to install"
-          fi
+      # Removed: Collect build output - not building in Actions
 
-      - name: Build template
-        if: ${{ always() }}
-        run: |
-          if [ -d template ]; then
-            # Find the actual template directory (might be template/ or template/light-template/ etc)
-            TEMPLATE_DIR=""
-            if [ -f template/package.json ]; then
-              TEMPLATE_DIR="template"
-            elif [ -d template/light-template ] && [ -f template/light-template/package.json ]; then
-              TEMPLATE_DIR="template/light-template"
-            else
-              # Find first directory with package.json
-              TEMPLATE_DIR=$(find template -maxdepth 2 -name "package.json" -type f | head -n 1 | xargs dirname)
-            fi
-
-            if [ -z "$TEMPLATE_DIR" ]; then
-              echo "No package.json found in template directory"
-              exit 0
-            fi
-
-            echo "Building template in: $TEMPLATE_DIR"
-            cd "$TEMPLATE_DIR"
-
-            if grep -q 'vite' package.json; then
-              echo "Detected Vite-based template"
-              pnpm build || pnpm vite build || echo "Build failed"
-            else
-              echo "Attempting pnpm build"
-              pnpm build || echo "Build failed"
-            fi
-
-            # Move dist/build folder to template root for easier access
-            if [ -d dist ]; then
-              echo "Moving dist to template root"
-              mv dist ../../template-dist || cp -r dist ../../template-dist
-            elif [ -d build ]; then
-              echo "Moving build to template root"
-              mv build ../../template-dist || cp -r build ../../template-dist
-            fi
-          else
-            echo "No template directory to build"
-          fi
-
-      - name: Collect build output
-        if: ${{ always() }}
-        run: |
-          BUILD_DIR=""
-          if [ -d template/dist ]; then BUILD_DIR=template/dist; fi
-          if [ -d template/build ]; then BUILD_DIR=template/build; fi
-          if [ -z "$BUILD_DIR" ]; then echo "No build output detected"; fi
-          echo "BUILD_DIR=$BUILD_DIR" > build_output.txt
-
-      - name: Package build output
-        if: ${{ always() }}
-        run: |
-          BUILD_DIR=""
-          if [ -d template/dist ]; then BUILD_DIR=template/dist; fi
-          if [ -d template/build ]; then BUILD_DIR=template/build; fi
-          if [ -n "$BUILD_DIR" ]; then
-            echo "Zipping $BUILD_DIR to build.zip"
-            cd "$BUILD_DIR" && zip -r ../../build.zip . || (echo "zip failed" && exit 0)
-          else
-            if [ -d template ]; then
-              echo "No build dir detected; zipping entire template directory to build.zip"
-              cd template && zip -r ../build.zip . || (echo "zip failed" && exit 0)
-            else
-              echo "No build dir to package"
-            fi
-          fi
+      # Removed: Package build output - not building in Actions
 
       # Removed uploader dependencies install step — not needed for validation-only workflow
 
@@ -162,114 +73,38 @@ jobs:
         id: upload-artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: template-build-artifacts
-          path: |
-            template/dist
-            template/build
-            template.zip
-            build_output.txt
+          name: template-validation-artifacts
+          path: template.zip
 
-      - name: Upload built files to Cloudinary
-        if: ${{ always() }}
-        id: upload-built-files
-        run: |
-          # Check if dist folder exists (moved to template-dist by build step)
-          DIST_FOLDER=""
-          if [ -d template-dist ]; then
-            DIST_FOLDER="template-dist"
-          elif [ -d template/dist ]; then
-            DIST_FOLDER="template/dist"
-          elif [ -d template/build ]; then
-            DIST_FOLDER="template/build"
-          elif [ -d template/light-template/dist ]; then
-            DIST_FOLDER="template/light-template/dist"
-          elif [ -d template/light-template/build ]; then
-            DIST_FOLDER="template/light-template/build"
-          fi
+      # Removed: Cloudinary upload step - using source artifact instead
 
-          if [ -z "$DIST_FOLDER" ]; then
-            echo "No dist/build folder found, skipping Cloudinary upload"
-            echo "built_url=" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
-          echo "Uploading built files from $DIST_FOLDER to Cloudinary..."
-
-          # Install cloudinary CLI if needed (lightweight alternative)
-          npm install -g cloudinary-cli 2>/dev/null || true
-
-          # Upload all files from dist folder
-          TEMPLATE_ID="${{ github.event.client_payload.templateId }}"
-
-          # Create a temporary zip of the built files with dist/ folder structure
-          # The callback expects: dist/index.html, dist/assets/, etc.
-          mkdir -p temp-zip/dist
-          cp -r "$DIST_FOLDER"/* temp-zip/dist/
-          cd temp-zip
-          zip -r ../dist.zip .
-          cd ..
-          rm -rf temp-zip
-
-          # Upload the dist.zip to Cloudinary with simple curl (working approach)
-          # The callback will handle authentication when downloading
-          TEMPLATE_ID="${{ github.event.client_payload.templateId }}"
-          PUBLIC_ID="templates/${TEMPLATE_ID}/dist"
-          TIMESTAMP=$(date +%s)
-
-          # Generate signature with all signed parameters in alphabetical order
-          SIGNATURE=$(echo -n "overwrite=true&public_id=${PUBLIC_ID}&timestamp=${TIMESTAMP}${CLOUDINARY_API_SECRET}" | openssl dgst -sha1 -hex | cut -d' ' -f2)
-
-          echo "Uploading dist.zip to Cloudinary: ${PUBLIC_ID}"
-          curl -X POST "https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/raw/upload" \
-            -F "file=@dist.zip" \
-            -F "public_id=${PUBLIC_ID}" \
-            -F "api_key=${CLOUDINARY_API_KEY}" \
-            -F "timestamp=${TIMESTAMP}" \
-            -F "signature=${SIGNATURE}" \
-            -F "resource_type=raw" \
-            -F "overwrite=true" > cloudinary_response.json || true
-
-          echo "Cloudinary response:"
-          cat cloudinary_response.json
-
-          # Extract the secure_url from response
-          BUILT_URL=$(cat cloudinary_response.json | jq -r '.secure_url' 2>/dev/null || echo "")
-
-          if [ -n "$BUILT_URL" ] && [ "$BUILT_URL" != "null" ]; then
-            echo "Built files uploaded to: $BUILT_URL"
-            echo "built_url=$BUILT_URL" >> $GITHUB_OUTPUT
-          else
-            echo "Failed to upload built files to Cloudinary"
-            echo "built_url=" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Validate extracted template and POST callback with artifact
+      - name: Validate extracted template and POST callback
         if: ${{ always() }}
         env:
           TEMPLATE_ID: ${{ github.event.client_payload.templateId }}
           CALLBACK_URL: ${{ github.event.client_payload.callbackUrl }}
           PACKAGE_URL: ${{ github.event.client_payload.packageUrl }}
-          BUILT_URL: ${{ steps.upload-built-files.outputs.built_url }}
           GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           CALLBACK_SECRET: ${{ secrets.TEMPLATE_BUILD_CALLBACK_SECRET }}
         run: |
-          # Quick validation: ensure the extracted template directory exists and is non-empty
+          # Quick validation: ensure the extracted template directory exists and has required files
           STATUS="VALIDATED"
           LOGS=""
           if [ -d template ] && [ "$(ls -A template | wc -l)" -gt 0 ]; then
-            LOGS="template directory exists and is non-empty"
-            if [ -d template/dist ] || [ -d template/build ]; then
-              LOGS="$LOGS, built successfully"
+            # Check for package.json (required for building)
+            if [ -f template/package.json ] || find template -maxdepth 2 -name "package.json" | grep -q .; then
+              LOGS="Template structure validated successfully. Building will be handled by queue."
             else
-              LOGS="$LOGS, but no build output found"
+              STATUS="ERROR"
+              LOGS="No package.json found in template"
             fi
           else
             STATUS="ERROR"
             LOGS="Extracted template directory missing or empty"
           fi
 
-          # Use built URL if available, otherwise fall back to source package URL
-          ARTIFACT_URL="${BUILT_URL:-$PACKAGE_URL}"
+          # Use source package URL (publicly accessible)
+          ARTIFACT_URL="$PACKAGE_URL"
 
           # Construct callback payload with all necessary info
           PAYLOAD=$(jq -n \
@@ -277,21 +112,18 @@ jobs:
             --arg status "$STATUS" \
             --arg runUrl "$GITHUB_RUN_URL" \
             --arg artifactUrl "$ARTIFACT_URL" \
-            --arg builtUrl "$BUILT_URL" \
             --arg logs "$LOGS" \
             '{
               templateId: $id,
               status: $status,
               runUrl: $runUrl,
               artifactUrl: $artifactUrl,
-              builtArtifactUrl: $builtUrl,
               logs: $logs
             }')
 
           if [ -n "$CALLBACK_URL" ]; then
             echo "Posting callback to $CALLBACK_URL"
-            echo "  Source URL: $PACKAGE_URL"
-            echo "  Built URL: ${BUILT_URL:-none}"
+            echo "  Artifact URL: $PACKAGE_URL"
             curl -s -X POST \
               -H "Content-Type: application/json" \
               -H "X-BUILD-CALLBACK-SECRET: $CALLBACK_SECRET" \

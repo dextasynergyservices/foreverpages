@@ -297,50 +297,43 @@ export class SyncManager {
   }
 
   // Placeholder methods for server API calls - replace with actual API calls
-   
+
   private async createMemorialOnServer(_data: Partial<Memorial>): Promise<boolean> {
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 100));
     return Math.random() > 0.1; // 90% success rate
   }
 
-   
   private async updateMemorialOnServer(_data: Memorial): Promise<boolean> {
     await new Promise((resolve) => setTimeout(resolve, 100));
     return Math.random() > 0.1;
   }
 
-   
   private async deleteMemorialOnServer(_id: string): Promise<boolean> {
     await new Promise((resolve) => setTimeout(resolve, 100));
     return Math.random() > 0.1;
   }
 
-   
   private async createTributeOnServer(_data: Partial<Tribute>): Promise<boolean> {
     await new Promise((resolve) => setTimeout(resolve, 100));
     return Math.random() > 0.1;
   }
 
-   
   private async updateTributeOnServer(_data: Tribute): Promise<boolean> {
     await new Promise((resolve) => setTimeout(resolve, 100));
     return Math.random() > 0.1;
   }
 
-   
   private async deleteTributeOnServer(_id: string): Promise<boolean> {
     await new Promise((resolve) => setTimeout(resolve, 100));
     return Math.random() > 0.1;
   }
 
-   
   private async uploadMediaOnServer(_data: Partial<GalleryItem>): Promise<boolean> {
     await new Promise((resolve) => setTimeout(resolve, 100));
     return Math.random() > 0.1;
   }
 
-   
   private async deleteMediaOnServer(_id: string): Promise<boolean> {
     await new Promise((resolve) => setTimeout(resolve, 100));
     return Math.random() > 0.1;

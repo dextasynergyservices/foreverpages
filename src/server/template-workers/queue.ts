@@ -6,7 +6,7 @@ import path from "path";
 import os from "os";
 import util from "util";
 import AdmZip from "adm-zip";
-import { exec as childExec } from "child_process";
+import { exec as childExec, execSync } from "child_process";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import { dispatchTemplateBuild } from "@/lib/github/dispatch";
 import { createPrForTemplate } from "@/lib/github/pr";
@@ -226,6 +226,62 @@ async function handleRemoteBuildWithPolling(templateId: string, packageUrl: stri
       const zip = new AdmZip(zipPath);
       zip.extractAllTo(tmpBase, true);
 
+      // Build the template to generate dist folder and upload to Cloudinary
+      console.log(`[queue] 🔨 Building template ${templateId}`);
+      let builtAssets: Record<string, string> = {};
+
+      try {
+        // Find the actual template directory (might be nested)
+        let templateDir = tmpBase;
+        const entries = await fs.promises.readdir(tmpBase, { withFileTypes: true });
+
+        // Check if package.json exists in root
+        const hasPackageJson = entries.some((e: { name: string }) => e.name === "package.json");
+
+        if (!hasPackageJson) {
+          // Look for subdirectory with package.json
+          for (const entry of entries) {
+            if (entry.isDirectory()) {
+              const subPath = path.join(tmpBase, entry.name);
+              const subEntries = await fs.promises.readdir(subPath);
+              if (subEntries.includes("package.json")) {
+                templateDir = subPath;
+                console.log(`[queue] Found template in subdirectory: ${entry.name}`);
+                break;
+              }
+            }
+          }
+        }
+
+        // Install dependencies
+        console.log(`[queue] Installing dependencies in ${templateDir}`);
+        execSync("npm install", { cwd: templateDir, stdio: "inherit" });
+
+        // Build the template
+        console.log(`[queue] Running build command`);
+        execSync("npm run build", { cwd: templateDir, stdio: "inherit" });
+
+        // Find dist folder (might be in subdirectory or root)
+        let distPath = path.join(templateDir, "dist");
+        if (!fs.existsSync(distPath)) {
+          distPath = path.join(templateDir, "build");
+        }
+
+        if (fs.existsSync(distPath)) {
+          // Upload built files to Cloudinary
+          const { uploadTemplateBuiltFiles } = await import("@/lib/templates/upload-built-files");
+          builtAssets = await uploadTemplateBuiltFiles(templateId, distPath);
+          console.log(
+            `[queue] ✅ Uploaded ${Object.keys(builtAssets).length} built files to Cloudinary`
+          );
+        } else {
+          console.warn(`[queue] Build completed but no dist/build folder found`);
+        }
+      } catch (buildErr) {
+        console.error(`[queue] ⚠️ Build or upload failed for ${templateId}:`, buildErr);
+        // Don't fail the entire process, continue with PR creation
+      }
+
       // Get template info
       const tpl = await prisma.template.findUnique({ where: { id: templateId } });
       if (!tpl) throw new Error("Template not found");
@@ -293,7 +349,7 @@ async function handleRemoteBuildWithPolling(templateId: string, packageUrl: stri
       console.log(`[queue] 🔗 Creating PR with ${files.length} files for ${templateId}`);
       const pr = await createPrForTemplate(branch, files, title, body, "develop");
 
-      // Update template with PR info
+      // Update template with PR info and built assets
       await prisma.template.update({
         where: { id: templateId },
         data: {
@@ -301,6 +357,7 @@ async function handleRemoteBuildWithPolling(templateId: string, packageUrl: stri
           prUrl: pr.url,
           processingStatus: "VALIDATED",
           processingLogs: "PR created successfully",
+          ...(Object.keys(builtAssets).length > 0 && { artifactAssets: builtAssets }),
         },
       });
 
