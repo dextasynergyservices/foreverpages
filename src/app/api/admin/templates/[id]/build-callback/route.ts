@@ -144,10 +144,87 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           zip.extractAllTo(tmpBase, true);
           console.log(`[build-callback] Extracted artifact to ${tmpBase}`);
 
-          // NOTE: Building, artifact upload, and PR creation are handled by queue
-          // This callback only processes preview/thumbnail assets and creates sections
+          // Process template assets (preview/thumbnail)
           console.log(`[build-callback] Processing template assets for ${id}`);
           const assets = await processTemplateAssets(id, tmpBase);
+
+          // Build template and upload to Cloudinary
+          console.log(`[build-callback] Building template for ${id}`);
+          let builtAssets: Record<string, string> = {};
+
+          try {
+            const { execSync } = await import("child_process");
+
+            // Find template directory
+            let templateDir = tmpBase;
+            const entries = await fs.promises.readdir(tmpBase, { withFileTypes: true });
+            let hasPackageJson = entries.some((e) => e.name === "package.json");
+
+            if (!hasPackageJson) {
+              for (const entry of entries) {
+                if (entry.isDirectory()) {
+                  const subPath = path.join(tmpBase, entry.name);
+                  const subEntries = await fs.promises.readdir(subPath);
+                  if (subEntries.includes("package.json")) {
+                    templateDir = subPath;
+                    hasPackageJson = true;
+                    console.log(`[build-callback] Found template in subdirectory: ${entry.name}`);
+                    break;
+                  }
+                }
+              }
+            }
+
+            // Verify package.json exists before building
+            if (!hasPackageJson) {
+              throw new Error("No package.json found in template - cannot build");
+            }
+
+            // Verify package.json has build script
+            const packageJsonPath = path.join(templateDir, "package.json");
+            const packageJson = JSON.parse(await fs.promises.readFile(packageJsonPath, "utf-8"));
+            if (!packageJson.scripts?.build) {
+              throw new Error("No build script found in package.json");
+            }
+
+            // Install and build
+            console.log(`[build-callback] Installing dependencies in ${templateDir}...`);
+            execSync("npm install", { cwd: templateDir, stdio: "inherit" });
+
+            console.log(`[build-callback] Running build...`);
+            execSync("npm run build", { cwd: templateDir, stdio: "inherit" });
+
+            // Find dist folder
+            let distPath = path.join(templateDir, "dist");
+            if (!fs.existsSync(distPath)) {
+              distPath = path.join(templateDir, "build");
+            }
+
+            if (fs.existsSync(distPath)) {
+              const { uploadTemplateBuiltFiles } = await import(
+                "@/lib/templates/upload-built-files"
+              );
+              builtAssets = await uploadTemplateBuiltFiles(id, distPath);
+              console.log(`[build-callback] ✅ Uploaded ${Object.keys(builtAssets).length} files`);
+
+              // Verify index.html was uploaded (critical for preview)
+              if (!builtAssets["index.html"]) {
+                console.warn(`[build-callback] ⚠️ Warning: index.html not found in built files`);
+              }
+            } else {
+              console.warn(`[build-callback] ⚠️ No dist or build folder found after build`);
+            }
+          } catch (buildErr) {
+            const errorMsg = buildErr instanceof Error ? buildErr.message : String(buildErr);
+            console.error(`[build-callback] ❌ Build failed: ${errorMsg}`);
+            // Store build error but continue with sections
+            await prisma.template.update({
+              where: { id },
+              data: {
+                processingLogs: `Build failed: ${errorMsg}. Template validation and sections will still be processed.`,
+              },
+            });
+          }
 
           // Create template sections from config.json
           console.log(`[build-callback] Creating template sections for ${id}`);
@@ -187,18 +264,16 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             );
           }
 
-          // NOTE: Building, artifact upload, and PR creation are handled by queue
-          // This callback only confirms validation succeeded
-          console.log(`[build-callback] Asset processing complete for template ${id}`);
-
-          // Update template with asset URLs only (building/PR handled by queue)
+          // Update template with all assets
+          console.log(`[build-callback] Updating template with assets and build artifacts`);
           await prisma.template.update({
             where: { id },
             data: {
               processingStatus: "VALIDATED",
-              processingLogs: "GitHub Actions validation completed successfully",
+              processingLogs: "Template validated, built, and assets uploaded successfully",
               ...(assets.previewImage && { previewImage: assets.previewImage }),
               ...(assets.thumbnailImage && { thumbnailImage: assets.thumbnailImage }),
+              ...(Object.keys(builtAssets).length > 0 && { artifactAssets: builtAssets }),
             },
           });
 
