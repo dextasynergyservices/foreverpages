@@ -144,19 +144,38 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           zip.extractAllTo(tmpBase, true);
           console.log(`[build-callback] Extracted artifact to ${tmpBase}`);
 
-          // Process template assets (preview/thumbnail)
-          console.log(`[build-callback] Processing template assets for ${id}`);
-          const assets = await processTemplateAssets(id, tmpBase);
+          // Process template assets (preview/thumbnail) - but don't let this block the build
+          let assets: { previewImage: string | null; thumbnailImage: string | null } = {
+            previewImage: null,
+            thumbnailImage: null,
+          };
+          try {
+            console.log(`[build-callback] Processing template assets for ${id}`);
+            console.log(
+              `[build-callback] Cloudinary config present: cloud=${!!process.env.CLOUDINARY_CLOUD_NAME}, key=${!!process.env.CLOUDINARY_API_KEY}, secret=${!!process.env.CLOUDINARY_API_SECRET}`
+            );
+            assets = await processTemplateAssets(id, tmpBase);
+            console.log(
+              `[build-callback] ✓ Assets processed: preview=${!!assets.previewImage}, thumbnail=${!!assets.thumbnailImage}`
+            );
+          } catch (assetErr) {
+            console.error(
+              `[build-callback] ⚠️ Asset processing failed, but continuing with build:`,
+              assetErr instanceof Error ? assetErr.message : String(assetErr)
+            );
+          }
 
           // Build template and upload to Cloudinary
           console.log(`[build-callback] 🔨 Starting build process for template ${id}`);
           console.log(
             `[build-callback] Runtime: ${process.env.VERCEL ? "Vercel" : "Local"}, Node: ${process.version}`
           );
-          console.log(`[build-callback] Function timeout: ${process.env.VERCEL_FUNCTION_TIMEOUT || 'unknown'}s`);
+          console.log(
+            `[build-callback] Function timeout: ${process.env.VERCEL_FUNCTION_TIMEOUT || "unknown"}s`
+          );
           console.log(`[build-callback] Temp directory: ${tmpBase}`);
           console.log(`[build-callback] Directory writable: ${fs.existsSync(tmpBase)}`);
-          
+
           let builtAssets: Record<string, string> = {};
           const buildProcessStart = Date.now();
 
@@ -220,10 +239,8 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             } catch (installErr: unknown) {
               const err = installErr as { message?: string; stdout?: Buffer; stderr?: Buffer };
               console.error(`[build-callback] Install failed:`, err.message || String(installErr));
-              if (err.stdout)
-                console.error(`[build-callback] stdout:`, err.stdout.toString());
-              if (err.stderr)
-                console.error(`[build-callback] stderr:`, err.stderr.toString());
+              if (err.stdout) console.error(`[build-callback] stdout:`, err.stdout.toString());
+              if (err.stderr) console.error(`[build-callback] stderr:`, err.stderr.toString());
               throw installErr;
             }
 
@@ -240,11 +257,12 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
                 console.log(`[build-callback] Build output: ${buildOutput.substring(0, 500)}`);
             } catch (buildCmdErr: unknown) {
               const err = buildCmdErr as { message?: string; stdout?: Buffer; stderr?: Buffer };
-              console.error(`[build-callback] Build command failed:`, err.message || String(buildCmdErr));
-              if (err.stdout)
-                console.error(`[build-callback] stdout:`, err.stdout.toString());
-              if (err.stderr)
-                console.error(`[build-callback] stderr:`, err.stderr.toString());
+              console.error(
+                `[build-callback] Build command failed:`,
+                err.message || String(buildCmdErr)
+              );
+              if (err.stdout) console.error(`[build-callback] stdout:`, err.stdout.toString());
+              if (err.stderr) console.error(`[build-callback] stderr:`, err.stderr.toString());
               throw buildCmdErr;
             }
 
@@ -282,8 +300,10 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             } else {
               console.error(`[build-callback] ❌ No dist or build folder found after build!`);
             }
-            
-            console.log(`[build-callback] ⏱️  Total build process time: ${Date.now() - buildProcessStart}ms`);
+
+            console.log(
+              `[build-callback] ⏱️  Total build process time: ${Date.now() - buildProcessStart}ms`
+            );
           } catch (buildErr) {
             const errorMsg = buildErr instanceof Error ? buildErr.message : String(buildErr);
             const errorStack = buildErr instanceof Error ? buildErr.stack : "";
@@ -378,12 +398,17 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           });
         } catch (e) {
           const errorMsg = e instanceof Error ? e.message : String(e);
-          console.error(`[build-callback] ✗ Failed to process assets for template ${id}:`, e);
+          const errorStack = e instanceof Error ? e.stack : "";
+          console.error(`[build-callback] ✗ FATAL: Failed to process assets for template ${id}`);
+          console.error(`[build-callback] Error message: ${errorMsg}`);
+          console.error(`[build-callback] Stack trace:`, errorStack);
+          console.error(`[build-callback] This error prevented the build process from running`);
+
           await prisma.template.update({
             where: { id },
             data: {
               processingStatus: "ERROR",
-              processingLogs: `Failed to process assets: ${errorMsg}`,
+              processingLogs: `Failed to process assets (build was not attempted): ${errorMsg}\n\nStack: ${errorStack}`,
             },
           });
           return NextResponse.json({ message: "OK - Asset processing failed", error: errorMsg });
