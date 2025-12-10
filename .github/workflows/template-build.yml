@@ -211,11 +211,14 @@ jobs:
           rm -rf temp-zip
 
           # Upload the dist.zip to Cloudinary with proper signature
+          # Parameters must be in alphabetical order for signature: overwrite, public_id, timestamp
           TIMESTAMP=$(date +%s)
           PUBLIC_ID="templates/${TEMPLATE_ID}/dist"
-          SIGNATURE=$(echo -n "public_id=${PUBLIC_ID}&timestamp=${TIMESTAMP}${CLOUDINARY_API_SECRET}" | openssl dgst -sha1 -hex | cut -d' ' -f2)
-          
+          # String to sign (alphabetical order): overwrite -> public_id -> timestamp
+          SIGNATURE=$(echo -n "overwrite=true&public_id=${PUBLIC_ID}&timestamp=${TIMESTAMP}${CLOUDINARY_API_SECRET}" | openssl dgst -sha1 -hex | cut -d' ' -f2)
+
           echo "Uploading to Cloudinary with timestamp: $TIMESTAMP"
+          echo "Public ID: ${PUBLIC_ID}"
           curl -X POST "https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/raw/upload" \
             -F "file=@dist.zip" \
             -F "public_id=${PUBLIC_ID}" \
@@ -224,10 +227,10 @@ jobs:
             -F "signature=${SIGNATURE}" \
             -F "resource_type=raw" \
             -F "overwrite=true" > cloudinary_response.json || true
-          
+
           echo "Cloudinary response:"
           cat cloudinary_response.json
-          
+
           # Extract the secure_url from response
           BUILT_URL=$(cat cloudinary_response.json | jq -r '.secure_url' 2>/dev/null || echo "")
 
