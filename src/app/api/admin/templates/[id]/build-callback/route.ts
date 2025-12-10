@@ -226,10 +226,12 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             console.log(`[build-callback] 📥 Installing dependencies in ${templateDir}...`);
             const installStart = Date.now();
             try {
-              const installOutput = execSync("npm install", {
+              // Use npm ci for faster, cleaner installs (uses package-lock.json)
+              const installOutput = execSync("npm ci --prefer-offline --loglevel=error", {
                 cwd: templateDir,
                 encoding: "utf-8",
                 maxBuffer: 10 * 1024 * 1024, // 10MB buffer
+                timeout: 120000, // 2 minute timeout (ci is faster than install)
               });
               console.log(
                 `[build-callback] ✓ Dependencies installed in ${Date.now() - installStart}ms`
@@ -237,11 +239,22 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
               if (installOutput)
                 console.log(`[build-callback] Install output: ${installOutput.substring(0, 500)}`);
             } catch (installErr: unknown) {
-              const err = installErr as { message?: string; stdout?: Buffer; stderr?: Buffer };
-              console.error(`[build-callback] Install failed:`, err.message || String(installErr));
-              if (err.stdout) console.error(`[build-callback] stdout:`, err.stdout.toString());
-              if (err.stderr) console.error(`[build-callback] stderr:`, err.stderr.toString());
-              throw installErr;
+              const err = installErr as {
+                message?: string;
+                stdout?: Buffer;
+                stderr?: Buffer;
+                killed?: boolean;
+              };
+              console.error(
+                `[build-callback] ❌ npm install FAILED:`,
+                err.message || String(installErr)
+              );
+              if (err.killed) console.error(`[build-callback] KILLED by timeout/memory`);
+              if (err.stdout)
+                console.error(`[build-callback] stdout:`, err.stdout.toString().substring(0, 500));
+              if (err.stderr)
+                console.error(`[build-callback] stderr:`, err.stderr.toString().substring(0, 500));
+              throw new Error(`npm install failed: ${err.message || "Unknown error"}`);
             }
 
             console.log(`[build-callback] 🏗️  Running build command...`);
@@ -251,6 +264,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
                 cwd: templateDir,
                 encoding: "utf-8",
                 maxBuffer: 10 * 1024 * 1024, // 10MB buffer
+                timeout: 90000, // 90 second timeout for build
               });
               console.log(`[build-callback] ✓ Build completed in ${Date.now() - buildStart}ms`);
               if (buildOutput)
