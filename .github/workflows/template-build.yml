@@ -58,27 +58,77 @@ jobs:
 
       # Debug step removed — validation now focuses on the extracted `template/` directory
 
-      # Removed: Install deps - queue handles building locally
+      - name: Install dependencies
+        run: |
+          cd template
+          pnpm install --no-frozen-lockfile
 
-      # Removed: Build template - queue handles this after download
+      - name: Build template
+        run: |
+          cd template
+          pnpm run build
+          echo "Build completed successfully"
+          ls -la dist/ || ls -la build/ || echo "No dist/build folder found"
 
-      # Removed: Collect build output - not building in Actions
+      - name: Package build output
+        run: |
+          if [ -d template/dist ]; then
+            cd template/dist && zip -r ../../built-template.zip . && cd ../..
+          elif [ -d template/build ]; then
+            cd template/build && zip -r ../../built-template.zip . && cd ../..
+          else
+            echo "ERROR: No dist or build folder found"
+            exit 1
+          fi
+          ls -lh built-template.zip
 
-      # Removed: Package build output - not building in Actions
-
-      # Removed uploader dependencies install step — not needed for validation-only workflow
+      - name: Install uploader dependencies
+        run: |
+          npm install cloudinary adm-zip dotenv
 
       - name: Upload artifacts
         if: ${{ always() }}
         id: upload-artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: template-validation-artifacts
-          path: template.zip
+          name: template-build-artifacts
+          path: |
+            template.zip
+            built-template.zip
 
-      # Removed: Cloudinary upload step - using source artifact instead
+      - name: Upload built files to Cloudinary
+        id: cloudinary-upload
+        env:
+          TEMPLATE_ID: ${{ github.event.client_payload.templateId }}
+        run: |
+          node -e "
+          const cloudinary = require('cloudinary').v2;
+          const fs = require('fs');
 
-      - name: Validate extracted template and POST callback
+          cloudinary.config({
+            cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+            api_key: process.env.CLOUDINARY_API_KEY,
+            api_secret: process.env.CLOUDINARY_API_SECRET
+          });
+
+          (async () => {
+            try {
+              const result = await cloudinary.uploader.upload('built-template.zip', {
+                resource_type: 'raw',
+                public_id: 'templates/built/' + process.env.TEMPLATE_ID,
+                overwrite: true,
+                type: 'upload'
+              });
+              console.log('BUILT_ARTIFACT_URL=' + result.secure_url);
+              fs.appendFileSync(process.env.GITHUB_OUTPUT, 'built_url=' + result.secure_url + '\n');
+            } catch (err) {
+              console.error('Cloudinary upload failed:', err);
+              process.exit(1);
+            }
+          })();
+          "
+
+      - name: Validate template and POST callback
         if: ${{ always() }}
         env:
           TEMPLATE_ID: ${{ github.event.client_payload.templateId }}
@@ -93,7 +143,7 @@ jobs:
           if [ -d template ] && [ "$(ls -A template | wc -l)" -gt 0 ]; then
             # Check for package.json (required for building)
             if [ -f template/package.json ] || find template -maxdepth 2 -name "package.json" | grep -q .; then
-              LOGS="Template structure validated successfully. Building will be handled by queue."
+              LOGS="Template built successfully with pnpm in GitHub Actions"
             else
               STATUS="ERROR"
               LOGS="No package.json found in template"
@@ -105,6 +155,7 @@ jobs:
 
           # Use source package URL (publicly accessible)
           ARTIFACT_URL="$PACKAGE_URL"
+          BUILT_URL="${{ steps.cloudinary-upload.outputs.built_url }}"
 
           # Construct callback payload with all necessary info
           PAYLOAD=$(jq -n \
@@ -112,12 +163,14 @@ jobs:
             --arg status "$STATUS" \
             --arg runUrl "$GITHUB_RUN_URL" \
             --arg artifactUrl "$ARTIFACT_URL" \
+            --arg builtUrl "$BUILT_URL" \
             --arg logs "$LOGS" \
             '{
               templateId: $id,
               status: $status,
               runUrl: $runUrl,
               artifactUrl: $artifactUrl,
+              builtArtifactUrl: $builtUrl,
               logs: $logs
             }')
 

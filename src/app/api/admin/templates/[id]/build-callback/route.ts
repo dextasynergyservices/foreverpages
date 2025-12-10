@@ -56,6 +56,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
     const logs = body.logs || body.buildLog || null;
     const artifactUrl = body.artifactUrl || body.artifactsUrl || null;
+    const builtArtifactUrl = body.builtArtifactUrl || null;
     const assetsMap = body.assetsMap || body.artifactAssets || null;
     const runUrl = body.runUrl || null;
     const status = body.status || (logs ? "VALIDATED" : "ERROR");
@@ -222,83 +223,30 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
               throw new Error("No build script found in package.json");
             }
 
-            // Install and build using pnpm (the template's package manager)
-            console.log(
-              `[build-callback] 📥 Installing dependencies with pnpm in ${templateDir}...`
-            );
-            const installStart = Date.now();
+            // Download and extract pre-built files from GitHub Actions
+            console.log(`[build-callback] 📥 Downloading pre-built files from GitHub Actions...`);
 
-            try {
-              // First ensure pnpm is available
-              execSync("npx pnpm --version", {
-                cwd: templateDir,
-                encoding: "utf-8",
-                timeout: 30000,
-              });
-              console.log(`[build-callback] pnpm available via npx`);
-
-              // Install dependencies with pnpm
-              const installOutput = execSync("npx pnpm install --no-frozen-lockfile", {
-                cwd: templateDir,
-                encoding: "utf-8",
-                maxBuffer: 10 * 1024 * 1024,
-                timeout: 150000, // 2.5 minutes
-              });
-              console.log(
-                `[build-callback] ✓ Dependencies installed in ${Date.now() - installStart}ms`
+            if (!builtArtifactUrl) {
+              throw new Error(
+                "No builtArtifactUrl provided - build may have failed in GitHub Actions"
               );
-              if (installOutput && installOutput.trim()) {
-                console.log(`[build-callback] Install output: ${installOutput.substring(0, 300)}`);
-              }
-            } catch (installErr: unknown) {
-              const err = installErr as {
-                message?: string;
-                stdout?: Buffer;
-                stderr?: Buffer;
-                killed?: boolean;
-              };
-              console.error(
-                `[build-callback] ❌ pnpm install FAILED:`,
-                err.message || String(installErr)
-              );
-              if (err.killed) console.error(`[build-callback] KILLED by timeout/memory`);
-              if (err.stdout)
-                console.error(`[build-callback] stdout:`, err.stdout.toString().substring(0, 500));
-              if (err.stderr)
-                console.error(`[build-callback] stderr:`, err.stderr.toString().substring(0, 500));
-              throw new Error(`pnpm install failed: ${err.message || "Unknown error"}`);
             }
 
-            console.log(`[build-callback] 🏗️  Running build command with pnpm...`);
-            const buildStart = Date.now();
-            try {
-              const buildOutput = execSync("npx pnpm run build", {
-                cwd: templateDir,
-                encoding: "utf-8",
-                maxBuffer: 10 * 1024 * 1024, // 10MB buffer
-                timeout: 90000, // 90 second timeout for build
-              });
-              console.log(`[build-callback] ✓ Build completed in ${Date.now() - buildStart}ms`);
-              if (buildOutput)
-                console.log(`[build-callback] Build output: ${buildOutput.substring(0, 500)}`);
-            } catch (buildCmdErr: unknown) {
-              const err = buildCmdErr as { message?: string; stdout?: Buffer; stderr?: Buffer };
-              console.error(
-                `[build-callback] Build command failed:`,
-                err.message || String(buildCmdErr)
-              );
-              if (err.stdout) console.error(`[build-callback] stdout:`, err.stdout.toString());
-              if (err.stderr) console.error(`[build-callback] stderr:`, err.stderr.toString());
-              throw buildCmdErr;
+            const builtZipPath = path.join(tmpBase, "built-template.zip");
+            const builtResponse = await fetch(builtArtifactUrl);
+            if (!builtResponse.ok) {
+              throw new Error(`Failed to download built files: ${builtResponse.statusText}`);
             }
+            const builtBuffer = Buffer.from(await builtResponse.arrayBuffer());
+            fs.writeFileSync(builtZipPath, builtBuffer);
+            console.log(`[build-callback] ✓ Downloaded built files (${builtBuffer.length} bytes)`);
 
-            // Find dist folder
-            console.log(`[build-callback] 🔍 Looking for dist folder...`);
-            let distPath = path.join(templateDir, "dist");
-            if (!fs.existsSync(distPath)) {
-              console.log(`[build-callback] dist/ not found, trying build/`);
-              distPath = path.join(templateDir, "build");
-            }
+            // Extract built files
+            const distPath = path.join(tmpBase, "built");
+            fs.mkdirSync(distPath, { recursive: true });
+            const builtZip = new AdmZip(builtZipPath);
+            builtZip.extractAllTo(distPath, true);
+            console.log(`[build-callback] ✓ Extracted pre-built files to ${distPath}`);
 
             if (fs.existsSync(distPath)) {
               console.log(`[build-callback] ✓ Found build output at: ${distPath}`);
