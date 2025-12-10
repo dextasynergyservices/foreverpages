@@ -210,23 +210,42 @@ jobs:
           cd ..
           rm -rf temp-zip
 
-          # Upload the dist.zip to Cloudinary with proper signature
-          # Parameters must be in alphabetical order for signature: overwrite, public_id, timestamp
-          TIMESTAMP=$(date +%s)
+          # Upload the dist.zip to Cloudinary using Node.js SDK (same as backend)
+          TEMPLATE_ID="${{ github.event.client_payload.templateId }}"
           PUBLIC_ID="templates/${TEMPLATE_ID}/dist"
-          # String to sign (alphabetical order): overwrite -> public_id -> timestamp
-          SIGNATURE=$(echo -n "overwrite=true&public_id=${PUBLIC_ID}&timestamp=${TIMESTAMP}${CLOUDINARY_API_SECRET}" | openssl dgst -sha1 -hex | cut -d' ' -f2)
 
-          echo "Uploading to Cloudinary with timestamp: $TIMESTAMP"
-          echo "Public ID: ${PUBLIC_ID}"
-          curl -X POST "https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/raw/upload" \
-            -F "file=@dist.zip" \
-            -F "public_id=${PUBLIC_ID}" \
-            -F "api_key=${CLOUDINARY_API_KEY}" \
-            -F "timestamp=${TIMESTAMP}" \
-            -F "signature=${SIGNATURE}" \
-            -F "resource_type=raw" \
-            -F "overwrite=true" > cloudinary_response.json || true
+          # Install cloudinary SDK
+          npm install cloudinary
+
+          # Create and run upload script
+          node -e "
+          const cloudinary = require('cloudinary').v2;
+          const fs = require('fs');
+
+          cloudinary.config({
+            cloud_name: '${CLOUDINARY_CLOUD_NAME}',
+            api_key: '${CLOUDINARY_API_KEY}',
+            api_secret: '${CLOUDINARY_API_SECRET}'
+          });
+
+          console.log('Uploading dist.zip to Cloudinary: ${PUBLIC_ID}');
+
+          cloudinary.uploader.upload('dist.zip', {
+            resource_type: 'raw',
+            public_id: '${PUBLIC_ID}',
+            overwrite: true
+          })
+          .then(result => {
+            console.log('✓ Upload successful');
+            console.log('URL:', result.secure_url);
+            fs.writeFileSync('cloudinary_response.json', JSON.stringify(result, null, 2));
+          })
+          .catch(err => {
+            console.error('✗ Upload failed:', err.message);
+            fs.writeFileSync('cloudinary_response.json', JSON.stringify({error: err.message}));
+            process.exit(1);
+          });
+          "
 
           echo "Cloudinary response:"
           cat cloudinary_response.json
