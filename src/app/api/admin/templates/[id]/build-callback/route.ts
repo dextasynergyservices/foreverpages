@@ -134,47 +134,66 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           const tmpBase = fs.mkdtempSync(path.join(tmpDir, `template-${id}-`));
           const zipPath = path.join(tmpBase, "artifact.zip");
 
-          // Download artifact with retry logic for Cloudinary signed URLs
+          // Download artifact with Cloudinary signed URL support
+          let downloadSuccess = false;
           let downloadUrl = candidateUrl;
 
-          // If builtArtifactUrl is from Cloudinary and gets 401, try generating signed URL
-          if (builtArtifactUrl && candidateUrl === builtArtifactUrl) {
+          // If builtArtifactUrl is from Cloudinary raw upload, ALWAYS use signed URL
+          if (
+            builtArtifactUrl &&
+            candidateUrl === builtArtifactUrl &&
+            candidateUrl.includes("/raw/upload/")
+          ) {
             try {
               const { generateCloudinarySignedUrl } = await import("@/lib/cloudinary");
               // Extract public_id from URL (e.g., templates/xxx/dist)
-              const match = candidateUrl.match(/\/raw\/upload\/v\d+\/(.+)\.zip$/);
+              const match = candidateUrl.match(/\/raw\/upload\/v\d+\/(.+?)$/);
               if (match) {
-                const publicId = match[1];
-                downloadUrl = generateCloudinarySignedUrl(`${publicId}.zip`, "raw");
-                console.log(`[build-callback] Using signed URL for download`);
+                const publicId = match[1]; // Already includes .zip
+                downloadUrl = generateCloudinarySignedUrl(publicId, "raw");
+                console.log(`[build-callback] Using Cloudinary signed URL for download`);
+                console.log(`[build-callback] Public ID: ${publicId}`);
               }
             } catch (signErr) {
-              console.warn(
-                `[build-callback] Could not generate signed URL, trying direct download`
-              );
+              console.warn(`[build-callback] Could not generate signed URL:`, signErr);
             }
           }
 
-          const res = await fetch(downloadUrl);
-          if (!res.ok) {
-            // If built artifact fails, fall back to source artifact
-            if (builtArtifactUrl && artifactUrl && downloadUrl === builtArtifactUrl) {
-              console.warn(
-                `[build-callback] Built artifact download failed (${res.status}), falling back to source`
-              );
+          // Try downloading with signed URL (or direct URL if not Cloudinary)
+          try {
+            const res = await fetch(downloadUrl);
+            if (res.ok) {
+              const ab = await res.arrayBuffer();
+              await fs.promises.writeFile(zipPath, Buffer.from(ab));
+              console.log(`[build-callback] Downloaded artifact (${ab.byteLength} bytes)`);
+              downloadSuccess = true;
+            } else {
+              console.warn(`[build-callback] Download failed with status ${res.status}`);
+            }
+          } catch (fetchErr) {
+            console.warn(`[build-callback] Fetch error:`, fetchErr);
+          }
+
+          // If download failed and we have fallback source artifact, try it
+          if (!downloadSuccess && builtArtifactUrl && artifactUrl) {
+            console.warn(`[build-callback] Built artifact failed, falling back to source artifact`);
+            try {
               const fallbackRes = await fetch(artifactUrl);
-              if (!fallbackRes.ok)
+              if (!fallbackRes.ok) {
                 throw new Error(`Failed to fetch fallback artifact: ${fallbackRes.status}`);
+              }
               const ab = await fallbackRes.arrayBuffer();
               await fs.promises.writeFile(zipPath, Buffer.from(ab));
-              console.log(`[build-callback] Downloaded fallback artifact (${ab.byteLength} bytes)`);
-            } else {
-              throw new Error(`Failed to fetch artifact: ${res.status}`);
+              console.log(`[build-callback] Downloaded source artifact (${ab.byteLength} bytes)`);
+              downloadSuccess = true;
+            } catch (fallbackErr) {
+              console.error(`[build-callback] Fallback also failed:`, fallbackErr);
             }
-          } else {
-            const ab = await res.arrayBuffer();
-            await fs.promises.writeFile(zipPath, Buffer.from(ab));
-            console.log(`[build-callback] Downloaded artifact (${ab.byteLength} bytes)`);
+          }
+
+          // If still no success, throw error
+          if (!downloadSuccess) {
+            throw new Error(`Failed to download artifact from any source`);
           }
 
           // Extract
