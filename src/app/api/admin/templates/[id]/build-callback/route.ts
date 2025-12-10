@@ -149,11 +149,20 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           const assets = await processTemplateAssets(id, tmpBase);
 
           // Build template and upload to Cloudinary
-          console.log(`[build-callback] Building template for ${id}`);
+          console.log(`[build-callback] 🔨 Starting build process for template ${id}`);
+          console.log(
+            `[build-callback] Runtime: ${process.env.VERCEL ? "Vercel" : "Local"}, Node: ${process.version}`
+          );
+          console.log(`[build-callback] Function timeout: ${process.env.VERCEL_FUNCTION_TIMEOUT || 'unknown'}s`);
+          console.log(`[build-callback] Temp directory: ${tmpBase}`);
+          console.log(`[build-callback] Directory writable: ${fs.existsSync(tmpBase)}`);
+          
           let builtAssets: Record<string, string> = {};
+          const buildProcessStart = Date.now();
 
           try {
             const { execSync } = await import("child_process");
+            console.log(`[build-callback] ✓ Imported execSync, type: ${typeof execSync}`);
 
             // Find template directory
             let templateDir = tmpBase;
@@ -177,53 +186,124 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
             // Verify package.json exists before building
             if (!hasPackageJson) {
+              console.error(`[build-callback] ❌ No package.json found in template`);
               throw new Error("No package.json found in template - cannot build");
             }
+            console.log(`[build-callback] ✓ Found package.json in ${templateDir}`);
 
             // Verify package.json has build script
             const packageJsonPath = path.join(templateDir, "package.json");
             const packageJson = JSON.parse(await fs.promises.readFile(packageJsonPath, "utf-8"));
+            console.log(
+              `[build-callback] 📦 Package name: ${packageJson.name}, scripts: ${Object.keys(packageJson.scripts || {}).join(", ")}`
+            );
+
             if (!packageJson.scripts?.build) {
+              console.error(`[build-callback] ❌ No build script in package.json`);
               throw new Error("No build script found in package.json");
             }
 
             // Install and build
-            console.log(`[build-callback] Installing dependencies in ${templateDir}...`);
-            execSync("npm install", { cwd: templateDir, stdio: "inherit" });
+            console.log(`[build-callback] 📥 Installing dependencies in ${templateDir}...`);
+            const installStart = Date.now();
+            try {
+              const installOutput = execSync("npm install", {
+                cwd: templateDir,
+                encoding: "utf-8",
+                maxBuffer: 10 * 1024 * 1024, // 10MB buffer
+              });
+              console.log(
+                `[build-callback] ✓ Dependencies installed in ${Date.now() - installStart}ms`
+              );
+              if (installOutput)
+                console.log(`[build-callback] Install output: ${installOutput.substring(0, 500)}`);
+            } catch (installErr: unknown) {
+              const err = installErr as { message?: string; stdout?: Buffer; stderr?: Buffer };
+              console.error(`[build-callback] Install failed:`, err.message || String(installErr));
+              if (err.stdout)
+                console.error(`[build-callback] stdout:`, err.stdout.toString());
+              if (err.stderr)
+                console.error(`[build-callback] stderr:`, err.stderr.toString());
+              throw installErr;
+            }
 
-            console.log(`[build-callback] Running build...`);
-            execSync("npm run build", { cwd: templateDir, stdio: "inherit" });
+            console.log(`[build-callback] 🏗️  Running build command...`);
+            const buildStart = Date.now();
+            try {
+              const buildOutput = execSync("npm run build", {
+                cwd: templateDir,
+                encoding: "utf-8",
+                maxBuffer: 10 * 1024 * 1024, // 10MB buffer
+              });
+              console.log(`[build-callback] ✓ Build completed in ${Date.now() - buildStart}ms`);
+              if (buildOutput)
+                console.log(`[build-callback] Build output: ${buildOutput.substring(0, 500)}`);
+            } catch (buildCmdErr: unknown) {
+              const err = buildCmdErr as { message?: string; stdout?: Buffer; stderr?: Buffer };
+              console.error(`[build-callback] Build command failed:`, err.message || String(buildCmdErr));
+              if (err.stdout)
+                console.error(`[build-callback] stdout:`, err.stdout.toString());
+              if (err.stderr)
+                console.error(`[build-callback] stderr:`, err.stderr.toString());
+              throw buildCmdErr;
+            }
 
             // Find dist folder
+            console.log(`[build-callback] 🔍 Looking for dist folder...`);
             let distPath = path.join(templateDir, "dist");
             if (!fs.existsSync(distPath)) {
+              console.log(`[build-callback] dist/ not found, trying build/`);
               distPath = path.join(templateDir, "build");
             }
 
             if (fs.existsSync(distPath)) {
+              console.log(`[build-callback] ✓ Found build output at: ${distPath}`);
+              const distFiles = await fs.promises.readdir(distPath);
+              console.log(`[build-callback] 📁 Build output contains: ${distFiles.join(", ")}`);
+
               const { uploadTemplateBuiltFiles } = await import(
                 "@/lib/templates/upload-built-files"
               );
+              const uploadStart = Date.now();
               builtAssets = await uploadTemplateBuiltFiles(id, distPath);
-              console.log(`[build-callback] ✅ Uploaded ${Object.keys(builtAssets).length} files`);
+              console.log(
+                `[build-callback] ✅ Uploaded ${Object.keys(builtAssets).length} files in ${Date.now() - uploadStart}ms`
+              );
 
               // Verify index.html was uploaded (critical for preview)
               if (!builtAssets["index.html"]) {
-                console.warn(`[build-callback] ⚠️ Warning: index.html not found in built files`);
+                console.warn(`[build-callback] ⚠️ WARNING: index.html not found in built files!`);
+                console.warn(
+                  `[build-callback] Available files: ${Object.keys(builtAssets).join(", ")}`
+                );
+              } else {
+                console.log(`[build-callback] ✓ index.html uploaded: ${builtAssets["index.html"]}`);
               }
             } else {
-              console.warn(`[build-callback] ⚠️ No dist or build folder found after build`);
+              console.error(`[build-callback] ❌ No dist or build folder found after build!`);
             }
+            
+            console.log(`[build-callback] ⏱️  Total build process time: ${Date.now() - buildProcessStart}ms`);
           } catch (buildErr) {
             const errorMsg = buildErr instanceof Error ? buildErr.message : String(buildErr);
+            const errorStack = buildErr instanceof Error ? buildErr.stack : "";
             console.error(`[build-callback] ❌ Build failed: ${errorMsg}`);
-            // Store build error but continue with sections
+            console.error(`[build-callback] Stack trace:`, errorStack);
+
+            // Store detailed build error
             await prisma.template.update({
               where: { id },
               data: {
-                processingLogs: `Build failed: ${errorMsg}. Template validation and sections will still be processed.`,
+                processingLogs: `Build failed: ${errorMsg}\n\nStack: ${errorStack}\n\nTemplate validation and sections will still be processed.`,
               },
             });
+          }
+
+          // Log final build status
+          if (Object.keys(builtAssets).length === 0) {
+            console.error(
+              `[build-callback] ⚠️ CRITICAL: No built assets were uploaded! Preview will not work.`
+            );
           }
 
           // Create template sections from config.json
@@ -278,6 +358,9 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           });
 
           console.log(`[build-callback] ✓ Assets processed successfully for template ${id}`);
+          console.log(
+            `[build-callback] 📊 Summary: ${Object.keys(builtAssets).length} built files, preview: ${!!assets.previewImage}, thumbnail: ${!!assets.thumbnailImage}`
+          );
 
           // Cleanup temp directory
           try {
@@ -286,7 +369,13 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             console.warn("Failed to cleanup temp directory", e);
           }
 
-          return NextResponse.json({ message: "OK - Assets processed" });
+          return NextResponse.json({
+            message: "OK - Assets processed",
+            builtFiles: Object.keys(builtAssets).length,
+            hasPreview: !!assets.previewImage,
+            hasThumbnail: !!assets.thumbnailImage,
+            hasIndexHtml: !!builtAssets["index.html"],
+          });
         } catch (e) {
           const errorMsg = e instanceof Error ? e.message : String(e);
           console.error(`[build-callback] ✗ Failed to process assets for template ${id}:`, e);
