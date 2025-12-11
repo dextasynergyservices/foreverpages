@@ -158,17 +158,19 @@ jobs:
 
           (async () => {
             try {
+              // Upload with explicit type 'authenticated' makes it accessible without signature
               const result = await cloudinary.uploader.upload('built-template.zip', {
                 resource_type: 'raw',
                 public_id: 'templates/built/' + process.env.TEMPLATE_ID,
                 overwrite: true,
-                type: 'upload',
-                access_mode: 'public'
+                type: 'authenticated'
               });
+
               console.log('BUILT_ARTIFACT_URL=' + result.secure_url);
               fs.appendFileSync(process.env.GITHUB_OUTPUT, 'built_url=' + result.secure_url + '\n');
             } catch (err) {
               console.error('Cloudinary upload failed:', err);
+              console.error('Error details:', JSON.stringify(err, null, 2));
               process.exit(1);
             }
           })();

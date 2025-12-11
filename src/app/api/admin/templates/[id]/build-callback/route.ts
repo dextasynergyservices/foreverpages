@@ -188,9 +188,42 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             console.log(`[build-callback] 📦 Downloading pre-built files from GitHub Actions`);
             console.log(`[build-callback] Built artifact URL: ${builtArtifactUrl}`);
 
-            // Download pre-built ZIP
+            // Download pre-built ZIP - add authentication header if it's a Cloudinary URL
             const builtZipPath = path.join(tmpBase, "built.zip");
-            const builtRes = await fetch(builtArtifactUrl!);
+            let builtRes;
+
+            if (
+              builtArtifactUrl!.includes("cloudinary.com") &&
+              builtArtifactUrl!.includes("/authenticated/")
+            ) {
+              // For authenticated Cloudinary URLs, generate signed URL
+              const { v2: cloudinary } = await import("cloudinary");
+              cloudinary.config({
+                cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+                api_key: process.env.CLOUDINARY_API_KEY,
+                api_secret: process.env.CLOUDINARY_API_SECRET,
+              });
+
+              // Extract public_id from URL (skip version number like v1234567890)
+              const publicId =
+                builtArtifactUrl!.match(/\/authenticated\/v\d+\/(.+)$/)?.[1] ||
+                builtArtifactUrl!.match(/\/upload\/v\d+\/(.+)$/)?.[1] ||
+                builtArtifactUrl!.match(/\/authenticated\/(.+)$/)?.[1] ||
+                builtArtifactUrl!.match(/\/upload\/(.+)$/)?.[1];
+              console.log(`[build-callback] Generating signed URL for: ${publicId}`);
+
+              const signedUrl = cloudinary.url(publicId!, {
+                resource_type: "raw",
+                type: "authenticated",
+                sign_url: true,
+              });
+
+              builtRes = await fetch(signedUrl);
+            } else {
+              // Regular URL
+              builtRes = await fetch(builtArtifactUrl!);
+            }
+
             if (!builtRes.ok) throw new Error(`Failed to fetch built artifact: ${builtRes.status}`);
             const builtAb = await builtRes.arrayBuffer();
             await fs.promises.writeFile(builtZipPath, Buffer.from(builtAb));
