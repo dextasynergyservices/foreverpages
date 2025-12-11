@@ -50,6 +50,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     console.log(`[build-callback] ✓ Received callback for template ${id}:`, {
       status: body.status,
       hasArtifactUrl: !!body.artifactUrl,
+      hasBuiltArtifactUrl: !!body.builtArtifactUrl,
       hasLogs: !!body.logs,
       runUrl: body.runUrl,
     });
@@ -57,6 +58,8 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     const logs = body.logs || body.buildLog || null;
     const artifactUrl = body.artifactUrl || body.artifactsUrl || null;
     const builtArtifactUrl = body.builtArtifactUrl || null;
+
+    console.log(`[build-callback] builtArtifactUrl:`, builtArtifactUrl || "NOT PROVIDED");
     const assetsMap = body.assetsMap || body.artifactAssets || null;
     const runUrl = body.runUrl || null;
     const status = body.status || (logs ? "VALIDATED" : "ERROR");
@@ -105,8 +108,15 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         }
 
         console.log(`[build-callback] Using artifact URL: ${candidateUrl?.slice(0, 80)}...`);
+        console.log(
+          `[build-callback] Built artifact URL: ${builtArtifactUrl?.slice(0, 80) || "NOT PROVIDED"}...`
+        );
 
-        if (!candidateUrl) {
+        // Check if we have pre-built files from GitHub Actions
+        const usePreBuiltFiles = !!builtArtifactUrl;
+        console.log(`[build-callback] Using pre-built files: ${usePreBuiltFiles}`);
+
+        if (!candidateUrl && !builtArtifactUrl) {
           console.warn(
             `[build-callback] No artifact URL for template ${id}. Callback has artifactUrl=${!!artifactUrl}, DB has packageUrl=${!!(await prisma.template.findUnique({ where: { id }, select: { packageUrl: true } }))?.packageUrl}`
           );
@@ -123,7 +133,9 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           return NextResponse.json({ message: "OK - no artifact URL" });
         }
 
-        console.log(`[build-callback] Downloading artifact from ${candidateUrl.slice(0, 80)}...`);
+        console.log(
+          `[build-callback] Downloading artifact from ${(usePreBuiltFiles ? builtArtifactUrl : candidateUrl)?.slice(0, 80)}...`
+        );
 
         // Download artifact, extract, and directly create PR
         try {
@@ -132,18 +144,20 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           const tmpBase = fs.mkdtempSync(path.join(tmpDir, `template-${id}-`));
           const zipPath = path.join(tmpBase, "artifact.zip");
 
-          // Download artifact (source artifact is publicly accessible)
-          console.log(`[build-callback] Downloading from: ${candidateUrl.substring(0, 100)}...`);
-          const res = await fetch(candidateUrl);
+          // Download source artifact for asset processing (preview/thumbnail)
+          console.log(
+            `[build-callback] Downloading source from: ${candidateUrl?.substring(0, 100)}...`
+          );
+          const res = await fetch(candidateUrl!);
           if (!res.ok) throw new Error(`Failed to fetch artifact: ${res.status}`);
           const ab = await res.arrayBuffer();
           await fs.promises.writeFile(zipPath, Buffer.from(ab));
-          console.log(`[build-callback] Downloaded artifact (${ab.byteLength} bytes)`);
+          console.log(`[build-callback] Downloaded source artifact (${ab.byteLength} bytes)`);
 
-          // Extract
+          // Extract source
           const zip = new AdmZip(zipPath);
           zip.extractAllTo(tmpBase, true);
-          console.log(`[build-callback] Extracted artifact to ${tmpBase}`);
+          console.log(`[build-callback] Extracted source artifact to ${tmpBase}`);
 
           // Process template assets (preview/thumbnail) - but don't let this block the build
           let assets: { previewImage: string | null; thumbnailImage: string | null } = {
@@ -166,132 +180,174 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             );
           }
 
-          // Build template and upload to Cloudinary
-          console.log(`[build-callback] 🔨 Starting build process for template ${id}`);
-          console.log(
-            `[build-callback] Runtime: ${process.env.VERCEL ? "Vercel" : "Local"}, Node: ${process.version}`
-          );
-          console.log(
-            `[build-callback] Function timeout: ${process.env.VERCEL_FUNCTION_TIMEOUT || "unknown"}s`
-          );
-          console.log(`[build-callback] Temp directory: ${tmpBase}`);
-          console.log(`[build-callback] Directory writable: ${fs.existsSync(tmpBase)}`);
-
+          // Build template or download pre-built files
           let builtAssets: Record<string, string> = {};
           const buildProcessStart = Date.now();
 
-          try {
-            const { execSync } = await import("child_process");
-            console.log(`[build-callback] ✓ Imported execSync, type: ${typeof execSync}`);
+          if (usePreBuiltFiles) {
+            console.log(`[build-callback] 📦 Downloading pre-built files from GitHub Actions`);
+            console.log(`[build-callback] Built artifact URL: ${builtArtifactUrl}`);
 
-            // Find template directory
-            let templateDir = tmpBase;
-            const entries = await fs.promises.readdir(tmpBase, { withFileTypes: true });
-            let hasPackageJson = entries.some((e) => e.name === "package.json");
+            // Download pre-built ZIP
+            const builtZipPath = path.join(tmpBase, "built.zip");
+            const builtRes = await fetch(builtArtifactUrl!);
+            if (!builtRes.ok) throw new Error(`Failed to fetch built artifact: ${builtRes.status}`);
+            const builtAb = await builtRes.arrayBuffer();
+            await fs.promises.writeFile(builtZipPath, Buffer.from(builtAb));
+            console.log(
+              `[build-callback] ✓ Downloaded pre-built files (${builtAb.byteLength} bytes)`
+            );
 
-            if (!hasPackageJson) {
-              for (const entry of entries) {
-                if (entry.isDirectory()) {
-                  const subPath = path.join(tmpBase, entry.name);
-                  const subEntries = await fs.promises.readdir(subPath);
-                  if (subEntries.includes("package.json")) {
-                    templateDir = subPath;
-                    hasPackageJson = true;
-                    console.log(`[build-callback] Found template in subdirectory: ${entry.name}`);
-                    break;
+            // Extract pre-built files
+            const builtDir = path.join(tmpBase, "dist");
+            fs.mkdirSync(builtDir, { recursive: true });
+            const builtZip = new AdmZip(builtZipPath);
+            builtZip.extractAllTo(builtDir, true);
+            console.log(`[build-callback] ✓ Extracted pre-built files to ${builtDir}`);
+
+            // Upload to Cloudinary
+            const distFiles = await fs.promises.readdir(builtDir);
+            console.log(`[build-callback] 📁 Pre-built files: ${distFiles.join(", ")}`);
+
+            const { uploadTemplateBuiltFiles } = await import("@/lib/templates/upload-built-files");
+            builtAssets = await uploadTemplateBuiltFiles(id, builtDir);
+            console.log(
+              `[build-callback] ✅ Uploaded ${Object.keys(builtAssets).length} pre-built files`
+            );
+
+            if (!builtAssets["index.html"]) {
+              console.warn(`[build-callback] ⚠️ WARNING: index.html not found in built files!`);
+            } else {
+              console.log(`[build-callback] ✓ index.html: ${builtAssets["index.html"]}`);
+            }
+          } else {
+            console.log(`[build-callback] 🔨 Starting build process for template ${id}`);
+            console.log(
+              `[build-callback] Runtime: ${process.env.VERCEL ? "Vercel" : "Local"}, Node: ${process.version}`
+            );
+            console.log(
+              `[build-callback] Function timeout: ${process.env.VERCEL_FUNCTION_TIMEOUT || "unknown"}s`
+            );
+            console.log(`[build-callback] Temp directory: ${tmpBase}`);
+            console.log(`[build-callback] Directory writable: ${fs.existsSync(tmpBase)}`);
+
+            try {
+              const { execSync } = await import("child_process");
+              console.log(`[build-callback] ✓ Imported execSync, type: ${typeof execSync}`);
+
+              // Find template directory
+              let templateDir = tmpBase;
+              const entries = await fs.promises.readdir(tmpBase, { withFileTypes: true });
+              let hasPackageJson = entries.some((e) => e.name === "package.json");
+
+              if (!hasPackageJson) {
+                for (const entry of entries) {
+                  if (entry.isDirectory()) {
+                    const subPath = path.join(tmpBase, entry.name);
+                    const subEntries = await fs.promises.readdir(subPath);
+                    if (subEntries.includes("package.json")) {
+                      templateDir = subPath;
+                      hasPackageJson = true;
+                      console.log(`[build-callback] Found template in subdirectory: ${entry.name}`);
+                      break;
+                    }
                   }
                 }
               }
-            }
 
-            // Verify package.json exists before building
-            if (!hasPackageJson) {
-              console.error(`[build-callback] ❌ No package.json found in template`);
-              throw new Error("No package.json found in template - cannot build");
-            }
-            console.log(`[build-callback] ✓ Found package.json in ${templateDir}`);
-
-            // Verify package.json has build script
-            const packageJsonPath = path.join(templateDir, "package.json");
-            const packageJson = JSON.parse(await fs.promises.readFile(packageJsonPath, "utf-8"));
-            console.log(
-              `[build-callback] 📦 Package name: ${packageJson.name}, scripts: ${Object.keys(packageJson.scripts || {}).join(", ")}`
-            );
-
-            if (!packageJson.scripts?.build) {
-              console.error(`[build-callback] ❌ No build script in package.json`);
-              throw new Error("No build script found in package.json");
-            }
-
-            // Download and extract pre-built files from GitHub Actions
-            console.log(`[build-callback] 📥 Downloading pre-built files from GitHub Actions...`);
-
-            if (!builtArtifactUrl) {
-              throw new Error(
-                "No builtArtifactUrl provided - build may have failed in GitHub Actions"
-              );
-            }
-
-            const builtZipPath = path.join(tmpBase, "built-template.zip");
-            const builtResponse = await fetch(builtArtifactUrl);
-            if (!builtResponse.ok) {
-              throw new Error(`Failed to download built files: ${builtResponse.statusText}`);
-            }
-            const builtBuffer = Buffer.from(await builtResponse.arrayBuffer());
-            fs.writeFileSync(builtZipPath, builtBuffer);
-            console.log(`[build-callback] ✓ Downloaded built files (${builtBuffer.length} bytes)`);
-
-            // Extract built files
-            const distPath = path.join(tmpBase, "built");
-            fs.mkdirSync(distPath, { recursive: true });
-            const builtZip = new AdmZip(builtZipPath);
-            builtZip.extractAllTo(distPath, true);
-            console.log(`[build-callback] ✓ Extracted pre-built files to ${distPath}`);
-
-            if (fs.existsSync(distPath)) {
-              console.log(`[build-callback] ✓ Found build output at: ${distPath}`);
-              const distFiles = await fs.promises.readdir(distPath);
-              console.log(`[build-callback] 📁 Build output contains: ${distFiles.join(", ")}`);
-
-              const { uploadTemplateBuiltFiles } = await import(
-                "@/lib/templates/upload-built-files"
-              );
-              const uploadStart = Date.now();
-              builtAssets = await uploadTemplateBuiltFiles(id, distPath);
-              console.log(
-                `[build-callback] ✅ Uploaded ${Object.keys(builtAssets).length} files in ${Date.now() - uploadStart}ms`
-              );
-
-              // Verify index.html was uploaded (critical for preview)
-              if (!builtAssets["index.html"]) {
-                console.warn(`[build-callback] ⚠️ WARNING: index.html not found in built files!`);
-                console.warn(
-                  `[build-callback] Available files: ${Object.keys(builtAssets).join(", ")}`
-                );
-              } else {
-                console.log(`[build-callback] ✓ index.html uploaded: ${builtAssets["index.html"]}`);
+              // Verify package.json exists before building
+              if (!hasPackageJson) {
+                console.error(`[build-callback] ❌ No package.json found in template`);
+                throw new Error("No package.json found in template - cannot build");
               }
-            } else {
-              console.error(`[build-callback] ❌ No dist or build folder found after build!`);
+              console.log(`[build-callback] ✓ Found package.json in ${templateDir}`);
+
+              // Verify package.json has build script
+              const packageJsonPath = path.join(templateDir, "package.json");
+              const packageJson = JSON.parse(await fs.promises.readFile(packageJsonPath, "utf-8"));
+              console.log(
+                `[build-callback] 📦 Package name: ${packageJson.name}, scripts: ${Object.keys(packageJson.scripts || {}).join(", ")}`
+              );
+
+              if (!packageJson.scripts?.build) {
+                console.error(`[build-callback] ❌ No build script in package.json`);
+                throw new Error("No build script found in package.json");
+              }
+
+              // Download and extract pre-built files from GitHub Actions
+              console.log(`[build-callback] 📥 Downloading pre-built files from GitHub Actions...`);
+
+              if (!builtArtifactUrl) {
+                throw new Error(
+                  "No builtArtifactUrl provided - build may have failed in GitHub Actions"
+                );
+              }
+
+              const builtZipPath = path.join(tmpBase, "built-template.zip");
+              const builtResponse = await fetch(builtArtifactUrl);
+              if (!builtResponse.ok) {
+                throw new Error(`Failed to download built files: ${builtResponse.statusText}`);
+              }
+              const builtBuffer = Buffer.from(await builtResponse.arrayBuffer());
+              fs.writeFileSync(builtZipPath, builtBuffer);
+              console.log(
+                `[build-callback] ✓ Downloaded built files (${builtBuffer.length} bytes)`
+              );
+
+              // Extract built files
+              const distPath = path.join(tmpBase, "built");
+              fs.mkdirSync(distPath, { recursive: true });
+              const builtZip = new AdmZip(builtZipPath);
+              builtZip.extractAllTo(distPath, true);
+              console.log(`[build-callback] ✓ Extracted pre-built files to ${distPath}`);
+
+              if (fs.existsSync(distPath)) {
+                console.log(`[build-callback] ✓ Found build output at: ${distPath}`);
+                const distFiles = await fs.promises.readdir(distPath);
+                console.log(`[build-callback] 📁 Build output contains: ${distFiles.join(", ")}`);
+
+                const { uploadTemplateBuiltFiles } = await import(
+                  "@/lib/templates/upload-built-files"
+                );
+                const uploadStart = Date.now();
+                builtAssets = await uploadTemplateBuiltFiles(id, distPath);
+                console.log(
+                  `[build-callback] ✅ Uploaded ${Object.keys(builtAssets).length} files in ${Date.now() - uploadStart}ms`
+                );
+
+                // Verify index.html was uploaded (critical for preview)
+                if (!builtAssets["index.html"]) {
+                  console.warn(`[build-callback] ⚠️ WARNING: index.html not found in built files!`);
+                  console.warn(
+                    `[build-callback] Available files: ${Object.keys(builtAssets).join(", ")}`
+                  );
+                } else {
+                  console.log(
+                    `[build-callback] ✓ index.html uploaded: ${builtAssets["index.html"]}`
+                  );
+                }
+              } else {
+                console.error(`[build-callback] ❌ No dist or build folder found after build!`);
+              }
+
+              console.log(
+                `[build-callback] ⏱️  Total build process time: ${Date.now() - buildProcessStart}ms`
+              );
+            } catch (buildErr) {
+              const errorMsg = buildErr instanceof Error ? buildErr.message : String(buildErr);
+              const errorStack = buildErr instanceof Error ? buildErr.stack : "";
+              console.error(`[build-callback] ❌ Build failed: ${errorMsg}`);
+              console.error(`[build-callback] Stack trace:`, errorStack);
+
+              // Store detailed build error
+              await prisma.template.update({
+                where: { id },
+                data: {
+                  processingLogs: `Build failed: ${errorMsg}\n\nStack: ${errorStack}\n\nTemplate validation and sections will still be processed.`,
+                },
+              });
             }
-
-            console.log(
-              `[build-callback] ⏱️  Total build process time: ${Date.now() - buildProcessStart}ms`
-            );
-          } catch (buildErr) {
-            const errorMsg = buildErr instanceof Error ? buildErr.message : String(buildErr);
-            const errorStack = buildErr instanceof Error ? buildErr.stack : "";
-            console.error(`[build-callback] ❌ Build failed: ${errorMsg}`);
-            console.error(`[build-callback] Stack trace:`, errorStack);
-
-            // Store detailed build error
-            await prisma.template.update({
-              where: { id },
-              data: {
-                processingLogs: `Build failed: ${errorMsg}\n\nStack: ${errorStack}\n\nTemplate validation and sections will still be processed.`,
-              },
-            });
-          }
+          } // end of else block (building locally)
 
           // Log final build status
           if (Object.keys(builtAssets).length === 0) {
