@@ -53,8 +53,31 @@ jobs:
           curl -L "$PACKAGE_URL" -o "$TMP_FILE"
           # Ensure there's a canonical template.zip for later steps
           cp "$TMP_FILE" template.zip || true
-          mkdir -p template
-          unzip -o template.zip -d template || true
+          mkdir -p template-temp
+          unzip -o template.zip -d template-temp || true
+
+          # Check if ZIP contained a single root folder and flatten it
+          ITEM_COUNT=$(ls -A template-temp | wc -l)
+          echo "Extracted items count: $ITEM_COUNT"
+          ls -la template-temp
+
+          if [ "$ITEM_COUNT" -eq 1 ]; then
+            INNER=$(ls -A template-temp)
+            if [ -d "template-temp/$INNER" ]; then
+              echo "ZIP contains single folder '$INNER', flattening..."
+              mv "template-temp/$INNER" template
+              rmdir template-temp
+            else
+              echo "ZIP contains single file, using as-is"
+              mv template-temp template
+            fi
+          else
+            echo "ZIP contains multiple items at root, using as-is"
+            mv template-temp template
+          fi
+
+          echo "Final template structure:"
+          ls -la template
 
       # Debug step removed — validation now focuses on the extracted `template/` directory
 
