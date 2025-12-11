@@ -162,7 +162,8 @@ jobs:
                 resource_type: 'raw',
                 public_id: 'templates/built/' + process.env.TEMPLATE_ID,
                 overwrite: true,
-                type: 'upload'
+                type: 'upload',
+                access_mode: 'public'
               });
               console.log('BUILT_ARTIFACT_URL=' + result.secure_url);
               fs.appendFileSync(process.env.GITHUB_OUTPUT, 'built_url=' + result.secure_url + '\n');
