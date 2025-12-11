@@ -4,8 +4,8 @@ import { PrismaClient } from "@/generated/prisma";
 
 const prisma = new PrismaClient();
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
-  const id = params.id;
+export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   // Basic auth/acl should be enforced by middleware; assume admin-only route.
   try {
     const tpl = await prisma.template.findUnique({ where: { id } });
