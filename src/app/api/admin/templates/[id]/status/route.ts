@@ -5,7 +5,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const prisma = new PrismaClient();
 
-export async function GET(_: Request, { params }: { params: { id: string } }) {
+export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id || !["ADMIN", "SUPER_ADMIN"].includes(session.user.role || "USER")) {
@@ -16,7 +16,7 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
   }
 
   try {
-    const { id } = (await params) as { id: string };
+    const { id } = await params;
     const t = await prisma.template.findUnique({
       where: { id },
       select: {
@@ -32,9 +32,9 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
     if (!t) return NextResponse.json({ message: "Not found" }, { status: 404 });
     return NextResponse.json({
       id: t.id,
-      status: t.processingStatus,
-      logs: t.processingLogs,
-      logsUrl: t.processingLogsUrl,
+      processingStatus: t.processingStatus,
+      processingLogs: t.processingLogs,
+      processingLogsUrl: t.processingLogsUrl,
       packageUrl: t.packageUrl,
       prUrl: t.prUrl,
       prNumber: t.prNumber,
