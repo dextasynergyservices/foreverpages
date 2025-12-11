@@ -125,7 +125,11 @@ jobs:
 
       - name: Install uploader dependencies
         run: |
-          npm install cloudinary adm-zip dotenv
+          mkdir -p uploader
+          cd uploader
+          pnpm init
+          pnpm add cloudinary
+          cd ..
 
       - name: Upload artifacts
         if: ${{ always() }}
@@ -142,7 +146,7 @@ jobs:
         env:
           TEMPLATE_ID: ${{ github.event.client_payload.templateId }}
         run: |
-          node -e "
+          NODE_PATH="$(pwd)/uploader/node_modules" node -e "
           const cloudinary = require('cloudinary').v2;
           const fs = require('fs');
 
