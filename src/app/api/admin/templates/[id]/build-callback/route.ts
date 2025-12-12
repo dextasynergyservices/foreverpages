@@ -190,48 +190,15 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             console.log(`[build-callback] Source artifact URL: ${candidateUrl}`);
             console.log(`[build-callback] usePreBuiltFiles: ${usePreBuiltFiles}`);
 
-            // Download pre-built ZIP - add authentication header if it's a Cloudinary URL
+            // Download pre-built ZIP - now uploaded as public for simplicity
             const builtZipPath = path.join(tmpBase, "built.zip");
-            let builtRes;
-
-            if (
-              builtArtifactUrl!.includes("cloudinary.com") &&
-              builtArtifactUrl!.includes("/authenticated/")
-            ) {
-              // For authenticated Cloudinary URLs, generate signed URL
-              const { v2: cloudinary } = await import("cloudinary");
-              cloudinary.config({
-                cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-                api_key: process.env.CLOUDINARY_API_KEY,
-                api_secret: process.env.CLOUDINARY_API_SECRET,
-              });
-
-              // We know the public_id structure from the upload workflow
-              // No need to parse URLs - just use the template ID we already have
-              const publicId = `templates/built/${id}`;
-              console.log(`[build-callback] Using public_id: ${publicId}`);
-
-              const signedUrl = cloudinary.url(publicId, {
-                resource_type: "raw",
-                type: "authenticated",
-                sign_url: true,
-                format: "zip",
-              });
-
-              console.log(`[build-callback] Generated signed URL: ${signedUrl.slice(0, 100)}...`);
-              builtRes = await fetch(signedUrl);
-            } else {
-              // Regular URL
-              console.log(
-                `[build-callback] Using regular URL (not authenticated): ${builtArtifactUrl}`
-              );
-              builtRes = await fetch(builtArtifactUrl!);
-            }
+            console.log(`[build-callback] Downloading built ZIP from: ${builtArtifactUrl}`);
+            const builtRes = await fetch(builtArtifactUrl!);
 
             if (!builtRes.ok) {
               console.error(`[build-callback] ❌ Failed to fetch built artifact`);
               console.error(`[build-callback] Status: ${builtRes.status}`);
-              console.error(`[build-callback] URL attempted: ${builtArtifactUrl}`);
+              console.error(`[build-callback] Original URL: ${builtArtifactUrl}`);
               console.error(
                 `[build-callback] Is authenticated Cloudinary: ${builtArtifactUrl!.includes("cloudinary.com") && builtArtifactUrl!.includes("/authenticated/")}`
               );
