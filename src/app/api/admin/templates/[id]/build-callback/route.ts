@@ -206,18 +206,16 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
                 api_secret: process.env.CLOUDINARY_API_SECRET,
               });
 
-              // Extract public_id from URL (skip version number like v1234567890)
-              const publicId =
-                builtArtifactUrl!.match(/\/authenticated\/v\d+\/(.+)$/)?.[1] ||
-                builtArtifactUrl!.match(/\/upload\/v\d+\/(.+)$/)?.[1] ||
-                builtArtifactUrl!.match(/\/authenticated\/(.+)$/)?.[1] ||
-                builtArtifactUrl!.match(/\/upload\/(.+)$/)?.[1];
-              console.log(`[build-callback] Generating signed URL for: ${publicId}`);
+              // We know the public_id structure from the upload workflow
+              // No need to parse URLs - just use the template ID we already have
+              const publicId = `templates/built/${id}`;
+              console.log(`[build-callback] Using public_id: ${publicId}`);
 
-              const signedUrl = cloudinary.url(publicId!, {
+              const signedUrl = cloudinary.url(publicId, {
                 resource_type: "raw",
                 type: "authenticated",
                 sign_url: true,
+                format: "zip",
               });
 
               console.log(`[build-callback] Generated signed URL: ${signedUrl.slice(0, 100)}...`);
@@ -254,13 +252,15 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
             // Check what was extracted
             const distFiles = await fs.promises.readdir(builtDir);
-            console.log(`[build-callback] 📁 Extracted files (${distFiles.length}): ${distFiles.join(", ")}`);
-            
+            console.log(
+              `[build-callback] 📁 Extracted files (${distFiles.length}): ${distFiles.join(", ")}`
+            );
+
             // Check if index.html exists
             const indexPath = path.join(builtDir, "index.html");
             const hasIndex = fs.existsSync(indexPath);
             console.log(`[build-callback] index.html exists at root: ${hasIndex}`);
-            
+
             if (!hasIndex) {
               // Maybe it's in a subdirectory?
               for (const file of distFiles) {
@@ -276,14 +276,20 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             // Upload to Cloudinary
             const { uploadTemplateBuiltFiles } = await import("@/lib/templates/upload-built-files");
             builtAssets = await uploadTemplateBuiltFiles(id, builtDir);
-            
-            console.log(`[build-callback] ✅ Uploaded ${Object.keys(builtAssets).length} pre-built files`);
-            console.log(`[build-callback] index.html in builtAssets: ${!!builtAssets["index.html"]}`);
+
+            console.log(
+              `[build-callback] ✅ Uploaded ${Object.keys(builtAssets).length} pre-built files`
+            );
+            console.log(
+              `[build-callback] index.html in builtAssets: ${!!builtAssets["index.html"]}`
+            );
             if (builtAssets["index.html"]) {
               console.log(`[build-callback] ✓ index.html URL: ${builtAssets["index.html"]}`);
             } else {
               console.error(`[build-callback] ❌ index.html NOT in uploaded files!`);
-              console.error(`[build-callback] Uploaded files: ${Object.keys(builtAssets).join(", ")}`);
+              console.error(
+                `[build-callback] Uploaded files: ${Object.keys(builtAssets).join(", ")}`
+              );
             }
             console.log(
               `[build-callback] ✅ Uploaded ${Object.keys(builtAssets).length} pre-built files`
