@@ -31,9 +31,57 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const artifacts = template.artifactAssets as Record<string, string> | null;
 
     if (artifacts && artifacts["index.html"]) {
-      // Template has been built by GitHub Actions
-      // Redirect to the built HTML
-      return NextResponse.redirect(artifacts["index.html"]);
+      // Fetch the HTML from Cloudinary and rewrite asset paths
+      try {
+        const htmlResponse = await fetch(artifacts["index.html"]);
+        if (!htmlResponse.ok) {
+          throw new Error(`Failed to fetch template HTML: ${htmlResponse.status}`);
+        }
+
+        let html = await htmlResponse.text();
+
+        // Rewrite asset paths to absolute Cloudinary URLs using literal string replacement
+        // This is more reliable than regex and handles all quote types and path variations
+        Object.entries(artifacts).forEach(([filePath, url]) => {
+          // Handle all common attribute patterns with both quote types
+          const replacements = [
+            // With leading slash
+            [`src="/${filePath}"`, `src="${url}"`],
+            [`src='/${filePath}'`, `src='${url}'`],
+            [`href="/${filePath}"`, `href="${url}"`],
+            [`href='/${filePath}'`, `href='${url}'`],
+            // Without leading slash
+            [`src="${filePath}"`, `src="${url}"`],
+            [`src='${filePath}'`, `src='${url}'`],
+            [`href="${filePath}"`, `href="${url}"`],
+            [`href='${filePath}'`, `href='${url}'`],
+            // Data attributes and other common patterns
+            [`data-src="/${filePath}"`, `data-src="${url}"`],
+            [`data-src='/${filePath}'`, `data-src='${url}'`],
+            [`data-src="${filePath}"`, `data-src="${url}"`],
+            [`data-src='${filePath}'`, `data-src='${url}'`],
+            // Srcset (common in responsive images)
+            [`srcset="/${filePath}"`, `srcset="${url}"`],
+            [`srcset='/${filePath}'`, `srcset='${url}'`],
+            [`srcset="${filePath}"`, `srcset="${url}"`],
+            [`srcset='${filePath}'`, `srcset='${url}'`],
+          ];
+
+          replacements.forEach(([search, replace]) => {
+            html = html.replaceAll(search, replace);
+          });
+        });
+
+        return new NextResponse(html, {
+          headers: {
+            "Content-Type": "text/html",
+            "Cache-Control": "public, max-age=3600",
+          },
+        });
+      } catch (error) {
+        console.error("Error serving template preview:", error);
+        return new NextResponse("Failed to load template preview", { status: 500 });
+      }
     }
 
     // Fallback: Try to read local template file (for development)

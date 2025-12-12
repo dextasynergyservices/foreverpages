@@ -149,6 +149,7 @@ jobs:
           NODE_PATH="$(pwd)/uploader/node_modules" node -e "
           const cloudinary = require('cloudinary').v2;
           const fs = require('fs');
+          const path = require('path');
 
           cloudinary.config({
             cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -156,18 +157,66 @@ jobs:
             api_secret: process.env.CLOUDINARY_API_SECRET
           });
 
+          // Upload individual built files instead of ZIP
+          async function uploadDirectory(dirPath, basePath = '') {
+            const files = {};
+            const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+
+            for (const entry of entries) {
+              const fullPath = path.join(dirPath, entry.name);
+              const relativePath = basePath ? path.join(basePath, entry.name) : entry.name;
+
+              if (entry.isDirectory()) {
+                const subFiles = await uploadDirectory(fullPath, relativePath);
+                Object.assign(files, subFiles);
+              } else {
+                try {
+                  const ext = path.extname(entry.name).toLowerCase();
+                  let resourceType = 'raw';
+                  if (['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'].includes(ext)) {
+                    resourceType = 'image';
+                  }
+
+                  // For raw files, keep extension in public_id
+                  const publicId = resourceType === 'raw' 
+                    ? relativePath
+                    : relativePath.replace(/\.[^.]+$/, '');
+
+                  const result = await cloudinary.uploader.upload(fullPath, {
+                    folder: 'templates/' + process.env.TEMPLATE_ID + '/dist',
+                    public_id: publicId,
+                    resource_type: resourceType,
+                    overwrite: true,
+                    access_mode: 'public'
+                  });
+
+                  files[relativePath] = result.secure_url;
+                  console.log('Uploaded: ' + relativePath + ' -> ' + result.secure_url);
+                } catch (err) {
+                  console.error('Failed to upload ' + relativePath + ':', err);
+                }
+              }
+            }
+            return files;
+          }
+
           (async () => {
             try {
-              // Upload as public - same approach used in videoUpload.ts
-              const result = await cloudinary.uploader.upload('built-template.zip', {
-                resource_type: 'raw',
-                public_id: 'templates/built/' + process.env.TEMPLATE_ID,
-                overwrite: true,
-                access_mode: 'public'
-              });
-
-              console.log('BUILT_ARTIFACT_URL=' + result.secure_url);
-              fs.appendFileSync(process.env.GITHUB_OUTPUT, 'built_url=' + result.secure_url + '\n');
+              // Find dist directory
+              let distDir = 'template/dist';
+              if (!fs.existsSync(distDir)) {
+                distDir = 'template/build';
+              }
+              
+              console.log('Uploading files from: ' + distDir);
+              const builtFiles = await uploadDirectory(distDir);
+              
+              // Save as JSON for callback
+              const filesJson = JSON.stringify(builtFiles);
+              fs.writeFileSync('built-files.json', filesJson);
+              fs.appendFileSync(process.env.GITHUB_OUTPUT, 'built_files=' + Buffer.from(filesJson).toString('base64') + '\n');
+              
+              console.log('Uploaded ' + Object.keys(builtFiles).length + ' files');
             } catch (err) {
               console.error('Cloudinary upload failed:', err);
               console.error('Error details:', JSON.stringify(err, null, 2));
@@ -205,27 +254,30 @@ jobs:
           ARTIFACT_URL="$PACKAGE_URL"
           BUILT_URL="${{ steps.cloudinary-upload.outputs.built_url }}"
 
+          # Get built files from output
+          BUILT_FILES="${{ steps.cloudinary-upload.outputs.built_files }}"
+          
           # Debug: Print what we're sending
           echo "=== Callback Payload Debug ==="
           echo "ARTIFACT_URL (source): $ARTIFACT_URL"
-          echo "BUILT_URL (built): $BUILT_URL"
+          echo "BUILT_FILES: ${BUILT_FILES:0:200}..."
           echo "STATUS: $STATUS"
           echo "=============================="
 
-          # Construct callback payload with all necessary info
+          # Construct callback payload with built files map
           PAYLOAD=$(jq -n \
             --arg id "$TEMPLATE_ID" \
             --arg status "$STATUS" \
             --arg runUrl "$GITHUB_RUN_URL" \
             --arg artifactUrl "$ARTIFACT_URL" \
-            --arg builtUrl "$BUILT_URL" \
+            --arg builtFilesBase64 "$BUILT_FILES" \
             --arg logs "$LOGS" \
             '{
               templateId: $id,
               status: $status,
               runUrl: $runUrl,
               artifactUrl: $artifactUrl,
-              builtArtifactUrl: $builtUrl,
+              builtFilesBase64: $builtFilesBase64,
               logs: $logs
             }')
 
