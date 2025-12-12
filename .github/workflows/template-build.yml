@@ -158,12 +158,12 @@ jobs:
 
           (async () => {
             try {
-              // Upload with explicit type 'authenticated' makes it accessible without signature
+              // Upload as public - same approach used in videoUpload.ts
               const result = await cloudinary.uploader.upload('built-template.zip', {
                 resource_type: 'raw',
                 public_id: 'templates/built/' + process.env.TEMPLATE_ID,
                 overwrite: true,
-                type: 'authenticated'
+                access_mode: 'public'
               });
 
               console.log('BUILT_ARTIFACT_URL=' + result.secure_url);
