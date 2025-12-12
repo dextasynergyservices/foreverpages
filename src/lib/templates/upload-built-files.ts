@@ -54,10 +54,11 @@ export async function uploadTemplateBuiltFiles(
 
           // Upload to Cloudinary
           // For raw files (HTML, CSS, JS), preserve the extension in public_id
-          const publicId = resourceType === "raw" 
-            ? relPath  // Keep extension for raw files
-            : relPath.replace(/\.[^.]+$/, ""); // Remove extension for images/videos
-          
+          const publicId =
+            resourceType === "raw"
+              ? relPath // Keep extension for raw files
+              : relPath.replace(/\.[^.]+$/, ""); // Remove extension for images/videos
+
           const uploadResult = await cloudinary.uploader.upload(fullPath, {
             folder: `templates/${templateId}/dist`,
             public_id: publicId,
