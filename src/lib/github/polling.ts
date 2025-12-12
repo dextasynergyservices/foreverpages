@@ -18,7 +18,8 @@ export interface GitHubRunStatus {
 
 /**
  * Check the status of a GitHub Actions workflow run for a template
- * We look for runs that match our template ID in the event dispatch payload
+ * IMPORTANT: This should only be used as a fallback. The callback is the primary method.
+ * Polling has race conditions and can't match specific template runs reliably.
  */
 export async function checkTemplateBuildStatus(
   templateId: string,
@@ -31,8 +32,10 @@ export async function checkTemplateBuildStatus(
       return { runId: null, status: "unknown", conclusion: null, url: null };
     }
 
+    console.log(`[gh-polling] WARNING: Using polling fallback for ${templateId} - this is less reliable than callback`);
+
     // Query recent template-build workflow runs
-    const url = `${GITHUB_API}/repos/${REPO}/actions/runs?event=repository_dispatch&status=completed&limit=20`;
+    const url = `${GITHUB_API}/repos/${REPO}/actions/runs?event=repository_dispatch&status=completed&per_page=50`;
 
     const response = await fetch(url, {
       method: "GET",
@@ -55,22 +58,25 @@ export async function checkTemplateBuildStatus(
         conclusion: string | null;
         created_at: string;
         html_url: string;
+        name: string;
       }>;
     };
 
     if (!data.workflow_runs || data.workflow_runs.length === 0) {
-      console.log(`[gh-polling] No completed template builds found for ${templateId}`);
-      return { runId: null, status: "completed", conclusion: null, url: null };
+      console.log(`[gh-polling] No completed template builds found`);
+      return { runId: null, status: "unknown", conclusion: null, url: null };
     }
 
-    // Find the most recent completed run
+    // Find the most recent completed run within time window
+    // Note: We can't match to specific templateId from API, so this is unreliable
     const now = Date.now();
     const cutoff = now - maxAgeSeconds * 1000;
 
     for (const run of data.workflow_runs) {
       const runTime = new Date(run.created_at).getTime();
-      if (runTime >= cutoff) {
-        console.log(`[gh-polling] Found recent completed run: ${run.id} (status: ${run.status})`);
+      if (runTime >= cutoff && run.name === "Build Template") {
+        console.log(`[gh-polling] Found recent completed run: ${run.id} (conclusion: ${run.conclusion})`);
+        console.log(`[gh-polling] WARNING: Cannot verify if run ${run.id} matches templateId ${templateId}`);
 
         return {
           runId: String(run.id),
@@ -81,7 +87,7 @@ export async function checkTemplateBuildStatus(
       }
     }
 
-    console.log(`[gh-polling] No runs found within ${maxAgeSeconds}s window for ${templateId}`);
+    console.log(`[gh-polling] No matching runs found within ${maxAgeSeconds}s window`);
     return { runId: null, status: "unknown", conclusion: null, url: null };
   } catch (e) {
     console.error("[gh-polling] Error checking GitHub status:", e);

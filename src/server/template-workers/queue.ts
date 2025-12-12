@@ -195,11 +195,25 @@ async function handleRemoteBuildWithPolling(templateId: string, packageUrl: stri
 
     if (!buildSucceeded) {
       console.error(`[queue] ❌ Build failed or timed out for ${templateId}`);
+
+      // Check current status - don't overwrite if callback already succeeded
+      const currentTemplate = await prisma.template.findUnique({
+        where: { id: templateId },
+        select: { processingStatus: true },
+      });
+
+      if (currentTemplate?.processingStatus === "VALIDATED") {
+        console.log(
+          `[queue] ℹ️ Template ${templateId} already VALIDATED by callback, skipping error update`
+        );
+        return;
+      }
+
       await prisma.template.update({
         where: { id: templateId },
         data: {
           processingStatus: "ERROR",
-          processingLogs: "GitHub build failed or timed out",
+          processingLogs: "GitHub build failed or timed out (polling fallback)",
         },
       });
       return;

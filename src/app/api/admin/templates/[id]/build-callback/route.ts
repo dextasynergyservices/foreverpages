@@ -356,12 +356,93 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             console.warn("Failed to cleanup temp directory", e);
           }
 
+          // Create PR for the template with all built files
+          let prUrl: string | null = null;
+          let prNumber: string | null = null;
+          try {
+            console.log(`[build-callback] Creating PR for template ${id}`);
+            const { createPrForTemplate } = await import("@/lib/github/pr");
+            const template = await prisma.template.findUnique({
+              where: { id },
+              select: { slug: true, name: true },
+            });
+            
+            if (template) {
+              const branchName = `template/${template.slug}-${Date.now()}`;
+              const configJsonContent = JSON.stringify({
+                name: template.name,
+                slug: template.slug,
+                description: `Template: ${template.name}`,
+              }, null, 2);
+              
+              // Download all built files from Cloudinary and prepare for PR
+              const files = [
+                {
+                  path: `src/app/templates/${template.slug}/config.json`,
+                  content: configJsonContent,
+                },
+              ];
+              
+              console.log(`[build-callback] Downloading ${Object.keys(builtAssets).length} files from Cloudinary for PR`);
+              
+              // Download each built file and add to PR
+              for (const [filePath, url] of Object.entries(builtAssets)) {
+                try {
+                  const response = await fetch(url);
+                  if (response.ok) {
+                    const content = await response.text();
+                    files.push({
+                      path: `src/app/templates/${template.slug}/${filePath}`,
+                      content,
+                    });
+                    console.log(`[build-callback] ✓ Downloaded ${filePath} (${content.length} bytes)`);
+                  } else {
+                    console.warn(`[build-callback] Failed to download ${filePath}: ${response.status}`);
+                  }
+                } catch (downloadError) {
+                  console.warn(`[build-callback] Error downloading ${filePath}:`, downloadError);
+                }
+              }
+              
+              console.log(`[build-callback] Creating PR with ${files.length} files`);
+              
+              const pr = await createPrForTemplate(
+                branchName,
+                files,
+                `Add template: ${template.name}`,
+                `Auto-generated PR for template \`${template.slug}\`\n\nTemplate ID: ${id}\nBuilt files: ${Object.keys(builtAssets).length}\nFiles in PR: ${files.length}`,
+                "develop"
+              );
+              
+              if (pr) {
+                prUrl = pr.url;
+                prNumber = String(pr.number);
+                console.log(`[build-callback] ✓ PR created: ${prUrl}`);
+                
+                // Update template with PR info
+                await prisma.template.update({
+                  where: { id },
+                  data: {
+                    prUrl,
+                    prNumber,
+                    processingLogs: `Template validated, built, and PR created successfully: ${prUrl}`,
+                  },
+                });
+              }
+            }
+          } catch (prError) {
+            console.warn(`[build-callback] Failed to create PR:`, prError);
+            // Don't fail the whole process if PR creation fails
+          }
+
           return NextResponse.json({
             message: "OK - Assets processed",
             builtFiles: Object.keys(builtAssets).length,
             hasPreview: !!assets.previewImage,
             hasThumbnail: !!assets.thumbnailImage,
             hasIndexHtml: !!builtAssets["index.html"],
+            prUrl,
+            prNumber,
           });
         } catch (e) {
           const errorMsg = e instanceof Error ? e.message : String(e);
