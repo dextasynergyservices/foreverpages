@@ -57,9 +57,12 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
     const logs = body.logs || body.buildLog || null;
     const artifactUrl = body.artifactUrl || body.artifactsUrl || null;
-    const builtArtifactUrl = body.builtArtifactUrl || null;
+    const builtFilesBase64 = body.builtFilesBase64 || null;
 
-    console.log(`[build-callback] builtArtifactUrl:`, builtArtifactUrl || "NOT PROVIDED");
+    console.log(
+      `[build-callback] builtFilesBase64:`,
+      builtFilesBase64 ? "PROVIDED" : "NOT PROVIDED"
+    );
     const assetsMap = body.assetsMap || body.artifactAssets || null;
     const runUrl = body.runUrl || null;
     const status = body.status || (logs ? "VALIDATED" : "ERROR");
@@ -109,14 +112,14 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
         console.log(`[build-callback] Using artifact URL: ${candidateUrl?.slice(0, 80)}...`);
         console.log(
-          `[build-callback] Built artifact URL: ${builtArtifactUrl?.slice(0, 80) || "NOT PROVIDED"}...`
+          `[build-callback] Built files: ${builtFilesBase64 ? "PROVIDED" : "NOT PROVIDED"}`
         );
 
         // Check if we have pre-built files from GitHub Actions
-        const usePreBuiltFiles = !!builtArtifactUrl;
+        const usePreBuiltFiles = !!builtFilesBase64;
         console.log(`[build-callback] Using pre-built files: ${usePreBuiltFiles}`);
 
-        if (!candidateUrl && !builtArtifactUrl) {
+        if (!candidateUrl && !builtFilesBase64) {
           console.warn(
             `[build-callback] No artifact URL for template ${id}. Callback has artifactUrl=${!!artifactUrl}, DB has packageUrl=${!!(await prisma.template.findUnique({ where: { id }, select: { packageUrl: true } }))?.packageUrl}`
           );
@@ -134,7 +137,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         }
 
         console.log(
-          `[build-callback] Downloading artifact from ${(usePreBuiltFiles ? builtArtifactUrl : candidateUrl)?.slice(0, 80)}...`
+          `[build-callback] Processing ${usePreBuiltFiles ? "pre-built files" : "source artifact"} from ${candidateUrl?.slice(0, 80)}...`
         );
 
         // Download artifact, extract, and directly create PR
@@ -185,88 +188,29 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           const buildProcessStart = Date.now();
 
           if (usePreBuiltFiles) {
-            console.log(`[build-callback] 📦 Downloading pre-built files from GitHub Actions`);
-            console.log(`[build-callback] Built artifact URL: ${builtArtifactUrl}`);
-            console.log(`[build-callback] Source artifact URL: ${candidateUrl}`);
-            console.log(`[build-callback] usePreBuiltFiles: ${usePreBuiltFiles}`);
+            console.log(`[build-callback] 📦 Using pre-built files from GitHub Actions`);
 
-            // Download pre-built ZIP - now uploaded as public for simplicity
-            const builtZipPath = path.join(tmpBase, "built.zip");
-            console.log(`[build-callback] Downloading built ZIP from: ${builtArtifactUrl}`);
-            const builtRes = await fetch(builtArtifactUrl!);
-
-            if (!builtRes.ok) {
-              console.error(`[build-callback] ❌ Failed to fetch built artifact`);
-              console.error(`[build-callback] Status: ${builtRes.status}`);
-              console.error(`[build-callback] Original URL: ${builtArtifactUrl}`);
-              console.error(
-                `[build-callback] Is authenticated Cloudinary: ${builtArtifactUrl!.includes("cloudinary.com") && builtArtifactUrl!.includes("/authenticated/")}`
-              );
-              throw new Error(`Failed to fetch built artifact: ${builtRes.status}`);
-            }
-            const builtAb = await builtRes.arrayBuffer();
-            await fs.promises.writeFile(builtZipPath, Buffer.from(builtAb));
-            console.log(
-              `[build-callback] ✓ Downloaded pre-built files (${builtAb.byteLength} bytes)`
-            );
-
-            // Extract pre-built files
-            const builtDir = path.join(tmpBase, "dist");
-            fs.mkdirSync(builtDir, { recursive: true });
-            const builtZip = new AdmZip(builtZipPath);
-            builtZip.extractAllTo(builtDir, true);
-            console.log(`[build-callback] ✓ Extracted pre-built files to ${builtDir}`);
-
-            // Check what was extracted
-            const distFiles = await fs.promises.readdir(builtDir);
-            console.log(
-              `[build-callback] 📁 Extracted files (${distFiles.length}): ${distFiles.join(", ")}`
-            );
-
-            // Check if index.html exists
-            const indexPath = path.join(builtDir, "index.html");
-            const hasIndex = fs.existsSync(indexPath);
-            console.log(`[build-callback] index.html exists at root: ${hasIndex}`);
-
-            if (!hasIndex) {
-              // Maybe it's in a subdirectory?
-              for (const file of distFiles) {
-                const fullPath = path.join(builtDir, file);
-                const stat = await fs.promises.stat(fullPath);
-                if (stat.isDirectory()) {
-                  const subFiles = await fs.promises.readdir(fullPath);
-                  console.log(`[build-callback] Contents of ${file}/: ${subFiles.join(", ")}`);
-                }
-              }
-            }
-
-            // Upload to Cloudinary
-            const { uploadTemplateBuiltFiles } = await import("@/lib/templates/upload-built-files");
-            builtAssets = await uploadTemplateBuiltFiles(id, builtDir);
+            // Decode the base64 files map - GitHub Actions already uploaded files to Cloudinary
+            const builtFilesJson = Buffer.from(builtFilesBase64!, "base64").toString("utf-8");
+            builtAssets = JSON.parse(builtFilesJson);
 
             console.log(
-              `[build-callback] ✅ Uploaded ${Object.keys(builtAssets).length} pre-built files`
+              `[build-callback] ✅ Received ${Object.keys(builtAssets).length} pre-built files`
             );
-            console.log(
-              `[build-callback] index.html in builtAssets: ${!!builtAssets["index.html"]}`
-            );
+            console.log(`[build-callback] index.html available: ${!!builtAssets["index.html"]}`);
+
             if (builtAssets["index.html"]) {
               console.log(`[build-callback] ✓ index.html URL: ${builtAssets["index.html"]}`);
             } else {
-              console.error(`[build-callback] ❌ index.html NOT in uploaded files!`);
+              console.error(`[build-callback] ❌ index.html NOT in built files!`);
               console.error(
-                `[build-callback] Uploaded files: ${Object.keys(builtAssets).join(", ")}`
+                `[build-callback] Available files: ${Object.keys(builtAssets).slice(0, 10).join(", ")}...`
               );
             }
+            
             console.log(
-              `[build-callback] ✅ Uploaded ${Object.keys(builtAssets).length} pre-built files`
+              `[build-callback] ⏱️  Total build process time: ${Date.now() - buildProcessStart}ms`
             );
-
-            if (!builtAssets["index.html"]) {
-              console.warn(`[build-callback] ⚠️ WARNING: index.html not found in built files!`);
-            } else {
-              console.log(`[build-callback] ✓ index.html: ${builtAssets["index.html"]}`);
-            }
           } else {
             console.log(`[build-callback] 🔨 Starting build process for template ${id}`);
             console.log(
@@ -321,61 +265,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
                 throw new Error("No build script found in package.json");
               }
 
-              // Download and extract pre-built files from GitHub Actions
-              console.log(`[build-callback] 📥 Downloading pre-built files from GitHub Actions...`);
-
-              if (!builtArtifactUrl) {
-                throw new Error(
-                  "No builtArtifactUrl provided - build may have failed in GitHub Actions"
-                );
-              }
-
-              const builtZipPath = path.join(tmpBase, "built-template.zip");
-              const builtResponse = await fetch(builtArtifactUrl);
-              if (!builtResponse.ok) {
-                throw new Error(`Failed to download built files: ${builtResponse.statusText}`);
-              }
-              const builtBuffer = Buffer.from(await builtResponse.arrayBuffer());
-              fs.writeFileSync(builtZipPath, builtBuffer);
-              console.log(
-                `[build-callback] ✓ Downloaded built files (${builtBuffer.length} bytes)`
-              );
-
-              // Extract built files
-              const distPath = path.join(tmpBase, "built");
-              fs.mkdirSync(distPath, { recursive: true });
-              const builtZip = new AdmZip(builtZipPath);
-              builtZip.extractAllTo(distPath, true);
-              console.log(`[build-callback] ✓ Extracted pre-built files to ${distPath}`);
-
-              if (fs.existsSync(distPath)) {
-                console.log(`[build-callback] ✓ Found build output at: ${distPath}`);
-                const distFiles = await fs.promises.readdir(distPath);
-                console.log(`[build-callback] 📁 Build output contains: ${distFiles.join(", ")}`);
-
-                const { uploadTemplateBuiltFiles } = await import(
-                  "@/lib/templates/upload-built-files"
-                );
-                const uploadStart = Date.now();
-                builtAssets = await uploadTemplateBuiltFiles(id, distPath);
-                console.log(
-                  `[build-callback] ✅ Uploaded ${Object.keys(builtAssets).length} files in ${Date.now() - uploadStart}ms`
-                );
-
-                // Verify index.html was uploaded (critical for preview)
-                if (!builtAssets["index.html"]) {
-                  console.warn(`[build-callback] ⚠️ WARNING: index.html not found in built files!`);
-                  console.warn(
-                    `[build-callback] Available files: ${Object.keys(builtAssets).join(", ")}`
-                  );
-                } else {
-                  console.log(
-                    `[build-callback] ✓ index.html uploaded: ${builtAssets["index.html"]}`
-                  );
-                }
-              } else {
-                console.error(`[build-callback] ❌ No dist or build folder found after build!`);
-              }
+              // Build locally (no pre-built files from GitHub Actions)
 
               console.log(
                 `[build-callback] ⏱️  Total build process time: ${Date.now() - buildProcessStart}ms`
