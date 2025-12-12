@@ -205,6 +205,13 @@ jobs:
           ARTIFACT_URL="$PACKAGE_URL"
           BUILT_URL="${{ steps.cloudinary-upload.outputs.built_url }}"
 
+          # Debug: Print what we're sending
+          echo "=== Callback Payload Debug ==="
+          echo "ARTIFACT_URL (source): $ARTIFACT_URL"
+          echo "BUILT_URL (built): $BUILT_URL"
+          echo "STATUS: $STATUS"
+          echo "=============================="
+
           # Construct callback payload with all necessary info
           PAYLOAD=$(jq -n \
             --arg id "$TEMPLATE_ID" \
@@ -222,9 +229,13 @@ jobs:
               logs: $logs
             }')
 
+          echo "Constructed payload:"
+          echo "$PAYLOAD" | jq .
+
           if [ -n "$CALLBACK_URL" ]; then
             echo "Posting callback to $CALLBACK_URL"
-            echo "  Artifact URL: $PACKAGE_URL"
+            echo "  Source Artifact URL: $ARTIFACT_URL"
+            echo "  Built Artifact URL: $BUILT_URL"
             curl -s -X POST \
               -H "Content-Type: application/json" \
               -H "X-BUILD-CALLBACK-SECRET: $CALLBACK_SECRET" \
