@@ -187,6 +187,8 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           if (usePreBuiltFiles) {
             console.log(`[build-callback] 📦 Downloading pre-built files from GitHub Actions`);
             console.log(`[build-callback] Built artifact URL: ${builtArtifactUrl}`);
+            console.log(`[build-callback] Source artifact URL: ${candidateUrl}`);
+            console.log(`[build-callback] usePreBuiltFiles: ${usePreBuiltFiles}`);
 
             // Download pre-built ZIP - add authentication header if it's a Cloudinary URL
             const builtZipPath = path.join(tmpBase, "built.zip");
@@ -218,13 +220,25 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
                 sign_url: true,
               });
 
+              console.log(`[build-callback] Generated signed URL: ${signedUrl.slice(0, 100)}...`);
               builtRes = await fetch(signedUrl);
             } else {
               // Regular URL
+              console.log(
+                `[build-callback] Using regular URL (not authenticated): ${builtArtifactUrl}`
+              );
               builtRes = await fetch(builtArtifactUrl!);
             }
 
-            if (!builtRes.ok) throw new Error(`Failed to fetch built artifact: ${builtRes.status}`);
+            if (!builtRes.ok) {
+              console.error(`[build-callback] ❌ Failed to fetch built artifact`);
+              console.error(`[build-callback] Status: ${builtRes.status}`);
+              console.error(`[build-callback] URL attempted: ${builtArtifactUrl}`);
+              console.error(
+                `[build-callback] Is authenticated Cloudinary: ${builtArtifactUrl!.includes("cloudinary.com") && builtArtifactUrl!.includes("/authenticated/")}`
+              );
+              throw new Error(`Failed to fetch built artifact: ${builtRes.status}`);
+            }
             const builtAb = await builtRes.arrayBuffer();
             await fs.promises.writeFile(builtZipPath, Buffer.from(builtAb));
             console.log(
@@ -238,12 +252,39 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             builtZip.extractAllTo(builtDir, true);
             console.log(`[build-callback] ✓ Extracted pre-built files to ${builtDir}`);
 
-            // Upload to Cloudinary
+            // Check what was extracted
             const distFiles = await fs.promises.readdir(builtDir);
-            console.log(`[build-callback] 📁 Pre-built files: ${distFiles.join(", ")}`);
+            console.log(`[build-callback] 📁 Extracted files (${distFiles.length}): ${distFiles.join(", ")}`);
+            
+            // Check if index.html exists
+            const indexPath = path.join(builtDir, "index.html");
+            const hasIndex = fs.existsSync(indexPath);
+            console.log(`[build-callback] index.html exists at root: ${hasIndex}`);
+            
+            if (!hasIndex) {
+              // Maybe it's in a subdirectory?
+              for (const file of distFiles) {
+                const fullPath = path.join(builtDir, file);
+                const stat = await fs.promises.stat(fullPath);
+                if (stat.isDirectory()) {
+                  const subFiles = await fs.promises.readdir(fullPath);
+                  console.log(`[build-callback] Contents of ${file}/: ${subFiles.join(", ")}`);
+                }
+              }
+            }
 
+            // Upload to Cloudinary
             const { uploadTemplateBuiltFiles } = await import("@/lib/templates/upload-built-files");
             builtAssets = await uploadTemplateBuiltFiles(id, builtDir);
+            
+            console.log(`[build-callback] ✅ Uploaded ${Object.keys(builtAssets).length} pre-built files`);
+            console.log(`[build-callback] index.html in builtAssets: ${!!builtAssets["index.html"]}`);
+            if (builtAssets["index.html"]) {
+              console.log(`[build-callback] ✓ index.html URL: ${builtAssets["index.html"]}`);
+            } else {
+              console.error(`[build-callback] ❌ index.html NOT in uploaded files!`);
+              console.error(`[build-callback] Uploaded files: ${Object.keys(builtAssets).join(", ")}`);
+            }
             console.log(
               `[build-callback] ✅ Uploaded ${Object.keys(builtAssets).length} pre-built files`
             );
