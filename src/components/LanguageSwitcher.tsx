@@ -17,7 +17,7 @@ const languages = [
   { code: "ig", name: "Igbo", flag: "🇳🇬" },
 ];
 
-export const LanguageSwitcher: React.FC = () => {
+export const LanguageSwitcher: React.FC<{ inSheet?: boolean }> = ({ inSheet = false }) => {
   const { theme } = useTheme();
   const { locale, setLocale } = useTranslations();
   const [isOpen, setIsOpen] = useState(false);
@@ -53,16 +53,20 @@ export const LanguageSwitcher: React.FC = () => {
     <div className="relative">
       {/* Language Switcher Button */}
       <Button
-        variant="ghost"
-        size="sm"
         onClick={() => setIsOpen(!isOpen)}
+        variant="ghost"
         className={cn(
-          "flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-200 hover:scale-105",
-          isScrolled
+          "h-9 inline-flex items-center justify-center rounded-md transition-all duration-300 whitespace-nowrap",
+          inSheet ? "w-9" : "px-4 gap-2 border",
+          inSheet
             ? displayTheme === "dark"
-              ? "bg-white backdrop-blur-md shadow-sm text-gray-900"
-              : "bg-black backdrop-blur-md shadow-sm text-white"
-            : "bg-transparent text-foreground"
+              ? "text-white hover:bg-gray-900"
+              : "text-gray-900 hover:bg-gray-100"
+            : isScrolled
+              ? displayTheme === "dark"
+                ? "border-gray-300 bg-white text-gray-900 hover:bg-gray-100"
+                : "border-gray-600 bg-black text-white hover:bg-gray-900"
+              : "border-white/50 bg-transparent text-white hover:bg-white/10"
         )}
       >
         <span className="text-lg">{currentLanguage.flag}</span>
@@ -172,9 +176,7 @@ export const LanguageSwitcherCompact: React.FC = () => {
             ? displayTheme === "dark"
               ? "text-white hover:bg-white/10"
               : "text-gray-700 hover:bg-gray-100"
-            : displayTheme === "dark"
-              ? "text-white hover:bg-white/10"
-              : "text-gray-700 hover:bg-gray-100"
+            : "text-white hover:bg-white/10"
         )}
       >
         <span className="text-base">{currentLanguage.flag}</span>

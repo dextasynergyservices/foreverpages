@@ -123,7 +123,7 @@ const Invitations = () => {
       </div>
 
       <Tabs defaultValue="create" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5 gap-2">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 gap-2">
           <TabsTrigger
             value="create"
             className={`px-2 py-2 text-xs md:text-base whitespace-nowrap ${activeTabClasses}`}

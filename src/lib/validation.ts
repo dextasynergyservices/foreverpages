@@ -22,7 +22,10 @@ export const registerSchema = z
       .string()
       .min(10, "Phone number must be at least 10 digits")
       .max(15, "Phone number must be less than 15 digits")
-      .regex(/^[\+]?[0-9\s\-\(\)]+$/, "Please enter a valid phone number"),
+      .regex(
+        /^\+[1-9]\d{1,14}$/,
+        "Please enter a valid international phone number (e.g., +1234567890)"
+      ),
     password: passwordSchema,
     confirmPassword: z.string(),
   })

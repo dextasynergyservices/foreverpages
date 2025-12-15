@@ -184,8 +184,8 @@ export const FuneralPageSection: React.FC = () => {
         id="memorial-pages"
         ref={sectionRef}
         className={cn(
-          "scroll-section relative min-h-screen w-full py-16 overflow-hidden",
-          "section-bg section-bg--stars"
+          "relative w-full py-16 px-4 sm:px-6 lg:px-8",
+          theme === "dark" ? "bg-black/80 text-white" : "bg-white text-black"
         )}
       >
         {/* Fallback Stars Background */}

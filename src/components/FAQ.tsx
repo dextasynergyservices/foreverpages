@@ -102,7 +102,7 @@ export const FAQSection: React.FC = () => {
         ref={sectionRef}
         className={cn(
           "relative w-full py-16 px-4 sm:px-6 lg:px-8",
-          theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+          theme === "dark" ? "bg-black/95 text-white" : "bg-white text-black"
         )}
       >
         <div className="relative z-10 max-w-4xl mx-auto w-full">
