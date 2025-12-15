@@ -17,6 +17,18 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
 
+  // Rewrites for template preview to handle React Router SPAs
+  async rewrites() {
+    return [
+      {
+        // Rewrite all paths under /templates/preview/[id]/* to serve the same route
+        // This allows the template's React Router to handle navigation client-side
+        source: "/templates/preview/:id/:path*",
+        destination: "/templates/preview/:id",
+      },
+    ];
+  },
+
   // Redirect HTTP to HTTPS in production
   async redirects() {
     return [
@@ -58,15 +70,15 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https:",
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-              "font-src 'self' https://fonts.gstatic.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://res.cloudinary.com https:",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://res.cloudinary.com",
+              "font-src 'self' https://fonts.gstatic.com https://res.cloudinary.com",
               "img-src 'self' data: https: blob:",
               "media-src 'self' https://res.cloudinary.com blob:",
               // Allow websocket schemes (ws/wss) and required origins. In dev this
               // enables ws://localhost:8080; in production wss will be permitted.
               "connect-src 'self' ws: wss: https://www.google.com https://www.gstatic.com https://www.recaptcha.net https:",
-              "frame-src 'self' https://www.google.com https://www.recaptcha.net https:",
+              "frame-src 'self' data: blob: http://localhost:* https://res.cloudinary.com https://www.google.com https://www.recaptcha.net https:",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
@@ -118,6 +130,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
         port: "",
         pathname: "/**",
       },

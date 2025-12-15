@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
+import path from "path";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/route";
 import { validateAndExtractZip } from "@/lib/template/validation";
@@ -100,6 +101,11 @@ export async function POST(request: NextRequest) {
 
     const planIds = parseIds(form.get("planIds"));
     const categoryIds = parseIds(form.get("categoryIds"));
+
+    // Handle Next.js templates differently from React SPA templates
+    if (validation.templateType === "nextjs") {
+      return await handleNextJsTemplateUpload(validation, form, session, planIds, categoryIds);
+    }
     const replaceTemplateId =
       typeof form.get("replaceTemplateId") === "string"
         ? (form.get("replaceTemplateId") as string)
@@ -334,30 +340,33 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Enqueue background processing job
-    try {
-      const { enqueueTemplateProcessing } = await import("@/server/template-workers/queue");
-      if (validation.tempDir)
-        await enqueueTemplateProcessing(template.id, validation.tempDir, undefined, true);
-    } catch (e) {
-      console.error("Failed to enqueue worker, rolling back template and files", e);
-      // Attempt to remove DB record and cleanup extracted files
+    // Enqueue background processing job (fire and forget - don't wait for result)
+    setImmediate(async () => {
       try {
-        await prisma.template.delete({ where: { id: template.id } });
-      } catch (delErr) {
-        console.warn("Failed to delete template after enqueue error", delErr);
+        const { enqueueTemplateProcessing } = await import("@/server/template-workers/queue");
+        if (validation.tempDir) {
+          await enqueueTemplateProcessing(template.id, validation.tempDir, undefined, true);
+        }
+      } catch (e) {
+        console.error("Failed to enqueue template processing", e);
+        // Update template status to ERROR in background
+        try {
+          await prisma.template.update({
+            where: { id: template.id },
+            data: {
+              processingStatus: "ERROR",
+              processingLogs: `Failed to start processing: ${e instanceof Error ? e.message : String(e)}`,
+            },
+          });
+        } catch (updateErr) {
+          console.error("Failed to update template status", updateErr);
+        }
       }
-      try {
-        if (validation.tempDir)
-          await fs.promises.rm(validation.tempDir, { recursive: true, force: true });
-      } catch (rmErr) {
-        console.warn("Failed to cleanup tempDir after enqueue error", rmErr);
-      }
-      return NextResponse.json({ message: "Failed to start processing" }, { status: 500 });
-    }
+    });
 
+    // Return immediately - don't wait for processing to complete
     return NextResponse.json({
-      message: "Upload accepted",
+      message: "Upload accepted and processing started",
       data: {
         manifest: validation.manifest,
         generatedManifest: validation.generatedManifest,
@@ -376,4 +385,252 @@ export async function POST(request: NextRequest) {
         : { message: "Internal server error", error: errorMsg, stack: (err as Error)?.stack };
     return NextResponse.json(devBody, { status: 500 });
   }
+}
+
+/**
+ * Handle Next.js template upload
+ */
+async function handleNextJsTemplateUpload(
+  validation: Awaited<ReturnType<typeof validateAndExtractZip>>,
+  form: FormData,
+  session: { user: { id: string } },
+  planIds: string[],
+  categoryIds: string[]
+) {
+  try {
+    const { createTemplateSectionsData, extractSupportedSections, readTemplateManifest } =
+      await import("@/lib/template/nextjs-processor");
+    const { createPrForTemplate } = await import("@/lib/github/pr");
+
+    if (!validation.tempDir) {
+      return NextResponse.json({ message: "No extracted directory available" }, { status: 500 });
+    }
+
+    const manifest = readTemplateManifest(validation.tempDir);
+    if (!manifest) {
+      return NextResponse.json({ message: "Failed to read manifest" }, { status: 400 });
+    }
+
+    // Create template in database with PROCESSING status
+    const template = await prisma.template.create({
+      data: {
+        name: manifest.name,
+        slug: manifest.slug,
+        description: manifest.description || null,
+        version: manifest.version,
+        previewImage:
+          validation.uploaded?.preview?.url || `/templates/${manifest.slug}/preview.png`,
+        thumbnailImage:
+          validation.uploaded?.thumbnail?.url || `/templates/${manifest.slug}/thumbnail.png`,
+        componentPath: `templates/${manifest.slug}`,
+        configPath: `templates/${manifest.slug}/config`,
+        isNextJsTemplate: true,
+        previewMode: "NATIVE",
+        processingStatus: "PROCESSING",
+        layoutType: "FLEXIBLE",
+        isActive: false,
+        isFeatured: false,
+        storagePath: validation.tempDir,
+        manifest: JSON.parse(JSON.stringify(manifest)) as Prisma.InputJsonValue,
+        packageUrl: validation.uploaded?.package?.url || null,
+        defaultConfig: JSON.parse(
+          JSON.stringify(manifest.customization || {})
+        ) as Prisma.InputJsonValue,
+        supportedSections: extractSupportedSections(manifest) as Array<
+          "HERO" | "VIRTUAL_CANDLES" | "TIMELINE" | "GALLERY" | "TRIBUTES" | "CONDOLENCES"
+        >,
+        categoryId: categoryIds[0] || null,
+        plans: {
+          connect: planIds.map((id) => ({ id })),
+        },
+      },
+    });
+
+    // Create template sections
+    const sectionsData = createTemplateSectionsData(manifest);
+    if (sectionsData.length > 0) {
+      await prisma.templateSection.createMany({
+        data: sectionsData.map((section) => ({
+          ...section,
+          type: section.type as
+            | "HERO"
+            | "VIRTUAL_CANDLES"
+            | "TIMELINE"
+            | "GALLERY"
+            | "TRIBUTES"
+            | "CONDOLENCES",
+          layout: section.layout as "DEFAULT",
+          templateId: template.id,
+        })),
+      });
+    }
+
+    // Create category relations
+    if (categoryIds.length > 0) {
+      await prisma.templateCategoryRelation.createMany({
+        data: categoryIds.map((catId) => ({
+          templateId: template.id,
+          categoryId: catId,
+        })),
+        skipDuplicates: true,
+      });
+    }
+
+    console.log(`✅ Next.js template registered in database: ${template.id}`);
+
+    // Collect all files from the extracted directory for PR
+    const files = collectTemplateFiles(validation.tempDir, manifest.slug);
+    if (!files.length) {
+      return NextResponse.json({ message: "No files found in template package" }, { status: 400 });
+    }
+
+    // Create GitHub branch and PR
+    const safeSlug = manifest.slug
+      .toLowerCase()
+      .replace(/[^a-z0-9\-_]/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "")
+      .slice(0, 60);
+    const branch = `template/${safeSlug}-${template.id}-${Date.now()}`;
+    const title = `Add Next.js template: ${manifest.name}`;
+    const body = `## Next.js Template Upload
+
+**Template:** ${manifest.name}
+**Slug:** ${manifest.slug}
+**Version:** ${manifest.version}
+**Type:** Next.js Template (Native)
+**Template ID:** ${template.id}
+
+### Description
+${manifest.description || "No description provided"}
+
+### Sections
+${extractSupportedSections(manifest).join(", ")}
+
+### Files
+- ${files.length} files in template package
+- Template location: \`src/app/templates/${manifest.slug}/\`
+${files.find((f) => f.path.includes("public/")) ? `- Public assets: \`public/templates/${manifest.slug}/\`` : ""}
+
+---
+*This PR was automatically created by the template upload system.*`;
+
+    console.log(`📤 Creating GitHub PR with ${files.length} files for template ${template.id}`);
+
+    const pr = await createPrForTemplate(branch, files, title, body, "develop");
+
+    // Update template with PR info
+    await prisma.template.update({
+      where: { id: template.id },
+      data: {
+        prNumber: pr.number.toString(),
+        prUrl: pr.url,
+        processingStatus: "VALIDATED",
+        processingLogs: "PR created successfully - awaiting merge to become active",
+      },
+    });
+
+    console.log(`✅ PR created for Next.js template ${template.id}: ${pr.url}`);
+
+    return NextResponse.json({
+      message: "Next.js template uploaded - PR created for review",
+      templateType: "nextjs",
+      data: {
+        template: {
+          id: template.id,
+          name: template.name,
+          slug: template.slug,
+          version: template.version,
+          processingStatus: "VALIDATED",
+        },
+        pr: {
+          number: pr.number,
+          url: pr.url,
+          branch,
+        },
+        manifest: validation.manifest,
+        uploaded: validation.uploaded,
+        note: "Template will be active after PR is merged to develop branch",
+      },
+    });
+  } catch (error) {
+    console.error("Next.js template upload error:", error);
+    return NextResponse.json(
+      {
+        message: "Failed to process Next.js template",
+        error: error instanceof Error ? error.message : String(error),
+      },
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * Collect all files from template directory for GitHub PR
+ */
+function collectTemplateFiles(
+  extractedDir: string,
+  slug: string
+): Array<{ path: string; content: string | Buffer }> {
+  const files: Array<{ path: string; content: string | Buffer }> = [];
+  const stack = [extractedDir];
+
+  while (stack.length) {
+    const currentPath = stack.pop()!;
+    const entries = fs.readdirSync(currentPath, { withFileTypes: true });
+
+    for (const entry of entries) {
+      const fullPath = path.join(currentPath, entry.name);
+
+      if (entry.isDirectory()) {
+        // Skip these directories
+        if (["node_modules", ".git", ".next", "dist", "build"].includes(entry.name)) {
+          continue;
+        }
+        stack.push(fullPath);
+        continue;
+      }
+
+      if (entry.isFile()) {
+        // Get path relative to extracted directory
+        const relativePath = path.relative(extractedDir, fullPath).replace(/\\/g, "/");
+
+        // Determine final path in repository
+        let finalPath: string;
+        if (relativePath.startsWith("public/")) {
+          // Public assets go to public/templates/[slug]/
+          const publicRelative = relativePath.replace(/^public\//, "");
+          finalPath = `public/templates/${slug}/${publicRelative}`;
+        } else {
+          // Everything else goes to src/app/templates/[slug]/
+          finalPath = `src/app/templates/${slug}/${relativePath}`;
+        }
+
+        // Read file content
+        const ext = path.extname(entry.name).toLowerCase();
+        const isBinary = [
+          ".png",
+          ".jpg",
+          ".jpeg",
+          ".gif",
+          ".webp",
+          ".ico",
+          ".woff",
+          ".woff2",
+          ".ttf",
+          ".eot",
+        ].includes(ext);
+
+        if (isBinary) {
+          const buffer = fs.readFileSync(fullPath);
+          files.push({ path: finalPath, content: buffer });
+        } else {
+          const content = fs.readFileSync(fullPath, "utf8");
+          files.push({ path: finalPath, content });
+        }
+      }
+    }
+  }
+
+  return files;
 }

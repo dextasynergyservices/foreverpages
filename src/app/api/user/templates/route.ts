@@ -40,7 +40,7 @@ export async function GET() {
       name: template.name,
       description: template.description,
       baseTemplate: template.baseTemplate,
-      config: template.config,
+      customization: template.customization,
       sections: template.sections,
       isPublished: template.isPublished,
       customPreviewImage: template.customPreviewImage,
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { baseTemplateId, name, description, config, sections } = body;
+    const { baseTemplateId, name, description, customization, sections } = body;
 
     if (!baseTemplateId || !name) {
       return NextResponse.json(
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
         baseTemplateId,
         name,
         description,
-        config,
+        customization,
         sections,
         isActive: true, // Set as active since this is the only template
       },
@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
       name: userTemplate.name,
       description: userTemplate.description,
       baseTemplate: userTemplate.baseTemplate,
-      config: userTemplate.config,
+      customization: userTemplate.customization,
       sections: userTemplate.sections,
       isPublished: userTemplate.isPublished,
       customPreviewImage: userTemplate.customPreviewImage,

@@ -68,3 +68,5 @@ src/app/templates/*/build
 src/app/templates/*/.vite
 src/app/templates/*/package-lock.json
 src/app/templates/*/bun.lockb
+
+.template-job-queue

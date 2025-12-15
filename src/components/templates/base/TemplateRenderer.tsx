@@ -65,20 +65,20 @@ export const TemplateRenderer: React.FC<TemplateRendererProps> = ({ userTemplate
     loadTemplate();
   }, [userTemplate.baseTemplate.slug]);
 
-  // Load and apply design tokens from UserTemplate config
+  // Load and apply design tokens from UserTemplate customization
   useEffect(() => {
-    if (userTemplate.config) {
+    if (userTemplate.customization) {
       try {
-        // Parse config as DesignTokens, handling the JsonValue type
-        const config = userTemplate.config as unknown;
-        if (config && typeof config === "object") {
-          applyDesignTokensToElement(document.documentElement, config as DesignTokens);
+        // Parse customization as DesignTokens, handling the JsonValue type
+        const customization = userTemplate.customization as unknown;
+        if (customization && typeof customization === "object") {
+          applyDesignTokensToElement(document.documentElement, customization as DesignTokens);
         }
       } catch (err) {
         console.error("Failed to apply design tokens:", err);
       }
     }
-  }, [userTemplate.config]);
+  }, [userTemplate.customization]);
 
   if (loading) {
     return (

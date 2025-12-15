@@ -178,7 +178,7 @@ jobs:
                   }
 
                   // For raw files, keep extension in public_id
-                  const publicId = resourceType === 'raw' 
+                  const publicId = resourceType === 'raw'
                     ? relativePath
                     : relativePath.replace(/\.[^.]+$/, '');
 
@@ -207,15 +207,15 @@ jobs:
               if (!fs.existsSync(distDir)) {
                 distDir = 'template/build';
               }
-              
+
               console.log('Uploading files from: ' + distDir);
               const builtFiles = await uploadDirectory(distDir);
-              
+
               // Save as JSON for callback
               const filesJson = JSON.stringify(builtFiles);
               fs.writeFileSync('built-files.json', filesJson);
               fs.appendFileSync(process.env.GITHUB_OUTPUT, 'built_files=' + Buffer.from(filesJson).toString('base64') + '\n');
-              
+
               console.log('Uploaded ' + Object.keys(builtFiles).length + ' files');
             } catch (err) {
               console.error('Cloudinary upload failed:', err);
@@ -256,7 +256,7 @@ jobs:
 
           # Get built files from output
           BUILT_FILES="${{ steps.cloudinary-upload.outputs.built_files }}"
-          
+
           # Debug: Print what we're sending
           echo "=== Callback Payload Debug ==="
           echo "ARTIFACT_URL (source): $ARTIFACT_URL"

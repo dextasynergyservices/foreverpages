@@ -1158,6 +1158,12 @@ async function main() {
   });
 
   console.log("Created renewal translations (All languages)");
+
+  // ============================================
+  // SEED TEMPLATES
+  // ============================================
+
+  console.log("\n🎨 Seeding templates...");
 }
 
 main()
