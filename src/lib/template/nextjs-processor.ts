@@ -124,7 +124,26 @@ export function createTemplateSectionsData(manifest: TemplateManifest): Array<{
   defaultVisible: boolean;
   order: number;
 }> {
+  // Try to load sections from config.ts if not in manifest
   if (!manifest.sections || manifest.sections.length === 0) {
+    // Check if supportedSections exists in manifest (new format)
+    if (manifest.supportedSections && Array.isArray(manifest.supportedSections)) {
+      const supportedSections = manifest.supportedSections;
+      return supportedSections.map((sectionType, index) => ({
+        type: sectionType,
+        name: sectionType
+          .split("_")
+          .map((w) => w.charAt(0) + w.slice(1).toLowerCase())
+          .join(" "),
+        description: `${sectionType} section`,
+        componentPath: `components/${sectionType}`,
+        layout: "DEFAULT" as const,
+        isCollapsible: false,
+        isHideable: true,
+        defaultVisible: true,
+        order: index + 1,
+      }));
+    }
     return [];
   }
 
@@ -138,6 +157,10 @@ export function createTemplateSectionsData(manifest: TemplateManifest): Array<{
     tributes: "TRIBUTES",
     condolence: "CONDOLENCES",
     condolences: "CONDOLENCES",
+    biography: "BIOGRAPHY",
+    family: "FAMILY_TREE",
+    video: "VIDEO_GALLERY",
+    donations: "DONATIONS",
   };
 
   return manifest.sections.map((section, index) => {
@@ -161,6 +184,12 @@ export function createTemplateSectionsData(manifest: TemplateManifest): Array<{
  * Extract supported sections from manifest
  */
 export function extractSupportedSections(manifest: TemplateManifest): string[] {
+  // Check if manifest has supportedSections array (new format)
+  if (manifest.supportedSections && Array.isArray(manifest.supportedSections)) {
+    return manifest.supportedSections;
+  }
+
+  // Fall back to sections array (old format)
   if (!manifest.sections || manifest.sections.length === 0) {
     return [];
   }
@@ -174,6 +203,10 @@ export function extractSupportedSections(manifest: TemplateManifest): string[] {
     tributes: "TRIBUTES",
     condolence: "CONDOLENCES",
     condolences: "CONDOLENCES",
+    biography: "BIOGRAPHY",
+    family: "FAMILY_TREE",
+    video: "VIDEO_GALLERY",
+    donations: "DONATIONS",
   };
 
   return manifest.sections.map((section) => {

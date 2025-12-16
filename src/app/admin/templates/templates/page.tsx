@@ -126,6 +126,35 @@ export default function TemplatesPage() {
     },
   });
 
+  const publishMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const response = await fetch(`/api/admin/templates/${id}/publish`, {
+        method: "POST",
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to publish template");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-templates"] });
+      try {
+        toastNotification.success("Template published successfully");
+      } catch {
+        // ignore
+      }
+    },
+    onError: (error: unknown) => {
+      const message = error instanceof Error ? error.message : "Failed to publish template";
+      try {
+        toastNotification.error(message);
+      } catch {
+        // ignore
+      }
+    },
+  });
+
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       const response = await fetch(`/api/admin/templates/templates/${id}`, {
@@ -195,8 +224,32 @@ export default function TemplatesPage() {
         {templates?.map((template: ExtendedTemplate) => (
           <Card key={template.id}>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-lg">{template.name}</CardTitle>
+              <div className="flex flex-col gap-1">
+                <CardTitle className="text-lg">{template.name}</CardTitle>
+                {template.processingStatus && (
+                  <Badge
+                    variant={
+                      template.processingStatus === "PUBLISHED"
+                        ? "default"
+                        : template.processingStatus === "VALIDATED"
+                          ? "secondary"
+                          : "destructive"
+                    }
+                  >
+                    {template.processingStatus}
+                  </Badge>
+                )}
+              </div>
               <div className="flex items-center space-x-2">
+                {template.processingStatus === "VALIDATED" && (
+                  <Button
+                    size="sm"
+                    onClick={() => publishMutation.mutate(template.id)}
+                    disabled={publishMutation.isPending}
+                  >
+                    Publish
+                  </Button>
+                )}
                 <Switch
                   checked={template.isActive}
                   onCheckedChange={(checked) => {

@@ -26,6 +26,7 @@ export interface TemplateManifest {
     component: string;
     required: boolean;
   }>;
+  supportedSections?: string[];
   features?: string[];
   customization?: {
     colors?: Record<string, string>;

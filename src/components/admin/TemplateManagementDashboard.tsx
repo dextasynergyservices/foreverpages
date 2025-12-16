@@ -192,6 +192,23 @@ export default function TemplateManagementDashboard() {
     },
   });
 
+  const publishMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const res = await fetch(`/api/admin/templates/${id}/publish`, { method: "POST" });
+      const parsed = (await parseJsonOrNull(res)) as ErrorResponse;
+      if (!res.ok) throw new Error((parsed && parsed.message) || "Failed to publish template");
+      return parsed;
+    },
+    onSuccess: () => {
+      toastNotification.success("Template published successfully");
+      queryClient.invalidateQueries({ queryKey: ["admin-templates-dashboard"] });
+    },
+    onError: (err: unknown) => {
+      const message = err instanceof Error ? err.message : "Failed to publish template";
+      toastNotification.error(message);
+    },
+  });
+
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       const res = await fetch(`/api/admin/templates/templates/${id}`, { method: "DELETE" });
@@ -332,11 +349,13 @@ export default function TemplateManagementDashboard() {
                 <div className="text-sm flex items-center gap-2">
                   <Badge
                     variant={
-                      t.processingStatus === "ERROR"
-                        ? "destructive"
+                      t.processingStatus === "PUBLISHED"
+                        ? "default"
                         : t.processingStatus === "VALIDATED"
-                          ? "default"
-                          : "secondary"
+                          ? "secondary"
+                          : t.processingStatus === "ERROR"
+                            ? "destructive"
+                            : "outline"
                     }
                   >
                     {t.processingStatus ?? "UNKNOWN"}
@@ -418,6 +437,16 @@ export default function TemplateManagementDashboard() {
               </div>
             </div>
             <div className="flex flex-col gap-2">
+              {t.processingStatus === "VALIDATED" && (
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => publishMutation.mutate(t.id)}
+                  disabled={publishMutation.isPending}
+                >
+                  Publish
+                </Button>
+              )}
               <Button variant="ghost" onClick={() => alert("Edit opens existing edit dialog")}>
                 <Edit />
               </Button>
