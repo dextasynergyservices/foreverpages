@@ -82,7 +82,9 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground font-body;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: "Cormorant Garamond", serif;
     font-size: 18px;
     line-height: 1.8;
   }
@@ -93,7 +95,7 @@ All colors MUST be HSL.
   h4,
   h5,
   h6 {
-    @apply font-heading;
+    font-family: "Playfair Display", serif;
   }
 
   .font-script {
@@ -193,13 +195,14 @@ All colors MUST be HSL.
 
   /* Gold text effect */
   .text-gold {
-    @apply text-primary;
+    color: hsl(var(--primary));
     text-shadow: 0 0 10px hsl(var(--gold-glow) / 0.5);
   }
 
   /* Cross decoration */
   .cross-decoration::before {
     content: "✝";
-    @apply text-primary mr-2;
+    color: hsl(var(--primary));
+    margin-right: 0.5rem;
   }
 }
