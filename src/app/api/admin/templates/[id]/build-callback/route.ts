@@ -85,7 +85,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       data: finalData as unknown as Prisma.TemplateUpdateInput,
     });
 
-    // If validated, download artifact and create PR
+    // If validated, download artifact and create PR new
     try {
       if (status === "VALIDATED") {
         console.log(`[build-callback] Status is VALIDATED, proceeding to PR creation for ${id}`);
