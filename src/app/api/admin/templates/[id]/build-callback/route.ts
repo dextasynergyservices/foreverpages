@@ -331,34 +331,8 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             );
           }
 
-          // Process built dist folder and upload to Cloudinary
-          console.log(`[build-callback] Processing built template files for ${id}`);
-          const distPath = path.join(tmpBase, "dist");
-          let builtAssets: Record<string, string> = {};
-
-          try {
-            // Check if dist folder exists
-            await fs.promises.access(distPath);
-
-            // Upload built files to Cloudinary
-            const { uploadTemplateBuiltFiles } = await import("@/lib/templates/upload-built-files");
-            builtAssets = await uploadTemplateBuiltFiles(id, distPath);
-            console.log(`[build-callback] Uploaded ${Object.keys(builtAssets).length} built files`);
-          } catch (err) {
-            console.warn(`[build-callback] No dist folder or upload failed for ${id}:`, err);
-          }
-
-          // Get template info for PR details
-          const tpl = await prisma.template.findUnique({ where: { id } });
-          if (!tpl) throw new Error("Template record not found");
-
-          const slug = tpl.slug || `template-${id}`;
-
-          // NOTE: PR creation is handled by the queue's handleRemoteBuildWithPolling function
-          // We only process assets here to avoid duplicate PRs
-          console.log(`[build-callback] Asset processing complete for template ${id}`);
-
-          // Update template with asset URLs only (PR already created by queue)
+          // Update template with all assets
+          console.log(`[build-callback] Updating template with assets and build artifacts`);
           await prisma.template.update({
             where: { id },
             data: {
