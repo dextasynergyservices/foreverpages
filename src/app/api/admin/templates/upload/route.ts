@@ -411,6 +411,18 @@ async function handleNextJsTemplateUpload(
       return NextResponse.json({ message: "Failed to read manifest" }, { status: 400 });
     }
 
+    // Read config.ts to get defaultDesign and customization
+    let configData: { defaultDesign?: unknown; customization?: unknown } = {};
+    try {
+      const configPath = path.join(validation.tempDir, "config.ts");
+      if (fs.existsSync(configPath)) {
+        const { templateConfig } = await import(configPath);
+        configData = templateConfig || {};
+      }
+    } catch (err) {
+      console.warn("Could not load config.ts:", err);
+    }
+
     // Create template in database with PROCESSING status
     const template = await prisma.template.create({
       data: {
@@ -434,10 +446,26 @@ async function handleNextJsTemplateUpload(
         manifest: JSON.parse(JSON.stringify(manifest)) as Prisma.InputJsonValue,
         packageUrl: validation.uploaded?.package?.url || null,
         defaultConfig: JSON.parse(
-          JSON.stringify(manifest.customization || {})
+          JSON.stringify(configData.defaultDesign || manifest.customization || {})
         ) as Prisma.InputJsonValue,
-        supportedSections: extractSupportedSections(manifest) as Array<
-          "HERO" | "VIRTUAL_CANDLES" | "TIMELINE" | "GALLERY" | "TRIBUTES" | "CONDOLENCES"
+        supportedSections: extractSupportedSections(manifest).map((section) => {
+          // Map to valid Prisma enum values
+          const mappings: Record<string, string> = {
+            FAMILY: "FAMILY_TREE",
+            VIDEO_TRIBUTES: "VIDEO_GALLERY",
+          };
+          return mappings[section] || section;
+        }) as Array<
+          | "HERO"
+          | "VIRTUAL_CANDLES"
+          | "TIMELINE"
+          | "GALLERY"
+          | "TRIBUTES"
+          | "CONDOLENCES"
+          | "BIOGRAPHY"
+          | "FAMILY_TREE"
+          | "VIDEO_GALLERY"
+          | "DONATIONS"
         >,
         categoryId: categoryIds[0] || null,
         plans: {
