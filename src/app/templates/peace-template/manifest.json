@@ -1,0 +1,94 @@
+{
+  "name": "Peace Template",
+  "slug": "peace-template",
+  "version": "1.0.0",
+  "description": "An elegant memorial template featuring life stages carousel, timeline, and sophisticated burgundy tones",
+  "author": "ForeverPages",
+  "category": "memorial",
+  "isPremium": true,
+  "previewImage": "/templates/peace-template/preview.png",
+  "thumbnailImage": "/templates/peace-template/thumbnail.png",
+  "sections": [
+    {
+      "id": "hero",
+      "name": "Hero Section",
+      "component": "HeroModern",
+      "required": true
+    },
+    {
+      "id": "biography",
+      "name": "Biography",
+      "component": "Biography",
+      "required": true
+    },
+    {
+      "id": "timeline",
+      "name": "Timeline",
+      "component": "TimelineHorizontal",
+      "required": false
+    },
+    {
+      "id": "gallery",
+      "name": "Gallery",
+      "component": "GalleryModern",
+      "required": false
+    },
+    {
+      "id": "family",
+      "name": "Family Tree",
+      "component": "FamilyTree",
+      "required": false
+    },
+    {
+      "id": "video",
+      "name": "Video Tributes",
+      "component": "VideoTributes",
+      "required": false
+    },
+    {
+      "id": "tributes",
+      "name": "Tributes",
+      "component": "TributesModern",
+      "required": false
+    }
+  ],
+  "supportedSections": [
+    "HERO",
+    "BIOGRAPHY",
+    "TIMELINE",
+    "GALLERY",
+    "FAMILY",
+    "VIDEO_TRIBUTES",
+    "TRIBUTES",
+    "DONATIONS"
+  ],
+  "features": [
+    "Life stages carousel",
+    "Horizontal timeline",
+    "Modern gallery grid",
+    "Family tree visualization",
+    "Video tributes section",
+    "Elegant color scheme"
+  ],
+  "layoutType": "modern",
+  "customization": {
+    "colors": {
+      "primary": "#722F37",
+      "secondary": "#4A2545",
+      "accent": "#D4AF37",
+      "background": "#F5F5F0",
+      "text": "#3D2020",
+      "muted": "#8B7E74"
+    },
+    "fonts": {
+      "heading": "Inter, sans-serif",
+      "body": "Inter, sans-serif",
+      "accent": "Playfair Display, serif"
+    },
+    "layout": {
+      "maxWidth": "1280px",
+      "heroHeight": "600px",
+      "sectionSpacing": "80px"
+    }
+  }
+}
