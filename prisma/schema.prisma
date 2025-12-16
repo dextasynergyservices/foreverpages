@@ -1037,16 +1037,20 @@ model Template {
   storagePath      String?
   // Stored manifest.json uploaded with the template (validated)
   manifest         Json?
-  buildCachePath   String?
+  buildCachePath   String?  // Legacy - optional
   typesPath        String?
   processingLogs   String? @db.Text
-  packageUrl       String?
+  packageUrl       String?  // Legacy - optional
   // Map of relative asset paths => uploaded public URLs (e.g., index.html, assets/*)
-  artifactAssets   Json?
-  processingLogsUrl String?
+  artifactAssets   Json?    // Legacy - optional
+  processingLogsUrl String? // Legacy - optional
   // GitHub PR metadata (Phase 3)
   prNumber String?
   prUrl    String?
+
+  // Next.js Template Support (Phase 2)
+  isNextJsTemplate Boolean @default(false)  // Flag for template type
+  configPath       String?                   // Path to config.ts (e.g., "templates/light-template/config")
 
   // Usage Statistics
   usageCount     Int      @default(0)
@@ -1274,8 +1278,8 @@ model UserTemplate {
   baseTemplate   Template @relation(fields: [baseTemplateId], references: [id], onDelete: Cascade)
 
   // User's custom configuration
-  config      Json?    // Colors, fonts, layout settings
-  sections    Json?    // Section ordering and customizations
+  customization Json?    // Colors, fonts, layout settings (DesignTokens)
+  sections      Json?    // Section ordering and customizations (SectionData)
 
   // Status
   isActive    Boolean  @default(true)
@@ -2080,7 +2084,8 @@ enum AnnouncementType {
 }
 
 enum PreviewMode {
-  AUTO
-  IFRAME
-  STATIC
+  AUTO      // Determine automatically
+  IFRAME    // Embed in iframe (legacy)
+  STATIC    // Serve static HTML (legacy)
+  NATIVE    // Next.js native page (new default)
 }

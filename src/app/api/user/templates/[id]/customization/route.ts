@@ -33,7 +33,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       where: { id: templateId },
       select: {
         userId: true,
-        config: true,
+        customization: true,
         memorials: {
           select: { id: true },
           take: 1,
@@ -66,24 +66,24 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       );
     }
 
-    // Merge new design tokens with existing config
-    const existingConfig = (userTemplate.config as Record<string, unknown>) || {};
+    // Merge new design tokens with existing customization
+    const existingCustomization = (userTemplate.customization as Record<string, unknown>) || {};
     const designTokens = {
-      colors: colors || existingConfig.colors,
-      fonts: fonts || existingConfig.fonts,
-      layout: layout || existingConfig.layout,
+      colors: colors || existingCustomization.colors,
+      fonts: fonts || existingCustomization.fonts,
+      layout: layout || existingCustomization.layout,
     };
 
     // Update the template with new design tokens
     const updatedTemplate = await prisma.userTemplate.update({
       where: { id: templateId },
       data: {
-        config: designTokens,
+        customization: designTokens,
       },
       select: {
         id: true,
         name: true,
-        config: true,
+        customization: true,
         updatedAt: true,
       },
     });
@@ -121,7 +121,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       select: {
         id: true,
         userId: true,
-        config: true,
+        customization: true,
         name: true,
         memorials: {
           select: { id: true },
@@ -160,7 +160,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         message: "Design tokens retrieved successfully",
         data: {
           templateId: userTemplate.id,
-          config: userTemplate.config,
+          customization: userTemplate.customization,
         },
       },
       { status: 200 }

@@ -98,6 +98,9 @@ export default function UploadTemplateDialog({
   const [previewManifest, setPreviewManifest] = useState<PreviewManifest>(null);
   const [preValidationErrors, setPreValidationErrors] = useState<string[]>([]);
   const [preValidationWarnings, setPreValidationWarnings] = useState<string[]>([]);
+  const [detectedTemplateType, setDetectedTemplateType] = useState<"nextjs" | "react-spa" | null>(
+    null
+  );
   type Steps = { extract: StepStatus; validate: StepStatus };
   const initialPreSteps: Steps = { extract: "idle", validate: "idle" };
   const [preSteps, setPreSteps] = useState<Steps>(initialPreSteps);
@@ -355,26 +358,96 @@ export default function UploadTemplateDialog({
         setPreSteps({ extract: "done", validate: "running" });
 
         const names = Object.keys(zip.files || {});
-        const required = ["config.json", "MemorialTemplate.tsx", "preview.png", "thumbnail.png"];
         const errors: string[] = [];
         const warnings: string[] = [];
-        for (const r of required)
-          if (!names.some((n) => n.endsWith(r))) errors.push(`Missing ${r}`);
 
-        // Try to read config.json if present
-        const cfgEntry = names.find((n) => n.toLowerCase().endsWith("config.json"));
-        if (cfgEntry) {
-          try {
-            const txt = await zip.files[cfgEntry].async("text");
-            const parsed = JSON.parse(txt);
-            setPreviewManifest(parsed);
-            if (!parsed.name) warnings.push("Manifest missing `name`");
-            if (!parsed.slug) warnings.push("Manifest missing `slug`");
-          } catch {
-            errors.push("Failed to parse config.json");
+        // Detect template type
+        const hasPageTsx = names.some((n) => n.endsWith("page.tsx"));
+        const hasManifestJson = names.some((n) => n.endsWith("manifest.json"));
+        const hasMemorialTemplate = names.some((n) => n.endsWith("MemorialTemplate.tsx"));
+        const hasConfigJson = names.some((n) => n.endsWith("config.json"));
+
+        if (hasPageTsx && hasManifestJson) {
+          // Next.js template validation
+          const required = ["page.tsx", "manifest.json"];
+          for (const r of required) {
+            if (!names.some((n) => n.endsWith(r))) errors.push(`Missing required file: ${r}`);
+          }
+
+          // Recommended files
+          if (!names.some((n) => n.endsWith("layout.tsx"))) {
+            warnings.push("Recommended file missing: layout.tsx");
+          }
+          if (!names.some((n) => n.endsWith("config.ts"))) {
+            warnings.push("Recommended file missing: config.ts");
+          }
+
+          // Try to read manifest.json
+          const manifestEntry = names.find((n) => n.toLowerCase().endsWith("manifest.json"));
+          if (manifestEntry) {
+            try {
+              const txt = await zip.files[manifestEntry].async("text");
+              const parsed = JSON.parse(txt);
+              setPreviewManifest(parsed);
+              if (!parsed.name) errors.push("manifest.json missing required field: name");
+              if (!parsed.slug) errors.push("manifest.json missing required field: slug");
+              if (!parsed.version) warnings.push("manifest.json missing version field");
+
+              // Check slug format
+              if (parsed.slug && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(parsed.slug)) {
+                errors.push("manifest.json: slug must be lowercase alphanumeric with hyphens only");
+              }
+            } catch {
+              errors.push("Failed to parse manifest.json");
+            }
+          }
+
+          // Check for public directory with preview images
+          const hasPublic = names.some((n) => n.includes("public/"));
+          if (!hasPublic) {
+            warnings.push("No public directory found for preview images");
+          } else {
+            if (!names.some((n) => n.includes("public/preview.png"))) {
+              warnings.push("No preview.png found in public directory");
+            }
+            if (!names.some((n) => n.includes("public/thumbnail.png"))) {
+              warnings.push("No thumbnail.png found in public directory");
+            }
+          }
+
+          if (!errors.length) {
+            warnings.unshift("✅ Next.js template detected");
+            setDetectedTemplateType("nextjs");
+          }
+        } else if (hasMemorialTemplate && hasConfigJson) {
+          setDetectedTemplateType("react-spa");
+          // React SPA template validation (legacy)
+          const required = ["config.json", "MemorialTemplate.tsx", "preview.png", "thumbnail.png"];
+          for (const r of required) {
+            if (!names.some((n) => n.endsWith(r))) errors.push(`Missing ${r}`);
+          }
+
+          // Try to read config.json
+          const cfgEntry = names.find((n) => n.toLowerCase().endsWith("config.json"));
+          if (cfgEntry) {
+            try {
+              const txt = await zip.files[cfgEntry].async("text");
+              const parsed = JSON.parse(txt);
+              setPreviewManifest(parsed);
+              if (!parsed.name) warnings.push("Manifest missing `name`");
+              if (!parsed.slug) warnings.push("Manifest missing `slug`");
+            } catch {
+              errors.push("Failed to parse config.json");
+            }
+          }
+
+          if (!errors.length) {
+            warnings.unshift("ℹ️ React SPA template detected (legacy)");
           }
         } else {
-          errors.push("Missing config.json");
+          errors.push(
+            "Unable to detect template type. Templates must have either (page.tsx + manifest.json) for Next.js or (MemorialTemplate.tsx + config.json) for React SPA"
+          );
         }
 
         setPreValidationErrors(errors);
@@ -407,13 +480,36 @@ export default function UploadTemplateDialog({
       onSuccess(data) {
         const tid =
           data && data.data && typeof data.data === "object"
-            ? (data.data.templateId as string | undefined)
+            ? ((data.data as { template?: { id?: string } }).template?.id as string | undefined) ||
+              (data.data.templateId as string | undefined)
             : undefined;
         setUploadedTemplateId(tid ?? null);
         try {
           if (tid) sessionStorage.setItem("lastUploadedTemplateId", tid);
         } catch {}
         setUploadStep("done");
+
+        // Check if it's a Next.js template response
+        const isNextJsTemplate =
+          data && typeof data === "object" && "templateType" in data
+            ? (data as { templateType?: string }).templateType === "nextjs"
+            : false;
+
+        // Get PR info for Next.js templates
+        if (isNextJsTemplate && data?.data && typeof data.data === "object") {
+          const dataObj = data.data as { pr?: { url?: string; number?: number } };
+          if (dataObj.pr?.url && dataObj.pr.number) {
+            setPrUrl(dataObj.pr.url);
+            setPrNumber(dataObj.pr.number.toString());
+            toast.success(
+              `✅ Next.js template uploaded! Pull Request #${dataObj.pr.number} created for review.`,
+              { duration: 10000 }
+            );
+            // Open PR in new tab
+            window.open(dataObj.pr.url, "_blank");
+          }
+        }
+
         // capture generated manifest from server response if present (defensive)
         const gm =
           data && data.data && typeof data.data === "object"
@@ -427,8 +523,14 @@ export default function UploadTemplateDialog({
         else setGeneratedManifest(null);
         if (Array.isArray(gn)) setGeneratedNotes(gn);
         else setGeneratedNotes(null);
-        // when server acknowledges upload, start processing step
-        setProcessStep("running");
+
+        // For Next.js templates, set process step to done immediately (PR created)
+        // For React SPA templates, start processing step
+        if (isNextJsTemplate) {
+          setProcessStep("done");
+        } else {
+          setProcessStep("running");
+        }
       },
       onError(err: unknown) {
         if (err && typeof err === "object") {
@@ -587,8 +689,22 @@ export default function UploadTemplateDialog({
         >
           <Dialog.Title className="text-lg font-semibold">Upload Template ZIP</Dialog.Title>
           <Dialog.Description className="text-sm text-muted-foreground">
-            Upload a template package with a manifest (config.json).
+            Upload a Next.js template (page.tsx + manifest.json) or React SPA template (config.json
+            + MemorialTemplate.tsx). A Pull Request will be created for code review before merging.
           </Dialog.Description>
+          {detectedTemplateType && (
+            <div className="mt-2 px-3 py-2 rounded bg-blue-50 dark:bg-blue-900/20 text-sm">
+              {detectedTemplateType === "nextjs" ? (
+                <span className="text-green-700 dark:text-green-400 font-medium">
+                  ✅ Next.js Template - PR will be created with files for src/app/templates/
+                </span>
+              ) : (
+                <span className="text-blue-700 dark:text-blue-400 font-medium">
+                  ℹ️ React SPA Template (Legacy) - Will be built and processed
+                </span>
+              )}
+            </div>
+          )}
 
           <div className="mt-4">
             <label className="block mb-2">Plans</label>
@@ -894,8 +1010,13 @@ export default function UploadTemplateDialog({
                   </a>
                 )}
                 {prUrl && (
-                  <a className="btn-outline" href={prUrl} target="_blank" rel="noreferrer">
-                    View PR
+                  <a
+                    className="btn bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+                    href={prUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    🔗 View Pull Request {prNumber && `#${prNumber}`}
                   </a>
                 )}
                 {publishUrl && (

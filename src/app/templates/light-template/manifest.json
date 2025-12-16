@@ -1,0 +1,69 @@
+{
+  "name": "Light Template",
+  "slug": "light-template",
+  "version": "1.0.0",
+  "description": "A spiritual memorial template with elegant animations and serene design",
+  "author": "ForeverPages",
+  "sections": [
+    {
+      "id": "hero",
+      "name": "Hero Section",
+      "component": "HeroSection",
+      "required": true
+    },
+    {
+      "id": "candles",
+      "name": "Candle Sanctuary",
+      "component": "CandleSanctuary",
+      "required": false
+    },
+    {
+      "id": "journey",
+      "name": "Life Journey",
+      "component": "LifeJourney",
+      "required": false
+    },
+    {
+      "id": "gallery",
+      "name": "Photo Gallery",
+      "component": "PhotoGallery",
+      "required": false
+    },
+    {
+      "id": "tributes",
+      "name": "Tributes",
+      "component": "TributeSection",
+      "required": false
+    },
+    {
+      "id": "condolence",
+      "name": "Condolence Book",
+      "component": "Condolence",
+      "required": false
+    }
+  ],
+  "features": [
+    "Animated starfield background",
+    "Video hero section",
+    "Interactive candle lighting",
+    "Photo gallery with lightbox",
+    "Timeline of life events",
+    "Tribute messages",
+    "Condolence book"
+  ],
+  "customization": {
+    "colors": {
+      "primary": "#D4AF37",
+      "background": "#0A0A0A"
+    },
+    "fonts": {
+      "heading": "Cinzel",
+      "body": "Lora",
+      "script": "Great Vibes"
+    }
+  },
+  "preview": {
+    "image": "/templates/light-template/preview.png",
+    "thumbnail": "/templates/light-template/thumbnail.png"
+  }
+}
