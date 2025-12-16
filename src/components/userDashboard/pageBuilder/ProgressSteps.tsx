@@ -79,11 +79,15 @@ export const ProgressSteps: React.FC<ProgressStepsProps> = ({
                   : `${theme === "dark" ? "border-white/20 bg-black text-white/70" : "border-gray-300 bg-white text-gray-400"}`
               }`}
             >
-              {index < currentStep ? <CheckCircle className="h-5 w-5" /> : <span>{index + 1}</span>}
+              {index < currentStep ? (
+                <CheckCircle className="md:h-5 md:w-5 h-2 w-2" />
+              ) : (
+                <span>{index + 1}</span>
+              )}
             </div>
             {index < steps.length - 1 && (
               <div
-                className={`w-10 md:w-16 h-0.5 mx-2 md:mx-4 ${
+                className={`w-5 md:w-10 md:w-16 h-0.5 mx-2 md:mx-4 ${
                   index < currentStep
                     ? theme === "dark"
                       ? "bg-white"

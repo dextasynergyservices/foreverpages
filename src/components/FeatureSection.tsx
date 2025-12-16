@@ -88,8 +88,8 @@ export const FeaturesSection: React.FC = () => {
       id="features"
       ref={sectionRef}
       className={cn(
-        "scroll-section relative min-h-screen w-full py-8 px-4 sm:px-6 lg:px-8",
-        theme === "dark" ? "bg-black/80" : "bg-white/80"
+        "relative w-full py-16 px-4 sm:px-6 lg:px-8",
+        theme === "dark" ? "bg-black text-white" : "bg-white text-black"
       )}
     >
       {/* Animated dot layers */}

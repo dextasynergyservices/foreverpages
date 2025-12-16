@@ -13,6 +13,8 @@ import ReCAPTCHA from "react-google-recaptcha";
 import toast from "react-hot-toast";
 import { LoadingSpinner, AuthFormSkeleton } from "@/components/ui/skeleton";
 import { signIn } from "next-auth/react";
+import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 export default function RegisterPage() {
   const { theme } = useTheme();
@@ -43,6 +45,7 @@ export default function RegisterPage() {
     memorial: string;
     invitation: string;
   } | null>(null);
+  const [phoneValue, setPhoneValue] = useState<string>("");
 
   // Load payment ID and verify payment OR check for collaborator signup
   useEffect(() => {
@@ -135,9 +138,44 @@ export default function RegisterPage() {
     }
   };
 
+  const handlePhoneChange = (value: string | undefined) => {
+    const phoneNumber = value || "";
+    setPhoneValue(phoneNumber);
+    setFormData((prev) => {
+      const newData = { ...prev, phone: phoneNumber };
+      localStorage.setItem("signupFormData", JSON.stringify(newData));
+      return newData;
+    });
+
+    // Validate phone number in real-time
+    if (phoneNumber) {
+      if (!isValidPhoneNumber(phoneNumber)) {
+        setErrors((prev) => ({ ...prev, phone: "Please enter a valid phone number" }));
+      } else {
+        setErrors((prev) => ({ ...prev, phone: "" }));
+      }
+    } else {
+      setErrors((prev) => ({ ...prev, phone: "" }));
+    }
+  };
+
   const handleBlur = (field: keyof RegisterInput) => {
     setTouched((prev) => ({ ...prev, [field]: true }));
-    // Real-time validation on blur
+
+    // For phone field, use custom validation
+    if (field === "phone") {
+      if (formData.phone && !isValidPhoneNumber(formData.phone)) {
+        setErrors((prev) => ({
+          ...prev,
+          [field]: "Please enter a valid phone number",
+        }));
+      } else {
+        setErrors((prev) => ({ ...prev, [field]: "" }));
+      }
+      return;
+    }
+
+    // Real-time validation for other fields
     const fieldResult = registerSchema.shape[field].safeParse(formData[field]);
     if (!fieldResult.success) {
       setErrors((prev) => ({
@@ -171,6 +209,13 @@ export default function RegisterPage() {
   };
 
   const validateForm = () => {
+    // Custom validation for phone
+    if (formData.phone && !isValidPhoneNumber(formData.phone)) {
+      setErrors((prev) => ({ ...prev, phone: "Please enter a valid phone number" }));
+      toast.error("Please enter a valid phone number");
+      return false;
+    }
+
     const result = registerSchema.safeParse(formData);
     if (!result.success) {
       const newErrors: Partial<Record<keyof RegisterInput | "recaptcha", string>> = {};
@@ -382,30 +427,50 @@ export default function RegisterPage() {
               </label>
               <div className="relative">
                 <Phone
-                  className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${theme === "dark" ? "text-white" : "text-black"}`}
+                  className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${theme === "dark" ? "text-white" : "text-black"} z-10`}
                 />
-                <input
-                  id="phone"
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
+                <PhoneInput
+                  international
+                  defaultCountry="US"
+                  value={phoneValue}
+                  onChange={handlePhoneChange}
                   onBlur={() => handleBlur("phone")}
-                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
-                    theme === "dark" ? "bg-black text-white" : "bg-white text-black"
-                  } ${
-                    getFieldStatus("phone") === "error"
-                      ? "border-red-500 bg-red-50"
-                      : getFieldStatus("phone") === "success"
-                        ? "border-green-500 bg-green-50"
+                  className={`
+                    react-phone-input-wrapper
+                    w-full pl-10 pr-4 py-1 border rounded-lg focus:outline-none focus:ring-2 transition-colors
+                    ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}
+                    ${
+                      errors.phone
+                        ? "border-red-500 bg-red-50"
                         : theme === "dark"
                           ? "border-white/70 focus:ring-white"
                           : "border-gray-300 focus:ring-black"
-                  }`}
-                  placeholder={t("register.placeholders.phone")}
+                    }
+                  `}
+                  numberInputProps={{
+                    className: `w-full py-3 focus:outline-none ${
+                      theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+                    }`,
+                  }}
+                  countrySelectProps={{
+                    className: `py-2 ${
+                      theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+                    }`,
+                  }}
+                  style={
+                    {
+                      "--PhoneInputCountryFlag-height": "20px",
+                      "--PhoneInputCountryFlag-width": "30px",
+                      "--PhoneInputCountrySelectArrow-width": "8px",
+                      "--PhoneInputCountrySelectArrow-height": "8px",
+                    } as React.CSSProperties
+                  }
                 />
               </div>
               {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone}</p>}
+              <p className={`mt-1 text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+                Include country code (e.g., +1 for US)
+              </p>
             </div>
 
             <div>
@@ -601,6 +666,23 @@ export default function RegisterPage() {
         >
           <p>{t("register.tagline")}</p>
         </div>
+
+        {/* Add this style tag at the bottom of your component */}
+        <style jsx global>{`
+          .PhoneInputCountryIcon {
+            --PhoneInputCountryFlag-height: 10px !important;
+            --PhoneInputCountryFlag-width: 10px !important;
+          }
+          .PhoneInputCountrySelectArrow {
+            width: 3px !important;
+            height: 5px !important;
+            border-width: 0 2px 2px 0 !important;
+          }
+          .PhoneInputCountry {
+            padding: 0 8px !important;
+            align-items: center !important;
+          }
+        `}</style>
       </div>
     </div>
   );

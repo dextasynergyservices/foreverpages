@@ -6,6 +6,7 @@ import { useTranslations } from "@/hooks/useTranslations";
 import { Button } from "@/components/ui/button";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { cn } from "@/lib/utils";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -60,8 +61,12 @@ export const CTASection: React.FC = () => {
 
   return (
     <section
+      id="cta"
       ref={sectionRef}
-      className="scroll-section min-h-screen w-full relative flex items-center justify-center overflow-hidden section-bg"
+      className={cn(
+        "relative w-full py-16 px-4 sm:px-6 lg:px-8",
+        theme === "dark" ? "bg-black/95 text-white" : "bg-white text-black"
+      )}
     >
       {/* Animated Background */}
       <div

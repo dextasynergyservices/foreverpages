@@ -100,20 +100,18 @@ export const Navbar: React.FC = () => {
           ? displayTheme === "dark"
             ? "bg-white backdrop-blur-md shadow-sm text-gray-900"
             : "bg-black backdrop-blur-md shadow-sm text-white"
-          : "bg-transparent text-foreground"
+          : "bg-black backdrop-blur-md shadow-sm text-white"
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-2">
           <Heart
-            className={`h-8 w-8 transition-colors ${
-              isScrolled ? "text-primary" : displayTheme === "dark" ? "text-white" : "text-gray-900"
-            }`}
+            className={`h-8 w-8 transition-colors ${isScrolled ? "text-primary" : "text-white"}`}
           />
           <h1
             className={`text-2xl font-serif font-bold transition-colors ${
-              isScrolled ? "" : displayTheme === "dark" ? "text-white" : "text-gray-900"
+              isScrolled ? "" : "text-white"
             }`}
           >
             {t("navbar.logo")}
@@ -125,11 +123,7 @@ export const Navbar: React.FC = () => {
           <Link
             href="/"
             className={`transition-all duration-300 hover:opacity-100 ${
-              isScrolled
-                ? "opacity-80"
-                : displayTheme === "dark"
-                  ? "text-white/90 hover:text-white"
-                  : "text-gray-900/90 hover:text-gray-900"
+              isScrolled ? "opacity-80" : "text-white/90 hover:text-white"
             }`}
           >
             {t("navbar.navigation.home")}
@@ -138,11 +132,7 @@ export const Navbar: React.FC = () => {
           <Link
             href="/memorial-pages"
             className={`transition-all duration-300 hover:opacity-100 ${
-              isScrolled
-                ? "opacity-80"
-                : displayTheme === "dark"
-                  ? "text-white/90 hover:text-white"
-                  : "text-gray-900/90 hover:text-gray-900"
+              isScrolled ? "opacity-80" : "text-white/90 hover:text-white"
             }`}
           >
             {t("navbar.navigation.memorials")}
@@ -152,11 +142,7 @@ export const Navbar: React.FC = () => {
             href="/#how-it-works"
             onClick={handleHowItWorksClick}
             className={`transition-all duration-300 hover:opacity-100 ${
-              isScrolled
-                ? "opacity-80"
-                : displayTheme === "dark"
-                  ? "text-white/90 hover:text-white"
-                  : "text-gray-900/90 hover:text-gray-900"
+              isScrolled ? "opacity-80" : "text-white/90 hover:text-white"
             }`}
           >
             {t("navbar.navigation.howItWorks")}
@@ -165,11 +151,7 @@ export const Navbar: React.FC = () => {
             href="/#contact"
             onClick={handleContactClick}
             className={`transition-all duration-300 hover:opacity-100 ${
-              isScrolled
-                ? "opacity-80"
-                : displayTheme === "dark"
-                  ? "text-white/90 hover:text-white"
-                  : "text-gray-900/90 hover:text-gray-900"
+              isScrolled ? "opacity-80" : "text-white/90 hover:text-white"
             }`}
           >
             {t("navbar.navigation.support")}
@@ -184,9 +166,7 @@ export const Navbar: React.FC = () => {
                       ? displayTheme === "dark"
                         ? "border-gray-300 bg-white text-gray-900 hover:bg-gray-100"
                         : "border-gray-600 bg-black text-white hover:bg-gray-900"
-                      : displayTheme === "dark"
-                        ? "border-white/50 bg-transparent text-white hover:bg-white/10"
-                        : "border-gray-900/50 bg-transparent text-gray-900 hover:bg-gray-900/10"
+                      : "border-white/50 bg-transparent text-white hover:bg-white/10"
                   }`}
                 >
                   <Avatar className="h-8 w-8">
@@ -225,9 +205,7 @@ export const Navbar: React.FC = () => {
                   ? displayTheme === "dark"
                     ? "border-gray-300 bg-white text-gray-900 hover:bg-gray-100"
                     : "border-gray-600 bg-black text-white hover:bg-gray-900"
-                  : displayTheme === "dark"
-                    ? "border-white/50 bg-transparent text-white hover:bg-white/10"
-                    : "border-gray-900/50 bg-transparent text-gray-900 hover:bg-gray-900/10"
+                  : "border-white/50 bg-transparent text-white hover:bg-white/10"
               }`}
               href="/auth/login"
             >
@@ -240,9 +218,7 @@ export const Navbar: React.FC = () => {
                 ? displayTheme === "dark"
                   ? "border-gray-300 bg-white text-gray-900 hover:bg-gray-100"
                   : "border-gray-600 bg-black text-white hover:bg-gray-900"
-                : displayTheme === "dark"
-                  ? "border-white/50 bg-transparent text-white hover:bg-white/10"
-                  : "border-gray-900/50 bg-transparent text-gray-900 hover:bg-gray-900/10"
+                : "border-black/50 bg-transparent text-white hover:bg-white/10"
             }`}
             size="md"
           />
@@ -258,9 +234,7 @@ export const Navbar: React.FC = () => {
                     ? displayTheme === "dark"
                       ? "border-black bg-white text-black hover:bg-black/80"
                       : "border-white bg-black text-white hover:bg-white"
-                    : displayTheme === "dark"
-                      ? "border-white bg-transparent text-white hover:bg-white"
-                      : "border-black bg-transparent text-black hover:bg-black/80"
+                    : "border-white bg-transparent text-white hover:bg-white"
                 }`}
                 // Provide a stable aria-controls/id pairing to avoid Radix auto-id
                 // mismatches between server and client during hydration.
@@ -275,8 +249,8 @@ export const Navbar: React.FC = () => {
               side="right"
               className={`w-[300px] sm:w-[400px] transition-colors ${
                 displayTheme === "dark"
-                  ? "bg-white backdrop-blur-lg border-black text-black"
-                  : "bg-black backdrop-blur-lg border-white text-white"
+                  ? "bg-black backdrop-blur-lg border-white text-white"
+                  : "bg-white backdrop-blur-lg border-black text-black"
               }`}
             >
               {/* Add SheetHeader with visually hidden title for accessibility */}
@@ -322,12 +296,10 @@ export const Navbar: React.FC = () => {
                 </Link>
 
                 <div className="flex items-center gap-4">
-                  <LanguageSwitcher />
+                  <LanguageSwitcher inSheet />
                   <ThemeToggle
                     className={`h-9 w-9 inline-flex items-center justify-center rounded-md border transition-colors ${
-                      displayTheme === "dark"
-                        ? "border-gray-300 text-gray-900 hover:bg-gray-100"
-                        : "border-gray-600 text-white hover:bg-gray-900"
+                      displayTheme === "dark" ? "text-white" : "text-black"
                     }`}
                     size="md"
                   />

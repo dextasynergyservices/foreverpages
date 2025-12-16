@@ -191,8 +191,8 @@ export const HowItWorksSection: React.FC = () => {
         id="how-it-works"
         ref={sectionRef}
         className={cn(
-          "scroll-section relative min-h-screen w-full py-16 px-4 sm:px-6 lg:px-8",
-          "section-bg section-bg--stars"
+          "relative w-full py-16 px-4 sm:px-6 lg:px-8",
+          theme === "dark" ? "bg-black/80 text-white" : "bg-white text-black"
         )}
       >
         {/* Optimized Stars Background */}
