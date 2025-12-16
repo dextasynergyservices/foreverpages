@@ -22,7 +22,7 @@ interface Memorial {
   };
   userTemplate?: {
     id: string;
-    config: unknown;
+    customization: unknown;
     sections: unknown;
     baseTemplate: {
       id: string;

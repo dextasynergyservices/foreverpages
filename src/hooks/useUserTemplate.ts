@@ -11,7 +11,7 @@ export interface UserTemplate {
     previewImage: string;
     supportedSections: string[];
   };
-  config: Record<string, unknown> | null;
+  customization: Record<string, unknown> | null;
   sections: Record<string, unknown> | null;
   isPublished: boolean;
   createdAt: string;
@@ -30,7 +30,7 @@ export interface CreateUserTemplateData {
 }
 
 export interface UpdateUserTemplateData {
-  config?: Record<string, unknown>;
+  customization?: Record<string, unknown>;
   sections?: Record<string, unknown>;
   name?: string;
 }

@@ -11,6 +11,7 @@ import path from "path";
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
+    console.log(`[html-route] Fetching template HTML for ID: ${id}`);
 
     // Get template info including built artifacts
     const template = await prisma.template.findUnique({
@@ -24,11 +25,23 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     });
 
     if (!template) {
+      console.log(`[html-route] Template not found: ${id}`);
       return new NextResponse("Template not found", { status: 404 });
     }
 
+    console.log(
+      `[html-route] Template found: ${template.name}, status: ${template.processingStatus}`
+    );
+
     // Check if template has built artifacts from GitHub Actions
     const artifacts = template.artifactAssets as Record<string, string> | null;
+    console.log(
+      `[html-route] Has artifacts: ${!!artifacts}, Has index.html: ${!!(artifacts && artifacts["index.html"])}`
+    );
+
+    if (artifacts && Object.keys(artifacts).length > 0) {
+      console.log(`[html-route] Artifact files:`, Object.keys(artifacts));
+    }
 
     if (artifacts && artifacts["index.html"]) {
       // Fetch the HTML from Cloudinary and rewrite asset paths
@@ -40,37 +53,35 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
         let html = await htmlResponse.text();
 
-        // Rewrite asset paths to absolute Cloudinary URLs using literal string replacement
-        // This is more reliable than regex and handles all quote types and path variations
+        console.log("[html-route] Original HTML length:", html.length);
+
+        // Rewrite asset paths to absolute Cloudinary URLs
+        // Handle both relative paths (assets/file.js) and absolute paths (/assets/file.js)
         Object.entries(artifacts).forEach(([filePath, url]) => {
-          // Handle all common attribute patterns with both quote types
-          const replacements = [
-            // With leading slash
-            [`src="/${filePath}"`, `src="${url}"`],
-            [`src='/${filePath}'`, `src='${url}'`],
-            [`href="/${filePath}"`, `href="${url}"`],
-            [`href='/${filePath}'`, `href='${url}'`],
-            // Without leading slash
-            [`src="${filePath}"`, `src="${url}"`],
-            [`src='${filePath}'`, `src='${url}'`],
-            [`href="${filePath}"`, `href="${url}"`],
-            [`href='${filePath}'`, `href='${url}'`],
-            // Data attributes and other common patterns
-            [`data-src="/${filePath}"`, `data-src="${url}"`],
-            [`data-src='/${filePath}'`, `data-src='${url}'`],
-            [`data-src="${filePath}"`, `data-src="${url}"`],
-            [`data-src='${filePath}'`, `data-src='${url}'`],
-            // Srcset (common in responsive images)
-            [`srcset="/${filePath}"`, `srcset="${url}"`],
-            [`srcset='/${filePath}'`, `srcset='${url}'`],
-            [`srcset="${filePath}"`, `srcset="${url}"`],
-            [`srcset='${filePath}'`, `srcset='${url}'`],
+          // Normalize the file path - remove leading slash if present for comparison
+          const normalizedPath = filePath.startsWith("/") ? filePath.slice(1) : filePath;
+
+          // Create variations of the path to search for
+          const pathVariations = [
+            `"/${normalizedPath}"`, // "/assets/file.js"
+            `'/${normalizedPath}'`, // '/assets/file.js'
+            `"${normalizedPath}"`, // "assets/file.js"
+            `'${normalizedPath}'`, // 'assets/file.js'
           ];
 
-          replacements.forEach(([search, replace]) => {
-            html = html.replaceAll(search, replace);
+          // Replace in various attribute contexts
+          const attributes = ["src", "href", "data-src", "srcset"];
+
+          attributes.forEach((attr) => {
+            pathVariations.forEach((pathVar) => {
+              const search = `${attr}=${pathVar}`;
+              const replace = `${attr}="${url}"`;
+              html = html.replaceAll(search, replace);
+            });
           });
         });
+
+        console.log("[html-route] Rewritten HTML length:", html.length);
 
         return new NextResponse(html, {
           headers: {

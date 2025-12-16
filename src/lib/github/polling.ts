@@ -32,7 +32,9 @@ export async function checkTemplateBuildStatus(
       return { runId: null, status: "unknown", conclusion: null, url: null };
     }
 
-    console.log(`[gh-polling] WARNING: Using polling fallback for ${templateId} - this is less reliable than callback`);
+    console.log(
+      `[gh-polling] WARNING: Using polling fallback for ${templateId} - this is less reliable than callback`
+    );
 
     // Query recent template-build workflow runs
     const url = `${GITHUB_API}/repos/${REPO}/actions/runs?event=repository_dispatch&status=completed&per_page=50`;
@@ -75,8 +77,12 @@ export async function checkTemplateBuildStatus(
     for (const run of data.workflow_runs) {
       const runTime = new Date(run.created_at).getTime();
       if (runTime >= cutoff && run.name === "Build Template") {
-        console.log(`[gh-polling] Found recent completed run: ${run.id} (conclusion: ${run.conclusion})`);
-        console.log(`[gh-polling] WARNING: Cannot verify if run ${run.id} matches templateId ${templateId}`);
+        console.log(
+          `[gh-polling] Found recent completed run: ${run.id} (conclusion: ${run.conclusion})`
+        );
+        console.log(
+          `[gh-polling] WARNING: Cannot verify if run ${run.id} matches templateId ${templateId}`
+        );
 
         return {
           runId: String(run.id),

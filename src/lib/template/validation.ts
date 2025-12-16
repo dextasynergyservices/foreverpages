@@ -11,6 +11,7 @@ import Ajv from "ajv";
 import schema from "./schemas/config.schema.json";
 import { scanFileForSecurity, SecurityFinding } from "./securityScan";
 import { uploadToCloudinary } from "../cloudinary";
+import { validateNextJsTemplate } from "./nextjs-validator";
 
 const ajv = new Ajv();
 const validateSchema = ajv.compile(schema as object);
@@ -21,6 +22,7 @@ export interface TemplateValidationResult {
   warnings: string[];
   manifest?: unknown;
   tempDir?: string;
+  templateType?: "nextjs" | "react-spa";
   uploaded?: {
     preview?: { public_id: string; url: string };
     thumbnail?: { public_id: string; url: string };
@@ -69,21 +71,53 @@ export async function validateAndExtractZip(
       }
     }
 
-    // quick required-file check
-    const found: Record<string, boolean> = {};
-    for (const r of REQUIRED_FILES) found[r] = false;
+    // Detect template type before validating required files
+    let isNextJs = false;
+    let isReactSpa = false;
+    const fileMap: Record<string, boolean> = {};
+
     for (const e of entries) {
       if (e.isDirectory) continue;
       const normalized = e.entryName.replace(/^\/+/, "");
       const parts = normalized.split(/\\|\//).filter(Boolean);
       const name = parts.slice(parts[0] === commonPrefix ? 1 : 0).join("/");
-      if (found.hasOwnProperty(name)) found[name] = true;
+      fileMap[name] = true;
     }
-    for (const r of REQUIRED_FILES)
-      if (!found[r]) result.errors.push(`Missing required file: ${r}`);
-    if (result.errors.length) {
+
+    // Check for Next.js markers
+    if (fileMap["page.tsx"] && fileMap["manifest.json"]) {
+      isNextJs = true;
+      result.templateType = "nextjs";
+    }
+    // Check for React SPA markers
+    else if (fileMap["MemorialTemplate.tsx"] && fileMap["config.json"]) {
+      isReactSpa = true;
+      result.templateType = "react-spa";
+    }
+
+    // Validate required files based on template type
+    if (!isNextJs && !isReactSpa) {
+      result.errors.push(
+        "Unable to detect template type. Templates must have either (page.tsx + manifest.json) for Next.js or (MemorialTemplate.tsx + config.json) for React SPA"
+      );
       await cleanupExtractionBase(tmpBase);
       return result;
+    }
+
+    // React SPA validation (legacy)
+    if (isReactSpa) {
+      const found: Record<string, boolean> = {};
+      for (const r of REQUIRED_FILES) found[r] = false;
+      for (const [name] of Object.entries(fileMap)) {
+        if (found.hasOwnProperty(name)) found[name] = true;
+      }
+      for (const r of REQUIRED_FILES) {
+        if (!found[r]) result.errors.push(`Missing required file for React SPA: ${r}`);
+      }
+      if (result.errors.length) {
+        await cleanupExtractionBase(tmpBase);
+        return result;
+      }
     }
 
     // Pre-extraction zip entry size checks (reject huge entries)
@@ -128,7 +162,73 @@ export async function validateAndExtractZip(
       }
     }
 
-    // manifest validation
+    // Next.js template validation (skip React SPA validation)
+    if (isNextJs) {
+      const nextJsValidation = await validateNextJsTemplate(extractionDir);
+
+      result.errors.push(...nextJsValidation.errors);
+      result.warnings.push(...nextJsValidation.warnings);
+
+      if (nextJsValidation.manifest) {
+        result.manifest = nextJsValidation.manifest;
+      }
+
+      // Upload preview images if they exist
+      const uploaded: TemplateValidationResult["uploaded"] = {};
+      try {
+        const publicPath = path.join(extractionDir, "public");
+        if (fs.existsSync(publicPath)) {
+          const previewPath = path.join(publicPath, "preview.png");
+          const thumbnailPath = path.join(publicPath, "thumbnail.png");
+
+          const uploadImage = async (imgPath: string, key: "preview" | "thumbnail") => {
+            if (fs.existsSync(imgPath)) {
+              try {
+                const res = await uploadToCloudinary(imgPath, {
+                  folder: `templates/${getManifestSlug(result.manifest)}`,
+                });
+                uploaded[key] = { public_id: res.public_id, url: res.secure_url };
+              } catch (err) {
+                result.warnings.push(
+                  `Failed to upload ${key}: ${err instanceof Error ? err.message : String(err)}`
+                );
+              }
+            }
+          };
+
+          await uploadImage(previewPath, "preview");
+          await uploadImage(thumbnailPath, "thumbnail");
+        }
+      } catch {
+        result.warnings.push("Image processing failed");
+      }
+
+      // Upload package
+      try {
+        const packRes = await uploadToCloudinary(zipBuffer, {
+          folder: `templates/${getManifestSlug(result.manifest)}`,
+          resourceType: "raw",
+        });
+        uploaded.package = { public_id: packRes.public_id, url: packRes.secure_url };
+      } catch (err) {
+        result.errors.push(
+          `Failed to upload package: ${err instanceof Error ? err.message : String(err)}`
+        );
+      }
+
+      result.uploaded = uploaded;
+      result.isValid = result.errors.length === 0;
+
+      if (result.isValid) {
+        result.tempDir = extractionDir;
+        return result;
+      } else {
+        await cleanupExtractionBase(tmpBase);
+        return result;
+      }
+    }
+
+    // React SPA manifest validation (legacy)
     const manifestCandidates = [
       path.join(extractionDir, "config.json"),
       path.join(extractionDir, commonPrefix || "", "config.json"),

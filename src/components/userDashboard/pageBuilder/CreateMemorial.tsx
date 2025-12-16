@@ -92,8 +92,8 @@ const CreateMemorial = () => {
       setSelectedTemplate(editTemplate.baseTemplateId);
 
       // Set design tokens
-      if (editTemplate.config) {
-        setDesignTokens(editTemplate.config as unknown as DesignTokens);
+      if (editTemplate.customization) {
+        setDesignTokens(editTemplate.customization as unknown as DesignTokens);
       }
 
       // Set section data

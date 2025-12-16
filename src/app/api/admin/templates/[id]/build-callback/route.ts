@@ -207,7 +207,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
                 `[build-callback] Available files: ${Object.keys(builtAssets).slice(0, 10).join(", ")}...`
               );
             }
-            
+
             console.log(
               `[build-callback] ⏱️  Total build process time: ${Date.now() - buildProcessStart}ms`
             );
@@ -331,10 +331,6 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             );
           }
 
-<<<<<<< Updated upstream
-          // Update template with all assets
-          console.log(`[build-callback] Updating template with assets and build artifacts`);
-=======
           // Process built dist folder and upload to Cloudinary
           console.log(`[build-callback] Processing built template files for ${id}`);
           const distPath = path.join(tmpBase, "dist");
@@ -363,7 +359,6 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           console.log(`[build-callback] Asset processing complete for template ${id}`);
 
           // Update template with asset URLs only (PR already created by queue)
->>>>>>> Stashed changes
           await prisma.template.update({
             where: { id },
             data: {
@@ -397,15 +392,19 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
               where: { id },
               select: { slug: true, name: true },
             });
-            
+
             if (template) {
               const branchName = `template/${template.slug}-${Date.now()}`;
-              const configJsonContent = JSON.stringify({
-                name: template.name,
-                slug: template.slug,
-                description: `Template: ${template.name}`,
-              }, null, 2);
-              
+              const configJsonContent = JSON.stringify(
+                {
+                  name: template.name,
+                  slug: template.slug,
+                  description: `Template: ${template.name}`,
+                },
+                null,
+                2
+              );
+
               // Download all built files from Cloudinary and prepare for PR
               const files = [
                 {
@@ -413,9 +412,11 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
                   content: configJsonContent,
                 },
               ];
-              
-              console.log(`[build-callback] Downloading ${Object.keys(builtAssets).length} files from Cloudinary for PR`);
-              
+
+              console.log(
+                `[build-callback] Downloading ${Object.keys(builtAssets).length} files from Cloudinary for PR`
+              );
+
               // Download each built file and add to PR
               for (const [filePath, url] of Object.entries(builtAssets)) {
                 try {
@@ -426,17 +427,21 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
                       path: `src/app/templates/${template.slug}/${filePath}`,
                       content,
                     });
-                    console.log(`[build-callback] ✓ Downloaded ${filePath} (${content.length} bytes)`);
+                    console.log(
+                      `[build-callback] ✓ Downloaded ${filePath} (${content.length} bytes)`
+                    );
                   } else {
-                    console.warn(`[build-callback] Failed to download ${filePath}: ${response.status}`);
+                    console.warn(
+                      `[build-callback] Failed to download ${filePath}: ${response.status}`
+                    );
                   }
                 } catch (downloadError) {
                   console.warn(`[build-callback] Error downloading ${filePath}:`, downloadError);
                 }
               }
-              
+
               console.log(`[build-callback] Creating PR with ${files.length} files`);
-              
+
               const pr = await createPrForTemplate(
                 branchName,
                 files,
@@ -444,12 +449,12 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
                 `Auto-generated PR for template \`${template.slug}\`\n\nTemplate ID: ${id}\nBuilt files: ${Object.keys(builtAssets).length}\nFiles in PR: ${files.length}`,
                 "develop"
               );
-              
+
               if (pr) {
                 prUrl = pr.url;
                 prNumber = String(pr.number);
                 console.log(`[build-callback] ✓ PR created: ${prUrl}`);
-                
+
                 // Update template with PR info
                 await prisma.template.update({
                   where: { id },
