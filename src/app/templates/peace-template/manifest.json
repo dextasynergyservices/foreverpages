@@ -1,0 +1,30 @@
+{
+  "name": "Peace Template",
+  "slug": "peace-template",
+  "version": "1.0.0",
+  "description": "An elegant memorial template featuring life stages carousel, timeline, and sophisticated burgundy tones",
+  "author": "ForeverPages",
+  "category": "memorial",
+  "isPremium": true,
+  "previewImage": "/templates/peace-template/preview.png",
+  "thumbnailImage": "/templates/peace-template/thumbnail.png",
+  "supportedSections": [
+    "HERO",
+    "BIOGRAPHY",
+    "TIMELINE",
+    "GALLERY",
+    "FAMILY",
+    "VIDEO_TRIBUTES",
+    "TRIBUTES",
+    "DONATIONS"
+  ],
+  "features": [
+    "Life stages carousel",
+    "Horizontal timeline",
+    "Modern gallery grid",
+    "Family tree visualization",
+    "Video tributes section",
+    "Elegant color scheme"
+  ],
+  "layoutType": "modern"
+}
