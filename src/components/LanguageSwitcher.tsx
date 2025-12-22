@@ -176,7 +176,9 @@ export const LanguageSwitcherCompact: React.FC = () => {
             ? displayTheme === "dark"
               ? "text-white hover:bg-white/10"
               : "text-gray-700 hover:bg-gray-100"
-            : "text-white hover:bg-white/10"
+            : displayTheme === "dark"
+              ? "text-white hover:bg-white/10"
+              : "text-gray-700 hover:bg-gray-100"
         )}
       >
         <span className="text-base">{currentLanguage.flag}</span>

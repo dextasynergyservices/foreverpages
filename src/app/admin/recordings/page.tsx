@@ -388,7 +388,7 @@ export default function RecordingsPage() {
                   </TableCell>
                   <TableCell>
                     <Link
-                      href={`/memorial/${recording.memorialSlug}`}
+                      href={`/${recording.memorialSlug}`}
                       target="_blank"
                       className="font-medium text-purple-600 hover:underline dark:text-purple-400"
                     >

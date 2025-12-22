@@ -137,7 +137,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { slug: stri
     // Verify ownership
     const memorial = await prisma.memorial.findUnique({
       where: { slug },
-      select: { id: true, ownerId: true },
+      select: { id: true, ownerId: true, isPublished: true, publishedAt: true },
     });
 
     if (!memorial) {
@@ -151,17 +151,34 @@ export async function PATCH(req: NextRequest, { params }: { params: { slug: stri
     const body = await req.json();
     const { isPublished, ...updateData } = body;
 
+    // Build the update data using Prisma's types
+    const baseUpdateData = {
+      ...updateData,
+      lastEditedBy: session.user.id,
+      lastEditedAt: new Date(),
+      version: { increment: 1 },
+    };
+
+    // Handle publish/unpublish logic
+    if (typeof isPublished === "boolean") {
+      if (isPublished) {
+        // Publishing: set isPublished and publishedAt if not already published
+        baseUpdateData.isPublished = true;
+        if (!memorial.isPublished && !memorial.publishedAt) {
+          baseUpdateData.publishedAt = new Date();
+        }
+      } else {
+        // Unpublishing: clear isPublished, slug, and publishedAt to return to draft state
+        baseUpdateData.isPublished = false;
+        baseUpdateData.slug = { set: null };
+        baseUpdateData.publishedAt = { set: null };
+      }
+    }
+
     // Update memorial
     const updatedMemorial = await prisma.memorial.update({
       where: { slug },
-      data: {
-        ...updateData,
-        ...(typeof isPublished === "boolean" && { isPublished }),
-        lastEditedBy: session.user.id,
-        lastEditedAt: new Date(),
-        version: { increment: 1 },
-        ...(isPublished && !memorial.id && { publishedAt: new Date() }),
-      },
+      data: baseUpdateData,
     });
 
     return NextResponse.json({

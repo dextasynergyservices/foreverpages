@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useTheme } from "@/hooks/useTheme";
 import { AvailableTemplate, SubscriptionInfo } from "@/hooks/useAvailableTemplates";
 import { TemplatePreviewModal } from "./TemplatePreviewModal";
+import { GridSkeleton } from "@/components/ui/skeleton-loader";
+import { ErrorMessage } from "@/components/ui/error-message";
 
 interface Template {
   id: string;
@@ -22,6 +24,9 @@ interface TemplateSelectionProps {
   subscription?: SubscriptionInfo;
   userHasPublished?: boolean;
   disabled?: boolean;
+  isLoading?: boolean;
+  error?: Error | null;
+  onRetry?: () => void;
 }
 
 export const TemplateSelection: React.FC<TemplateSelectionProps> = ({
@@ -29,6 +34,9 @@ export const TemplateSelection: React.FC<TemplateSelectionProps> = ({
   setSelectedTemplate,
   templates,
   availableTemplates,
+  isLoading = false,
+  error = null,
+  onRetry,
   subscription,
   userHasPublished,
   disabled,
@@ -133,6 +141,28 @@ export const TemplateSelection: React.FC<TemplateSelectionProps> = ({
       </div>
     );
   };
+
+  // Handle loading state
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <GridSkeleton count={6} type="template" />
+      </div>
+    );
+  }
+
+  // Handle error state
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <ErrorMessage
+          message={error.message || "Failed to load templates"}
+          onRetry={onRetry}
+          variant="error"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

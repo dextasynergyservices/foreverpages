@@ -1,36 +1,36 @@
 "use client";
 
-import { Button } from './button'
-import { useState, useEffect } from 'react'
-import { DonateModal } from './DonateModal'
+import { Button } from "./button";
+import { useState, useEffect } from "react";
+import { DonateModal } from "./DonateModal";
 
 export const Navbar = () => {
-  const [showDonate, setShowDonate] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
+  const [showDonate, setShowDonate] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   // Add scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id)
+    const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+      element.scrollIntoView({ behavior: "smooth" });
     }
-  }
+  };
 
   return (
     <>
       <nav
         className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'border-b border-soft-gold/20 bg-burgundy/95 shadow-elegant backdrop-blur-md'
-            : 'bg-gradient-to-r from-burgundy to-deep-plum shadow-soft'
+            ? "border-b border-soft-gold/20 bg-burgundy/95 shadow-elegant backdrop-blur-md"
+            : "bg-gradient-to-r from-burgundy to-deep-plum shadow-soft"
         }`}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -43,28 +43,28 @@ export const Navbar = () => {
             {/* Right: Navigation */}
             <div className="hidden items-center gap-8 md:flex">
               <button
-                onClick={() => scrollToSection('home')}
+                onClick={() => scrollToSection("home")}
                 className="group relative font-medium text-cream transition-smooth hover:text-soft-gold"
               >
                 Home
                 <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-soft-gold transition-all duration-300 group-hover:w-full" />
               </button>
               <button
-                onClick={() => scrollToSection('memories')}
+                onClick={() => scrollToSection("memories")}
                 className="group relative font-medium text-cream transition-smooth hover:text-soft-gold"
               >
                 Memories
                 <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-soft-gold transition-all duration-300 group-hover:w-full" />
               </button>
               <button
-                onClick={() => scrollToSection('photos')}
+                onClick={() => scrollToSection("photos")}
                 className="group relative font-medium text-cream transition-smooth hover:text-soft-gold"
               >
                 Photos
                 <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-soft-gold transition-all duration-300 group-hover:w-full" />
               </button>
               <button
-                onClick={() => scrollToSection('legacy')}
+                onClick={() => scrollToSection("legacy")}
                 className="group relative font-medium text-cream transition-smooth hover:text-soft-gold"
               >
                 Legacy
@@ -93,5 +93,5 @@ export const Navbar = () => {
 
       <DonateModal open={showDonate} onOpenChange={setShowDonate} />
     </>
-  )
-}
+  );
+};

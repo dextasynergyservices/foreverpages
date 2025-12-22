@@ -1,4 +1,7 @@
+"use client";
+
 import { Heart, Cross, BookOpen, Users, GraduationCap, Briefcase, Home } from "lucide-react";
+import { useTemplate } from "../TemplateProvider";
 
 interface JourneyEvent {
   year: string;
@@ -8,7 +11,7 @@ interface JourneyEvent {
   theme: "faith" | "family" | "career" | "community";
 }
 
-const events: JourneyEvent[] = [
+const defaultEvents: JourneyEvent[] = [
   {
     year: "1952",
     title: "A Blessed Beginning",
@@ -93,6 +96,12 @@ const themeColors = {
 };
 
 const LifeJourney = () => {
+  const { sectionsData } = useTemplate();
+
+  // Get TIMELINE/BIOGRAPHY section data with fallbacks
+  const timelineData = (sectionsData?.TIMELINE as any) || {};
+  const events = timelineData.events || defaultEvents;
+
   return (
     <section id="journey" className="relative py-20 px-4 md:px-8">
       <div className="absolute inset-0">
@@ -136,7 +145,7 @@ const LifeJourney = () => {
           {/* Events Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {events.map((event, index) => {
-              const IconComponent = iconMap[event.icon];
+              const IconComponent = iconMap[event.icon] || Heart; // Fallback to Heart if icon not found
               return (
                 <div key={index} className="group relative">
                   {/* Card */}

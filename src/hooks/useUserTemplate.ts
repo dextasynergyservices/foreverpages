@@ -27,6 +27,7 @@ export interface UserTemplate {
 export interface CreateUserTemplateData {
   baseTemplateId: string;
   name?: string;
+  sections?: Record<string, unknown>; // Add sections support
 }
 
 export interface UpdateUserTemplateData {
@@ -52,7 +53,8 @@ export const useActiveUserTemplate = () => {
       const data = await response.json();
       return data.data;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 0, // Always fetch fresh data to avoid cache issues
+    refetchOnWindowFocus: true, // Refetch when window regains focus
   });
 };
 
@@ -76,7 +78,7 @@ export const useCreateUserTemplate = () => {
       }
 
       const result = await response.json();
-      return result.data;
+      return result.data.template; // Return the actual template object
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user-template"] });
@@ -92,19 +94,40 @@ export const useUpdateUserTemplate = (templateId: string) => {
 
   return useMutation({
     mutationFn: async (data: UpdateUserTemplateData): Promise<UserTemplate> => {
-      const response = await fetch(`/api/user/templates/${templateId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to update template");
+      if (!templateId) {
+        throw new Error("Template ID is required");
       }
 
-      const result = await response.json();
-      return result.data;
+      try {
+        const response = await fetch(`/api/user/templates/${templateId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+          let errorMessage = "Failed to update template";
+          try {
+            const error = await response.json();
+            errorMessage = error.message || errorMessage;
+          } catch (parseError) {
+            // If response is not JSON, use status text and log parse error for debugging
+            console.error("Failed to parse error response:", parseError);
+            errorMessage = response.statusText || errorMessage;
+          }
+          console.error("Template update failed:", errorMessage, "Status:", response.status);
+          throw new Error(errorMessage);
+        }
+
+        const result = await response.json();
+        return result.data;
+      } catch (error) {
+        console.error("Template update error:", error);
+        if (error instanceof Error) {
+          throw error;
+        }
+        throw new Error("Failed to update template");
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user-template"] });

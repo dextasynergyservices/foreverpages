@@ -22,6 +22,7 @@ import {
   ChevronsLeft,
   ChevronsRight,
 } from "lucide-react";
+import { useTemplate } from "../TemplateProvider";
 
 interface Condolence {
   id: string;
@@ -36,6 +37,11 @@ interface Condolence {
 }
 
 const CondolenceWall = () => {
+  const { sectionsData } = useTemplate();
+
+  // Get CONDOLENCE section data with fallbacks
+  const condolenceData = (sectionsData?.CONDOLENCE as any) || {};
+
   // Generate more sample data for pagination
   const generateSampleData = (): Condolence[] => {
     const sampleMessages = [
@@ -92,7 +98,7 @@ const CondolenceWall = () => {
     }));
   };
 
-  const [condolences] = useState<Condolence[]>(generateSampleData());
+  const [condolences] = useState<Condolence[]>(condolenceData.condolences || generateSampleData());
   const [newCondolence, setNewCondolence] = useState({
     name: "",
     message: "",

@@ -4,7 +4,9 @@ import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Input } from "./ui/input";
-import { Heart, Quote, Download, Gift, ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { Heart, Quote, Gift, ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { useTemplate } from "../TemplateProvider";
+import SupportModal from "@/components/modals/SupportModal";
 
 interface Tribute {
   id: string;
@@ -16,7 +18,11 @@ interface Tribute {
 }
 
 const TributeSection = () => {
-  const [tributes, setTributes] = useState<Tribute[]>([
+  const { sectionsData, memorialOwnerId, memorialOwnerName } = useTemplate();
+
+  // Get TRIBUTES section data with fallbacks
+  const tributesData = (sectionsData?.TRIBUTES as any) || {};
+  const defaultTributes = [
     {
       id: "1",
       name: "Sarah Anderson",
@@ -59,13 +65,16 @@ const TributeSection = () => {
         "John had a heart of gold and always knew how to make everyone feel special. He will be deeply missed.",
       date: "November 27, 2024",
     },
-  ]);
+  ];
+
+  const [tributes, setTributes] = useState<Tribute[]>(tributesData.tributes || defaultTributes);
 
   const [newTribute, setNewTribute] = useState({
     name: "",
     relationship: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [showDonationModal, setShowDonationModal] = useState(false);
   const tributesPerPage = 4;
@@ -100,9 +109,14 @@ const TributeSection = () => {
     }
   }, [tributes, currentPage, tributesPerPage]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTribute.name || !newTribute.message) return;
+
+    setIsSubmitting(true);
+
+    // Simulate API call with loading state
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     const tribute: Tribute = {
       id: Date.now().toString(),
@@ -118,6 +132,8 @@ const TributeSection = () => {
 
     setTributes([tribute, ...tributes]);
     setNewTribute({ name: "", relationship: "", message: "" });
+    setIsSubmitting(false);
+
     // Reset to page 1 when new tribute is added so user sees their tribute
     setCurrentPage(1);
   };
@@ -128,34 +144,6 @@ const TributeSection = () => {
         tribute.id === id ? { ...tribute, favorite: !tribute.favorite } : tribute
       )
     );
-  };
-
-  const downloadTributes = () => {
-    const content = tributes
-      .map(
-        (tribute) => `
-From: ${tribute.name} (${tribute.relationship})
-Date: ${tribute.date}
-${tribute.favorite ? "⭐ Special Tribute" : ""}
-
-"${tribute.message}"
-
-${"=".repeat(50)}
-    `
-      )
-      .join("\n");
-
-    const blob = new Blob([`Tributes for John Michael Anderson\n\n${content}`], {
-      type: "text/plain",
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "tributes-for-john-anderson.txt";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
   };
 
   // handleDonationSubmit is not used but kept for future donation feature
@@ -307,10 +295,20 @@ ${"=".repeat(50)}
             </div>
             <Button
               type="submit"
-              className="w-full bg-primary hover:bg-primary/90 text-white font-heading uppercase tracking-wider border-2 border-primary rounded-lg md:rounded-xl py-4 md:py-6 text-sm md:text-base transition-all duration-300 hover:shadow-lg hover:shadow-primary/50 hover:scale-105"
+              disabled={isSubmitting || !newTribute.name.trim() || !newTribute.message.trim()}
+              className="w-full bg-primary hover:bg-primary/90 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-heading uppercase tracking-wider border-2 border-primary disabled:border-gray-600 rounded-lg md:rounded-xl py-4 md:py-6 text-sm md:text-base transition-all duration-300 hover:shadow-lg hover:shadow-primary/50 hover:scale-105 disabled:hover:scale-100 disabled:hover:shadow-none"
             >
-              <Heart className="mr-2 h-4 w-4 md:h-5 md:w-5" />
-              Share Tribute
+              {isSubmitting ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 md:h-5 md:w-5 border-b-2 border-white mr-2"></div>
+                  Sharing...
+                </>
+              ) : (
+                <>
+                  <Heart className="mr-2 h-4 w-4 md:h-5 md:w-5" />
+                  Share Tribute
+                </>
+              )}
             </Button>
           </form>
         </div>
@@ -328,14 +326,6 @@ ${"=".repeat(50)}
           </div>
           <div className="flex flex-wrap gap-2 justify-center">
             <Button
-              onClick={downloadTributes}
-              variant="outline"
-              className="border-primary text-primary hover:bg-primary hover:text-white text-xs md:text-sm"
-            >
-              <Download className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-              Download All
-            </Button>
-            <Button
               onClick={() => setShowDonationModal(true)}
               className="bg-gold hover:bg-gold/90 text-white border-2 border-gold text-xs md:text-sm"
             >
@@ -348,13 +338,14 @@ ${"=".repeat(50)}
         {/* Tributes Grid */}
         <div className="grid gap-4 md:gap-6 mb-8 md:mb-12">
           {pagination.currentTributes.length > 0 ? (
-            pagination.currentTributes.map((tribute) => (
+            pagination.currentTributes.map((tribute, index) => (
               <div
                 key={tribute.id}
-                className={`bg-black/80 backdrop-blur-sm border-2 rounded-xl md:rounded-2xl p-4 md:p-6 transition-all duration-300 hover:shadow-2xl ${
+                style={{ animationDelay: `${index * 0.1}s` }}
+                className={`bg-black/80 backdrop-blur-sm border-2 rounded-xl md:rounded-2xl p-4 md:p-6 transition-all duration-500 hover:shadow-2xl hover:transform hover:-translate-y-1 hover:scale-[1.02] animate-fadeInUp ${
                   tribute.favorite
-                    ? "border-gold/50 hover:border-gold"
-                    : "border-primary/30 hover:border-primary/50"
+                    ? "border-gold/50 hover:border-gold glow-gold"
+                    : "border-primary/30 hover:border-primary/50 hover:glow-primary"
                 }`}
               >
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4">
@@ -456,12 +447,14 @@ ${"=".repeat(50)}
           </div>
         )}
 
-        {/* Donation Modal */}
-        {showDonationModal && (
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            {/* ... modal content remains the same ... */}
-          </div>
-        )}
+        {/* Support Modal */}
+        <SupportModal
+          isOpen={showDonationModal}
+          onClose={() => setShowDonationModal(false)}
+          memorialOwnerName={memorialOwnerName || "Memorial Owner"}
+          memorialTitle={`${memorialOwnerName || "Memorial Owner"}'s Memorial`}
+          memorialOwnerId={memorialOwnerId || ""}
+        />
       </div>
     </section>
   );

@@ -1,6 +1,10 @@
 import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import MemorialPageClient from "@/components/memorial/MemorialPageClient";
+import { ExpiredMemorialPage } from "@/components/memorial/ExpiredMemorialPage";
+import { checkMemorialExpiry } from "@/lib/utils/checkMemorialExpiry";
 
 interface MemorialPageProps {
   params: {
@@ -40,6 +44,10 @@ export default async function MemorialPage({ params }: MemorialPageProps) {
   if (RESERVED_ROUTES.includes(slug)) {
     notFound();
   }
+
+  // Get current session to check if viewer is owner
+  const session = await getServerSession(authOptions);
+  const viewerId = session?.user?.id;
 
   // Fetch memorial with active stream
   const memorial = await prisma.memorial.findUnique({
@@ -90,18 +98,42 @@ export default async function MemorialPage({ params }: MemorialPageProps) {
     notFound();
   }
 
+  // Fetch owner's subscription to check grace period
+  const subscription = await prisma.subscription.findFirst({
+    where: {
+      userId: memorial.ownerId,
+    },
+    orderBy: { expiresAt: "desc" },
+    select: {
+      status: true,
+      expiresAt: true,
+      gracePeriodEndsAt: true,
+    },
+  });
+
+  // Check memorial expiry and accessibility
+  const expiryCheck = checkMemorialExpiry(memorial, viewerId, subscription);
+
+  // If memorial is not accessible and viewer is not owner, show expired page
+  if (!expiryCheck.accessible) {
+    const memorialName = `${memorial.firstName} ${memorial.lastName}`;
+    return <ExpiredMemorialPage memorialName={memorialName} ownerEmail={memorial.owner.email} />;
+  }
+
   // Get the active stream (if any)
   const activeStream = memorial.streams[0] || null;
 
-  // Increment view count (async, don't wait)
-  prisma.memorial
-    .update({
-      where: { id: memorial.id },
-      data: { viewCount: { increment: 1 } },
-    })
-    .catch((error) => {
-      console.error("Failed to increment view count:", error);
-    });
+  // Increment view count (async, don't wait) - only for accessible memorials
+  if (expiryCheck.reason === "active" || expiryCheck.reason === "grace_period") {
+    prisma.memorial
+      .update({
+        where: { id: memorial.id },
+        data: { viewCount: { increment: 1 } },
+      })
+      .catch((error) => {
+        console.error("Failed to increment view count:", error);
+      });
+  }
 
   // If stream exists and has viewers increment
   if (activeStream && activeStream.status === "LIVE") {
@@ -118,6 +150,8 @@ export default async function MemorialPage({ params }: MemorialPageProps) {
   return (
     <MemorialPageClient
       memorial={memorial}
+      expiryCheck={expiryCheck}
+      isOwner={viewerId === memorial.ownerId}
       activeStream={
         activeStream
           ? {

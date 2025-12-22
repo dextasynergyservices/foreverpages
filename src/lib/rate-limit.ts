@@ -9,9 +9,9 @@ interface RateLimitEntry {
 
 const rateLimitMap = new Map<string, RateLimitEntry>();
 
-// Rate limit: 5 requests per 10 minutes
-const MAX_REQUESTS = 5;
-const WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+// Rate limit: 50 requests per 5 minutes for auth endpoints
+const MAX_REQUESTS = 50;
+const WINDOW_MS = 5 * 60 * 1000; // 5 minutes
 
 export async function rateLimitMiddleware(request: NextRequest) {
   // Only apply rate limiting to auth endpoints

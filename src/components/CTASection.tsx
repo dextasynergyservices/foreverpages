@@ -95,7 +95,7 @@ export const CTASection: React.FC = () => {
             variant="outline"
             size="lg"
             className="w-full sm:w-auto text-sm px-4 py-2 sm:text-base sm:px-6 sm:py-3 transition-all duration-300 hover:scale-105 hover:shadow-md border-2"
-            onClick={() => (window.location.href = "/memorial/sample")}
+            onClick={() => (window.location.href = "/sample")}
           >
             {t("cta.buttons.viewSample")}
           </Button>

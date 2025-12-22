@@ -3,8 +3,22 @@
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import { useTemplate } from "../TemplateProvider";
 
 const HeroSection = () => {
+  const { sectionsData, memorial } = useTemplate();
+
+  // Get HERO section data with fallbacks
+  const heroData = (sectionsData?.HERO as any) || {};
+  const title = heroData.title || memorial.name || "Memorial Title";
+  const mainImage =
+    heroData.mainImage ||
+    memorial.portraitUrl ||
+    "https://res.cloudinary.com/dt7ozsctz/image/upload/v1764166230/thomas1_yuknpv.png";
+  const quote = heroData.quote || "Forever in our hearts";
+  const birthYear = heroData.birthYear || memorial.birthYear || "1952";
+  const deathYear = heroData.deathYear || memorial.deathYear || "2024";
+
   const scrollToNext = () => {
     const nextSection = document.getElementById("candles");
     nextSection?.scrollIntoView({ behavior: "smooth" });
@@ -55,7 +69,7 @@ const HeroSection = () => {
           <div className="absolute inset-0 bg-gradient-radial from-primary/40 via-primary/20 to-transparent blur-3xl scale-150 animate-gold-glow" />
           <div className="relative w-56 h-72 md:w-64 md:h-80 mx-auto overflow-hidden rounded-full border-8 border-primary shadow-2xl backdrop-blur-sm">
             <Image
-              src="https://res.cloudinary.com/dt7ozsctz/image/upload/v1764166230/thomas1_yuknpv.png"
+              src={mainImage}
               alt="Memorial Portrait"
               className="w-full h-full object-cover"
               fill
@@ -65,21 +79,21 @@ const HeroSection = () => {
         </div>
 
         {/* Name in gold script */}
-        <h1 className="font-script text-4xl md:text-8xl text-gold mb-6 animate-fade-in">
-          John Michael Anderson
-        </h1>
+        <h1 className="font-script text-4xl md:text-8xl text-gold mb-6 animate-fade-in">{title}</h1>
 
         {/* Dates on sides */}
         <div className="flex items-center justify-center gap-12 mb-8">
-          <div className="text-primary text-3xl md:text-4xl font-heading tracking-wider">1952</div>
+          <div className="text-primary text-3xl md:text-4xl font-heading tracking-wider">
+            {birthYear}
+          </div>
           <div className="text-primary text-2xl">✝</div>
-          <div className="text-primary text-3xl md:text-4xl font-heading tracking-wider">2024</div>
+          <div className="text-primary text-3xl md:text-4xl font-heading tracking-wider">
+            {deathYear}
+          </div>
         </div>
 
         {/* Tagline */}
-        <p className="text-foreground text-xl md:text-2xl italic mb-8 max-w-2xl mx-auto">
-          &quot;A life of faith, love, and service to others&quot;
-        </p>
+        <p className="text-foreground text-xl md:text-2xl italic mb-8 max-w-2xl mx-auto">{quote}</p>
 
         {/* CTA Button */}
         <div className="flex justify-center gap-4 mb-16">

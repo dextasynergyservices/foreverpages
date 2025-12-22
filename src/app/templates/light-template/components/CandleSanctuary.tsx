@@ -5,6 +5,7 @@ import type { FormEvent } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Flame, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { useTemplate } from "../TemplateProvider";
 
 interface Candle {
   id: string;
@@ -14,7 +15,11 @@ interface Candle {
 }
 
 const CandleSanctuary = () => {
-  const [candles, setCandles] = useState<Candle[]>([
+  const { sectionsData } = useTemplate();
+
+  // Get CANDLES section data with fallbacks
+  const candlesData = (sectionsData?.CANDLES as any) || {};
+  const defaultCandles = [
     { id: "1", name: "Sarah Johnson", date: "December 1, 2024", message: "In loving memory" },
     { id: "2", name: "Michael Brown", date: "December 1, 2024", message: "Forever in our hearts" },
     { id: "3", name: "Emily Davis", date: "November 30, 2024", message: "Rest in peace" },
@@ -32,7 +37,9 @@ const CandleSanctuary = () => {
     { id: "10", name: "James Miller", date: "November 27, 2024", message: "Forever missed" },
     { id: "11", name: "Anna Taylor", date: "November 26, 2024", message: "In God's care" },
     { id: "12", name: "Kevin Martinez", date: "November 26, 2024", message: "Peaceful rest" },
-  ]);
+  ];
+
+  const [candles, setCandles] = useState<Candle[]>(candlesData.candles || defaultCandles);
 
   const [lightingName, setLightingName] = useState("");
   const [lightingMessage, setLightingMessage] = useState("");

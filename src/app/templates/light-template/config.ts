@@ -6,6 +6,7 @@ export interface MemorialData {
   portraitUrl: string;
   videoUrl?: string;
   config?: TemplateConfig;
+  ownerId?: string;
 }
 
 import { DesignTokens } from "@/components/userDashboard/pageBuilder/TemplateCustomizer";
@@ -162,18 +163,50 @@ export function getDefaultPreviewData(): MemorialData {
 
 // Helper function to fetch memorial data from database
 export async function fetchMemorialData(memorialId: string): Promise<MemorialData> {
-  // TODO: Implement database fetch
-  // const memorial = await prisma.memorial.findUnique({
-  //   where: { id: memorialId },
-  //   include: {
-  //     userTemplate: {
-  //       include: {
-  //         template: true
-  //       }
-  //     }
-  //   }
-  // });
+  try {
+    // Import prisma client
+    const { prisma } = await import("@/lib/prisma");
 
-  // For now, return default data
-  return getDefaultPreviewData();
+    const memorial = await prisma.memorial.findUnique({
+      where: { id: memorialId },
+      include: {
+        userTemplate: {
+          include: {
+            baseTemplate: true,
+          },
+        },
+      },
+    });
+
+    if (!memorial) {
+      console.log("Memorial not found, returning default data");
+      return getDefaultPreviewData();
+    }
+
+    // Transform database data to template format
+    const memorialData: MemorialData = {
+      name: `${memorial.firstName} ${memorial.lastName}`.trim(),
+      birthYear: memorial.birthDate
+        ? new Date(memorial.birthDate).getFullYear().toString()
+        : "1950",
+      deathYear: memorial.deathDate
+        ? new Date(memorial.deathDate).getFullYear().toString()
+        : "2023",
+      tagline: memorial.biography?.substring(0, 100) || "A life well lived",
+      portraitUrl: memorial.profileImageUrl || "/placeholder-portrait.jpg",
+      videoUrl: memorial.videoUrl || undefined,
+      ownerId: memorial.ownerId,
+      config: memorial.userTemplate?.customization
+        ? {
+            ...templateConfig,
+            defaultDesign: memorial.userTemplate.customization as any,
+          }
+        : templateConfig,
+    };
+
+    return memorialData;
+  } catch (error) {
+    console.error("Error fetching memorial data:", error);
+    return getDefaultPreviewData();
+  }
 }

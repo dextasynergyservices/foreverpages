@@ -513,6 +513,49 @@
     "copyright": "ForeverPages. An ƙirƙira da ƙauna don girmama kowace rayuwa."
   },
 
+  "memorial": {
+    "status": {
+      "active": "Mai Aiki",
+      "expired": "Ya Karfi",
+      "gracePeriod": "Lokacin Rahama",
+      "lifetime": "Damar Rayuwa",
+      "ownerPreview": "Duba Mai Shi",
+      "unknown": "Matsayi Ba a Sani Ba"
+    },
+    "expiry": {
+      "owner": {
+        "expired": {
+          "title": "Jami'a Ta Karfi",
+          "description": "Wannan tunawa ba ya samuwa ga jama'a a yanzu. Sabunta jami'ar ku don dawo da damar shiga."
+        }
+      },
+      "public": {
+        "expired": {
+          "title": "Tunawa Ba Ya Samuwa Na Wani Lokaci",
+          "description": "Jami'a don {{name}} ta karfi. Don Allah tuntubar mai shafin don dawo da damar shiga."
+        }
+      },
+      "gracePeriod": {
+        "title": "Jami'a A Lokacin Rahama",
+        "description": "Wannan tunawa zai zama ba a samu a cikin kwanaki {{days}}. Sabunta jami'ar ku don ci gaba da samun damar shiga."
+      },
+      "ownerPreview": {
+        "title": "Yanayin Duba - Jami'a Ta Karfi",
+        "description": "Kai kadai zaka iya ganin wannan tunawa. Sabunta jami'ar ku don sanya shi mai samun damar shiga ga jama'a."
+      },
+      "renewButton": "Sabunta Jami'a"
+    },
+    "expired": {
+      "title": "Tunawa Ba Ya Samuwa Na Wani Lokaci",
+      "message": "Shafin tunawa don {{name}} ba ya samuwa a yanzu saboda jami'a ta karfi.",
+      "info": "Wannan matsayi na wani lokaci ne. Da zarar mai shafin ya sabunta jami'arsa, wannan tunawa zai sake samun damar shiga.",
+      "contactTitle": "Tuntubar Mai Shafin",
+      "contactMessage": "Idan kuna bukata samun damar wannan tunawa da gaggawa, don Allah tuntubar mai shafin don neman sabuntawa.",
+      "contactOwner": "Tuntubar Mai Shi",
+      "createOwn": "Kuna son ƙirƙira tunawa don mai ƙaunarku?",
+      "viewPackages": "Duba Kunshinmu"
+    }
+  },
   "common": {
     "loading": "Ana lodawa...",
 
@@ -524,7 +567,55 @@
 
     "save": "Ajiye",
 
-    "cancel": "Soke"
+    "cancel": "Soke",
+
+    "confirm": "Tabbatar",
+
+    "delete": "Share"
+  },
+
+  "errors": {
+    "boundary": {
+      "title": "Wani Abu Ya Faru",
+
+      "description": "An sami matsala maras tsammani",
+
+      "retry": "Sake Gwadawa"
+    },
+
+    "generic": {
+      "title": "Kuskure",
+
+      "message": "An sami matsala maras tsammani. Da fatan za a sake gwadawa."
+    },
+
+    "warning": {
+      "title": "Gargadi"
+    },
+
+    "network": {
+      "title": "Matsalar Haɗi",
+
+      "message": "Ba za a iya haɗawa ba. Da fatan za a duba haɗin intanet ɗinku sannan ku sake gwadawa."
+    },
+
+    "actions": {
+      "retry": "Sake gwadawa",
+
+      "dismiss": "Watsa"
+    }
+  },
+
+  "tutorial": {
+    "step": "Mataki {{current}} na {{total}}",
+
+    "previous": "Na Baya",
+
+    "next": "Na Gaba",
+
+    "finish": "Kammala",
+
+    "skip": "Tsallake Koyarwar"
   },
 
   "faq": {
@@ -840,6 +931,11 @@
         },
         "deleting": "Deleting...",
         "confirm": "Delete Template"
+      },
+      "delete": {
+        "confirmTitle": "Goge Samfuri?",
+        "confirmDescription": "Shin kun tabbata kuna son goge \"{{name}}\"? Ba za a iya soke wannan aikin ba.",
+        "confirm": "Share"
       },
       "actions": {
         "createSuccess": "An ƙirƙiri samfuri cikin nasara",
@@ -1471,7 +1567,11 @@
       "steps": {
         "chooseTemplate": {
           "title": "Zaɓi Samfuri",
-          "description": "Zaɓi tsari wanda zai girmama mutumin da kuka rasa"
+          "description": "Zaɓi samfurin tsarin da ya dace da hangen nesa ku"
+        },
+        "editTemplate": {
+          "title": "Gyara Samfuri",
+          "description": "Daidaita launuka, abun ciki, da sassa"
         },
         "basicInfo": {
           "title": "Bayanai na Asali",
@@ -1486,8 +1586,8 @@
           "description": "Ƙarƙira launuka da tsari"
         },
         "review": {
-          "title": "Bita",
-          "description": "Bita kuma ƙirƙiri tunawa ku"
+          "title": "Bita & Bugawa",
+          "description": "Yi bita kuma buga shafin tunawa ku"
         }
       },
       "buttons": {
@@ -1495,6 +1595,47 @@
         "next": "Na gaba",
         "create": "Ƙirƙiri Tunawa",
         "creating": "Ana ƙirƙira..."
+      },
+      "saveIndicator": {
+        "saving": "Ana Ajiyewa...",
+        "saved": "An Ajiye",
+        "error": "Kuskuren ajiyewa"
+      },
+      "editView": {
+        "title": "Gyara Samfuri",
+        "editor": "Edita",
+        "preview": "Duba Samfur",
+        "designTokens": "Tsari da Launuka",
+        "sections": "Sassan Abun Ciki",
+        "previewMode": "Yanayin Duba",
+        "desktop": "Kwamfuta",
+        "tablet": "Kwamfutar Hannu",
+        "mobile": "Wayar Hannu"
+      },
+      "mediaPicker": {
+        "title": "Zaɓi Kafofin Watsa Labarai daga Gallery",
+        "searchPlaceholder": "Bincika ta taken ko bayani...",
+        "all": "Duka",
+        "images": "Hotuna",
+        "videos": "Bidiyo",
+        "imagesUsed": "Hotuna:",
+        "videosUsed": "Bidiyo:",
+        "error": "An kasa loda kafofin watsa labarai",
+        "noMedia": "Ba a sami kafofin watsa labarai ba",
+        "uploadFirst": "Ka fara loda wasu kafofin watsa labarai zuwa gallery ɗinka",
+        "selected": "an zaɓa",
+        "addSelected": "Ƙara Waɗanda Aka Zaɓa"
+      },
+      "gallery": {
+        "title": "Gallery na Hotuna da Bidiyo",
+        "description": "Ƙara hotuna da bidiyo masu bayyana rayuwarsu",
+        "layout": "Tsarin Gallery",
+        "addMedia": "Ƙara Hotuna/Bidiyo daga Gallery",
+        "noMedia": "Har yanzu ba a ƙara kafofin watsa labarai ba",
+        "clickToAdd": "Danna maɓallin da ke sama don ƙara hotuna da bidiyo",
+        "caption": "Taken (Na Zaɓi)",
+        "captionPlaceholder": "Ƙara taken...",
+        "remove": "Cire kafofin watsa labarai"
       },
       "sidebar": {
         "title": "Matakan ƙirƙira",
@@ -1581,7 +1722,32 @@
         "privacyValue": "Jama'a",
         "featuresLabel": "Fasaloni:",
         "featuresValue": "Cikakkar Damar",
-        "publishButton": "Buga Tunawa"
+        "publishButton": "Buga Tunawa",
+        "updateButton": "Sabunta Tunawa",
+        "deleteMemorial": "Share Tunawa",
+        "validationRequired": "Don Allah kammala waɗannan kafin bugawa:",
+        "missingFirstName": "Ƙara sunan farko na mamaci",
+        "missingLastName": "Ƙara sunan iyali na mamaci",
+        "missingSections": "Ƙara aƙalla ɗaya sashe na abun ciki",
+        "sectionsConfigured": "Sashe An Saita:",
+        "memorialFor": "Tunawa Don:",
+        "memorialPublished": "Tunawa Yana Raye",
+        "memorialUrl": "URL Tunawa:",
+        "autoSaveNote": "Canje-canje ana adana su kai tsaye kuma za su bayyana nan da nan a kan tunawa ku mai rai.",
+        "editModeHelpText": "Tunawa ku yana raye. Duk wani sabuntawa zai bayyana nan da nan.",
+        "helpText": "Bayan an buga, tunawa ku zai kasance mai rai kuma kowa da hanyar haɗin gwiwa zai iya samun sa.",
+        "urlCopied": "URL tunawa an kwafi zuwa clipboard!",
+        "copyFailed": "An kasa kwafi URL",
+        "unpublishButton": "Dakatar da Buga Tunawa",
+        "unpublishSuccess": "An dakatar da buga tunawa mai kyau",
+        "unpublishError": "An kasa dakatar da buga tunawa",
+        "slugUpdateSuccess": "An sabunta URL tunawa mai kyau",
+        "slugUpdateError": "An kasa sabunta URL tunawa",
+        "slugTaken": "Wannan URL an riga an ɗauka",
+        "editSlugHint": "Wannan zai canza adireshin yanar gizon tunawa ku. Tabbatar kun sabunta duk wani hanyar haɗin gwiwar da aka raba.",
+        "unpublishConfirmTitle": "Dakatar da Buga Tunawa?",
+        "unpublishConfirmMessage": "Kuna da tabbacin kuna so ku dakatar da buga wannan tunawa? Shafin tunawa ba zai ƙaya samun dama ga bamaziyarta ba har sai kun sake buga shi.",
+        "confirmUnpublish": "Dakatar da Buga Tunawa"
       },
       "customizer": {
         "title": "Ƙarƙira Tsari",
@@ -1648,7 +1814,22 @@
             "Abubuwan tunawa masu farin ciki",
             "Tọ́n mai ba da rai"
           ]
-        }
+        },
+        "status": {
+          "live": "Kai Tsaye",
+          "draft": "Daftari",
+          "expired": "Ya Karfi"
+        },
+        "actions": {
+          "viewLive": "Duba Kai Tsaye",
+          "edit": "Gyara",
+          "delete": "Share",
+          "continue": "Ci Gaba",
+          "deleteDraft": "Share Daftari"
+        },
+        "views": "kalleli",
+        "created": "An Ƙirƙira",
+        "updated": "An Sabunta"
       },
       "loadingTemplates": "Ana lodin Samfurori...",
       "mustSignInTitle": "Dona Shiga",
@@ -1683,13 +1864,39 @@
           "slugTooLong": "URL ba zai iya wuce haraffi 50 ba",
           "slugInvalid": "URL zai iya ɗaukar haraffi, lambobi, ribaye da takaici kawai",
           "slugTaken": "Wannan URL an amfani da shi. Dona gida ɗaya."
-        }
+        },
+        "suggestions": "URL Masu Shawara:",
+        "previewUrl": "Dubawa:"
+      },
+      "deleteMemorial": {
+        "title": "Share Tunawa",
+        "description": "Ba za a iya soke wannan aikin ba. Share wannan tunawa zai:",
+        "warning": "Kun tabbata sosai?",
+        "consequence1": "Share shafin tunawa da dukan abubuwan cikinsa har abada",
+        "consequence2": "Cire dukan gayyata da samun damar masu aiki tare",
+        "consequence3": "Share dukan karɓa da ta'aziyya",
+        "consequence4": "Cire tunawa daga injunan bincike",
+        "memorialName": "Tunawa:",
+        "memorialUrl": "URL:",
+        "confirmationLabel": "Rubuta slug na memorial don tabbatar da sharewa",
+        "confirmationHint": "Rubuta daidai:",
+        "deleteButton": "Share Tunawa",
+        "deleting": "Ana sharewa...",
+        "cancel": "Soke",
+        "successTitle": "Tunawa An Share",
+        "successMessage": "An share tunawa har abada"
       },
       "autoSave": {
         "saving": "Ana adana...",
         "saved": "Adana",
         "error": "Gazawan adana",
         "lastSaved": "Adana na ƙarshe {{time}}"
+      },
+      "unsavedChanges": {
+        "title": "Canje-canje Ba A Adana Ba",
+        "message": "Kuna da canje-canje ba a adana. Shin kun tabbata kuna son barin?",
+        "leave": "Bari",
+        "stay": "Zauna"
       },
       "subscription": {
         "banner": {
@@ -1866,6 +2073,36 @@
         "account": {
           "title": "Ayyukan Asusun",
           "signOut": "Fita"
+        },
+        "accountDetails": {
+          "title": "Bayanan Asusun",
+          "description": "Sarrafa bayanan asusun ku domin karbar gudunmawa da tallafi ta hanyar shafukan tunawa.",
+          "noAccountsTitle": "Babu Asusun Da Aka Kara",
+          "noAccounts": "Kara bayanan asusun ku domin karbar gudunmawa da tallafi ta hanyar shafukan tunawa.",
+          "addFirstAccount": "Kara Asusun Farko",
+          "addAccount": "Kara Sabon Asusun",
+          "account": "Asusun",
+          "default": "Na Farko",
+          "setPrimary": "Sanya A Matsayin Na Farko",
+          "setDefault": "Sanya A Matsayin Tushen",
+          "type": "Nau'in Asusun",
+          "accountName": "Sunan Mai Asusun",
+          "accountNumber": "Lambar Asusun",
+          "bankName": "Sunan Banki",
+          "routingNumber": "Lambar Hanya",
+          "description": "Bayani (Na Zaɓi)",
+          "types": {
+            "bank": "Asusun Banki",
+            "bankDesc": "Asusun banki na al'ada",
+            "mobileMoney": "Kudin Wayar",
+            "mobileMoneyDesc": "Sabis na biyan kudin wayar",
+            "paypal": "PayPal",
+            "paypalDesc": "Jakar dijital PayPal",
+            "stripe": "Stripe",
+            "stripeDesc": "Dandamin biyan kudin Stripe",
+            "other": "Wani",
+            "otherDesc": "Wata hanyar biyan kuɗi"
+          }
         }
       }
     },

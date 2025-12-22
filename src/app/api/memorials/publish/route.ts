@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
       data: {
         memorialId: memorial.id,
         slug: memorial.slug,
-        publishedUrl: `${appUrl}/memorial/${memorial.slug}`,
+        publishedUrl: `${appUrl}/${memorial.slug}`,
         isPublished: true,
       },
     });

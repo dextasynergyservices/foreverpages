@@ -5,7 +5,6 @@ import React from "react";
 /**
  * Dynamically load a template component by slug
  * Only loads templates from /components/templates/components/ (bundled templates)
- * Templates in /app/templates/ are excluded from Next.js build and should NOT be imported
  */
 export async function loadTemplateBySlug(
   slug: string

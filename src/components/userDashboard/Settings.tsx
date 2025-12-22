@@ -25,6 +25,7 @@ import { useLogout } from "@/hooks/useLogout";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { Skeleton } from "@/components/ui/skeleton";
 import SecurityTab from "./SecurityTab";
+import AccountDetailsTab from "./AccountDetailsTab";
 import CollaboratorsTab from "./CollaboratorsTab";
 import toastNotification from "@/lib/toastNotifications";
 
@@ -325,7 +326,7 @@ const SettingsContent = () => {
 
       <div className="w-full lg:max-w-4xl xl:max-w-5xl mx-auto">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 gap-2 md:grid-cols-7">
+          <TabsList className="grid w-full grid-cols-3 gap-2 md:grid-cols-8">
             <TabsTrigger
               value="profile"
               className={`px-3 py-2 text-sm md:text-base whitespace-nowrap ${activeTabClasses}`}
@@ -337,6 +338,12 @@ const SettingsContent = () => {
               className={`px-3 py-2 text-sm md:text-base whitespace-nowrap ${activeTabClasses}`}
             >
               Security
+            </TabsTrigger>
+            <TabsTrigger
+              value="account"
+              className={`px-3 py-2 text-sm md:text-base whitespace-nowrap ${activeTabClasses}`}
+            >
+              {t("dashboard.settings.tabs.account", {}, "Account")}
             </TabsTrigger>
             <TabsTrigger
               value="memorial"
@@ -436,6 +443,10 @@ const SettingsContent = () => {
 
           <TabsContent value="security" className="space-y-6">
             <SecurityTab />
+          </TabsContent>
+
+          <TabsContent value="account" className="space-y-6">
+            <AccountDetailsTab />
           </TabsContent>
 
           <TabsContent value="memorial" className="space-y-6">

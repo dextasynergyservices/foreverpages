@@ -72,7 +72,8 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
     const { id } = await params;
     const body = await request.json();
-    const { name, description, config, sections, customPreviewImage, customThumbnailImage } = body;
+    const { name, description, customization, sections, customPreviewImage, customThumbnailImage } =
+      body;
 
     // Verify template belongs to user
     const existingTemplate = await prisma.userTemplate.findFirst({
@@ -90,7 +91,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     const updateData: Record<string, unknown> = {};
     if (name !== undefined) updateData.name = name;
     if (description !== undefined) updateData.description = description;
-    if (config !== undefined) updateData.config = config;
+    if (customization !== undefined) updateData.customization = customization;
     if (sections !== undefined) updateData.sections = sections;
     if (customPreviewImage !== undefined) updateData.customPreviewImage = customPreviewImage;
     if (customThumbnailImage !== undefined) updateData.customThumbnailImage = customThumbnailImage;

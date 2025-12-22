@@ -1,58 +1,60 @@
-import {
-  GraduationCap,
-  Heart,
-  Briefcase,
-  Baby,
-  Home,
-  BookOpen,
-} from 'lucide-react'
+"use client";
 
-const timelineEvents = [
-  {
-    year: '1945',
-    title: 'Born in Boston',
-    description: 'Eleanor Grace was born on a beautiful spring day',
-    icon: Baby,
-  },
-  {
-    year: '1963',
-    title: 'High School Graduation',
-    description: 'Graduated with honors from Boston Latin School',
-    icon: GraduationCap,
-  },
-  {
-    year: '1967',
-    title: 'College Graduation',
-    description: "Earned Bachelor&apos;s degree in Education",
-    icon: BookOpen,
-  },
-  {
-    year: '1968',
-    title: 'Marriage',
-    description: 'Married Robert Thompson',
-    icon: Heart,
-  },
-  {
-    year: '1970',
-    title: 'Teaching Career Begins',
-    description: 'Started at Riverside Elementary',
-    icon: Briefcase,
-  },
-  {
-    year: '1985',
-    title: 'Move to Lagos',
-    description: 'Relocated family to Lagos, Nigeria',
-    icon: Home,
-  },
-  {
-    year: '2005',
-    title: 'Retirement',
-    description: 'After 35 years of inspiring young minds',
-    icon: GraduationCap,
-  },
-]
+import { GraduationCap, Heart, Briefcase, Baby, Home, BookOpen } from "lucide-react";
+import { useTemplate } from "../TemplateProvider";
 
 export const TimelineHorizontal = () => {
+  const { sectionsData } = useTemplate();
+
+  // Get TIMELINE section data with fallbacks
+  const timelineData = (sectionsData?.TIMELINE as any) || {};
+  const defaultTimelineEvents = [
+    {
+      year: "1945",
+      title: "Born in Boston",
+      description: "Eleanor Grace was born on a beautiful spring day",
+      icon: Baby,
+    },
+    {
+      year: "1963",
+      title: "High School Graduation",
+      description: "Graduated with honors from Boston Latin School",
+      icon: GraduationCap,
+    },
+    {
+      year: "1967",
+      title: "College Graduation",
+      description: "Earned Bachelor&apos;s degree in Education",
+      icon: BookOpen,
+    },
+    {
+      year: "1968",
+      title: "Marriage",
+      description: "Married Robert Thompson",
+      icon: Heart,
+    },
+    {
+      year: "1970",
+      title: "Teaching Career Begins",
+      description: "Started at Riverside Elementary",
+      icon: Briefcase,
+    },
+    {
+      year: "1985",
+      title: "Move to Lagos",
+      description: "Relocated family to Lagos, Nigeria",
+      icon: Home,
+    },
+    {
+      year: "2005",
+      title: "Retirement",
+      description: "After 35 years of inspiring young minds",
+      icon: GraduationCap,
+    },
+  ];
+
+  const timelineEvents = timelineData.events || defaultTimelineEvents;
+
   return (
     <section
       id="memories"
@@ -93,9 +95,7 @@ export const TimelineHorizontal = () => {
                   </h3>
 
                   {/* Description */}
-                  <p className="leading-relaxed text-cream/90">
-                    {event.description}
-                  </p>
+                  <p className="leading-relaxed text-cream/90">{event.description}</p>
                 </div>
 
                 {/* Connector Line */}
@@ -108,5 +108,5 @@ export const TimelineHorizontal = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};

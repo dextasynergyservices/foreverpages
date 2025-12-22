@@ -1,30 +1,39 @@
-import { Play } from 'lucide-react'
+"use client";
 
-const videos = [
-  {
-    id: 1,
-    title: 'Memorial Service Highlights',
-    thumbnail:
-      'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&auto=format&fit=crop',
-    duration: '12:34',
-  },
-  {
-    id: 2,
-    title: 'Family Remembers Eleanor',
-    thumbnail:
-      'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&auto=format&fit=crop',
-    duration: '8:45',
-  },
-  {
-    id: 3,
-    title: 'Teaching Legacy',
-    thumbnail:
-      'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&auto=format&fit=crop',
-    duration: '15:20',
-  },
-]
+import { Play } from "lucide-react";
+import { useTemplate } from "../TemplateProvider";
 
 export const VideoTributes = () => {
+  const { sectionsData } = useTemplate();
+
+  // Get VIDEO_TRIBUTES section data with fallbacks
+  const videoData = (sectionsData?.VIDEO_TRIBUTES as any) || {};
+  const defaultVideos = [
+    {
+      id: 1,
+      title: "Memorial Service Highlights",
+      thumbnail:
+        "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&auto=format&fit=crop",
+      duration: "12:34",
+    },
+    {
+      id: 2,
+      title: "Family Remembers Eleanor",
+      thumbnail:
+        "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&auto=format&fit=crop",
+      duration: "8:45",
+    },
+    {
+      id: 3,
+      title: "Teaching Legacy",
+      thumbnail:
+        "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&auto=format&fit=crop",
+      duration: "15:20",
+    },
+  ];
+
+  const videos = videoData.videos || defaultVideos;
+
   return (
     <section className="bg-gradient-to-br from-burgundy/90 via-burgundy/80 to-deep-plum/90 px-4 py-20">
       <div className="mx-auto max-w-7xl">
@@ -32,9 +41,7 @@ export const VideoTributes = () => {
           <h2 className="mb-1 font-heading text-2xl font-bold leading-tight text-cream md:mb-2 md:text-6xl">
             Video Tributes
           </h2>
-          <p className="text-cream/80">
-            Celebrate Eleanor&apos;s life through shared memories
-          </p>
+          <p className="text-cream/80">Celebrate Eleanor&apos;s life through shared memories</p>
         </div>
 
         <div className="grid gap-8 md:grid-cols-3">
@@ -55,10 +62,7 @@ export const VideoTributes = () => {
                 {/* Overlay */}
                 <div className="absolute inset-0 flex items-center justify-center bg-black/40 transition-smooth group-hover:bg-black/60">
                   <div className="flex h-16 w-16 items-center justify-center rounded-full bg-soft-gold/90 transition-smooth group-hover:scale-110 group-hover:bg-soft-gold">
-                    <Play
-                      className="ml-1 h-8 w-8 text-burgundy"
-                      fill="currentColor"
-                    />
+                    <Play className="ml-1 h-8 w-8 text-burgundy" fill="currentColor" />
                   </div>
                 </div>
 
@@ -77,5 +81,5 @@ export const VideoTributes = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};

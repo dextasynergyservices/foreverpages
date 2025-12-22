@@ -314,13 +314,89 @@
     },
     "copyright": "ForeverPages. Ti a ṣẹda pẹlu ifẹ lati bọwọ fun gbogbo igbesi aye."
   },
+  "memorial": {
+    "status": {
+      "active": "Ṣiṣẹ",
+      "expired": "Ti pari",
+      "gracePeriod": "Akoko Aanu",
+      "lifetime": "Iwọlẹ Igbesi Aye",
+      "ownerPreview": "Awo Oniwun",
+      "unknown": "Ipo Aimojẹ"
+    },
+    "expiry": {
+      "owner": {
+        "expired": {
+          "title": "Ẹkọ Iṣẹ ti Pari",
+          "description": "Iranti yii ko wa fun gbogbo eniyan lowo yi. Tun ṣe ẹkọ rẹ lati mu iwọlẹ pada."
+        }
+      },
+      "public": {
+        "expired": {
+          "title": "Iranti Ko Wa Fun Igba Diẹ",
+          "description": "Ẹkọ fun {{name}} ti pari. Jọwọ kan si oniwun oju-iwe lati mu iwọlẹ pada."
+        }
+      },
+      "gracePeriod": {
+        "title": "Ẹkọ Iṣẹ ni Akoko Aanu",
+        "description": "Iranti yii yoo di aimojẹ ni ọjọ {{days}}. Tun ṣe ẹkọ rẹ lati tọju iwọlẹ."
+      },
+      "ownerPreview": {
+        "title": "Ipo Awo - Ẹkọ Ti Pari",
+        "description": "Iwọ nikan ni o le wo iranti yii. Tun ṣe ẹkọ rẹ lati jẹ ki o wa fun gbogbo eniyan lẹẹkansi."
+      },
+      "renewButton": "Tun Ṣe Ẹkọ"
+    },
+    "expired": {
+      "title": "Iranti Ko Wa Fun Igba Diẹ",
+      "message": "Oju-iwe iranti fun {{name}} ko wa lowo yi nitori ẹkọ ti pari.",
+      "info": "Eyi jẹ ipo igba diẹ. Nigbati oniwun oju-iwe ba tun ṣe ẹkọ wọn, iranti yii yoo wa lẹẹkansi.",
+      "contactTitle": "Kan Si Oniwun Oju-iwe",
+      "contactMessage": "Ti o ba nilo lati wọlẹ si iranti yii ni kiakia, jọwọ kan si oniwun oju-iwe lati bẹrẹ isunmi.",
+      "contactOwner": "Kan Si Oniwun",
+      "createOwn": "Ṣe o fẹ ṣẹda iranti fun ẹni rẹ?",
+      "viewPackages": "Wo Awọn Idì Wa"
+    }
+  },
   "common": {
     "loading": "N gbe soke...",
     "error": "Aṣiṣe kan ṣẹlẹ",
     "retry": "Gbiyanju lẹẹkansi",
     "close": "Pa",
     "save": "Fi pamọ",
-    "cancel": "Fagilee"
+    "cancel": "Fagilee",
+    "confirm": "Jẹrisi",
+    "delete": "Paarẹ"
+  },
+
+  "errors": {
+    "boundary": {
+      "title": "Nkan Kan Ko Dara",
+      "description": "Aṣiṣe ti a ko ro tẹlẹ waye",
+      "retry": "Gbiyanju Lẹẹkansi"
+    },
+    "generic": {
+      "title": "Aṣiṣe",
+      "message": "Aṣiṣe ti a ko ro tẹlẹ waye. Jọwọ gbiyanju lẹẹkansi."
+    },
+    "warning": {
+      "title": "Ikilọ"
+    },
+    "network": {
+      "title": "Aṣiṣe Asopọ",
+      "message": "Ko le sopọ. Jọwọ ṣayẹwo asopọ intanẹẹti rẹ ki o si gbiyanju lẹẹkansi."
+    },
+    "actions": {
+      "retry": "Gbiyanju lẹẹkansi",
+      "dismiss": "Yọkuro"
+    }
+  },
+
+  "tutorial": {
+    "step": "Igbesẹ {{current}} ninu {{total}}",
+    "previous": "Ti tẹlẹ",
+    "next": "To tẹle",
+    "finish": "Pari",
+    "skip": "Fo Tutorial Kọja"
   },
   "faq": {
     "title": "Awọn Ibeere Ti o Wọpọ",
@@ -1138,7 +1214,11 @@
       "steps": {
         "chooseTemplate": {
           "title": "Yan Apẹẹrẹ",
-          "description": "Yan apẹẹrẹ kan ti yoo bọwọ fun eniyan ti o ti lọ"
+          "description": "Yan apẹẹrẹ ti o bamu pẹlu iran rẹ"
+        },
+        "editTemplate": {
+          "title": "Ṣatunkọ Apẹẹrẹ",
+          "description": "Ṣe awoṣe awọn awọ, akoonu, ati awọn apakan"
         },
         "basicInfo": {
           "title": "Alaye Ipilẹ",
@@ -1153,8 +1233,8 @@
           "description": "Ṣe awoṣe awọn nkan ati apẹẹrẹ"
         },
         "review": {
-          "title": "Atunwo",
-          "description": "Atunwo ati ṣẹda iranti rẹ"
+          "title": "Atunwo ati Tẹjade",
+          "description": "Ṣe atunwo ki o si tẹjade oju-iwe iranti rẹ"
         }
       },
       "buttons": {
@@ -1162,6 +1242,47 @@
         "next": "Tẹsiwaju",
         "create": "Ṣẹda Iranti",
         "creating": "N Ṣẹda..."
+      },
+      "saveIndicator": {
+        "saving": "Fifipamọ...",
+        "saved": "Ti fipamọ",
+        "error": "Aṣiṣe ninu fipamọ"
+      },
+      "editView": {
+        "title": "Ṣatunkọ Apẹẹrẹ",
+        "editor": "Olóòtú",
+        "preview": "Wo Tẹlẹ",
+        "designTokens": "Apẹrẹ ati Awọ",
+        "sections": "Awọn Apakan Akoonu",
+        "previewMode": "Ipo Iwo Tẹlẹ",
+        "desktop": "Tabili",
+        "tablet": "Tabulẹti",
+        "mobile": "Foonu"
+      },
+      "mediaPicker": {
+        "title": "Yan Awọn Amóhùnmáwòrán Láti Ilé-ìtọ́sọ́nà",
+        "searchPlaceholder": "Wá nipa akọle tabi apejuwe...",
+        "all": "Gbogbo",
+        "images": "Awọn Aworan",
+        "videos": "Awọn Fidio",
+        "imagesUsed": "Awọn Aworan:",
+        "videosUsed": "Awọn Fidio:",
+        "error": "Ikuna lati gbe awọn amóhùnmáwòrán",
+        "noMedia": "Ko si awọn amóhùnmáwòrán ti o rii",
+        "uploadFirst": "Gbe diẹ ninu awọn amóhùnmáwòrán si gallery rẹ ni akọkọ",
+        "selected": "ti yan",
+        "addSelected": "Fi Awọn Ti A Yan Kun"
+      },
+      "gallery": {
+        "title": "Ilé-ìtọ́sọ́nà Aworan ati Fidio",
+        "description": "Fi awọn aworan ati fidio kun ti o ṣe ayẹyẹ igbesi aye wọn",
+        "layout": "Ilana Gallery",
+        "addMedia": "Fi Awọn Aworan/Fidio Lati Gallery Kun",
+        "noMedia": "Ko si media ti a fi kun sibẹsibẹ",
+        "clickToAdd": "Tẹ bọtini ti o wa ni oke lati fi awọn aworan ati fidio kun",
+        "caption": "Akọle (Aṣayan)",
+        "captionPlaceholder": "Fi akọle kun...",
+        "remove": "Yọ media kuro"
       },
       "sidebar": {
         "title": "Awọn igbesẹ kọle",
@@ -1300,7 +1421,22 @@
             "Awọn iranti ayo",
             "Tọni ti o funni ni idunnu"
           ]
-        }
+        },
+        "status": {
+          "live": "Laaye",
+          "draft": "Apẹẹrẹ",
+          "expired": "Ti pari"
+        },
+        "actions": {
+          "viewLive": "Wo Laaye",
+          "edit": "Ṣatunkọ",
+          "delete": "Pa rẹ",
+          "continue": "Tẹsiwaju",
+          "deleteDraft": "Pa Apẹẹrẹ"
+        },
+        "views": "awọn wiwo",
+        "created": "Ti ṣẹda",
+        "updated": "Ti ṣe imudojuiwọn"
       },
       "loadingTemplates": "N gbẹ Awọn Apẹẹrẹ...",
       "mustSignInTitle": "Jọwọ wọle sinu akaun rẹ",
@@ -1310,11 +1446,39 @@
         "signinNeeded": "Wọle lati ni ina si awọn apẹẹrẹ ti o pọ"
       },
       "review": {
+        "title": "Ṣetan lati Ṣẹda Iranti",
+        "description": "Oju-iwe iranti rẹ ti o lẹwa ti ṣetan lati ṣẹda. O le nigbagbogbo ṣatunkọ ki o fi akoonu diẹ sii kun nigbamii.",
         "templateLabel": "Apẹẹrẹ:",
         "privacyLabel": "Alagbara:",
         "privacyValue": "Olanibi",
         "featuresLabel": "Awọn Ẹka:",
-        "featuresValue": "Ina Kikun"
+        "featuresValue": "Ina Kikun",
+        "publishButton": "Gbe Iranti",
+        "updateButton": "Imsọ́n Iranti",
+        "deleteMemorial": "Pa Iranti Rẹ",
+        "validationRequired": "Jọwọ pari eyi wọnyi ṣaaju ki o to gbejade:",
+        "missingFirstName": "Fi orukọ akọkọ oloogbe si",
+        "missingLastName": "Fi orukọ idile oloogbe si",
+        "missingSections": "Fi o kere ju apakan akoonu kan si",
+        "sectionsConfigured": "Awọn Apakan Ti a Ṣeto:",
+        "memorialFor": "Iranti Fun:",
+        "memorialPublished": "Iranti ti wà lórí",
+        "memorialUrl": "URL Iranti:",
+        "autoSaveNote": "Awọn ayipada ni a pamọ láìpé ati pe aọ yóò han lésèkésè lori iranti rẹ ti o wa lórí.",
+        "editModeHelpText": "Iranti rẹ wà lórí. Eyikeyi imsọn yóò han lésèkésè.",
+        "helpText": "Lẹhin ti a ba gbejade, iranti rẹ yoo wa lórí ati pe gbogbo eniyan ti o ni àsùpọ le wọ lé sí i.",
+        "urlCopied": "URL iranti ti da si clipboard!",
+        "copyFailed": "Adakuna lati da URL",
+        "unpublishButton": "Dá ìgbéjáde Iranti dúró",
+        "unpublishSuccess": "A ti dá ìgbéjáde iranti dúró dáradára",
+        "unpublishError": "Adakuna lati da igbejade iranti duro",
+        "slugUpdateSuccess": "URL iranti ti yipada daradara",
+        "slugUpdateError": "Adakuna lati yi URL iranti pada",
+        "slugTaken": "URL yii ti wà níbẹ tẹlẹ",
+        "editSlugHint": "Eyi yoo yi adiresi wẹẹbu iranti rẹ pada. Rí dájú pé o tun àwọn àsùpọ tí a pín ṣe.",
+        "unpublishConfirmTitle": "Dá ìgbéjáde Iranti dúró?",
+        "unpublishConfirmMessage": "Ṣe o dá o lójú pé o fẹ da ìgbéjáde iranti yi duro? Ojú ìwé iranti naa ko ni ṣe àṣeyọrí fun àwọn alábẹwò titi ìwọ yoo fi tún gbe jade.",
+        "confirmUnpublish": "Dá ìgbéjáde Iranti dúró"
       },
       "publish": {
         "title": "Gbe Iranti",
@@ -1342,13 +1506,39 @@
           "slugTooLong": "URL ko le yọ arokọ 50 ju",
           "slugInvalid": "URL le ni awọ nikan, nọ́mbà, ìbáṣepọ ati ìbáṣepọ",
           "slugTaken": "URL yii ti wa ti gbe. Jọwọ gbalẹ omiran."
-        }
+        },
+        "suggestions": "Awọn URL Ti a Dabaa:",
+        "previewUrl": "Awo-iṣaaju:"
+      },
+      "deleteMemorial": {
+        "title": "Pa Iranti",
+        "description": "Iṣe yii ko le yipada. Pipa iranti yii yoo:",
+        "warning": "Ṣe o da ọ loju?",
+        "consequence1": "Pa oju-iwe iranti ati gbogbo akoonu rẹ lailai",
+        "consequence2": "Yọ gbogbo awọn ifiwepe ati iraye si awọn alabaṣiṣẹpọ",
+        "consequence3": "Pa gbogbo awọn ọla ati awọn itunu",
+        "consequence4": "Yọ iranti kuro ninu awọn ẹrọ wiwa",
+        "memorialName": "Iranti:",
+        "memorialUrl": "URL:",
+        "confirmationLabel": "Tẹ slug ti memorial lati jẹrisi pipa",
+        "confirmationHint": "Tẹ gangan:",
+        "deleteButton": "Pa Iranti",
+        "deleting": "N pa...",
+        "cancel": "Fagile",
+        "successTitle": "Iranti Ti Pa",
+        "successMessage": "Iranti ti pa lailai"
       },
       "autoSave": {
         "saving": "N gbe...",
         "saved": "Gbe",
         "error": "Aisẹpọ gbe",
         "lastSaved": "Gbe nikẹhin {{time}}"
+      },
+      "unsavedChanges": {
+        "title": "Ayipada Ti Ko Fipamọ",
+        "message": "O ni awọn ayipada ti ko fipamọ. Ṣe o da ọ loju pe o fẹ lọ?",
+        "leave": "Lọ",
+        "stay": "Duro"
       },
       "subscription": {
         "banner": {
@@ -1494,6 +1684,36 @@
         "account": {
           "title": "Awọn Iṣe Akọọlẹ",
           "signOut": "Jade"
+        },
+        "accountDetails": {
+          "title": "Awọn Alaye Akanti",
+          "description": "Sakoso awọn alaye akanti rẹ lati gba awọn ife ati atilẹyin nipasẹ awọn oju-iwe iranti rẹ.",
+          "noAccountsTitle": "Ko Si Akanti Ti A Fi Kun",
+          "noAccounts": "Fi awọn alaye akanti rẹ kun lati gba awọn ife ati atilẹyin nipasẹ awọn oju-iwe iranti rẹ.",
+          "addFirstAccount": "Fi Akanti Akọkọ Rẹ Kun",
+          "addAccount": "Fi Akanti Titun Kun",
+          "account": "Akanti",
+          "default": "Akọkọ",
+          "setPrimary": "Fi Si Bi Akọkọ",
+          "setDefault": "Fi Si Bi Atilẹwa",
+          "type": "Iru Akanti",
+          "accountName": "Orukọ Olú Akanti",
+          "accountNumber": "Nọmba Akanti",
+          "bankName": "Orukọ Bank",
+          "routingNumber": "Nọmba Ọna",
+          "description": "Apejuwe (Ti O Fẹ)",
+          "types": {
+            "bank": "Akanti Bank",
+            "bankDesc": "Akanti bank atọwọdọwọ",
+            "mobileMoney": "Owo Alagbeka",
+            "mobileMoneyDesc": "Iṣẹ sanwo alagbeka",
+            "paypal": "PayPal",
+            "paypalDesc": "Apamọwọ oni-nọmba PayPal",
+            "stripe": "Stripe",
+            "stripeDesc": "Eto sanwo Stripe",
+            "other": "Miran",
+            "otherDesc": "Ọna sanwo miran"
+          }
         }
       }
     },
@@ -1596,6 +1816,11 @@
         "description": "Ṣe o da ọ lọju pe o fẹ pa \"{{name}}\"? Iṣe yii ko le ṣe atunṣe.",
         "deleting": "N pa...",
         "confirm": "Pa Apẹẹrẹ"
+      },
+      "delete": {
+        "confirmTitle": "Pa Apẹẹrẹ?",
+        "confirmDescription": "Ṣe o da ọ lọju pe o fẹ pa \"{{name}}\"? Iṣe yii ko le ṣe atunṣe.",
+        "confirm": "Paarẹ"
       },
       "createSuccess": "A ṣẹda apẹẹrẹ ni aṣeyọri",
       "createError": "Kuna lati ṣẹda apẹẹrẹ",

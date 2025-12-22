@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,10 +9,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AlertCircle, CheckCircle, Copy, ExternalLink } from "lucide-react";
+import { AlertCircle, CheckCircle, Copy, ExternalLink, Loader2 } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslations } from "@/hooks/useTranslations";
 import { usePublishMemorial } from "@/hooks/usePublishMemorial";
+import { useDebounce } from "@/hooks/useDebounce";
+import { useEditorShortcuts } from "@/hooks/useKeyboardShortcuts";
+import { ErrorMessage, getErrorMessage, isNetworkError } from "@/components/ui/error-message";
+import { Spinner } from "@/components/ui/skeleton-loader";
 import toast from "react-hot-toast";
 
 interface PublishModalProps {
@@ -45,15 +49,11 @@ export const PublishModal: React.FC<PublishModalProps> = ({
   const [slug, setSlug] = useState(existingSlug);
   const [showSuccess, setShowSuccess] = useState(false);
   const [publishedUrl, setPublishedUrl] = useState("");
+  const [isCheckingSlug, setIsCheckingSlug] = useState(false);
+  const [slugAvailable, setSlugAvailable] = useState<boolean | null>(null);
+  const [suggestedSlugs, setSuggestedSlugs] = useState<string[]>([]);
 
   const { mutate: publishMemorial, isPending, error } = usePublishMemorial();
-
-  const textMuted = theme === "dark" ? "text-white/70" : "text-gray-600";
-  const bgMuted = theme === "dark" ? "bg-white/5" : "bg-gray-50";
-  const borderMuted = theme === "dark" ? "border-white/10" : "border-gray-200";
-  const errorBg = theme === "dark" ? "bg-red-900/20" : "bg-red-50";
-  const errorBorder = theme === "dark" ? "border-red-700" : "border-red-200";
-  const errorText = theme === "dark" ? "text-red-400" : "text-red-600";
 
   // Validate slug format
   const isValidSlug = useCallback((value: string): boolean => {
@@ -63,6 +63,112 @@ export const PublishModal: React.FC<PublishModalProps> = ({
     // Allow alphanumeric, hyphens, underscores
     return /^[a-zA-Z0-9_-]+$/.test(value);
   }, []);
+
+  // Check slug availability (debounced)
+  const checkSlugAvailability = useCallback(
+    async (slugToCheck: string) => {
+      if (!slugToCheck || slugToCheck.length < 3 || isEditMode) {
+        setSlugAvailable(null);
+        return;
+      }
+
+      setIsCheckingSlug(true);
+      try {
+        const response = await fetch(
+          `/api/memorials/check-slug?slug=${encodeURIComponent(slugToCheck)}`
+        );
+        const data = await response.json();
+        setSlugAvailable(data.available === true);
+      } catch (error) {
+        console.error("Failed to check slug:", error);
+        setSlugAvailable(null);
+      } finally {
+        setIsCheckingSlug(false);
+      }
+    },
+    [isEditMode]
+  );
+
+  const debouncedCheckSlug = useDebounce(checkSlugAvailability, 500);
+
+  // Generate suggested slugs based on name
+  const generateSuggestedSlugs = useCallback((first: string, last: string) => {
+    const suggestions: string[] = [];
+    const firstClean = first.toLowerCase().replace(/[^a-z0-9]/g, "");
+    const lastClean = last.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+    if (firstClean && lastClean) {
+      suggestions.push(`${firstClean}-${lastClean}`);
+      suggestions.push(`in-memory-of-${firstClean}-${lastClean}`);
+      suggestions.push(`remembering-${firstClean}-${lastClean}`);
+      suggestions.push(`${firstClean}${lastClean}-memorial`);
+    }
+
+    return suggestions.filter((s) => s.length >= 3 && s.length <= 50);
+  }, []);
+
+  // Handle slug change with validation
+  const handleSlugChange = useCallback(
+    (value: string) => {
+      const cleaned = value.toLowerCase().replace(/[^a-z0-9_-]/g, "");
+      setSlug(cleaned);
+
+      if (isValidSlug(cleaned) && !isEditMode) {
+        debouncedCheckSlug(cleaned);
+      } else {
+        setSlugAvailable(null);
+      }
+    },
+    [isValidSlug, isEditMode, debouncedCheckSlug]
+  );
+
+  // Handle suggested slug selection
+  const handleSelectSuggested = useCallback(
+    (suggested: string) => {
+      setSlug(suggested);
+      if (!isEditMode) {
+        debouncedCheckSlug(suggested);
+      }
+    },
+    [isEditMode, debouncedCheckSlug]
+  );
+
+  // Build preview URL - match the format: foreverpages.com/{slug}
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://foreverpages.com";
+  const previewUrl = `${baseUrl}/${slug}`;
+
+  // Initialize suggested slugs
+  useEffect(() => {
+    if (!existingSlug && firstName && lastName) {
+      const suggestions = generateSuggestedSlugs(firstName, lastName);
+      setSuggestedSlugs(suggestions);
+      if (suggestions.length > 0 && !slug) {
+        setSlug(suggestions[0]);
+      }
+    }
+  }, [firstName, lastName, existingSlug, generateSuggestedSlugs, slug]);
+
+  const handleClose = useCallback(() => {
+    if (!isPending) {
+      setSlug("");
+      setShowSuccess(false);
+      setPublishedUrl("");
+      onClose();
+    }
+  }, [isPending, onClose]);
+
+  const textMuted = theme === "dark" ? "text-white/70" : "text-gray-600";
+  const bgMuted = theme === "dark" ? "bg-white/5" : "bg-gray-50";
+  const borderMuted = theme === "dark" ? "border-white/10" : "border-gray-200";
+  const errorBg = theme === "dark" ? "bg-red-900/20" : "bg-red-50";
+  const errorBorder = theme === "dark" ? "border-red-700" : "border-red-200";
+  const errorText = theme === "dark" ? "text-red-400" : "text-red-600";
+
+  // Keyboard shortcuts: Escape to close
+  useEditorShortcuts({
+    onEscape: handleClose,
+    enabled: isOpen && !isPending,
+  });
 
   const handlePublish = useCallback(() => {
     if (!isValidSlug(slug)) {
@@ -107,15 +213,6 @@ export const PublishModal: React.FC<PublishModalProps> = ({
   const handleOpenPublished = useCallback(() => {
     window.open(publishedUrl, "_blank");
   }, [publishedUrl]);
-
-  const handleClose = useCallback(() => {
-    if (!isPending) {
-      setSlug("");
-      setShowSuccess(false);
-      setPublishedUrl("");
-      onClose();
-    }
-  }, [isPending, onClose]);
 
   if (showSuccess) {
     // Success view
@@ -217,19 +314,82 @@ export const PublishModal: React.FC<PublishModalProps> = ({
               {t("dashboard.pageBuilder.publish.slugLabel", {}, "Memorial URL")}
               <span className="text-red-500 ml-1">*</span>
             </Label>
-            <div className="flex items-center gap-2">
-              <span className={`text-sm ${textMuted}`}>
-                {process.env.NEXT_PUBLIC_APP_URL}/memorial/
-              </span>
+            <div className="relative">
               <Input
                 id="slug"
                 placeholder="beloved-mom"
                 value={slug}
-                onChange={(e) => setSlug(e.target.value.toLowerCase())}
-                disabled={isPending}
-                className="flex-1"
+                onChange={(e) => handleSlugChange(e.target.value)}
+                disabled={isPending || isEditMode}
+                className="pr-10"
               />
+              {isCheckingSlug && (
+                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                </div>
+              )}
+              {!isCheckingSlug && slugAvailable !== null && (
+                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  {slugAvailable ? (
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                  ) : (
+                    <AlertCircle className="h-4 w-4 text-red-500" />
+                  )}
+                </div>
+              )}
             </div>
+
+            {/* Preview URL */}
+            {slug && isValidSlug(slug) && (
+              <div className={`text-xs ${textMuted} break-all`}>
+                <span>{t("dashboard.pageBuilder.publish.previewUrl", {}, "Preview:")}</span>{" "}
+                <span className="font-mono">{previewUrl}</span>
+              </div>
+            )}
+
+            {/* Slug availability message */}
+            {!isEditMode &&
+              slug &&
+              isValidSlug(slug) &&
+              !isCheckingSlug &&
+              slugAvailable === false && (
+                <p className="text-xs text-red-500">
+                  {t(
+                    "dashboard.pageBuilder.publish.slugTaken",
+                    {},
+                    "This URL is already taken. Please choose another."
+                  )}
+                </p>
+              )}
+
+            {/* Suggested slugs */}
+            {!isEditMode && suggestedSlugs.length > 0 && (
+              <div className="space-y-2">
+                <p className={`text-xs ${textMuted}`}>
+                  {t("dashboard.pageBuilder.publish.suggestions", {}, "Suggested URLs:")}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {suggestedSlugs.slice(0, 3).map((suggested) => (
+                    <button
+                      key={suggested}
+                      type="button"
+                      onClick={() => handleSelectSuggested(suggested)}
+                      className={`px-2 py-1 text-xs rounded border transition-colors ${
+                        slug === suggested
+                          ? "border-primary bg-primary/10"
+                          : theme === "dark"
+                            ? "border-white/10 hover:border-white/20"
+                            : "border-gray-200 hover:border-gray-300"
+                      }`}
+                      disabled={isPending}
+                    >
+                      {suggested}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <p className={`text-xs ${textMuted}`}>
               {t(
                 "dashboard.pageBuilder.publish.slugHint",
@@ -251,13 +411,12 @@ export const PublishModal: React.FC<PublishModalProps> = ({
 
           {/* API error */}
           {error && (
-            <div className={`p-3 rounded-lg border ${errorBg} ${errorBorder} flex gap-2`}>
-              <AlertCircle className={`h-5 w-5 ${errorText} flex-shrink-0 mt-0.5`} />
-              <p className={`text-sm ${errorText}`}>
-                {error.message ||
-                  t("dashboard.pageBuilder.publish.error", {}, "Publication failed")}
-              </p>
-            </div>
+            <ErrorMessage
+              message={getErrorMessage(error, t)}
+              variant={isNetworkError(error) ? "network" : "error"}
+              onRetry={isNetworkError(error) ? handlePublish : undefined}
+              className="mt-4"
+            />
           )}
 
           {/* Action buttons */}
@@ -268,8 +427,15 @@ export const PublishModal: React.FC<PublishModalProps> = ({
             <Button
               onClick={handlePublish}
               className="flex-1"
-              disabled={!slug || !isValidSlug(slug) || isPending}
+              disabled={
+                !slug ||
+                !isValidSlug(slug) ||
+                isPending ||
+                isCheckingSlug ||
+                (!isEditMode && slugAvailable === false)
+              }
             >
+              {isPending && <Spinner size="sm" className="mr-2" />}
               {isPending
                 ? t("dashboard.pageBuilder.publish.publishing", {}, "Publishing...")
                 : t("dashboard.pageBuilder.publish.publish", {}, "Publish")}

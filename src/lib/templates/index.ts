@@ -8,10 +8,22 @@ export * from "../../components/templates/base/TemplateRenderer";
 // Register static templates (templates bundled with the app)
 import { registerTemplate } from "./registry";
 import { ClassicMemorialTemplate } from "../../components/templates/components/classic/MemorialTemplate";
+import { LightMemorialTemplate } from "../../components/templates/components/light-template/MemorialTemplate";
+import { PeaceMemorialTemplate } from "../../components/templates/components/peace-template/MemorialTemplate";
 
 // Register classic template (always available)
 registerTemplate("classic", {
   MemorialTemplate: ClassicMemorialTemplate,
+});
+
+// Register light template
+registerTemplate("light-template", {
+  MemorialTemplate: LightMemorialTemplate,
+});
+
+// Register peace template
+registerTemplate("peace-template", {
+  MemorialTemplate: PeaceMemorialTemplate,
 });
 
 // Note: Uploaded templates in /app/templates/ are excluded from Next.js build.
