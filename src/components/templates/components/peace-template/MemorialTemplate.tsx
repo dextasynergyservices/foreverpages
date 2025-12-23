@@ -1,16 +1,16 @@
 "use client";
 
 import React from "react";
-import { Template, UserTemplate, Memorial } from "@/generated/prisma";
-import { TemplateProvider } from "@/app/templates/peace-template/TemplateProvider";
-import { Navbar } from "@/app/templates/peace-template/components/Navbar";
-import { HeroModern } from "@/app/templates/peace-template/components/HeroModern";
-import { Biography } from "@/app/templates/peace-template/components/Biography";
-import { TimelineHorizontal } from "@/app/templates/peace-template/components/TimelineHorizontal";
-import { GalleryModern } from "@/app/templates/peace-template/components/GalleryModern";
-import { VideoTributes } from "@/app/templates/peace-template/components/VideoTributes";
-import { TributesModern } from "@/app/templates/peace-template/components/TributesModern";
-import { FamilyTree } from "@/app/templates/peace-template/components/FamilyTree";
+import type { Template, UserTemplate, Memorial } from "@/generated/prisma";
+import { TemplateProvider } from "../../../../app/templates/peace-template/TemplateProvider";
+import { Navbar } from "../../../../app/templates/peace-template/components/Navbar";
+import { HeroModern } from "../../../../app/templates/peace-template/components/HeroModern";
+import { Biography } from "../../../../app/templates/peace-template/components/Biography";
+import { TimelineHorizontal } from "../../../../app/templates/peace-template/components/TimelineHorizontal";
+import { GalleryModern } from "../../../../app/templates/peace-template/components/GalleryModern";
+import { VideoTributes } from "../../../../app/templates/peace-template/components/VideoTributes";
+import { TributesModern } from "../../../../app/templates/peace-template/components/TributesModern";
+import { FamilyTree } from "../../../../app/templates/peace-template/components/FamilyTree";
 
 interface MemorialTemplateProps {
   memorial: Memorial;
