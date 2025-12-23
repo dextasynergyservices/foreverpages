@@ -195,15 +195,16 @@ export function NotificationBell({ variant = "default" }: NotificationBellProps)
       setIsOpen(false);
 
       // Navigate to the link if it exists
-      if (notification.link) {
+      const targetLink = notification.link;
+      if (targetLink) {
         // Check if the link contains an anchor
-        if (notification.link.includes("#")) {
+        if (targetLink.includes("#")) {
           // For anchor links, use router.push with smooth scrolling
-          router.push(notification.link);
+          router.push(targetLink);
 
           // Add a delay to allow page navigation, then scroll to element
           setTimeout(() => {
-            const anchor = notification.link.split("#")[1];
+            const anchor = targetLink.split("#")[1];
             if (anchor) {
               const element = document.getElementById(anchor);
               if (element) {
@@ -222,7 +223,7 @@ export function NotificationBell({ variant = "default" }: NotificationBellProps)
           }, 100);
         } else {
           // For regular links, just navigate
-          router.push(notification.link);
+          router.push(targetLink);
         }
       }
     } catch (error) {

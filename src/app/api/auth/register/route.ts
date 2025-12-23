@@ -9,6 +9,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@/generated/prisma";
 import { registerSchema } from "@/lib/validation";
 import {
   generateVerificationCode,
@@ -90,8 +91,8 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // Email must match invitation
-      if (formData.email.toLowerCase() !== invitation.email.toLowerCase()) {
+      // Email must match invitation (if one was specified)
+      if (invitation.email && formData.email.toLowerCase() !== invitation.email.toLowerCase()) {
         return NextResponse.json(
           {
             success: false,
@@ -103,7 +104,27 @@ export async function POST(request: NextRequest) {
     }
 
     // Regular user payment validation
-    let payment = null;
+    type PaymentWithPlan = Prisma.PaymentGetPayload<{
+      include: {
+        plan: {
+          select: {
+            id: true;
+            name: true;
+            slug: true;
+            durationDays: true;
+          };
+        };
+        subscription: {
+          select: {
+            id: true;
+            status: true;
+            expiresAt: true;
+          };
+        };
+      };
+    }>;
+
+    let payment: PaymentWithPlan | null = null;
     if (!isCollaborator && paymentId) {
       // Verify payment exists and is successful
       payment = await prisma.payment.findUnique({
@@ -252,7 +273,7 @@ export async function POST(request: NextRequest) {
           email,
           password: hashedPassword,
           phone: userPhone || null,
-          currentPlanId: isCollaborator ? null : payment?.planId, // Collaborators don't have plans
+          currentPlanId: !isCollaborator && payment ? payment.planId : null, // Collaborators don't have plans
           emailVerified: null, // Will be set after verification
           verificationMethod: "CODE", // Using 6-digit code
           lastVerificationSentAt: new Date(),
@@ -311,7 +332,6 @@ export async function POST(request: NextRequest) {
         await tx.invitation.updateMany({
           where: {
             token: invitationToken,
-            email: email.toLowerCase(),
             status: "ACCEPTED",
           },
           data: {
@@ -342,12 +362,12 @@ export async function POST(request: NextRequest) {
           entityId: user.id,
           description: isCollaborator
             ? "New collaborator account created"
-            : `New user registered with ${payment?.plan.name} plan`,
+            : `New user registered with ${payment?.plan.name || "selected"} plan`,
           metadata: {
             isCollaborator,
-            paymentId: payment?.id,
+            paymentId: !isCollaborator && payment ? payment.id : undefined,
             subscriptionId: subscriptionId,
-            planName: payment?.plan.name,
+            planName: !isCollaborator && payment ? payment.plan.name : undefined,
             invitationToken: isCollaborator ? invitationToken : undefined,
           },
         },
