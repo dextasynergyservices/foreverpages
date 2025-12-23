@@ -1,3 +1,5 @@
+import { DesignTokens } from "@/components/userDashboard/pageBuilder/TemplateCustomizer";
+
 export interface MemorialData {
   name: string;
   birthYear: string;
@@ -7,9 +9,18 @@ export interface MemorialData {
   videoUrl?: string;
   config?: TemplateConfig;
   ownerId?: string;
+  ownerAccountDetails?: Array<{
+    id: string;
+    type: string;
+    accountName: string;
+    accountNumber: string;
+    bankName?: string;
+    routingNumber?: string;
+    currency: string;
+    isDefault?: boolean;
+    description?: string;
+  }>;
 }
-
-import { DesignTokens } from "@/components/userDashboard/pageBuilder/TemplateCustomizer";
 
 export interface TemplateConfig {
   name: string;
@@ -157,6 +168,7 @@ export function getDefaultPreviewData(): MemorialData {
     tagline: "A life of faith, love, and service to others",
     portraitUrl: "https://res.cloudinary.com/dt7ozsctz/image/upload/v1764166230/thomas1_yuknpv.png",
     videoUrl: "https://res.cloudinary.com/dt7ozsctz/video/upload/v1764165650/bgVideo_kxr78w.mp4",
+    ownerId: "cmhqer9xn000f18ucvgbtvi9j", // Use real user ID that has account details
     config: templateConfig,
   };
 }
@@ -173,6 +185,11 @@ export async function fetchMemorialData(memorialId: string): Promise<MemorialDat
         userTemplate: {
           include: {
             baseTemplate: true,
+          },
+        },
+        owner: {
+          select: {
+            accountDetails: true,
           },
         },
       },
@@ -193,9 +210,10 @@ export async function fetchMemorialData(memorialId: string): Promise<MemorialDat
         ? new Date(memorial.deathDate).getFullYear().toString()
         : "2023",
       tagline: memorial.biography?.substring(0, 100) || "A life well lived",
-      portraitUrl: memorial.profileImageUrl || "/placeholder-portrait.jpg",
-      videoUrl: memorial.videoUrl || undefined,
+      portraitUrl: (memorial as any).profileImageUrl || "/placeholder-portrait.jpg",
+      videoUrl: (memorial as any).videoUrl || undefined,
       ownerId: memorial.ownerId,
+      ownerAccountDetails: (memorial.owner?.accountDetails as any) || [],
       config: memorial.userTemplate?.customization
         ? {
             ...templateConfig,

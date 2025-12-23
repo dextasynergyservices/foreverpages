@@ -45,7 +45,7 @@ export const TributesModern = () => {
   const [candleCount, setCandleCount] = useState(tributesData.candleCount || 147);
 
   const lightCandle = () => {
-    setCandleCount((prev) => prev + 1);
+    setCandleCount((prev: number) => prev + 1);
   };
 
   return (
@@ -70,7 +70,7 @@ export const TributesModern = () => {
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Left: Tributes */}
           <div className="space-y-6 lg:col-span-2">
-            {tributes.map((tribute, index) => (
+            {tributes.map((tribute: any, index: number) => (
               <div
                 key={tribute.id}
                 className="animate-fade-in-up rounded-2xl border border-cream/20 bg-cream/10 p-6 shadow-elegant backdrop-blur-lg transition-smooth hover:border-soft-gold/30"

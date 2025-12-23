@@ -696,6 +696,7 @@
         "builder": "Mai Gina Jana'iza",
         "invitations": "Gayyata",
         "tributes": "Girmamawa",
+        "support": "Tallafi",
         "settings": "Saiti"
       }
     },
@@ -2915,9 +2916,42 @@
             "Ganin dukkan abun ciki na memorial"
           ]
         }
+      },
+      "OWNER": {
+        "name": "Mai Shi",
+        "short": "Owner",
+        "description": "Cikakken iko da dukkan izini",
+        "longDescription": "Mai shi yana da cikakken iko akan memorial page, ciki har da ikon share ta gaba ɗaya.",
+        "permissions": {
+          "title": "Izini:",
+          "list": [
+            "Cikakken iko akan dukkan memorial",
+            "Ƙara, shirya, ko share kowane abun ciki",
+            "Sarrafa dukkan masu hada kai",
+            "Sarrafa dukkan saitin memorial",
+            "Share memorial page gaba ɗaya",
+            "Canja mallakar zuwa wani"
+          ]
+        }
+      },
+      "VIEWER": {
+        "name": "Mai Kallo",
+        "short": "Viewer",
+        "description": "Izinin kallo kawai",
+        "longDescription": "Masu Kallo na iya ganin abun ciki na memorial kawai amma ba za su iya yin kowane canji ba.",
+        "permissions": {
+          "title": "Izini:",
+          "list": [
+            "Ganin dukkan abun ciki na memorial",
+            "Ganin abubuwan tunawa da tarihin rayuwa",
+            "Ganin hotuna da bidiyo",
+            "Karanta sharhi da gaisuwa"
+          ]
+        }
       }
     },
     "roleRestrictions": {
+      "OWNER": "Mai shi yana da cikakken ikon sarrafa dukkan masu hada kai",
       "ADMIN": "Masu Gudanarwa kawai za su iya sarrafa masu hada kai",
       "EDITOR": "Edita ba zai iya sarrafa masu hada kai ba. Tuntuɓi mai shafin don ƙarin izini.",
       "CONTRIBUTOR": "Masu Bayarwa ba za su iya sarrafa masu hada kai ba. Tuntuɓi mai shafin don ƙarin izini.",
@@ -3533,6 +3567,69 @@
       "marketplace": "Kasuwa",
       "analytics": "Bincike",
       "customization": "Keɓancewa"
+    },
+    "support": {
+      "title": "Tarihin Tallafi",
+      "subtitle": "Bi diddigin tallafin da aka aika da wanda aka karba don tunawa",
+      "displayCurrency": "Nau'in Kuɗin Nunawa:",
+      "ratesUpdated": "An sabunta farashin",
+      "refreshData": "Sabunta Bayanai",
+      "stats": {
+        "totalReceived": "Jimillar Da Aka Karba",
+        "totalSent": "Jimillar Da Aka Aika",
+        "supportsReceived": "Tallafin Da Aka Karba",
+        "supportsSent": "Tallafin Da Aka Aika",
+        "averageSupport": "Matsakaicin Tallafi",
+        "recentActivity": "Ayyukan Kwanan Nan",
+        "noActivity": "Babu ayyuka"
+      },
+      "tabs": {
+        "received": "An Karba",
+        "sent": "An Aika",
+        "message": "Aiko Saƙo"
+      },
+      "empty": {
+        "received": {
+          "title": "Har yanzu ba a karbi wani tallafi ba",
+          "description": "Lokacin da mutane suka goyi bayan tunawar ku, za su bayyana a nan."
+        },
+        "sent": {
+          "title": "Har yanzu ba a aika wani tallafi ba",
+          "description": "Lokacin da kuka goyi bayan wasu tunawa, za su bayyana a nan."
+        }
+      },
+      "messaging": {
+        "title": "Aiko Saƙon Godiya",
+        "description": "Aiko da saƙon godiya na musamman zuwa masu tallafin ku ta hanyar email ko WhatsApp.",
+        "subject": "Taken (Zaɓi)",
+        "subjectPlaceholder": "Na gode da tallafin ku...",
+        "message": "Saƙo",
+        "messagePlaceholder": "Na gode sosai da tallafin ku mai karimci. Kirkinku yana nufin abubuwa masu yawa a gare mu a wannan lokaci mai wahala...",
+        "deliveryMethod": "Hanyar Aikawa",
+        "sendViaEmail": "Aiko ta Email",
+        "sendViaWhatsApp": "Aiko ta WhatsApp",
+        "selectSupporters": "Zaɓi Masu Tallafi",
+        "deselectAll": "Cire Zaɓi Duka",
+        "selectAll": "Zaɓi Duka",
+        "selectPage": "Zaɓi Shafi",
+        "deselectPage": "Cire Shafi",
+        "selectAllSupporters": "Zaɓi Duk Masu Tallafi",
+        "selectAllConfirmTitle": "Zaɓi duk masu tallafi?",
+        "selectAllConfirmDescription": "Wannan zai zaɓi duk masu tallafi a duk shafuka. Wannan aiki na iya ɗaukar lokaci idan akwai adadi mai yawa. Kuna son ci gaba?",
+        "selectAllConfirm": "Zaɓi Duka",
+        "selectAllTooMany": "Masu tallafi da yawa don zaɓar a lokaci guda",
+        "selectAllSuccess": "An zaɓi duk masu tallafi",
+        "clearSelection": "Share Zaɓi",
+        "selectedCount": "An Zaɓa",
+        "selectDescription": "Zaɓi masu tallafin da kuke son aiko saƙo zuwa gare su.",
+        "sending": "Ana aikawa...",
+        "sendMessage": "Aiko Saƙo",
+        "noSupporters": {
+          "title": "Har yanzu babu masu tallafi don aiko saƙo zuwa gare su",
+          "description": "Lokacin da kuka sami tallafi, za ku iya aiko saƙon godiya zuwa masu tallafin ku a nan."
+        },
+        "viewSupport": "Duba Tallafi"
+      }
     }
   }
 }

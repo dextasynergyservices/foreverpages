@@ -12,6 +12,17 @@ interface TemplateContextValue {
   sectionsData?: Record<string, unknown>;
   memorialOwnerId?: string;
   memorialOwnerName?: string;
+  memorialOwnerAccountDetails?: Array<{
+    id: string;
+    type: string;
+    accountName: string;
+    accountNumber: string;
+    bankName?: string;
+    routingNumber?: string;
+    currency: string;
+    isDefault?: boolean;
+    description?: string;
+  }>;
 }
 
 const TemplateContext = createContext<TemplateContextValue | null>(null);
@@ -44,6 +55,7 @@ export function TemplateProvider({
   // Extract memorial owner information
   const memorialOwnerId = memorial.ownerId || "";
   const memorialOwnerName = memorial.name || "Memorial Owner";
+  const memorialOwnerAccountDetails = memorial.ownerAccountDetails || [];
   // Merge default config with user customization
   const defaultDesign = config.defaultDesign || {
     colors: {
@@ -92,6 +104,7 @@ export function TemplateProvider({
         sectionsData,
         memorialOwnerId,
         memorialOwnerName,
+        memorialOwnerAccountDetails,
       }}
     >
       <div

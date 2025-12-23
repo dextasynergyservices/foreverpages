@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
-// @ts-expect-error - react-hook-form has built-in TypeScript support
 import { Controller, FormProvider, useFormContext } from "react-hook-form";
 
 import { cn } from "../../lib/utils";
@@ -16,7 +15,7 @@ const FormFieldContext = React.createContext<FormFieldContextValue>({} as FormFi
 // Use permissive Record types for FormField props during validation to avoid strict react-hook-form type dependency
 interface FormFieldProps {
   name: string;
-  render: (props: Record<string, unknown>) => React.ReactNode;
+  render: (props: Record<string, unknown>) => React.ReactElement;
   [key: string]: unknown;
 }
 

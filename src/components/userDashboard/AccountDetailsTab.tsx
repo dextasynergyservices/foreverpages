@@ -32,12 +32,13 @@ import toastNotification from "@/lib/toastNotifications";
 
 interface AccountDetail {
   id: string;
-  type: "bank" | "mobile_money" | "paypal" | "stripe" | "other";
+  type: "bank" | "mobile_money" | "paypal" | "paystack" | "stripe" | "other";
   accountName: string;
   accountNumber: string;
   bankName?: string;
   routingNumber?: string;
   description?: string;
+  paymentLink?: string; // New field for payment links
   isDefault: boolean;
 }
 
@@ -99,6 +100,7 @@ export default function AccountDetailsTab() {
       accountName: "",
       accountNumber: "",
       description: "",
+      paymentLink: "",
       isDefault: accountDetails.length === 0, // First account is default
     };
     setAccountDetails([...accountDetails, newAccount]);
@@ -156,6 +158,8 @@ export default function AccountDetailsTab() {
         return <Smartphone className="h-5 w-5" />;
       case "paypal":
         return <Globe className="h-5 w-5" />;
+      case "paystack":
+        return <CreditCard className="h-5 w-5" />;
       case "stripe":
         return <CreditCard className="h-5 w-5" />;
       default:
@@ -171,6 +175,8 @@ export default function AccountDetailsTab() {
         return "bg-green-500";
       case "paypal":
         return "bg-purple-500";
+      case "paystack":
+        return "bg-orange-500";
       case "stripe":
         return "bg-indigo-500";
       default:
@@ -186,6 +192,8 @@ export default function AccountDetailsTab() {
         return t("dashboard.settings.accountDetails.types.mobileMoney", {}, "Mobile Money");
       case "paypal":
         return t("dashboard.settings.accountDetails.types.paypal", {}, "PayPal");
+      case "paystack":
+        return t("dashboard.settings.accountDetails.types.paystack", {}, "Paystack");
       case "stripe":
         return t("dashboard.settings.accountDetails.types.stripe", {}, "Stripe");
       case "other":
@@ -457,6 +465,29 @@ export default function AccountDetailsTab() {
                                     </div>
                                   </div>
                                 </SelectItem>
+                                <SelectItem value="paystack" className="flex items-center gap-2">
+                                  <div className="flex items-center gap-3 py-1">
+                                    <div className="p-1 rounded bg-orange-100 text-orange-600">
+                                      <CreditCard className="h-4 w-4" />
+                                    </div>
+                                    <div>
+                                      <div className="font-medium">
+                                        {t(
+                                          "dashboard.settings.accountDetails.types.paystack",
+                                          {},
+                                          "Paystack"
+                                        )}
+                                      </div>
+                                      <div className="text-xs text-gray-500">
+                                        {t(
+                                          "dashboard.settings.accountDetails.types.paystackDesc",
+                                          {},
+                                          "Paystack payment platform"
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </SelectItem>
                                 <SelectItem value="stripe" className="flex items-center gap-2">
                                   <div className="flex items-center gap-3 py-1">
                                     <div className="p-1 rounded bg-indigo-100 text-indigo-600">
@@ -553,11 +584,22 @@ export default function AccountDetailsTab() {
                         </div>
 
                         <div>
-                          <Label htmlFor={`number-${account.id}`} className="mb-2 block">
+                          <Label
+                            htmlFor={`number-${account.id}`}
+                            className="mb-2 flex items-center gap-2"
+                          >
                             {t(
                               "dashboard.settings.accountDetails.accountNumber",
                               {},
                               "Account Number"
+                            )}
+                            {(account.type === "paypal" ||
+                              account.type === "paystack" ||
+                              account.type === "stripe" ||
+                              account.type === "other") && (
+                              <Badge variant="secondary" className="text-xs">
+                                {t("common.optional", {}, "Optional")}
+                              </Badge>
                             )}
                           </Label>
                           {editingAccount === account.id ? (
@@ -567,7 +609,15 @@ export default function AccountDetailsTab() {
                               onChange={(e) =>
                                 updateAccount(account.id, { accountNumber: e.target.value })
                               }
-                              placeholder="1234567890"
+                              placeholder={
+                                account.type === "paypal"
+                                  ? "your-email@example.com or business ID"
+                                  : account.type === "paystack"
+                                    ? "Business name or account identifier"
+                                    : account.type === "stripe"
+                                      ? "Account ID or business identifier"
+                                      : "1234567890"
+                              }
                               className="h-11"
                             />
                           ) : (
@@ -579,7 +629,9 @@ export default function AccountDetailsTab() {
                               }`}
                             >
                               {account.accountNumber
-                                ? `••••${account.accountNumber.slice(-4)}`
+                                ? account.type === "bank" || account.type === "mobile_money"
+                                  ? `••••${account.accountNumber.slice(-4)}`
+                                  : account.accountNumber
                                 : "No account number"}
                             </div>
                           )}
@@ -646,6 +698,94 @@ export default function AccountDetailsTab() {
                           </>
                         )}
                       </div>
+
+                      {/* Payment Link Section - Show for PayPal, Paystack, Stripe, and Other */}
+                      {(account.type === "paypal" ||
+                        account.type === "paystack" ||
+                        account.type === "stripe" ||
+                        account.type === "other") && (
+                        <div className="mt-4">
+                          <Label
+                            htmlFor={`payment-link-${account.id}`}
+                            className="flex items-center gap-2 mb-2"
+                          >
+                            <Globe className="h-4 w-4" />
+                            {t("dashboard.settings.accountDetails.paymentLink", {}, "Payment Link")}
+                            <Badge variant="secondary" className="text-xs">
+                              {t("common.optional", {}, "Optional")}
+                            </Badge>
+                          </Label>
+                          {editingAccount === account.id ? (
+                            <Input
+                              id={`payment-link-${account.id}`}
+                              type="url"
+                              value={account.paymentLink || ""}
+                              onChange={(e) =>
+                                updateAccount(account.id, { paymentLink: e.target.value })
+                              }
+                              placeholder={
+                                account.type === "paypal"
+                                  ? "https://paypal.me/yourusername"
+                                  : account.type === "paystack"
+                                    ? "https://paystack.com/pay/yourbusinessname"
+                                    : account.type === "stripe"
+                                      ? "https://buy.stripe.com/yourlinkid"
+                                      : "https://your-payment-link.com"
+                              }
+                              className="h-11"
+                            />
+                          ) : (
+                            <div
+                              className={`h-11 px-3 py-2 border rounded-md flex items-center ${
+                                theme === "dark"
+                                  ? "bg-gray-800 border-gray-700"
+                                  : "bg-gray-50 border-gray-300"
+                              }`}
+                            >
+                              {account.paymentLink ? (
+                                <a
+                                  href={account.paymentLink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 truncate"
+                                >
+                                  {account.paymentLink}
+                                </a>
+                              ) : (
+                                "No payment link provided"
+                              )}
+                            </div>
+                          )}
+                          <p
+                            className={`text-xs mt-2 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                          >
+                            {account.type === "paypal" &&
+                              t(
+                                "dashboard.settings.accountDetails.paymentLinkHelp.paypal",
+                                {},
+                                "Supporters can use this link to send donations directly via PayPal"
+                              )}
+                            {account.type === "paystack" &&
+                              t(
+                                "dashboard.settings.accountDetails.paymentLinkHelp.paystack",
+                                {},
+                                "Supporters can use this link to donate through Paystack payment gateway"
+                              )}
+                            {account.type === "stripe" &&
+                              t(
+                                "dashboard.settings.accountDetails.paymentLinkHelp.stripe",
+                                {},
+                                "Supporters can use this link to donate through Stripe payment processing"
+                              )}
+                            {account.type === "other" &&
+                              t(
+                                "dashboard.settings.accountDetails.paymentLinkHelp.other",
+                                {},
+                                "Supporters can use this link for donations through your custom payment method"
+                              )}
+                          </p>
+                        </div>
+                      )}
 
                       <div className="mt-4">
                         <Label htmlFor={`description-${account.id}`} className="mb-2 block">

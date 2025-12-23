@@ -45,7 +45,7 @@ export const VideoTributes = () => {
         </div>
 
         <div className="grid gap-8 md:grid-cols-3">
-          {videos.map((video, index) => (
+          {videos.map((video: any, index: number) => (
             <div
               key={video.id}
               className="group relative animate-fade-in-up cursor-pointer overflow-hidden rounded-2xl border border-cream/20 bg-cream/10 shadow-elegant backdrop-blur-sm transition-smooth hover:border-soft-gold/30 hover:shadow-lg"

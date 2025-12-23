@@ -79,7 +79,11 @@ export async function DELETE(
     const userTemplate = await prisma.userTemplate.findFirst({
       where: {
         userId: session.user.id,
-        memorialId: memorialId,
+        memorials: {
+          some: {
+            id: memorialId,
+          },
+        },
       },
       select: {
         id: true,

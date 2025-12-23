@@ -60,29 +60,32 @@ const FALLBACK_RATES: ExchangeRates = {
  * Fetch exchange rates from external API
  * Replace this with your preferred exchange rate provider
  */
-async function fetchExternalRates(): Promise<ExchangeRates | null> {
+async function fetchExternalRates(baseCurrency: string = "USD"): Promise<ExchangeRates | null> {
   try {
-    // TODO: Replace with actual API call in production
-    // Example using ExchangeRate-API (free tier available):
-    // const response = await fetch(
-    //   `https://v6.exchangerate-api.com/v6/${process.env.EXCHANGE_RATE_API_KEY}/latest/NGN`,
-    //   { next: { revalidate: 3600 } } // Cache for 1 hour
-    // );
-    //
-    // if (!response.ok) {
-    //   throw new Error(`Exchange rate API error: ${response.status}`);
-    // }
-    //
-    // const data = await response.json();
-    // return {
-    //   NGN: 1,
-    //   USD: data.conversion_rates.USD,
-    //   GBP: data.conversion_rates.GBP,
-    //   EUR: data.conversion_rates.EUR,
-    // };
+    // Use the EXCHANGE_RATE_API_KEY environment variable
+    const apiKey = process.env.EXCHANGE_RATE_API_KEY;
 
-    // For now, return null to use fallback rates
-    return null;
+    if (!apiKey) {
+      console.warn("EXCHANGE_RATE_API_KEY not configured. Using fallback rates.");
+      return null;
+    }
+
+    const response = await fetch(
+      `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${baseCurrency}`,
+      { next: { revalidate: 3600 } } // Cache for 1 hour
+    );
+
+    if (!response.ok) {
+      throw new Error(`Exchange rate API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.result === "success" && data.conversion_rates) {
+      return data.conversion_rates;
+    } else {
+      throw new Error("Invalid API response format");
+    }
   } catch (error) {
     console.error("Error fetching exchange rates:", error);
     return null;
@@ -90,14 +93,18 @@ async function fetchExternalRates(): Promise<ExchangeRates | null> {
 }
 
 /**
- * GET /api/exchange-rates
+ * GET /api/exchange-rates?base=USD
  *
  * Returns current exchange rates for all supported currencies
  */
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    // Get base currency from query params (default to USD)
+    const { searchParams } = new URL(request.url);
+    const baseCurrency = searchParams.get("base") || "USD";
+
     // Try to fetch real-time rates
-    let rates = await fetchExternalRates();
+    let rates = await fetchExternalRates(baseCurrency);
 
     // Use fallback rates if external API fails
     if (!rates) {
@@ -106,7 +113,7 @@ export async function GET() {
 
     const response: ExchangeRateResponse = {
       rates,
-      base: "NGN",
+      base: baseCurrency,
       timestamp: new Date().toISOString(),
       source: rates === FALLBACK_RATES ? "fallback" : "external",
     };

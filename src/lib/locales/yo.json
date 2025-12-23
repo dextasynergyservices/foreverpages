@@ -459,6 +459,7 @@
         "builder": "Olutọpa Iranti",
         "invitations": "Awọn Ipe",
         "tributes": "Awọn Ọwọ",
+        "support": "Atilẹyin",
         "templates": "Awọn Apẹẹrẹ",
         "settings": "Awọn Eto"
       }
@@ -2451,6 +2452,23 @@
       "sending": "N fi ranṣẹ..."
     },
     "roles": {
+      "OWNER": {
+        "name": "Oninu",
+        "short": "Oninu",
+        "description": "Aṣakoso nipata - oninu iranti naa osi ṣakoso gbogbo awọn eto",
+        "longDescription": "Ini ati aṣakoso nipatapata iranti naa",
+        "permissions": {
+          "title": "Ohun ti o le ṣe:",
+          "list": [
+            "Aṣakoso nipatapata lori gbogbo akoonu iranti naa",
+            "Ṣakoso awọn eto owo ati iforukosile",
+            "Pe ati yo gbogbo awọn alabaṣiṣepọ",
+            "Ṣayipada gbogbo awọn eto ati alaye iranti",
+            "Wole si gbogbo awọn itupalẹ ati iṣiro",
+            "Pa iranti naa rẹ tabi fi sinu apamọ"
+          ]
+        }
+      },
       "ADMIN": {
         "name": "Alakoso",
         "short": "Admin",
@@ -2497,9 +2515,25 @@
             "Wo gbogbo akoonu iranti"
           ]
         }
+      },
+      "VIEWER": {
+        "name": "Oniro",
+        "short": "Oniro",
+        "description": "Iwole kika nikan - ri akoonu iranti naa nikan",
+        "longDescription": "Iwole kika nikan si akoonu iranti naa",
+        "permissions": {
+          "title": "Ohun ti o le ṣe:",
+          "list": [
+            "Ri akoonu iranti naa ati awọn itan",
+            "Wo awọn aworan ati fiddio",
+            "Ka awọn iyin ati awọn aroye",
+            "Wole si alaye ipile iranti naa"
+          ]
+        }
       }
     },
     "roleRestrictions": {
+      "OWNER": "Oninu iranti pẹlu aṣakoso nipatapata lori gbogbo awọn iṣẹ.",
       "ADMIN": "Awọn alakoso nikan ni wọn le ṣakoso awọn alabaṣepọ",
       "EDITOR": "Awọn olotunto ko le ṣakoso awọn alabaṣepọ. Kan si oniwun oju-iwe fun awọn aṣẹ afikun.",
       "CONTRIBUTOR": "Awọn oluranlọwọ ko le ṣakoso awọn alabaṣepọ. Kan si oniwun oju-iwe fun awọn aṣẹ afikun.",
@@ -3155,6 +3189,69 @@
       "marketplace": "Ọja",
       "analytics": "Iṣiro",
       "customization": "Atunṣe"
+    },
+    "support": {
+      "title": "Itan Atilẹyin",
+      "subtitle": "Tọpa awọn atilẹyin ti a fi ranṣẹ ati ti a gba fun awọn iranti",
+      "displayCurrency": "Owọ Ifihan:",
+      "ratesUpdated": "Awọn oṣuwọn ti ṣe imudojuiwọn",
+      "refreshData": "Ṣe imudojuiwọn Data",
+      "stats": {
+        "totalReceived": "Lapapọ Ti a Gba",
+        "totalSent": "Lapapọ Ti a Fi Ranṣẹ",
+        "supportsReceived": "Awọn Atilẹyin Ti a Gba",
+        "supportsSent": "Awọn Atilẹyin Ti a Fi Ranṣẹ",
+        "averageSupport": "Atilẹyin Apapọ",
+        "recentActivity": "Iṣe Aipẹ",
+        "noActivity": "Ko si iṣe"
+      },
+      "tabs": {
+        "received": "Ti a Gba",
+        "sent": "Ti a Fi Ranṣẹ",
+        "message": "Fi Ifiranṣẹ Ranṣẹ"
+      },
+      "empty": {
+        "received": {
+          "title": "Ko si atilẹyin ti a gba sibẹsibẹ",
+          "description": "Nigbati awọn eniyan ba ṣe atilẹyin awọn iranti rẹ, wọn yoo han nibi."
+        },
+        "sent": {
+          "title": "Ko si atilẹyin ti a fi ranṣẹ sibẹsibẹ",
+          "description": "Nigbati o ba ṣe atilẹyin awọn iranti miiran, wọn yoo han nibi."
+        }
+      },
+      "messaging": {
+        "title": "Fi Awọn Ifiranṣẹ Ọpẹ Ranṣẹ",
+        "description": "Fi awọn ifiranṣẹ ọpẹ ti ara ẹni ranṣẹ si awọn atilẹyin rẹ nipasẹ imeeli tabi WhatsApp.",
+        "subject": "Koko Ọrọ (Ti o yan)",
+        "subjectPlaceholder": "O ṣeun fun atilẹyin rẹ...",
+        "message": "Ifiranṣẹ",
+        "messagePlaceholder": "O ṣeun pupọ fun atilẹyin ọpọlọpọ rẹ. Inurere rẹ tumọ si pupọ fun wa ni akoko iṣoro yii...",
+        "deliveryMethod": "Ọna Ifiranṣẹ",
+        "sendViaEmail": "Fi ranṣẹ nipasẹ Imeeli",
+        "sendViaWhatsApp": "Fi ranṣẹ nipasẹ WhatsApp",
+        "selectSupporters": "Yan Awọn Atilẹyin",
+        "deselectAll": "Kọ Gbogbo Yiyan",
+        "selectAll": "Yan Gbogbo",
+        "selectPage": "Yan Oju-iwe",
+        "deselectPage": "Kọ Oju-iwe",
+        "selectAllSupporters": "Yan Gbogbo Awọn Atilẹyin",
+        "selectAllConfirmTitle": "Yan gbogbo awọn atilẹyin?",
+        "selectAllConfirmDescription": "Eyi yoo yan gbogbo awọn atilẹyin lori gbogbo awọn oju-iwe. Iṣe yii le gba akoko fun ọpọlọpọ awọn nọmba. Ṣe o fẹ lati tẹsiwaju?",
+        "selectAllConfirm": "Yan Gbogbo",
+        "selectAllTooMany": "Ọpọlọpọ awọn atilẹyin lati yan ni ẹẹkan",
+        "selectAllSuccess": "Gbogbo awọn atilẹyin ti wa ni yàn",
+        "clearSelection": "Pa Yiyan",
+        "selectedCount": "Yàn",
+        "selectDescription": "Yan awọn atilẹyin ti o fẹ fi ifiranṣẹ ranṣẹ si.",
+        "sending": "Nfi ranṣẹ...",
+        "sendMessage": "Fi Awọn Ifiranṣẹ Ranṣẹ",
+        "noSupporters": {
+          "title": "Ko si awọn atilẹyin lati fi ifiranṣẹ ranṣẹ si sibẹsibẹ",
+          "description": "Nigbati o ba gba atilẹyin, o le fi awọn ifiranṣẹ ọpẹ ranṣẹ si awọn atilẹyin rẹ nibi."
+        },
+        "viewSupport": "Wo Atilẹyin"
+      }
     }
   }
 }

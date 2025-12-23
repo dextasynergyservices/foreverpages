@@ -155,7 +155,7 @@ const PhotoGallery = () => {
                     {item.type === "image" ? (
                       <Image
                         src={item.url}
-                        alt={item.caption}
+                        alt={item.caption || "Gallery image"}
                         className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

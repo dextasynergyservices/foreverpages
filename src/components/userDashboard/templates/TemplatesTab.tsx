@@ -739,10 +739,9 @@ const TemplatesTab = () => {
             setSelectedMemorial(null);
           }}
           memorialId={selectedMemorial.id}
+          memorialSlug={selectedMemorial.slug}
           memorialName={`${selectedMemorial.firstName} ${selectedMemorial.lastName}`}
           memorialUrl={`${process.env.NEXT_PUBLIC_APP_URL || ""}/${selectedMemorial.slug}`}
-          firstName={selectedMemorial.firstName}
-          lastName={selectedMemorial.lastName}
         />
       )}
 

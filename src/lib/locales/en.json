@@ -366,7 +366,10 @@
     "save": "Save",
     "cancel": "Cancel",
     "confirm": "Confirm",
-    "delete": "Delete"
+    "delete": "Delete",
+    "optional": "Optional",
+    "saving": "Saving...",
+    "edit": "Edit"
   },
 
   "errors": {
@@ -461,6 +464,7 @@
         "builder": "Funeral Builder",
         "invitations": "Invitations",
         "tributes": "Tributes",
+        "support": "Support",
         "templates": "Templates",
         "settings": "Settings"
       }
@@ -1469,6 +1473,69 @@
         "support": {
           "title": "Support & Donations"
         }
+      },
+      "support": {
+        "title": "Support History",
+        "subtitle": "Track supports sent and received for memorials",
+        "displayCurrency": "Display Currency:",
+        "ratesUpdated": "Rates updated",
+        "refreshData": "Refresh Data",
+        "stats": {
+          "totalReceived": "Total Received",
+          "totalSent": "Total Sent",
+          "supportsReceived": "Supports Received",
+          "supportsSent": "Supports Sent",
+          "averageSupport": "Average Support",
+          "recentActivity": "Recent Activity",
+          "noActivity": "No activity"
+        },
+        "tabs": {
+          "received": "Received",
+          "sent": "Sent",
+          "message": "Send Messages"
+        },
+        "empty": {
+          "received": {
+            "title": "No supports received yet",
+            "description": "When people support your memorials, they'll appear here."
+          },
+          "sent": {
+            "title": "No supports sent yet",
+            "description": "When you support other memorials, they'll appear here."
+          }
+        },
+        "messaging": {
+          "title": "Send Thank You Messages",
+          "description": "Send personalized thank you messages to your supporters via email or WhatsApp.",
+          "subject": "Subject (Optional)",
+          "subjectPlaceholder": "Thank you for your support...",
+          "message": "Message",
+          "messagePlaceholder": "Thank you so much for your generous support. Your kindness means the world to us during this difficult time...",
+          "deliveryMethod": "Delivery Method",
+          "sendViaEmail": "Send via Email",
+          "sendViaWhatsApp": "Send via WhatsApp",
+          "selectSupporters": "Select Supporters",
+          "deselectAll": "Deselect All",
+          "selectAll": "Select All",
+          "selectPage": "Select Page",
+          "deselectPage": "Deselect Page",
+          "selectAllSupporters": "Select All Supporters",
+          "selectAllConfirmTitle": "Select all supporters?",
+          "selectAllConfirmDescription": "This will select every supporter across all pages. This action may take some time for large numbers. Do you want to continue?",
+          "selectAllConfirm": "Select All",
+          "selectAllTooMany": "Too many supporters to select at once",
+          "selectAllSuccess": "Selected all supporters",
+          "clearSelection": "Clear Selection",
+          "selectedCount": "Selected",
+          "selectDescription": "Choose which supporters to send the message to.",
+          "sending": "Sending...",
+          "sendMessage": "Send Messages",
+          "noSupporters": {
+            "title": "No supporters to message yet",
+            "description": "When you receive support, you'll be able to send thank you messages to your supporters here."
+          },
+          "viewSupport": "View Support"
+        }
       }
     },
     "settings": {
@@ -1579,6 +1646,7 @@
           "accountNumber": "Account Number",
           "bankName": "Bank Name",
           "routingNumber": "Routing Number",
+          "paymentLink": "Payment Link",
           "description": "Description (Optional)",
           "types": {
             "bank": "Bank Account",
@@ -1587,10 +1655,18 @@
             "mobileMoneyDesc": "Mobile payment service",
             "paypal": "PayPal",
             "paypalDesc": "PayPal digital wallet",
+            "paystack": "Paystack",
+            "paystackDesc": "Paystack payment platform",
             "stripe": "Stripe",
             "stripeDesc": "Stripe payment platform",
             "other": "Other",
             "otherDesc": "Other payment method"
+          },
+          "paymentLinkHelp": {
+            "paypal": "Supporters can use this link to send donations directly via PayPal",
+            "paystack": "Supporters can use this link to donate through Paystack payment gateway",
+            "stripe": "Supporters can use this link to donate through Stripe payment processing",
+            "other": "Supporters can use this link for donations through your custom payment method"
           }
         }
       }
@@ -2392,6 +2468,23 @@
       "sending": "Sending..."
     },
     "roles": {
+      "OWNER": {
+        "name": "Owner",
+        "short": "Owner",
+        "description": "Full control - owns the memorial and manages all settings",
+        "longDescription": "Complete ownership and control of the memorial",
+        "permissions": {
+          "title": "What you can do:",
+          "list": [
+            "Complete control over all memorial content",
+            "Manage billing and subscription settings",
+            "Invite and remove all collaborators",
+            "Edit all memorial settings and information",
+            "Access all analytics and statistics",
+            "Delete or archive the memorial"
+          ]
+        }
+      },
       "ADMIN": {
         "name": "Admin",
         "short": "Administrator",
@@ -2435,9 +2528,25 @@
             "Comment on posts"
           ]
         }
+      },
+      "VIEWER": {
+        "name": "Viewer",
+        "short": "Viewer",
+        "description": "Read-only access - view memorial content only",
+        "longDescription": "View-only access to memorial content",
+        "permissions": {
+          "title": "What you can do:",
+          "list": [
+            "View memorial content and stories",
+            "Browse photos and videos",
+            "Read tributes and comments",
+            "Access basic memorial information"
+          ]
+        }
       }
     },
     "roleRestrictions": {
+      "OWNER": "You have complete ownership and control of this memorial.",
       "ADMIN": "You have full management access except billing settings.",
       "EDITOR": "You can edit content and manage media.",
       "CONTRIBUTOR": "You can add stories, photos, and tributes.",
@@ -2767,6 +2876,54 @@
         "youreReceiving": "You're receiving this because you're connected to {memorial} memorial page.",
         "copyright": "© {year} ForeverPages. All rights reserved."
       }
+    },
+    "support": {
+      "title": "Support History",
+      "subtitle": "Track supports received and send thank you messages",
+      "tabs": {
+        "received": "Received",
+        "message": "Send Messages"
+      },
+      "stats": {
+        "totalReceived": "Total Received",
+        "totalSent": "Total Sent",
+        "supportsReceived": "Supports Received",
+        "supportsSent": "Supports Sent",
+        "supporters": "supporters",
+        "memorials": "memorials",
+        "activeSupporters": "Active Supporters",
+        "totalTransactions": "Total Transactions"
+      },
+      "received": {
+        "title": "Supports Received",
+        "empty": {
+          "title": "No supports received yet",
+          "description": "When people send support to your memorials, they'll appear here."
+        }
+      },
+      "messaging": {
+        "title": "Send Thank You Messages",
+        "description": "Send personalized thank you messages to your supporters via email or WhatsApp.",
+        "subject": "Subject (Optional)",
+        "subjectPlaceholder": "Thank you for your support...",
+        "message": "Message",
+        "messagePlaceholder": "Thank you so much for your generous support. Your kindness means the world to us during this difficult time...",
+        "deliveryMethod": "Delivery Method",
+        "sendViaEmail": "Send via Email",
+        "sendViaWhatsApp": "Send via WhatsApp",
+        "selectSupporters": "Select Supporters",
+        "selectDescription": "Choose which supporters to send the message to.",
+        "selectAll": "Select All",
+        "deselectAll": "Deselect All",
+        "sendMessage": "Send Messages",
+        "sending": "Sending...",
+        "noSupporters": {
+          "title": "No supporters to message yet",
+          "description": "When you receive support, you'll be able to send thank you messages to your supporters here."
+        },
+        "viewSupport": "View Support"
+      },
+      "refreshData": "Refresh Data"
     }
   }
 }

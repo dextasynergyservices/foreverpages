@@ -18,7 +18,13 @@ interface Tribute {
 }
 
 const TributeSection = () => {
-  const { sectionsData, memorialOwnerId, memorialOwnerName } = useTemplate();
+  const {
+    sectionsData,
+    memorialId,
+    memorialOwnerId,
+    memorialOwnerName,
+    memorialOwnerAccountDetails,
+  } = useTemplate();
 
   // Get TRIBUTES section data with fallbacks
   const tributesData = (sectionsData?.TRIBUTES as any) || {};
@@ -453,7 +459,9 @@ const TributeSection = () => {
           onClose={() => setShowDonationModal(false)}
           memorialOwnerName={memorialOwnerName || "Memorial Owner"}
           memorialTitle={`${memorialOwnerName || "Memorial Owner"}'s Memorial`}
+          memorialId={memorialId}
           memorialOwnerId={memorialOwnerId || ""}
+          preloadedAccountDetails={memorialOwnerAccountDetails}
         />
       </div>
     </section>

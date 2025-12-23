@@ -460,6 +460,7 @@
         "builder": "Constructeur de Funérailles",
         "invitations": "Invitations",
         "tributes": "Hommages",
+        "support": "Support",
         "settings": "Paramètres"
       }
     },
@@ -2457,6 +2458,23 @@
       "sending": "Envoi en cours..."
     },
     "roles": {
+      "OWNER": {
+        "name": "Propriétaire",
+        "short": "Propriétaire",
+        "description": "Contrôle total - possède le mémorial et gère tous les paramètres",
+        "longDescription": "Propriété complète et contrôle du mémorial",
+        "permissions": {
+          "title": "Ce que vous pouvez faire:",
+          "list": [
+            "Contrôle complet sur tout le contenu du mémorial",
+            "Gérer les paramètres de facturation et d'abonnement",
+            "Inviter et supprimer tous les collaborateurs",
+            "Modifier tous les paramètres et informations du mémorial",
+            "Accéder à toutes les analyses et statistiques",
+            "Supprimer ou archiver le mémorial"
+          ]
+        }
+      },
       "ADMIN": {
         "name": "Administrateur",
         "short": "Administrateur",
@@ -2500,9 +2518,25 @@
             "Commenter les publications"
           ]
         }
+      },
+      "VIEWER": {
+        "name": "Observateur",
+        "short": "Observateur",
+        "description": "Accès en lecture seule - voir uniquement le contenu du mémorial",
+        "longDescription": "Accès en visualisation uniquement au contenu du mémorial",
+        "permissions": {
+          "title": "Ce que vous pouvez faire:",
+          "list": [
+            "Voir le contenu du mémorial et les histoires",
+            "Parcourir les photos et vidéos",
+            "Lire les hommages et commentaires",
+            "Accéder aux informations de base du mémorial"
+          ]
+        }
       }
     },
     "roleRestrictions": {
+      "OWNER": "Propriétaire du mémorial avec contrôle complet sur toutes les fonctions.",
       "ADMIN": "Vous avez un accès complet de gestion sauf les paramètres de facturation.",
       "EDITOR": "Vous pouvez modifier le contenu et gérer les médias.",
       "CONTRIBUTOR": "Vous pouvez ajouter des histoires, photos et hommages.",
@@ -2906,6 +2940,74 @@
         "youreReceiving": "Vous recevez ceci car vous êtes connecté à la page mémorielle de {{memorial}}.",
         "copyright": "© {{year}} ForeverPages. Tous droits réservés."
       }
+    },
+    "support": {
+      "title": "Historique de Soutien",
+      "subtitle": "Suivez les soutiens envoyés et reçus pour les mémoriaux",
+      "displayCurrency": "Devise d'affichage:",
+      "ratesUpdated": "Taux mis à jour",
+      "refreshData": "Actualiser Données",
+      "tabs": {
+        "received": "Reçu",
+        "sent": "Envoyé",
+        "message": "Envoyer Messages"
+      },
+      "stats": {
+        "totalReceived": "Total Reçu",
+        "totalSent": "Total Envoyé",
+        "supportsReceived": "Soutiens Reçus",
+        "supportsSent": "Soutiens Envoyés",
+        "averageSupport": "Soutien Moyen",
+        "recentActivity": "Activité Récente",
+        "noActivity": "Aucune activité",
+        "supporters": "supporteurs",
+        "memorials": "mémoriaux",
+        "activeSupporters": "Supporteurs Actifs",
+        "totalTransactions": "Transactions Totales"
+      },
+      "empty": {
+        "received": {
+          "title": "Aucun soutien reçu pour le moment",
+          "description": "Lorsque les gens soutiennent vos mémoriaux, ils apparaîtront ici."
+        },
+        "sent": {
+          "title": "Aucun soutien envoyé pour le moment",
+          "description": "Lorsque vous soutenez d'autres mémoriaux, ils apparaîtront ici."
+        }
+      },
+      "messaging": {
+        "title": "Envoyer Messages de Remerciement",
+        "description": "Envoyez des messages de remerciement personnalisés à vos supporteurs par e-mail ou WhatsApp.",
+        "subject": "Objet (Optionnel)",
+        "subjectPlaceholder": "Merci pour votre soutien...",
+        "message": "Message",
+        "messagePlaceholder": "Merci beaucoup pour votre soutien généreux. Votre gentillesse signifie beaucoup pour nous pendant cette période difficile...",
+        "deliveryMethod": "Méthode de Livraison",
+        "sendViaEmail": "Envoyer par E-mail",
+        "sendViaWhatsApp": "Envoyer par WhatsApp",
+        "selectSupporters": "Sélectionner Supporteurs",
+        "selectDescription": "Choisissez à quels supporteurs envoyer le message.",
+        "selectAll": "Tout Sélectionner",
+        "selectPage": "Sélectionner la Page",
+        "deselectPage": "Désélectionner la Page",
+        "selectAllSupporters": "Tout sélectionner",
+        "selectAllConfirmTitle": "Sélectionner tous les supporteurs ?",
+        "selectAllConfirmDescription": "Cela sélectionnera tous les supporteurs sur toutes les pages. Cette action peut prendre du temps si le nombre est important. Voulez-vous continuer ?",
+        "selectAllConfirm": "Tout Sélectionner",
+        "selectAllTooMany": "Trop de supporteurs à sélectionner à la fois",
+        "selectAllSuccess": "Tous les supporteurs ont été sélectionnés",
+        "clearSelection": "Effacer la sélection",
+        "selectedCount": "Sélectionnés",
+        "deselectAll": "Tout Désélectionner",
+        "sendMessage": "Envoyer Messages",
+        "sending": "Envoi...",
+        "noSupporters": {
+          "title": "Aucun supporteur à qui envoyer des messages encore",
+          "description": "Quand vous recevrez du soutien, vous pourrez envoyer des messages de remerciement à vos supporteurs ici."
+        },
+        "viewSupport": "Voir Soutien"
+      },
+      "refreshData": "Actualiser Données"
     }
   }
 }

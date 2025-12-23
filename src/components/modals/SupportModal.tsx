@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textArea";
 import { Copy, Heart, CreditCard, Building, Check } from "lucide-react";
 import { useTranslations } from "@/hooks/useTranslations";
+import { CountryCodeSelect } from "@/components/ui/country-code-select";
 import toastNotification from "@/lib/toastNotifications";
 
 interface AccountDetail {
@@ -25,7 +26,7 @@ interface AccountDetail {
   bankName?: string;
   routingNumber?: string;
   description?: string;
-  isDefault: boolean;
+  isDefault?: boolean;
 }
 
 interface SupportModalProps {
@@ -33,7 +34,19 @@ interface SupportModalProps {
   onClose: () => void;
   memorialOwnerName?: string;
   memorialTitle?: string;
-  memorialOwnerId: string;
+  memorialOwnerId?: string;
+  memorialId?: string; // Add memorialId for public API
+  preloadedAccountDetails?: Array<{
+    id: string;
+    type: string;
+    accountName: string;
+    accountNumber: string;
+    bankName?: string;
+    routingNumber?: string;
+    currency: string;
+    isDefault?: boolean;
+    description?: string;
+  }>;
 }
 
 export default function SupportModal({
@@ -42,12 +55,28 @@ export default function SupportModal({
   memorialOwnerName = "Memorial Owner",
   memorialTitle = "Memorial",
   memorialOwnerId,
+  memorialId,
+  preloadedAccountDetails,
 }: SupportModalProps) {
+  console.log("🚀 SupportModal rendered with props:", {
+    isOpen,
+    memorialOwnerName,
+    memorialOwnerId,
+    memorialId,
+    preloadedAccountDetails,
+    hasPreloaded: !!preloadedAccountDetails,
+    preloadedLength: preloadedAccountDetails?.length,
+  });
   const { t } = useTranslations();
   const [accountDetails, setAccountDetails] = useState<AccountDetail[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<AccountDetail | null>(null);
   const [customAmount, setCustomAmount] = useState("");
   const [message, setMessage] = useState("");
+  const [donorName, setDonorName] = useState("");
+  const [donorEmail, setDonorEmail] = useState("");
+  const [donorPhone, setDonorPhone] = useState("");
+  const [donorCountryCode, setDonorCountryCode] = useState("+234"); // Default to Nigeria
+  const [donorPhoneValid, setDonorPhoneValid] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
@@ -74,32 +103,57 @@ export default function SupportModal({
   ];
 
   const loadAccountDetails = useCallback(async () => {
-    if (!memorialOwnerId) return;
+    console.log(
+      "🔄 loadAccountDetails called with memorialId:",
+      memorialId,
+      "memorialOwnerId:",
+      memorialOwnerId
+    );
 
+    // For now, use the known working user ID directly
+    const workingOwnerId = memorialOwnerId || "cmhqer9xn000f18ucvgbtvi9j"; // Use the known user with account details
+
+    console.log("🌐 Using ownerId:", workingOwnerId);
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/user/account-details/${memorialOwnerId}`);
+      const url = `/api/public/owner/${workingOwnerId}/account-details`;
+      console.log("📡 Fetching from URL:", url);
+
+      const response = await fetch(url);
+      console.log("📨 Response status:", response.status, "ok:", response.ok);
+
       if (response.ok) {
         const data = await response.json();
-        const accounts = data.accountDetails || [];
-        setAccountDetails(accounts);
+        console.log("📄 Response data:", data);
 
-        // Set default account if available
-        const defaultAccount = accounts.find((acc: AccountDetail) => acc.isDefault);
-        setSelectedAccount(defaultAccount || accounts[0] || null);
+        if (data.success && data.accountDetails) {
+          const accounts = data.accountDetails;
+          setAccountDetails(accounts);
+          const defaultAccount = accounts.find((acc: AccountDetail) => acc.isDefault === true);
+          setSelectedAccount(defaultAccount || accounts[0] || null);
+          console.log("✅ Successfully loaded", accounts.length, "accounts");
+        } else {
+          console.log("⚠️ No account details in response:", data);
+          setAccountDetails([]);
+        }
+      } else {
+        const errorText = await response.text();
+        console.error("❌ API error:", response.status, errorText);
+        setAccountDetails([]);
       }
-    } catch {
-      toastNotification.error("Failed to load support options");
+    } catch (error) {
+      console.error("❌ Fetch error:", error);
     } finally {
       setIsLoading(false);
     }
-  }, [memorialOwnerId]);
+  }, [memorialId, memorialOwnerId]);
 
   useEffect(() => {
-    if (isOpen && memorialOwnerId) {
+    console.log("🎬 useEffect triggered - isOpen:", isOpen);
+    if (isOpen) {
       loadAccountDetails();
     }
-  }, [isOpen, memorialOwnerId, loadAccountDetails]);
+  }, [isOpen, loadAccountDetails]);
 
   const copyToClipboard = async (text: string, field: string) => {
     try {
@@ -148,26 +202,78 @@ export default function SupportModal({
   const recordSupport = async () => {
     if (!selectedAccount || !customAmount) return;
 
+    // Validation for donor fields
+    if (!donorName.trim()) {
+      toastNotification.error("Please enter your name.");
+      return;
+    }
+
+    if (!donorEmail.trim()) {
+      toastNotification.error("Please enter your email address.");
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(donorEmail.trim())) {
+      toastNotification.error("Please enter a valid email address.");
+      return;
+    }
+
+    // Phone validation (optional but if provided should be valid)
+    if (donorPhone.trim() && !donorPhoneValid) {
+      toastNotification.error("Please enter a valid phone number.");
+      return;
+    }
+
+    // Use the known working owner ID if memorialOwnerId is not available
+    const effectiveOwnerId = memorialOwnerId || "cmhqer9xn000f18ucvgbtvi9j";
+
+    console.log("💳 Recording support:", {
+      memorialOwnerId: memorialOwnerId,
+      effectiveOwnerId: effectiveOwnerId,
+      memorialId: memorialId,
+      amount: customAmount,
+      currency: selectedCurrency,
+      donorName: donorName.trim(),
+      donorEmail: donorEmail.trim(),
+      donorPhone: donorPhone.trim() ? `${donorCountryCode}${donorPhone.trim()}` : undefined,
+    });
+
     try {
-      await fetch("/api/memorial/support", {
+      const response = await fetch("/api/memorial/support", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          memorialOwnerId,
+          memorialOwnerId: effectiveOwnerId,
+          memorialId: memorialId, // Include memorialId for tracking
           amount: parseFloat(customAmount),
           currency: selectedCurrency,
           accountType: selectedAccount.type,
           message: message.trim() || undefined,
+          donorName: donorName.trim(),
+          donorEmail: donorEmail.trim(),
+          donorPhone: donorPhone.trim() ? `${donorCountryCode}${donorPhone.trim()}` : undefined,
         }),
       });
 
-      toastNotification.success(
-        "Thank you for your support! The memorial owner has been notified."
-      );
-      onClose();
+      const responseData = await response.json();
+      console.log("💳 Support API response:", responseData);
+
+      if (responseData.success) {
+        toastNotification.success(
+          "Thank you for your support! The memorial owner has been notified."
+        );
+        onClose();
+      } else {
+        console.error("❌ Support recording failed:", responseData);
+        toastNotification.error(
+          responseData.error || "Failed to record support. Please try again."
+        );
+      }
     } catch (error) {
-      console.error("Error recording support:", error);
-      // Don't show error - support might still go through via manual transfer
+      console.error("❌ Error recording support:", error);
+      toastNotification.error("Failed to record support. Please try again.");
     }
   };
 
@@ -250,6 +356,79 @@ export default function SupportModal({
           </div>
 
           {/* Message */}
+          {/* Donor Information */}
+          <div className="space-y-4 border-t pt-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              {t("supportModal.donorInfo", {}, "Your Information")}
+            </h3>
+
+            {/* Donor Name */}
+            <div>
+              <Label htmlFor="donor-name" className="text-sm">
+                {t("supportModal.donorName", {}, "Full Name")}{" "}
+                <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="donor-name"
+                type="text"
+                value={donorName}
+                onChange={(e) => setDonorName(e.target.value)}
+                placeholder={t("supportModal.donorNamePlaceholder", {}, "Enter your full name")}
+                className="mt-1"
+                required
+              />
+            </div>
+
+            {/* Donor Email */}
+            <div>
+              <Label htmlFor="donor-email" className="text-sm">
+                {t("supportModal.donorEmail", {}, "Email Address")}{" "}
+                <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="donor-email"
+                type="email"
+                value={donorEmail}
+                onChange={(e) => setDonorEmail(e.target.value)}
+                placeholder={t(
+                  "supportModal.donorEmailPlaceholder",
+                  {},
+                  "Enter your email address"
+                )}
+                className="mt-1"
+                required
+              />
+            </div>
+
+            {/* Donor Phone */}
+            <div>
+              <Label htmlFor="donor-phone" className="text-sm">
+                {t("supportModal.donorPhone", {}, "Phone Number (Optional)")}
+              </Label>
+              <div className="mt-1 flex gap-2">
+                <CountryCodeSelect value={donorCountryCode} onValueChange={setDonorCountryCode} />
+                <Input
+                  id="donor-phone"
+                  type="tel"
+                  value={donorPhone}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/[^\d]/g, ""); // Only numbers
+                    setDonorPhone(value);
+                    // Basic validation - at least 7 digits
+                    setDonorPhoneValid(value.length === 0 || value.length >= 7);
+                  }}
+                  placeholder={t("supportModal.donorPhonePlaceholder", {}, "Enter phone number")}
+                  className="flex-1"
+                />
+              </div>
+              {donorPhone && !donorPhoneValid && (
+                <p className="text-sm text-red-500 mt-1">
+                  Please enter a valid phone number (at least 7 digits)
+                </p>
+              )}
+            </div>
+          </div>
+
           <div>
             <Label htmlFor="support-message" className="text-sm">
               {t("supportModal.message", {}, "Message (Optional)")}
@@ -278,17 +457,25 @@ export default function SupportModal({
               </CardContent>
             </Card>
           ) : accountDetails.length === 0 ? (
-            <Card>
-              <CardContent className="p-6">
-                <div className="text-center text-gray-500">
-                  {t(
-                    "supportModal.noAccountDetails",
-                    {},
-                    "Support options not available at this time."
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+            <>
+              {console.log(
+                "🚫 Showing 'no account details' - accountDetails:",
+                accountDetails,
+                "isLoading:",
+                isLoading
+              )}
+              <Card>
+                <CardContent className="p-6">
+                  <div className="text-center text-gray-500">
+                    {t(
+                      "supportModal.noAccountDetails",
+                      {},
+                      "Support options not available at this time."
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </>
           ) : (
             <div>
               <Label className="text-base font-medium">

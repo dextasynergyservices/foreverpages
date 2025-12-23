@@ -459,6 +459,7 @@
         "builder": "Constructor de Memoriales",
         "invitations": "Invitaciones",
         "tributes": "Tributos",
+        "support": "Apoyo",
         "templates": "Plantillas",
         "settings": "Configuración"
       }
@@ -1501,6 +1502,40 @@
         "support": {
           "title": "Apoyo y Donaciones"
         }
+      },
+      "support": {
+        "messaging": {
+          "title": "Enviar Mensajes de Agradecimiento",
+          "description": "Envía mensajes de agradecimiento personalizados a tus seguidores por correo electrónico o WhatsApp.",
+          "subject": "Asunto (Opcional)",
+          "subjectPlaceholder": "Gracias por tu apoyo...",
+          "message": "Mensaje",
+          "messagePlaceholder": "Muchas gracias por tu generoso apoyo. Tu amabilidad significa mucho para nosotros en este momento difícil...",
+          "deliveryMethod": "Método de Entrega",
+          "sendViaEmail": "Enviar por Correo Electrónico",
+          "sendViaWhatsApp": "Enviar por WhatsApp",
+          "selectSupporters": "Seleccionar Seguidores",
+          "deselectAll": "Deseleccionar Todo",
+          "selectAll": "Seleccionar Todo",
+          "selectPage": "Seleccionar Página",
+          "deselectPage": "Deseleccionar Página",
+          "selectAllSupporters": "Seleccionar Todos los Seguidores",
+          "selectAllConfirmTitle": "¿Seleccionar a todos los seguidores?",
+          "selectAllConfirmDescription": "Esto seleccionará a todos los seguidores en todas las páginas. Esta acción puede tardar si hay muchos. ¿Deseas continuar?",
+          "selectAllConfirm": "Seleccionar Todo",
+          "selectAllTooMany": "Demasiados seguidores para seleccionar a la vez",
+          "selectAllSuccess": "Seleccionados todos los seguidores",
+          "clearSelection": "Borrar selección",
+          "selectedCount": "Seleccionados",
+          "selectDescription": "Elige a qué seguidores enviar el mensaje.",
+          "sending": "Enviando...",
+          "sendMessage": "Enviar Mensajes",
+          "noSupporters": {
+            "title": "Aún no hay seguidores para enviar mensajes",
+            "description": "Cuando recibas apoyo, podrás enviar mensajes de agradecimiento a tus seguidores aquí."
+          },
+          "viewSupport": "Ver Apoyo"
+        }
       }
     },
     "content": {
@@ -2456,6 +2491,23 @@
       "sending": "Enviando..."
     },
     "roles": {
+      "OWNER": {
+        "name": "Propietario",
+        "short": "Propietario",
+        "description": "Control total - propietario del memorial y gestiona todas las configuraciones",
+        "longDescription": "Propiedad y control completo del memorial",
+        "permissions": {
+          "title": "Lo que puede hacer:",
+          "list": [
+            "Control completo sobre todo el contenido del memorial",
+            "Gestionar configuraciones de facturación y suscripción",
+            "Invitar y eliminar todos los colaboradores",
+            "Editar todas las configuraciones e información del memorial",
+            "Acceder a todas las analíticas y estadísticas",
+            "Eliminar o archivar el memorial"
+          ]
+        }
+      },
       "ADMIN": {
         "name": "Administrador",
         "short": "Administrador",
@@ -2499,9 +2551,25 @@
             "Comentar en publicaciones"
           ]
         }
+      },
+      "VIEWER": {
+        "name": "Observador",
+        "short": "Observador",
+        "description": "Acceso de solo lectura - ver únicamente el contenido del memorial",
+        "longDescription": "Acceso solo para ver el contenido del memorial",
+        "permissions": {
+          "title": "Lo que puede hacer:",
+          "list": [
+            "Ver contenido del memorial e historias",
+            "Navegar fotos y videos",
+            "Leer homenajes y comentarios",
+            "Acceder a información básica del memorial"
+          ]
+        }
       }
     },
     "roleRestrictions": {
+      "OWNER": "Propietario del memorial con control completo sobre todas las funciones.",
       "ADMIN": "Tiene acceso completo de administración excepto configuración de facturación.",
       "EDITOR": "Puede editar contenido y administrar medios.",
       "CONTRIBUTOR": "Puede agregar historias, fotos y homenajes.",
@@ -2904,6 +2972,63 @@
       "footer": {
         "youreReceiving": "Estás recibiendo esto porque estás conectado con la página del memorial de {{memorial}}.",
         "copyright": "© {{year}} ForeverPages. Todos los derechos reservados."
+      }
+    },
+    "support": {
+      "title": "Historial de Apoyo",
+      "subtitle": "Rastrea apoyos enviados y recibidos para memoriales",
+      "displayCurrency": "Moneda de Visualización:",
+      "ratesUpdated": "Tasas actualizadas",
+      "refreshData": "Actualizar Datos",
+      "stats": {
+        "totalReceived": "Total Recibido",
+        "totalSent": "Total Enviado",
+        "supportsReceived": "Apoyos Recibidos",
+        "supportsSent": "Apoyos Enviados",
+        "averageSupport": "Apoyo Promedio",
+        "recentActivity": "Actividad Reciente",
+        "noActivity": "Sin actividad",
+        "supporters": "seguidores",
+        "memorials": "memoriales",
+        "activeSupporters": "Seguidores Activos",
+        "totalTransactions": "Transacciones Totales"
+      },
+      "tabs": {
+        "received": "Recibido",
+        "sent": "Enviado",
+        "message": "Enviar Mensajes"
+      },
+      "empty": {
+        "received": {
+          "title": "No se han recibido apoyos aún",
+          "description": "Cuando las personas apoyen tus memoriales, aparecerán aquí."
+        },
+        "sent": {
+          "title": "No se han enviado apoyos aún",
+          "description": "Cuando apoyes otros memoriales, aparecerán aquí."
+        }
+      },
+      "messaging": {
+        "title": "Enviar Mensajes de Agradecimiento",
+        "description": "Envía mensajes de agradecimiento personalizados a tus seguidores por correo electrónico o WhatsApp.",
+        "subject": "Asunto (Opcional)",
+        "subjectPlaceholder": "Gracias por tu apoyo...",
+        "message": "Mensaje",
+        "messagePlaceholder": "Muchas gracias por tu generoso apoyo. Tu bondad significa mucho para nosotros durante este momento difícil...",
+        "deliveryMethod": "Método de Entrega",
+        "sendViaEmail": "Enviar por Correo Electrónico",
+        "sendViaWhatsApp": "Enviar por WhatsApp",
+        "selectSupporters": "Seleccionar Seguidores",
+        "deselectAll": "Deseleccionar Todo",
+        "selectAll": "Seleccionar Todo",
+        "selectDescription": "Elige a qué seguidores enviar el mensaje.",
+        "sending": "Enviando...",
+        "sendMessage": "Enviar Mensajes",
+        "noSupporters": {
+          "title": "Aún no hay seguidores para enviar mensajes",
+          "description": "Cuando recibas apoyo, podrás enviar mensajes de agradecimiento a tus seguidores aquí."
+        },
+        "viewSupport": "Ver Apoyo"
       }
     }
   }

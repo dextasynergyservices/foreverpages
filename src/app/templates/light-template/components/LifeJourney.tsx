@@ -144,13 +144,13 @@ const LifeJourney = () => {
 
           {/* Events Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {events.map((event, index) => {
-              const IconComponent = iconMap[event.icon] || Heart; // Fallback to Heart if icon not found
+            {events.map((event: any, index: number) => {
+              const IconComponent = iconMap[event.icon as keyof typeof iconMap] || Heart; // Fallback to Heart if icon not found
               return (
                 <div key={index} className="group relative">
                   {/* Card */}
                   <div
-                    className={`relative h-full border-2 ${themeColors[event.theme]} rounded-2xl p-6 transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl backdrop-blur-sm`}
+                    className={`relative h-full border-2 ${themeColors[event.theme as keyof typeof themeColors]} rounded-2xl p-6 transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl backdrop-blur-sm`}
                   >
                     {/* Icon with decorative background */}
                     <div className="relative mb-4">

@@ -71,7 +71,7 @@ export const TimelineHorizontal = () => {
         {/* Horizontal Scrollable Timeline */}
         <div className="-mx-4 overflow-x-auto px-4 pb-8">
           <div className="flex min-w-max gap-6">
-            {timelineEvents.map((event, index) => (
+            {timelineEvents.map((event: any, index: number) => (
               <div
                 key={index}
                 className="relative w-80 animate-fade-in-up"

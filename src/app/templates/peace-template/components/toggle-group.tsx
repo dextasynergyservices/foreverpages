@@ -44,6 +44,7 @@ const ToggleGroupItem = React.forwardRef<
         className
       )}
       {...props}
+      value={(props as any).value || "default"}
     >
       {children}
     </ToggleGroupPrimitive.Item>

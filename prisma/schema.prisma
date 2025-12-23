@@ -114,8 +114,9 @@ model User {
   // Account details for donations/support
   accountDetails   Json?            @db.Json
 
-  // Memorial support received
-  memorialSupports MemorialSupport[] @relation("MemorialSupports")
+  // Memorial support relationships
+  receivedSupports MemorialSupport[] @relation("ReceivedSupports")
+  sentSupports     MemorialSupport[] @relation("SentSupports")
 
   @@index([email])
   @@index([role])
@@ -333,7 +334,7 @@ enum MemorialVisibility {
 
 model Invitation {
   id          String           @id @default(cuid())
-  email       String
+  email       String?          // Optional email address
   phone       String?          // WhatsApp phone number with country code
   name        String?          // Recipient name
   role        MemorialRole
@@ -1153,16 +1154,23 @@ model TemplateSection {
 model MemorialSupport {
   id               String   @id @default(cuid())
   memorialOwnerId  String
+  donorUserId      String?  // Track who sent the support
   amount           Float
+  currency         String   @default("USD")
   accountType      String
   message          String?  @db.Text
+  donorName        String?  // For anonymous or guest donors
+  donorEmail       String?  // For guest donors
+  donorPhone       String?  // For guest donor contact (with country code)
 
   createdAt        DateTime @default(now())
 
   // Relations
-  memorialOwner    User     @relation("MemorialSupports", fields: [memorialOwnerId], references: [id], onDelete: Cascade)
+  memorialOwner    User     @relation("ReceivedSupports", fields: [memorialOwnerId], references: [id], onDelete: Cascade)
+  donor            User?    @relation("SentSupports", fields: [donorUserId], references: [id], onDelete: SetNull)
 
   @@index([memorialOwnerId])
+  @@index([donorUserId])
   @@index([createdAt])
 }
 

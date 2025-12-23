@@ -53,6 +53,7 @@ export function canAccessDashboardSection(role: MemorialRole | null, section: st
     "funeral-builder": ["OWNER", "ADMIN", "EDITOR"],
     invitations: ["OWNER", "ADMIN"],
     tributes: ["OWNER", "ADMIN", "EDITOR", "CONTRIBUTOR"],
+    support: ["OWNER", "ADMIN", "EDITOR", "CONTRIBUTOR", "VIEWER"],
     livestreams: ["OWNER", "ADMIN"], // Only OWNER and ADMIN can manage livestreams
     settings: ["OWNER", "ADMIN"],
   };
@@ -74,6 +75,7 @@ export function getAllowedDashboardSections(role: MemorialRole | null): string[]
       "funeral-builder",
       "invitations",
       "tributes",
+      "support",
       "livestreams",
       "settings",
     ],
@@ -84,12 +86,13 @@ export function getAllowedDashboardSections(role: MemorialRole | null): string[]
       "funeral-builder",
       "invitations",
       "tributes",
+      "support",
       "livestreams",
       "settings",
     ],
-    EDITOR: ["analytics", "gallery", "templates", "funeral-builder", "tributes"],
-    CONTRIBUTOR: ["analytics", "gallery", "tributes"],
-    VIEWER: ["analytics"],
+    EDITOR: ["analytics", "gallery", "templates", "funeral-builder", "tributes", "support"],
+    CONTRIBUTOR: ["analytics", "gallery", "tributes", "support"],
+    VIEWER: ["analytics", "support"],
   };
 
   return rolePermissions[role] || [];

@@ -8,17 +8,11 @@ interface Memorial {
   id: string;
   firstName: string;
   lastName: string;
-  dateOfBirth: Date | null;
-  dateOfDeath: Date | null;
+  birthDate: Date | null;
+  deathDate: Date | null;
   biography?: string | null;
   profileImage?: string | null;
-  user?: {
-    id: string;
-    firstName?: string | null;
-    lastName?: string | null;
-    email: string;
-    accountDetails?: any;
-  } | null;
+  [key: string]: any; // Allow other Memorial model fields
 }
 
 interface TemplateContextValue {

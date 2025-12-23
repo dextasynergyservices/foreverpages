@@ -21,6 +21,7 @@ export default async function PeaceTemplatePage({ searchParams }: PageProps) {
   const params = await searchParams;
   const customizationParam = params.customization;
   const memorialId = params.memorialId;
+  const isPreview = params.preview === "true";
 
   // Parse customization if provided
   let customization = null;
@@ -32,33 +33,57 @@ export default async function PeaceTemplatePage({ searchParams }: PageProps) {
     }
   }
 
-  // Fetch memorial data if memorialId is provided
+  // Default preview data
+  const defaultMemorial = {
+    id: "preview-memorial-id",
+    firstName: "Eleanor",
+    lastName: "Grace Thompson",
+    ownerId: "preview-user-id",
+    birthDate: new Date("1945-03-15"),
+    deathDate: new Date("2023-11-20"),
+    biography:
+      "Eleanor Grace Thompson was a beacon of warmth and kindness who touched countless lives through her unwavering compassion and dedication to her community.",
+  };
+
+  const defaultMemorialOwner = {
+    id: "preview-user-id",
+    name: "Memorial Family",
+    email: "memorial@example.com",
+    accountDetails: [], // Empty array, will be fetched from API
+  };
+
+  // Fetch memorial data if memorialId is provided, otherwise use preview data
   let memorial = null;
   let memorialOwner = null;
 
-  if (memorialId) {
+  if (memorialId && !isPreview) {
     try {
       memorial = await prisma.memorial.findUnique({
         where: { id: memorialId },
-        include: {
-          user: {
-            select: {
-              id: true,
-              firstName: true,
-              lastName: true,
-              email: true,
-              accountDetails: true,
-            },
-          },
-        },
       });
 
-      if (memorial?.user) {
-        memorialOwner = memorial.user;
+      if (memorial && memorial.ownerId) {
+        // Fetch the owner separately
+        const owner = await prisma.user.findUnique({
+          where: { id: memorial.ownerId },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            accountDetails: true,
+          },
+        });
+        if (owner) {
+          memorialOwner = owner;
+        }
       }
     } catch (error) {
       console.error("Error fetching memorial:", error);
     }
+  } else {
+    // Use preview data when no memorialId or when in preview mode
+    memorial = defaultMemorial;
+    memorialOwner = defaultMemorialOwner;
   }
 
   return (
