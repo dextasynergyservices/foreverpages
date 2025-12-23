@@ -13,16 +13,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textArea";
@@ -40,11 +30,17 @@ import {
   Settings,
   TrendingUp,
   ShoppingCart,
+  ExternalLink,
+  Calendar,
+  Users,
 } from "lucide-react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { useBaseTemplates, BaseTemplate } from "@/hooks/useBaseTemplates";
 import { useUserTemplates, UserTemplate } from "@/hooks/useUserTemplates";
 import { useTranslations } from "@/hooks/useTranslations";
+import { DeleteMemorialModal } from "../pageBuilder/DeleteMemorialModal";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
+import { useRouter } from "next/navigation";
 import {
   sanitizeInput,
   validateTemplateName,
@@ -64,19 +60,46 @@ const AdvancedCustomization = lazy(() =>
   import("./AdvancedCustomization").then((module) => ({ default: module.AdvancedCustomization }))
 );
 
+interface Memorial {
+  id: string;
+  firstName: string;
+  lastName: string;
+  slug: string;
+  isPublished: boolean;
+  createdAt: string;
+  updatedAt: string;
+  views?: number;
+  expiresAt?: string | null;
+}
+
 const TemplatesTab = () => {
   const { t } = useTranslations();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   // UI State
   const [showCreateDialog, setShowCreateDialog] = useState(false);
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState<UserTemplate | null>(null);
+  const [showDeleteMemorialModal, setShowDeleteMemorialModal] = useState(false);
+
+  const [selectedMemorial, setSelectedMemorial] = useState<Memorial | null>(null);
   const [selectedBaseTemplate, setSelectedBaseTemplate] = useState<BaseTemplate | null>(null);
 
   // Form state
   const [templateName, setTemplateName] = useState("");
   const [templateDescription, setTemplateDescription] = useState("");
+
+  // Fetch memorials
+  const { data: memorialsData, isLoading: isLoadingMemorials } = useQuery<{
+    ownedMemorials: Memorial[];
+  }>({
+    queryKey: ["memorials"],
+    queryFn: async () => {
+      const response = await fetch("/api/user/memorials");
+      if (!response.ok) throw new Error("Failed to fetch memorials");
+      return response.json();
+    },
+    staleTime: 2 * 60 * 1000,
+  });
 
   // Fetch user templates
   const {
@@ -133,8 +156,6 @@ const TemplatesTab = () => {
     },
     onSuccess: () => {
       toast.success(t("dashboard.templates.deleteSuccess"));
-      setShowDeleteDialog(false);
-      setSelectedTemplate(null);
       queryClient.invalidateQueries({ queryKey: ["user-templates"] });
     },
     onError: (error: Error) => {
@@ -177,14 +198,52 @@ const TemplatesTab = () => {
     });
   };
 
-  const handleDeleteTemplate = () => {
-    if (!selectedTemplate) return;
-    deleteTemplateMutation.mutate(selectedTemplate.id);
+  const { confirm: confirmDeleteTemplate, dialog: deleteTemplateDialog } = useConfirmDialog();
+
+  const handleDeleteTemplate = (template: UserTemplate) => {
+    confirmDeleteTemplate({
+      title: t("dashboard.templates.delete.confirmTitle", {}, "Delete Template?"),
+      description: t(
+        "dashboard.templates.delete.confirmDescription",
+        { name: template.name },
+        `Are you sure you want to delete "${template.name}"? This action cannot be undone.`
+      ),
+      confirmText: deleteTemplateMutation.isPending
+        ? t("dashboard.templates.deleteDialog.deleting", {}, "Deleting...")
+        : t("dashboard.templates.delete.confirm", {}, "Delete"),
+      cancelText: t("common.cancel", {}, "Cancel"),
+      variant: "danger",
+      disabled: deleteTemplateMutation.isPending,
+      onConfirm: () => {
+        deleteTemplateMutation.mutate(template.id);
+      },
+    });
   };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString();
   };
+
+  const handleViewLive = (slug: string) => {
+    window.open(`${process.env.NEXT_PUBLIC_APP_URL || ""}/${slug}`, "_blank");
+  };
+
+  const handleEditMemorial = (memorialId: string) => {
+    router.push(`/dashboard/create-memorial?edit=${memorialId}`);
+  };
+
+  const handleDeleteMemorial = (memorial: Memorial) => {
+    setSelectedMemorial(memorial);
+    setShowDeleteMemorialModal(true);
+  };
+
+  // Map templates with their memorials
+  const templatesWithMemorials = userTemplates.map((template) => {
+    const memorial = memorialsData?.ownedMemorials.find(
+      (m) => m.id === template.id || template.name.includes(m.firstName)
+    );
+    return { ...template, memorial };
+  });
 
   return (
     <div className="space-y-6">
@@ -406,68 +465,210 @@ const TemplatesTab = () => {
                     {t("dashboard.templates.empty.createButton")}
                   </Button>
                 </div>
+              ) : isLoadingMemorials ? (
+                <div className="space-y-4">
+                  {[1, 2].map((i) => (
+                    <Skeleton key={i} className="h-32 w-full" />
+                  ))}
+                </div>
               ) : (
                 <div className="space-y-4">
-                  {userTemplates.map((template) => (
-                    <Card key={template.id} className="border">
-                      <CardContent className="pt-6">
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold truncate">{template.name}</h3>
-                            {template.description && (
-                              <p className="text-sm text-muted-foreground mt-1">
-                                {template.description}
-                              </p>
-                            )}
-                            <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-                              <span>Created {formatDate(template.createdAt)}</span>
-                              {template.updatedAt !== template.createdAt && (
-                                <span>Updated {formatDate(template.updatedAt)}</span>
+                  {templatesWithMemorials.map((template) => {
+                    const memorial = memorialsData?.ownedMemorials.find(
+                      (m) =>
+                        m.firstName &&
+                        m.lastName &&
+                        template.name.toLowerCase().includes(m.firstName.toLowerCase()) &&
+                        template.name.toLowerCase().includes(m.lastName.toLowerCase())
+                    );
+
+                    const isPublished = !!memorial?.isPublished;
+                    const memorialUrl = memorial?.slug
+                      ? `${process.env.NEXT_PUBLIC_APP_URL || ""}/${memorial.slug}`
+                      : "";
+
+                    return (
+                      <Card key={template.id} className="border">
+                        <CardContent className="pt-6">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1 min-w-0 space-y-3">
+                              {/* Header with name and status */}
+                              <div className="flex items-start gap-3">
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2 flex-wrap">
+                                    <h3 className="font-semibold truncate">{template.name}</h3>
+                                    {isPublished ? (
+                                      memorial.expiresAt &&
+                                      new Date(memorial.expiresAt) < new Date() ? (
+                                        <Badge variant="destructive">
+                                          {t("dashboard.templates.status.expired", {}, "Expired")}
+                                        </Badge>
+                                      ) : (
+                                        <Badge variant="default" className="bg-green-600">
+                                          {t("dashboard.templates.status.live", {}, "Live")}
+                                        </Badge>
+                                      )
+                                    ) : (
+                                      <Badge variant="secondary">
+                                        {t("dashboard.templates.status.draft", {}, "Draft")}
+                                      </Badge>
+                                    )}
+                                  </div>
+                                  {template.description && (
+                                    <p className="text-sm text-muted-foreground mt-1">
+                                      {template.description}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Memorial info for published templates */}
+                              {isPublished && memorial && (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                                  <div className="flex items-center gap-2 text-muted-foreground">
+                                    <ExternalLink className="h-4 w-4 flex-shrink-0" />
+                                    <a
+                                      href={memorialUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="truncate hover:text-primary hover:underline"
+                                    >
+                                      {memorial.slug}
+                                    </a>
+                                    <button
+                                      onClick={() => {
+                                        navigator.clipboard.writeText(memorialUrl);
+                                        toast.success(
+                                          t(
+                                            "dashboard.pageBuilder.publish.urlCopied",
+                                            {},
+                                            "URL copied!"
+                                          )
+                                        );
+                                      }}
+                                      className="p-1 hover:bg-accent rounded transition-colors"
+                                      title="Copy URL"
+                                    >
+                                      <Copy className="h-3 w-3" />
+                                    </button>
+                                  </div>
+                                  {memorial.views !== undefined && (
+                                    <div className="flex items-center gap-2 text-muted-foreground">
+                                      <Users className="h-4 w-4 flex-shrink-0" />
+                                      <span>
+                                        {memorial.views}{" "}
+                                        {t("dashboard.templates.views", {}, "views")}
+                                      </span>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+
+                              {/* Dates */}
+                              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                <div className="flex items-center gap-1">
+                                  <Calendar className="h-3 w-3" />
+                                  <span>
+                                    {t("dashboard.templates.created", {}, "Created")}{" "}
+                                    {formatDate(template.createdAt)}
+                                  </span>
+                                </div>
+                                {template.updatedAt !== template.createdAt && (
+                                  <span>
+                                    {t("dashboard.templates.updated", {}, "Updated")}{" "}
+                                    {formatDate(template.updatedAt)}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Action buttons */}
+                            <div className="flex flex-col sm:flex-row gap-2 flex-shrink-0">
+                              {isPublished && memorial ? (
+                                <>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleViewLive(memorial.slug)}
+                                    title={t(
+                                      "dashboard.templates.actions.viewLive",
+                                      {},
+                                      "View Live"
+                                    )}
+                                  >
+                                    <Eye className="h-4 w-4 sm:mr-2" />
+                                    <span className="hidden sm:inline">
+                                      {t("dashboard.templates.actions.viewLive", {}, "View Live")}
+                                    </span>
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleEditMemorial(memorial.id)}
+                                    title={t("dashboard.templates.actions.edit", {}, "Edit")}
+                                  >
+                                    <Edit className="h-4 w-4 sm:mr-2" />
+                                    <span className="hidden sm:inline">
+                                      {t("dashboard.templates.actions.edit", {}, "Edit")}
+                                    </span>
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="text-destructive hover:text-destructive"
+                                    onClick={() => handleDeleteMemorial(memorial)}
+                                    title={t("dashboard.templates.actions.delete", {}, "Delete")}
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </>
+                              ) : (
+                                <>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() =>
+                                      router.push(
+                                        `/dashboard/create-memorial?template=${template.id}`
+                                      )
+                                    }
+                                    title={t(
+                                      "dashboard.templates.actions.continue",
+                                      {},
+                                      "Continue Editing"
+                                    )}
+                                  >
+                                    <Edit className="h-4 w-4 sm:mr-2" />
+                                    <span className="hidden sm:inline">
+                                      {t("dashboard.templates.actions.continue", {}, "Continue")}
+                                    </span>
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="text-destructive hover:text-destructive"
+                                    onClick={() => handleDeleteTemplate(template)}
+                                    disabled={deleteTemplateMutation.isPending}
+                                    title={t(
+                                      "dashboard.templates.actions.deleteDraft",
+                                      {},
+                                      "Delete Draft"
+                                    )}
+                                  >
+                                    {deleteTemplateMutation.isPending ? (
+                                      <RefreshCw className="h-4 w-4 animate-spin" />
+                                    ) : (
+                                      <Trash2 className="h-4 w-4" />
+                                    )}
+                                  </Button>
+                                </>
                               )}
                             </div>
                           </div>
-                          <div className="flex gap-2 flex-shrink-0">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              title={t("dashboard.templates.actions.preview")}
-                            >
-                              <Eye className="h-4 w-4 mr-1" />
-                              {t("dashboard.templates.actions.preview")}
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              title={t("dashboard.templates.actions.edit")}
-                            >
-                              <Edit className="h-4 w-4 mr-1" />
-                              {t("dashboard.templates.actions.edit")}
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              title={t("dashboard.templates.actions.duplicate")}
-                            >
-                              <Copy className="h-4 w-4 mr-1" />
-                              {t("dashboard.templates.actions.duplicate")}
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-destructive hover:text-destructive"
-                              onClick={() => {
-                                setSelectedTemplate(template);
-                                setShowDeleteDialog(true);
-                              }}
-                              title={t("dashboard.templates.actions.delete")}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
                 </div>
               )}
             </CardContent>
@@ -529,36 +730,23 @@ const TemplatesTab = () => {
         </TabsContent>
       </Tabs>
 
-      {/* Delete Confirmation Dialog */}
-      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent className="sm:max-w-md">
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t("dashboard.templates.deleteDialog.title")}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {t("dashboard.templates.deleteDialog.description", {
-                name: selectedTemplate?.name || "this template",
-              })}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="flex-col sm:flex-row gap-2">
-            <AlertDialogCancel className="mt-0">{t("common.cancel")}</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDeleteTemplate}
-              className="bg-destructive hover:bg-destructive/90"
-              disabled={deleteTemplateMutation.isPending}
-            >
-              {deleteTemplateMutation.isPending ? (
-                <>
-                  <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                  {t("dashboard.templates.deleteDialog.deleting")}
-                </>
-              ) : (
-                t("dashboard.templates.deleteDialog.confirm")
-              )}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {/* Delete Memorial Modal */}
+      {selectedMemorial && (
+        <DeleteMemorialModal
+          isOpen={showDeleteMemorialModal}
+          onClose={() => {
+            setShowDeleteMemorialModal(false);
+            setSelectedMemorial(null);
+          }}
+          memorialId={selectedMemorial.id}
+          memorialSlug={selectedMemorial.slug}
+          memorialName={`${selectedMemorial.firstName} ${selectedMemorial.lastName}`}
+          memorialUrl={`${process.env.NEXT_PUBLIC_APP_URL || ""}/${selectedMemorial.slug}`}
+        />
+      )}
+
+      {/* Confirmation Dialogs */}
+      {deleteTemplateDialog}
     </div>
   );
 };

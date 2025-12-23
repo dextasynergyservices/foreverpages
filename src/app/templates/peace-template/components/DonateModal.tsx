@@ -1,50 +1,45 @@
 "use client";
 
-import { useState } from 'react'
-import { Flower, Sparkles, Heart } from 'lucide-react'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from './dialog'
-import { Button } from './button'
-import { Input } from './input'
-import { Label } from './label'
-import { Slider } from './slider'
+import { useState } from "react";
+import { Flower, Sparkles, Heart } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./dialog";
+import { Button } from "./button";
+import { Input } from "./input";
+import { Label } from "./label";
+import { Slider } from "./slider";
 
 interface DonateModalProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
 const donationOptions = [
   {
-    id: 'flowers',
-    title: 'Flower Tribute',
+    id: "flowers",
+    title: "Flower Tribute",
     icon: Flower,
-    emoji: '🌸',
-    description: 'Send beautiful flowers',
+    emoji: "🌸",
+    description: "Send beautiful flowers",
   },
   {
-    id: 'memorial',
-    title: 'Memorial Fund',
+    id: "memorial",
+    title: "Memorial Fund",
     icon: Sparkles,
-    emoji: '💫',
-    description: 'Contribute to memorial expenses',
+    emoji: "💫",
+    description: "Contribute to memorial expenses",
   },
   {
-    id: 'family',
-    title: 'Family Support',
+    id: "family",
+    title: "Family Support",
     icon: Heart,
-    emoji: '🤍',
-    description: 'Direct support to family',
+    emoji: "🤍",
+    description: "Direct support to family",
   },
-]
+];
 
 export const DonateModal = ({ open, onOpenChange }: DonateModalProps) => {
-  const [selectedOption, setSelectedOption] = useState<string>('flowers')
-  const [amount, setAmount] = useState([50])
+  const [selectedOption, setSelectedOption] = useState<string>("flowers");
+  const [amount, setAmount] = useState([50]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -64,19 +59,15 @@ export const DonateModal = ({ open, onOpenChange }: DonateModalProps) => {
                 onClick={() => setSelectedOption(option.id)}
                 className={`rounded-xl border-2 p-4 text-left backdrop-blur-sm transition-smooth ${
                   selectedOption === option.id
-                    ? 'border-soft-gold bg-soft-gold/20'
-                    : 'border-cream/30 bg-cream/10 hover:border-soft-gold/50'
+                    ? "border-soft-gold bg-soft-gold/20"
+                    : "border-cream/30 bg-cream/10 hover:border-soft-gold/50"
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">{option.emoji}</span>
                   <div>
-                    <div className="font-semibold text-cream">
-                      {option.title}
-                    </div>
-                    <div className="text-sm text-cream/80">
-                      {option.description}
-                    </div>
+                    <div className="font-semibold text-cream">{option.title}</div>
+                    <div className="text-sm text-cream/80">{option.description}</div>
                   </div>
                 </div>
               </button>
@@ -87,9 +78,7 @@ export const DonateModal = ({ open, onOpenChange }: DonateModalProps) => {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <Label className="text-cream">Amount</Label>
-              <span className="text-2xl font-bold text-soft-gold">
-                ${amount[0]}
-              </span>
+              <span className="text-2xl font-bold text-soft-gold">${amount[0]}</span>
             </div>
             <Slider
               value={amount}
@@ -169,5 +158,5 @@ export const DonateModal = ({ open, onOpenChange }: DonateModalProps) => {
         </div>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};

@@ -20,21 +20,22 @@ import { useMusic } from "./MusicContext";
 
 const MobileNavigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const menuRef = useRef(null);
-  const buttonRef = useRef(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   // Use shared music state
   const { isPlaying, isMuted, togglePlay, toggleMute } = useMusic();
 
   // Close menu when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: Event) => {
+      const target = event.target as Node;
       if (
         isMobileMenuOpen &&
         menuRef.current &&
-        !menuRef.current.contains(event.target) &&
+        !menuRef.current.contains(target) &&
         buttonRef.current &&
-        !buttonRef.current.contains(event.target)
+        !buttonRef.current.contains(target)
       ) {
         setIsMobileMenuOpen(false);
       }
@@ -49,7 +50,7 @@ const MobileNavigation = () => {
     };
   }, [isMobileMenuOpen]);
 
-  const scrollToSection = (sectionId) => {
+  const scrollToSection = (sectionId: string) => {
     const element =
       sectionId === "hero" ? document.getElementById("root") : document.getElementById(sectionId);
     if (element) {
@@ -73,7 +74,6 @@ const MobileNavigation = () => {
         externalIsPlaying={isPlaying}
         onTogglePlay={togglePlay}
         externalIsMuted={isMuted}
-        onToggleMute={toggleMute}
       />
 
       {/* Fixed Bottom Navigation */}

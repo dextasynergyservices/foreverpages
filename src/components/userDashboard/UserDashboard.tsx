@@ -8,6 +8,7 @@ import Gallery from "@/components/userDashboard/gallery/Gallery";
 import CreateMemorial from "@/components/userDashboard/pageBuilder/CreateMemorial";
 import Invitations from "@/components/userDashboard/invitations/Invitations";
 import Tributes from "@/components/userDashboard/Tribute";
+import Support from "@/components/userDashboard/Support";
 import Livestreams from "@/components/userDashboard/livestreams/Livestreams";
 import Settings from "@/components/userDashboard/Settings";
 import TemplatesTab from "@/components/userDashboard/templates/TemplatesTab";
@@ -216,6 +217,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ activeSection }) => {
         return <Invitations />;
       case "tributes":
         return <Tributes />;
+      case "support":
+        return <Support />;
       case "livestreams":
         return <Livestreams />;
       case "settings":

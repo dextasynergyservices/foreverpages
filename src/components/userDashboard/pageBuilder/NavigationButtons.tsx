@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft, Heart, AlertCircle } from "lucide-react";
+import { ArrowRight, ArrowLeft, AlertCircle } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 
 interface NavigationButtonsProps {
@@ -23,21 +23,20 @@ export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
   selectedTemplate,
   onPrevStep,
   onNextStep,
-  onCreateMemorial,
+  onCreateMemorial: _onCreateMemorial,
   t,
-  isCreating = false,
+  isCreating: _isCreating = false,
   userHasPublished = false,
   subscriptionActive = true,
   isSubscriptionExpired = false,
 }) => {
   const { theme } = useTheme();
   const prevEnabled = currentStep > 0 && !isSubscriptionExpired;
-  const nextEnabled =
-    !isSubscriptionExpired &&
-    (currentStep < stepsLength - 1 ? !(currentStep === 0 && !selectedTemplate) : true);
 
-  // Can only create if subscription is active and hasn't already published
-  const canCreate = subscriptionActive && !userHasPublished && !isSubscriptionExpired;
+  // Step 0: Template selection - require template to be selected
+  // Step 1: Edit template - always allow next if template is active
+  // Step 2: Review - this is the last step
+  const nextEnabled = !isSubscriptionExpired && !(currentStep === 0 && !selectedTemplate);
 
   return (
     <div className="flex flex-col gap-4">
@@ -92,23 +91,9 @@ export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
             <ArrowRight className="h-4 w-4 ml-2" />
           </Button>
         ) : (
-          <Button
-            variant="memorial"
-            onClick={onCreateMemorial}
-            disabled={isCreating || !canCreate}
-            title={
-              !canCreate
-                ? userHasPublished
-                  ? "You already have a published memorial"
-                  : "Your subscription is not active"
-                : ""
-            }
-          >
-            {isCreating
-              ? t("dashboard.pageBuilder.buttons.creating", {}, "Creating...")
-              : t("dashboard.pageBuilder.buttons.create")}
-            <Heart className="h-4 w-4 ml-2" />
-          </Button>
+          // On the last step (Review), don't show Create Memorial button
+          // The ReviewStep component handles publishing with its own button and modal
+          <div className="flex-1" />
         )}
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Memorial, Template, UserTemplate } from "@/generated/prisma";
+import type { Memorial, Template, UserTemplate } from "@/generated/prisma";
 import { TemplateThemeProvider } from "@/contexts/TemplateThemeContext";
 import { HeroSection } from "../../sections/HeroSection";
 

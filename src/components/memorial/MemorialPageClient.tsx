@@ -6,6 +6,8 @@ import MemorialHero from "@/components/memorial/MemorialHero";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { TemplateRenderer } from "@/components/templates/base/TemplateRenderer";
+import { ExpiredMemorialBanner } from "@/components/memorial/ExpiredMemorialBanner";
+import { MemorialExpiryCheck } from "@/lib/utils/checkMemorialExpiry";
 
 interface ActiveStream {
   id: string;
@@ -36,19 +38,47 @@ interface MemorialWithTemplate extends Memorial {
 
 interface MemorialPageClientProps {
   memorial: MemorialWithTemplate;
+  expiryCheck: MemorialExpiryCheck;
+  isOwner: boolean;
   activeStream: ActiveStream | null;
 }
 
-export default function MemorialPageClient({ memorial, activeStream }: MemorialPageClientProps) {
+export default function MemorialPageClient({
+  memorial,
+  expiryCheck,
+  isOwner,
+  activeStream,
+}: MemorialPageClientProps) {
   const [isPasswordVerified, setIsPasswordVerified] = useState(false);
 
   // Check if stream requires password and is not verified
   const requiresPassword =
     activeStream && activeStream.password && !activeStream.isPublic && !isPasswordVerified;
 
+  // Show expiry banner if needed (for owner preview, grace period, or expired)
+  const showExpiryBanner =
+    expiryCheck.reason === "expired" ||
+    expiryCheck.reason === "grace_period" ||
+    expiryCheck.reason === "owner_preview";
+
+  const memorialName = `${memorial.firstName} ${memorial.lastName}`;
+
   // If memorial has a template, use the template system
   if (memorial.userTemplate) {
-    return <TemplateRenderer userTemplate={memorial.userTemplate} memorial={memorial} />;
+    return (
+      <>
+        {showExpiryBanner && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+            <ExpiredMemorialBanner
+              expiryCheck={expiryCheck}
+              isOwner={isOwner}
+              memorialName={memorialName}
+            />
+          </div>
+        )}
+        <TemplateRenderer userTemplate={memorial.userTemplate} memorial={memorial} />
+      </>
+    );
   }
 
   // Fallback to legacy hardcoded layout
@@ -57,6 +87,17 @@ export default function MemorialPageClient({ memorial, activeStream }: MemorialP
       <Navbar />
 
       <main className="flex-1">
+        {/* Expiry Banner for owner/grace period */}
+        {showExpiryBanner && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+            <ExpiredMemorialBanner
+              expiryCheck={expiryCheck}
+              isOwner={isOwner}
+              memorialName={memorialName}
+            />
+          </div>
+        )}
+
         {/* Dynamic Hero Section */}
         <MemorialHero
           memorial={{

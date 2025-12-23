@@ -1,41 +1,72 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useTemplate } from "../../TemplateProvider";
 
-const lifeStages = [
+const defaultLifeStages = [
   {
     id: 1,
     image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670890/recent_h90dne.png",
-    stage: "Mama in Her Recent Years",
+    stage: "Recent Years",
     age: "70-79",
-    description: "Wisdom and grace in her golden years",
+    description: "Wisdom and grace in golden years",
   },
   {
     id: 2,
     image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670889/prime_xfxwj0.png",
-    stage: "Mama in Her Prime of Life",
+    stage: "Prime of Life",
     age: "40-69",
-    description: "Thriving in her career and family life",
+    description: "Thriving in career and family life",
   },
   {
     id: 3,
     image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670889/young_torvo8.png",
-    stage: "Mama as a Young Adult",
+    stage: "Young Adult",
     age: "20-39",
-    description: "Starting her teaching career and family",
+    description: "Starting career and family",
   },
   {
     id: 4,
     image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670889/child_nholqm.png",
-    stage: "Mama as a Child",
+    stage: "Childhood",
     age: "0-19",
     description: "Growing up full of dreams and laughter",
   },
 ];
 
 export const HeroModern = () => {
+  const { memorial } = useTemplate();
   const [currentStage, setCurrentStage] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
+
+  // Use memorial data or fallback to defaults
+  const displayName = memorial
+    ? `${memorial.firstName} ${memorial.lastName}`
+    : "Eleanor Grace Thompson";
+
+  const displayDates = memorial
+    ? `${memorial.dateOfBirth ? new Date(memorial.dateOfBirth).getFullYear() : ""} - ${memorial.dateOfDeath ? new Date(memorial.dateOfDeath).getFullYear() : ""}`
+    : "1944 - 2024";
+
+  const profileImage = memorial?.profileImage || defaultLifeStages[0].image;
+
+  // Create life stages with memorial data
+  const lifeStages = memorial
+    ? [
+        {
+          id: 1,
+          image: profileImage,
+          stage: `${memorial.firstName} in Recent Years`,
+          age: displayDates.split(" - ")[1] || "Recent",
+          description: "Wisdom and grace in golden years",
+        },
+        ...defaultLifeStages.slice(1).map((stage, index) => ({
+          ...stage,
+          stage: `${memorial.firstName} ${stage.stage.toLowerCase()}`,
+          image: profileImage, // Use same image for all stages if only one available
+        })),
+      ]
+    : defaultLifeStages;
 
   // Auto-rotate when not hovering
   useEffect(() => {
@@ -64,7 +95,7 @@ export const HeroModern = () => {
               <img
                 key={lifeStages[currentStage].id} // Force re-render on change
                 src={lifeStages[currentStage].image}
-                alt={`Eleanor - ${lifeStages[currentStage].stage}`}
+                alt={`${displayName} - ${lifeStages[currentStage].stage}`}
                 className="h-full w-full object-cover transition-all duration-700 ease-in-out"
               />
               {/* Gold overlay on hover */}
@@ -113,11 +144,9 @@ export const HeroModern = () => {
               </div>
 
               <h1 className="mb-2 font-heading text-2xl font-bold leading-tight text-cream md:text-6xl">
-                Eleanor Grace Thompson
+                {displayName}
               </h1>
-              <p className="font-accent text-xl text-soft-gold md:text-3xl">
-                March 15, 1945 — November 2, 2024
-              </p>
+              <p className="font-accent text-xl text-soft-gold md:text-3xl">{displayDates}</p>
             </div>
 
             <div className="space-y-4 text-cream/90">

@@ -1,6 +1,14 @@
+"use client";
+
 import { MapPin, Calendar, Heart } from "lucide-react";
+import { useTemplate } from "../TemplateProvider";
 
 export const Biography = () => {
+  const { sectionsData } = useTemplate();
+
+  // Get BIOGRAPHY section data with fallbacks
+  const biographyData = (sectionsData?.BIOGRAPHY as any) || {};
+
   return (
     <section
       id="biography"
@@ -9,7 +17,7 @@ export const Biography = () => {
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 animate-fade-in text-center">
           <h2 className="mb-1 font-heading text-2xl font-bold leading-tight text-cream md:mb-2 md:text-6xl">
-            A Life Remembered
+            {biographyData.title || "A Life Remembered"}
           </h2>
           <div className="mx-auto h-1 w-32 rounded-full bg-soft-gold" />
         </div>
@@ -27,8 +35,10 @@ export const Biography = () => {
                   <Calendar className="mt-1 h-6 w-6 flex-shrink-0 text-soft-gold" />
                   <div>
                     <p className="font-semibold text-cream">Born</p>
-                    <p className="text-cream/80">March 15, 1945</p>
-                    <p className="text-sm text-cream/70">Boston, Massachusetts</p>
+                    <p className="text-cream/80">{biographyData.birthDate || "March 15, 1945"}</p>
+                    <p className="text-sm text-cream/70">
+                      {biographyData.birthPlace || "Boston, Massachusetts"}
+                    </p>
                   </div>
                 </div>
 
@@ -36,8 +46,8 @@ export const Biography = () => {
                   <Heart className="mt-1 h-6 w-6 flex-shrink-0 text-soft-gold" />
                   <div>
                     <p className="font-semibold text-cream">Passed</p>
-                    <p className="text-cream/80">November 2, 2024</p>
-                    <p className="text-sm text-cream/70">Age 79</p>
+                    <p className="text-cream/80">{biographyData.deathDate || "November 2, 2024"}</p>
+                    <p className="text-sm text-cream/70">{biographyData.ageAtDeath || "Age 79"}</p>
                   </div>
                 </div>
 
@@ -45,7 +55,7 @@ export const Biography = () => {
                   <MapPin className="mt-1 h-6 w-6 flex-shrink-0 text-soft-gold" />
                   <div>
                     <p className="font-semibold text-cream">Residence</p>
-                    <p className="text-cream/80">Lagos, Nigeria</p>
+                    <p className="text-cream/80">{biographyData.residence || "Lagos, Nigeria"}</p>
                   </div>
                 </div>
               </div>

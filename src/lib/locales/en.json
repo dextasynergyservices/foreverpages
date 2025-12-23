@@ -314,13 +314,93 @@
     },
     "copyright": "ForeverPages. Created with love to honor every life."
   },
+  "memorial": {
+    "status": {
+      "active": "Active",
+      "expired": "Expired",
+      "gracePeriod": "Grace Period",
+      "lifetime": "Lifetime Access",
+      "ownerPreview": "Owner Preview",
+      "unknown": "Unknown Status"
+    },
+    "expiry": {
+      "owner": {
+        "expired": {
+          "title": "Subscription Expired",
+          "description": "This memorial is currently unavailable to the public. Renew your subscription to restore access."
+        }
+      },
+      "public": {
+        "expired": {
+          "title": "Memorial Temporarily Unavailable",
+          "description": "The subscription for {{name}} has expired. Please contact the page owner to restore access."
+        }
+      },
+      "gracePeriod": {
+        "title": "Subscription in Grace Period",
+        "description": "This memorial will become unavailable in {{days}} day(s). Renew your subscription to maintain access."
+      },
+      "ownerPreview": {
+        "title": "Preview Mode - Subscription Expired",
+        "description": "Only you can see this memorial. Renew your subscription to make it publicly accessible again."
+      },
+      "renewButton": "Renew Subscription"
+    },
+    "expired": {
+      "title": "Memorial Temporarily Unavailable",
+      "message": "The memorial page for {{name}} is currently unavailable because the subscription has expired.",
+      "info": "This is a temporary status. Once the page owner renews their subscription, this memorial will be accessible again.",
+      "contactTitle": "Contact Page Owner",
+      "contactMessage": "If you need to access this memorial urgently, please reach out to the page owner to request renewal.",
+      "contactOwner": "Contact Owner",
+      "createOwn": "Want to create a memorial for your loved one?",
+      "viewPackages": "View Our Packages"
+    }
+  },
   "common": {
     "loading": "Loading...",
     "error": "An error occurred",
+    "memorial": "this memorial",
     "retry": "Retry",
     "close": "Close",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "optional": "Optional",
+    "saving": "Saving...",
+    "edit": "Edit"
+  },
+
+  "errors": {
+    "boundary": {
+      "title": "Something Went Wrong",
+      "description": "An unexpected error occurred",
+      "retry": "Try Again"
+    },
+    "generic": {
+      "title": "Error",
+      "message": "An unexpected error occurred. Please try again."
+    },
+    "warning": {
+      "title": "Warning"
+    },
+    "network": {
+      "title": "Connection Error",
+      "message": "Unable to connect. Please check your internet connection and try again."
+    },
+    "actions": {
+      "retry": "Retry",
+      "dismiss": "Dismiss"
+    }
+  },
+
+  "tutorial": {
+    "step": "Step {{current}} of {{total}}",
+    "previous": "Previous",
+    "next": "Next",
+    "finish": "Finish",
+    "skip": "Skip Tutorial"
   },
 
   "faq": {
@@ -384,6 +464,7 @@
         "builder": "Funeral Builder",
         "invitations": "Invitations",
         "tributes": "Tributes",
+        "support": "Support",
         "templates": "Templates",
         "settings": "Settings"
       }
@@ -1059,8 +1140,12 @@
       },
       "steps": {
         "chooseTemplate": {
-          "title": "Choose Template",
-          "description": "Select a design that honors your loved one"
+          "title": "Select Template",
+          "description": "Choose a template design that fits your vision"
+        },
+        "editTemplate": {
+          "title": "Edit Template",
+          "description": "Customize colors, content, and sections"
         },
         "basicInfo": {
           "title": "Basic Information",
@@ -1075,8 +1160,8 @@
           "description": "Add photos and memories"
         },
         "review": {
-          "title": "Review",
-          "description": "Review and create your memorial"
+          "title": "Review & Publish",
+          "description": "Review and publish your memorial page"
         }
       },
       "buttons": {
@@ -1084,6 +1169,47 @@
         "next": "Next",
         "create": "Create Memorial",
         "creating": "Creating..."
+      },
+      "saveIndicator": {
+        "saving": "Saving...",
+        "saved": "Saved",
+        "error": "Error saving"
+      },
+      "editView": {
+        "title": "Edit Template",
+        "editor": "Editor",
+        "preview": "Preview",
+        "designTokens": "Design & Colors",
+        "sections": "Content Sections",
+        "previewMode": "Preview Mode",
+        "desktop": "Desktop",
+        "tablet": "Tablet",
+        "mobile": "Mobile"
+      },
+      "mediaPicker": {
+        "title": "Select Media from Gallery",
+        "searchPlaceholder": "Search by title or description...",
+        "all": "All",
+        "images": "Images",
+        "videos": "Videos",
+        "imagesUsed": "Images:",
+        "videosUsed": "Videos:",
+        "error": "Failed to load media",
+        "noMedia": "No media found",
+        "uploadFirst": "Upload some media to your gallery first",
+        "selected": "selected",
+        "addSelected": "Add Selected"
+      },
+      "gallery": {
+        "title": "Photo & Video Gallery",
+        "description": "Add photos and videos that celebrate their life",
+        "layout": "Gallery Layout",
+        "addMedia": "Add Photos/Videos from Gallery",
+        "noMedia": "No media added yet",
+        "clickToAdd": "Click the button above to add photos and videos",
+        "caption": "Caption (Optional)",
+        "captionPlaceholder": "Add a caption...",
+        "remove": "Remove media"
       },
       "sidebar": {
         "title": "Build steps",
@@ -1144,7 +1270,22 @@
           "name": "Celebration of Life",
           "description": "Bright and uplifting design for joyful remembrance and celebration",
           "features": ["Vibrant colors", "Celebration focus", "Happy memories", "Uplifting tone"]
-        }
+        },
+        "status": {
+          "live": "Live",
+          "draft": "Draft",
+          "expired": "Expired"
+        },
+        "actions": {
+          "viewLive": "View Live",
+          "edit": "Edit",
+          "delete": "Delete",
+          "continue": "Continue",
+          "deleteDraft": "Delete Draft"
+        },
+        "views": "views",
+        "created": "Created",
+        "updated": "Updated"
       },
       "loadingTemplates": "Loading templates...",
       "mustSignInTitle": "Please sign in",
@@ -1179,17 +1320,64 @@
           "slugTooLong": "URL cannot exceed 50 characters",
           "slugInvalid": "URL can only contain letters, numbers, hyphens, and underscores",
           "slugTaken": "This URL is already taken. Please try another."
-        }
+        },
+        "suggestions": "Suggested URLs:",
+        "previewUrl": "Preview:"
+      },
+      "deleteMemorial": {
+        "title": "Delete Memorial",
+        "description": "This action cannot be undone. Deleting this memorial will:",
+        "warning": "Are you absolutely sure?",
+        "consequence1": "Permanently delete the memorial page and all its content",
+        "consequence2": "Remove all invitations and collaborator access",
+        "consequence3": "Delete all tributes and condolences",
+        "consequence4": "Remove the memorial from search engines",
+        "memorialName": "Memorial:",
+        "memorialUrl": "URL:",
+        "confirmationLabel": "Type the memorial slug to confirm deletion",
+        "confirmationHint": "Type exactly:",
+        "deleteButton": "Delete Memorial",
+        "deleting": "Deleting...",
+        "cancel": "Cancel",
+        "successTitle": "Memorial Deleted",
+        "successMessage": "The memorial has been permanently deleted"
       },
       "review": {
         "title": "Ready to Create Memorial",
         "description": "Your beautiful memorial page is ready to be created. You can always edit and add more content later.",
+        "titleEdit": "Ready to Update Memorial",
+        "descriptionEdit": "Your memorial updates are ready to be published. The changes will be reflected immediately.",
         "templateLabel": "Template:",
         "privacyLabel": "Privacy:",
         "privacyValue": "Public",
         "featuresLabel": "Features:",
         "featuresValue": "Full Access",
-        "publishButton": "Publish Memorial"
+        "publishButton": "Publish Memorial",
+        "updateButton": "Update Memorial",
+        "deleteMemorial": "Delete Memorial",
+        "validationRequired": "Please complete the following before publishing:",
+        "missingFirstName": "Add first name of the deceased",
+        "missingLastName": "Add last name of the deceased",
+        "missingSections": "Add at least one content section",
+        "sectionsConfigured": "Sections Configured:",
+        "memorialFor": "Memorial For:",
+        "memorialPublished": "Memorial is Live",
+        "memorialUrl": "Memorial URL:",
+        "autoSaveNote": "Changes are automatically saved and will be reflected immediately on your live memorial.",
+        "editModeHelpText": "Your memorial is live. Any updates will be reflected immediately.",
+        "helpText": "Once published, your memorial will be live and accessible to anyone with the link.",
+        "urlCopied": "Memorial URL copied to clipboard!",
+        "copyFailed": "Failed to copy URL",
+        "unpublishButton": "Unpublish Memorial",
+        "unpublishSuccess": "Memorial unpublished successfully",
+        "unpublishError": "Failed to unpublish memorial",
+        "slugUpdateSuccess": "Memorial URL updated successfully",
+        "slugUpdateError": "Failed to update memorial URL",
+        "slugTaken": "This URL is already taken",
+        "editSlugHint": "This will change your memorial's web address. Make sure to update any shared links.",
+        "unpublishConfirmTitle": "Unpublish Memorial?",
+        "unpublishConfirmMessage": "Are you sure you want to unpublish this memorial? The memorial page will no longer be accessible to visitors until you publish it again.",
+        "confirmUnpublish": "Unpublish Memorial"
       },
       "customizer": {
         "title": "Customize Design",
@@ -1226,6 +1414,12 @@
         "saved": "Saved",
         "error": "Save failed",
         "lastSaved": "Last saved {{time}}"
+      },
+      "unsavedChanges": {
+        "title": "Unsaved Changes",
+        "message": "You have unsaved changes. Are you sure you want to leave?",
+        "leave": "Leave",
+        "stay": "Stay"
       },
       "subscription": {
         "banner": {
@@ -1279,6 +1473,69 @@
         "support": {
           "title": "Support & Donations"
         }
+      },
+      "support": {
+        "title": "Support History",
+        "subtitle": "Track supports sent and received for memorials",
+        "displayCurrency": "Display Currency:",
+        "ratesUpdated": "Rates updated",
+        "refreshData": "Refresh Data",
+        "stats": {
+          "totalReceived": "Total Received",
+          "totalSent": "Total Sent",
+          "supportsReceived": "Supports Received",
+          "supportsSent": "Supports Sent",
+          "averageSupport": "Average Support",
+          "recentActivity": "Recent Activity",
+          "noActivity": "No activity"
+        },
+        "tabs": {
+          "received": "Received",
+          "sent": "Sent",
+          "message": "Send Messages"
+        },
+        "empty": {
+          "received": {
+            "title": "No supports received yet",
+            "description": "When people support your memorials, they'll appear here."
+          },
+          "sent": {
+            "title": "No supports sent yet",
+            "description": "When you support other memorials, they'll appear here."
+          }
+        },
+        "messaging": {
+          "title": "Send Thank You Messages",
+          "description": "Send personalized thank you messages to your supporters via email or WhatsApp.",
+          "subject": "Subject (Optional)",
+          "subjectPlaceholder": "Thank you for your support...",
+          "message": "Message",
+          "messagePlaceholder": "Thank you so much for your generous support. Your kindness means the world to us during this difficult time...",
+          "deliveryMethod": "Delivery Method",
+          "sendViaEmail": "Send via Email",
+          "sendViaWhatsApp": "Send via WhatsApp",
+          "selectSupporters": "Select Supporters",
+          "deselectAll": "Deselect All",
+          "selectAll": "Select All",
+          "selectPage": "Select Page",
+          "deselectPage": "Deselect Page",
+          "selectAllSupporters": "Select All Supporters",
+          "selectAllConfirmTitle": "Select all supporters?",
+          "selectAllConfirmDescription": "This will select every supporter across all pages. This action may take some time for large numbers. Do you want to continue?",
+          "selectAllConfirm": "Select All",
+          "selectAllTooMany": "Too many supporters to select at once",
+          "selectAllSuccess": "Selected all supporters",
+          "clearSelection": "Clear Selection",
+          "selectedCount": "Selected",
+          "selectDescription": "Choose which supporters to send the message to.",
+          "sending": "Sending...",
+          "sendMessage": "Send Messages",
+          "noSupporters": {
+            "title": "No supporters to message yet",
+            "description": "When you receive support, you'll be able to send thank you messages to your supporters here."
+          },
+          "viewSupport": "View Support"
+        }
       }
     },
     "settings": {
@@ -1289,6 +1546,7 @@
         "memorial": "Memorial",
         "privacy": "Privacy",
         "notifications": "Notifications",
+        "account": "Account",
         "advanced": "Advanced"
       },
       "profile": {
@@ -1371,6 +1629,45 @@
         "account": {
           "title": "Account Actions",
           "signOut": "Sign Out"
+        },
+        "accountDetails": {
+          "title": "Account Details",
+          "description": "Manage your account details for receiving donations and support through your memorial pages.",
+          "noAccountsTitle": "No Accounts Added",
+          "noAccounts": "Add your account details to receive donations and support through your memorial pages.",
+          "addFirstAccount": "Add Your First Account",
+          "addAccount": "Add New Account",
+          "account": "Account",
+          "default": "Primary",
+          "setPrimary": "Set Primary",
+          "setDefault": "Set as Default",
+          "type": "Account Type",
+          "accountName": "Account Holder Name",
+          "accountNumber": "Account Number",
+          "bankName": "Bank Name",
+          "routingNumber": "Routing Number",
+          "paymentLink": "Payment Link",
+          "description": "Description (Optional)",
+          "types": {
+            "bank": "Bank Account",
+            "bankDesc": "Traditional bank account",
+            "mobileMoney": "Mobile Money",
+            "mobileMoneyDesc": "Mobile payment service",
+            "paypal": "PayPal",
+            "paypalDesc": "PayPal digital wallet",
+            "paystack": "Paystack",
+            "paystackDesc": "Paystack payment platform",
+            "stripe": "Stripe",
+            "stripeDesc": "Stripe payment platform",
+            "other": "Other",
+            "otherDesc": "Other payment method"
+          },
+          "paymentLinkHelp": {
+            "paypal": "Supporters can use this link to send donations directly via PayPal",
+            "paystack": "Supporters can use this link to donate through Paystack payment gateway",
+            "stripe": "Supporters can use this link to donate through Stripe payment processing",
+            "other": "Supporters can use this link for donations through your custom payment method"
+          }
         }
       }
     },
@@ -1515,6 +1812,11 @@
         "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
         "deleting": "Deleting...",
         "confirm": "Delete Template"
+      },
+      "delete": {
+        "confirmTitle": "Delete Template?",
+        "confirmDescription": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone.",
+        "confirm": "Delete"
       },
       "createSuccess": "Template created successfully",
       "createError": "Failed to create template",
@@ -2166,6 +2468,23 @@
       "sending": "Sending..."
     },
     "roles": {
+      "OWNER": {
+        "name": "Owner",
+        "short": "Owner",
+        "description": "Full control - owns the memorial and manages all settings",
+        "longDescription": "Complete ownership and control of the memorial",
+        "permissions": {
+          "title": "What you can do:",
+          "list": [
+            "Complete control over all memorial content",
+            "Manage billing and subscription settings",
+            "Invite and remove all collaborators",
+            "Edit all memorial settings and information",
+            "Access all analytics and statistics",
+            "Delete or archive the memorial"
+          ]
+        }
+      },
       "ADMIN": {
         "name": "Admin",
         "short": "Administrator",
@@ -2209,9 +2528,25 @@
             "Comment on posts"
           ]
         }
+      },
+      "VIEWER": {
+        "name": "Viewer",
+        "short": "Viewer",
+        "description": "Read-only access - view memorial content only",
+        "longDescription": "View-only access to memorial content",
+        "permissions": {
+          "title": "What you can do:",
+          "list": [
+            "View memorial content and stories",
+            "Browse photos and videos",
+            "Read tributes and comments",
+            "Access basic memorial information"
+          ]
+        }
       }
     },
     "roleRestrictions": {
+      "OWNER": "You have complete ownership and control of this memorial.",
       "ADMIN": "You have full management access except billing settings.",
       "EDITOR": "You can edit content and manage media.",
       "CONTRIBUTOR": "You can add stories, photos, and tributes.",
@@ -2541,6 +2876,54 @@
         "youreReceiving": "You're receiving this because you're connected to {memorial} memorial page.",
         "copyright": "© {year} ForeverPages. All rights reserved."
       }
+    },
+    "support": {
+      "title": "Support History",
+      "subtitle": "Track supports received and send thank you messages",
+      "tabs": {
+        "received": "Received",
+        "message": "Send Messages"
+      },
+      "stats": {
+        "totalReceived": "Total Received",
+        "totalSent": "Total Sent",
+        "supportsReceived": "Supports Received",
+        "supportsSent": "Supports Sent",
+        "supporters": "supporters",
+        "memorials": "memorials",
+        "activeSupporters": "Active Supporters",
+        "totalTransactions": "Total Transactions"
+      },
+      "received": {
+        "title": "Supports Received",
+        "empty": {
+          "title": "No supports received yet",
+          "description": "When people send support to your memorials, they'll appear here."
+        }
+      },
+      "messaging": {
+        "title": "Send Thank You Messages",
+        "description": "Send personalized thank you messages to your supporters via email or WhatsApp.",
+        "subject": "Subject (Optional)",
+        "subjectPlaceholder": "Thank you for your support...",
+        "message": "Message",
+        "messagePlaceholder": "Thank you so much for your generous support. Your kindness means the world to us during this difficult time...",
+        "deliveryMethod": "Delivery Method",
+        "sendViaEmail": "Send via Email",
+        "sendViaWhatsApp": "Send via WhatsApp",
+        "selectSupporters": "Select Supporters",
+        "selectDescription": "Choose which supporters to send the message to.",
+        "selectAll": "Select All",
+        "deselectAll": "Deselect All",
+        "sendMessage": "Send Messages",
+        "sending": "Sending...",
+        "noSupporters": {
+          "title": "No supporters to message yet",
+          "description": "When you receive support, you'll be able to send thank you messages to your supporters here."
+        },
+        "viewSupport": "View Support"
+      },
+      "refreshData": "Refresh Data"
     }
   }
 }

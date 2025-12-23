@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NotificationType } from "@/generated/prisma";
+import { generateNotificationLink } from "@/lib/notificationLinks";
 
 interface CreateNotificationParams {
   userId: string;
@@ -64,14 +65,15 @@ export class NotificationService {
   static async notifyNewTribute(
     memorialOwnerId: string,
     tributeAuthorName: string,
-    memorialSlug: string
+    memorialSlug: string,
+    tributeId?: string
   ) {
     return this.createNotification({
       userId: memorialOwnerId,
       type: "NEW_TRIBUTE",
       title: "New Tribute Posted",
       message: `${tributeAuthorName} posted a new tribute on your memorial page`,
-      link: `/memorial-pages/${memorialSlug}`,
+      link: generateNotificationLink("NEW_TRIBUTE", memorialSlug, { tributeId }),
     });
   }
 
@@ -82,55 +84,69 @@ export class NotificationService {
     userId: string,
     commenterName: string,
     memorialSlug: string,
-    postId?: string
+    postId?: string,
+    commentId?: string
   ) {
     return this.createNotification({
       userId,
       type: "NEW_COMMENT",
       title: "New Comment",
       message: `${commenterName} commented on your memorial page`,
-      link: postId
-        ? `/memorial-pages/${memorialSlug}?post=${postId}`
-        : `/memorial-pages/${memorialSlug}`,
+      link: generateNotificationLink("NEW_COMMENT", memorialSlug, { commentId, postId }),
     });
   }
 
   /**
    * Notify when a new photo is uploaded
    */
-  static async notifyNewPhoto(userId: string, uploaderName: string, memorialSlug: string) {
+  static async notifyNewPhoto(
+    userId: string,
+    uploaderName: string,
+    memorialSlug: string,
+    photoId?: string
+  ) {
     return this.createNotification({
       userId,
       type: "NEW_PHOTO",
       title: "New Photo Added",
       message: `${uploaderName} added new photos to your memorial page`,
-      link: `/memorial-pages/${memorialSlug}/gallery`,
+      link: generateNotificationLink("NEW_PHOTO", memorialSlug, { photoId }),
     });
   }
 
   /**
    * Notify when a virtual candle is lit
    */
-  static async notifyNewCandle(userId: string, senderName: string, memorialSlug: string) {
+  static async notifyNewCandle(
+    userId: string,
+    senderName: string,
+    memorialSlug: string,
+    candleId?: string
+  ) {
     return this.createNotification({
       userId,
       type: "NEW_CANDLE",
       title: "Virtual Candle Lit",
       message: `${senderName} lit a virtual candle in memory`,
-      link: `/memorial-pages/${memorialSlug}`,
+      link: generateNotificationLink("NEW_CANDLE", memorialSlug, { candleId }),
     });
   }
 
   /**
    * Notify when a virtual flower is sent
    */
-  static async notifyNewFlower(userId: string, senderName: string, memorialSlug: string) {
+  static async notifyNewFlower(
+    userId: string,
+    senderName: string,
+    memorialSlug: string,
+    flowerId?: string
+  ) {
     return this.createNotification({
       userId,
       type: "NEW_FLOWER",
       title: "Virtual Flower Sent",
       message: `${senderName} sent virtual flowers in memory`,
-      link: `/memorial-pages/${memorialSlug}`,
+      link: generateNotificationLink("NEW_FLOWER", memorialSlug, { flowerId }),
     });
   }
 
@@ -148,7 +164,7 @@ export class NotificationService {
       type: "MEMORIAL_ANNIVERSARY",
       title: "Memorial Anniversary",
       message: `Today marks ${years} ${years === 1 ? "year" : "years"} since ${deceasedName} passed away`,
-      link: `/memorial-pages/${memorialSlug}`,
+      link: generateNotificationLink("MEMORIAL_ANNIVERSARY", memorialSlug),
     });
   }
 
@@ -165,10 +181,13 @@ export class NotificationService {
       type: "BIRTHDAY_ANNIVERSARY",
       title: "Birthday Remembrance",
       message: `Today would have been ${deceasedName}'s birthday`,
-      link: `/memorial-pages/${memorialSlug}`,
+      link: generateNotificationLink("BIRTHDAY_ANNIVERSARY", memorialSlug),
     });
   }
 
+  /**
+   * Notify when memorial is expiring soon
+   */
   /**
    * Notify when memorial is expiring soon
    */
@@ -178,20 +197,25 @@ export class NotificationService {
       type: "EXPIRING_SOON",
       title: "Memorial Expiring Soon",
       message: `Your memorial page will expire in ${daysRemaining} ${daysRemaining === 1 ? "day" : "days"}. Renew now to keep it active.`,
-      link: `/user-dashboard?section=settings`,
+      link: generateNotificationLink("EXPIRING_SOON", memorialSlug),
     });
   }
 
   /**
    * Notify when invitation is sent
    */
-  static async notifyInvitation(userId: string, inviterName: string, memorialSlug: string) {
+  static async notifyInvitation(
+    userId: string,
+    inviterName: string,
+    memorialSlug: string,
+    invitationId?: string
+  ) {
     return this.createNotification({
       userId,
       type: "INVITATION",
       title: "Memorial Invitation",
       message: `${inviterName} invited you to collaborate on a memorial page`,
-      link: `/memorial-pages/${memorialSlug}`,
+      link: generateNotificationLink("INVITATION", memorialSlug, { tributeId: invitationId }),
     });
   }
 

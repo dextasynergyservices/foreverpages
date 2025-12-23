@@ -1,4 +1,7 @@
+"use client";
+
 import { Heart, Cross, BookOpen, Users, GraduationCap, Briefcase, Home } from "lucide-react";
+import { useTemplate } from "../TemplateProvider";
 
 interface JourneyEvent {
   year: string;
@@ -8,7 +11,7 @@ interface JourneyEvent {
   theme: "faith" | "family" | "career" | "community";
 }
 
-const events: JourneyEvent[] = [
+const defaultEvents: JourneyEvent[] = [
   {
     year: "1952",
     title: "A Blessed Beginning",
@@ -93,6 +96,12 @@ const themeColors = {
 };
 
 const LifeJourney = () => {
+  const { sectionsData } = useTemplate();
+
+  // Get TIMELINE/BIOGRAPHY section data with fallbacks
+  const timelineData = (sectionsData?.TIMELINE as any) || {};
+  const events = timelineData.events || defaultEvents;
+
   return (
     <section id="journey" className="relative py-20 px-4 md:px-8">
       <div className="absolute inset-0">
@@ -135,13 +144,13 @@ const LifeJourney = () => {
 
           {/* Events Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {events.map((event, index) => {
-              const IconComponent = iconMap[event.icon];
+            {events.map((event: any, index: number) => {
+              const IconComponent = iconMap[event.icon as keyof typeof iconMap] || Heart; // Fallback to Heart if icon not found
               return (
                 <div key={index} className="group relative">
                   {/* Card */}
                   <div
-                    className={`relative h-full border-2 ${themeColors[event.theme]} rounded-2xl p-6 transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl backdrop-blur-sm`}
+                    className={`relative h-full border-2 ${themeColors[event.theme as keyof typeof themeColors]} rounded-2xl p-6 transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl backdrop-blur-sm`}
                   >
                     {/* Icon with decorative background */}
                     <div className="relative mb-4">

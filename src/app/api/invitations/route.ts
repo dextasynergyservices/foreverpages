@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { PrismaClient } from "@/generated/prisma";
 import { sendEmail } from "@/lib/email";
 import {
@@ -430,8 +430,12 @@ export async function POST(request: NextRequest) {
         message: message || null,
         invitationCard: invitationCard || null,
         customSubject: customSubject || null,
-        memorialId,
-        invitedById: session.user.id,
+        memorial: {
+          connect: { id: memorialId },
+        },
+        invitedBy: {
+          connect: { id: session.user.id },
+        },
         expiresAt,
         sentViaEmail,
         sentViaWhatsApp,

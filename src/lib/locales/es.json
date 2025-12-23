@@ -314,13 +314,89 @@
     },
     "copyright": "ForeverPages. Creado con amor para honrar cada vida."
   },
+  "memorial": {
+    "status": {
+      "active": "Activo",
+      "expired": "Expirado",
+      "gracePeriod": "Período de Gracia",
+      "lifetime": "Acceso de por Vida",
+      "ownerPreview": "Vista Previa del Propietario",
+      "unknown": "Estado Desconocido"
+    },
+    "expiry": {
+      "owner": {
+        "expired": {
+          "title": "Suscripción Expirada",
+          "description": "Este memorial no está disponible actualmente para el público. Renueva tu suscripción para restaurar el acceso."
+        }
+      },
+      "public": {
+        "expired": {
+          "title": "Memorial Temporalmente No Disponible",
+          "description": "La suscripción para {{name}} ha expirado. Por favor contacta al propietario de la página para restaurar el acceso."
+        }
+      },
+      "gracePeriod": {
+        "title": "Suscripción en Período de Gracia",
+        "description": "Este memorial dejará de estar disponible en {{days}} día(s). Renueva tu suscripción para mantener el acceso."
+      },
+      "ownerPreview": {
+        "title": "Modo Vista Previa - Suscripción Expirada",
+        "description": "Solo tú puedes ver este memorial. Renueva tu suscripción para hacerlo accesible públicamente de nuevo."
+      },
+      "renewButton": "Renovar Suscripción"
+    },
+    "expired": {
+      "title": "Memorial Temporalmente No Disponible",
+      "message": "La página memorial de {{name}} no está disponible actualmente porque la suscripción ha expirado.",
+      "info": "Este es un estado temporal. Una vez que el propietario de la página renueve su suscripción, este memorial será accesible de nuevo.",
+      "contactTitle": "Contactar al Propietario de la Página",
+      "contactMessage": "Si necesitas acceder a este memorial con urgencia, por favor contacta al propietario de la página para solicitar la renovación.",
+      "contactOwner": "Contactar Propietario",
+      "createOwn": "¿Quieres crear un memorial para tu ser querido?",
+      "viewPackages": "Ver Nuestros Paquetes"
+    }
+  },
   "common": {
     "loading": "Cargando...",
     "error": "Ocurrió un error",
     "retry": "Reintentar",
     "close": "Cerrar",
     "save": "Guardar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "delete": "Eliminar"
+  },
+
+  "errors": {
+    "boundary": {
+      "title": "Algo Salió Mal",
+      "description": "Ocurrió un error inesperado",
+      "retry": "Intentar Nuevamente"
+    },
+    "generic": {
+      "title": "Error",
+      "message": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo."
+    },
+    "warning": {
+      "title": "Advertencia"
+    },
+    "network": {
+      "title": "Error de Conexión",
+      "message": "No se puede conectar. Por favor, verifica tu conexión a internet e inténtalo de nuevo."
+    },
+    "actions": {
+      "retry": "Reintentar",
+      "dismiss": "Descartar"
+    }
+  },
+
+  "tutorial": {
+    "step": "Paso {{current}} de {{total}}",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "finish": "Finalizar",
+    "skip": "Saltar Tutorial"
   },
   "faq": {
     "title": "Preguntas Frecuentes",
@@ -383,6 +459,7 @@
         "builder": "Constructor de Memoriales",
         "invitations": "Invitaciones",
         "tributes": "Tributos",
+        "support": "Apoyo",
         "templates": "Plantillas",
         "settings": "Configuración"
       }
@@ -1042,8 +1119,12 @@
       },
       "steps": {
         "chooseTemplate": {
-          "title": "Elegir Plantilla",
-          "description": "Selecciona un diseño que honre a tu ser querido"
+          "title": "Seleccionar Plantilla",
+          "description": "Elige un diseño de plantilla que se ajuste a tu visión"
+        },
+        "editTemplate": {
+          "title": "Editar Plantilla",
+          "description": "Personaliza colores, contenido y secciones"
         },
         "basicInfo": {
           "title": "Información Básica",
@@ -1058,8 +1139,8 @@
           "description": "Agrega fotos y recuerdos"
         },
         "review": {
-          "title": "Revisar",
-          "description": "Revisa y crea tu memorial"
+          "title": "Revisar y Publicar",
+          "description": "Revisa y publica tu página memorial"
         }
       },
       "buttons": {
@@ -1067,6 +1148,47 @@
         "next": "Siguiente",
         "create": "Crear Memorial",
         "creating": "Creando..."
+      },
+      "saveIndicator": {
+        "saving": "Guardando...",
+        "saved": "Guardado",
+        "error": "Error al guardar"
+      },
+      "editView": {
+        "title": "Editar Plantilla",
+        "editor": "Editor",
+        "preview": "Vista Previa",
+        "designTokens": "Diseño y Colores",
+        "sections": "Secciones de Contenido",
+        "previewMode": "Modo de Vista Previa",
+        "desktop": "Escritorio",
+        "tablet": "Tableta",
+        "mobile": "Móvil"
+      },
+      "mediaPicker": {
+        "title": "Seleccionar Medios de la Galería",
+        "searchPlaceholder": "Buscar por título o descripción...",
+        "all": "Todos",
+        "images": "Imágenes",
+        "videos": "Videos",
+        "imagesUsed": "Imágenes:",
+        "videosUsed": "Videos:",
+        "error": "Error al cargar medios",
+        "noMedia": "No se encontraron medios",
+        "uploadFirst": "Primero sube algunos medios a tu galería",
+        "selected": "seleccionado",
+        "addSelected": "Agregar Seleccionados"
+      },
+      "gallery": {
+        "title": "Galería de Fotos y Videos",
+        "description": "Agrega fotos y videos que celebren su vida",
+        "layout": "Diseño de Galería",
+        "addMedia": "Agregar Fotos/Videos desde Galería",
+        "noMedia": "Aún no se han agregado medios",
+        "clickToAdd": "Haz clic en el botón de arriba para agregar fotos y videos",
+        "caption": "Leyenda (Opcional)",
+        "captionPlaceholder": "Agregar una leyenda...",
+        "remove": "Eliminar medio"
       },
       "sidebar": {
         "title": "Pasos de construcción",
@@ -1179,7 +1301,22 @@
             "Recuerdos felices",
             "Tono estimulante"
           ]
-        }
+        },
+        "status": {
+          "live": "En Vivo",
+          "draft": "Borrador",
+          "expired": "Expirado"
+        },
+        "actions": {
+          "viewLive": "Ver en Vivo",
+          "edit": "Editar",
+          "delete": "Eliminar",
+          "continue": "Continuar",
+          "deleteDraft": "Eliminar Borrador"
+        },
+        "views": "vistas",
+        "created": "Creado",
+        "updated": "Actualizado"
       },
       "loadingTemplates": "Cargando plantillas...",
       "mustSignInTitle": "Por favor inicia sesión",
@@ -1189,11 +1326,39 @@
         "signinNeeded": "Inicia sesión para acceder a plantillas adicionales"
       },
       "review": {
+        "title": "Listo para Crear Memorial",
+        "description": "Tu hermosa página de memorial está lista para ser creada. Siempre puedes editar y agregar más contenido después.",
         "templateLabel": "Plantilla:",
         "privacyLabel": "Privacidad:",
         "privacyValue": "Público",
         "featuresLabel": "Características:",
-        "featuresValue": "Acceso Completo"
+        "featuresValue": "Acceso Completo",
+        "publishButton": "Publicar Memorial",
+        "updateButton": "Actualizar Memorial",
+        "deleteMemorial": "Eliminar Memorial",
+        "validationRequired": "Por favor completa lo siguiente antes de publicar:",
+        "missingFirstName": "Agregar nombre del difunto",
+        "missingLastName": "Agregar apellido del difunto",
+        "missingSections": "Agregar al menos una sección de contenido",
+        "sectionsConfigured": "Secciones Configuradas:",
+        "memorialFor": "Memorial Para:",
+        "memorialPublished": "El Memorial Está En Vivo",
+        "memorialUrl": "URL del Memorial:",
+        "autoSaveNote": "Los cambios se guardan automáticamente y se reflejarán inmediatamente en tu memorial en vivo.",
+        "editModeHelpText": "Tu memorial está en vivo. Cualquier actualización se reflejará inmediatamente.",
+        "helpText": "Una vez publicado, tu memorial estará en vivo y accesible para cualquier persona con el enlace.",
+        "urlCopied": "URL del memorial copiada al portapapeles!",
+        "copyFailed": "Error al copiar la URL",
+        "unpublishButton": "Despublicar Memorial",
+        "unpublishSuccess": "Memorial despublicado exitosamente",
+        "unpublishError": "Error al despublicar el memorial",
+        "slugUpdateSuccess": "URL del memorial actualizada exitosamente",
+        "slugUpdateError": "Error al actualizar la URL del memorial",
+        "slugTaken": "Esta URL ya está en uso",
+        "editSlugHint": "Esto cambiará la dirección web de tu memorial. Asegúrate de actualizar cualquier enlace compartido.",
+        "unpublishConfirmTitle": "¿Despublicar Memorial?",
+        "unpublishConfirmMessage": "¿Estás seguro de que quieres despublicar este memorial? La página del memorial ya no será accesible a los visitantes hasta que la publiques nuevamente.",
+        "confirmUnpublish": "Despublicar Memorial"
       },
       "customizer": {
         "title": "Personalizar Diseño",
@@ -1251,13 +1416,39 @@
           "slugTooLong": "La URL no puede exceder 50 caracteres",
           "slugInvalid": "La URL solo puede contener letras, números, guiones e guiones bajos",
           "slugTaken": "Esta URL ya está en uso. Por favor intenta otra."
-        }
+        },
+        "suggestions": "URLs Sugeridas:",
+        "previewUrl": "Vista Previa:"
+      },
+      "deleteMemorial": {
+        "title": "Eliminar Memorial",
+        "description": "Esta acción no se puede deshacer. Eliminar este memorial:",
+        "warning": "¿Estás absolutamente seguro?",
+        "consequence1": "Eliminará permanentemente la página de memorial y todo su contenido",
+        "consequence2": "Eliminará todas las invitaciones y acceso de colaboradores",
+        "consequence3": "Eliminará todos los tributos y condolencias",
+        "consequence4": "Eliminará el memorial de los motores de búsqueda",
+        "memorialName": "Memorial:",
+        "memorialUrl": "URL:",
+        "confirmationLabel": "Escribe el slug del memorial para confirmar la eliminación",
+        "confirmationHint": "Escribe exactamente:",
+        "deleteButton": "Eliminar Memorial",
+        "deleting": "Eliminando...",
+        "cancel": "Cancelar",
+        "successTitle": "Memorial Eliminado",
+        "successMessage": "El memorial ha sido eliminado permanentemente"
       },
       "autoSave": {
         "saving": "Guardando...",
         "saved": "Guardado",
         "error": "Error al guardar",
         "lastSaved": "Última vez guardado {{time}}"
+      },
+      "unsavedChanges": {
+        "title": "Cambios Sin Guardar",
+        "message": "Tienes cambios sin guardar. ¿Estás seguro de que quieres salir?",
+        "leave": "Salir",
+        "stay": "Quedarse"
       },
       "subscription": {
         "banner": {
@@ -1310,6 +1501,40 @@
         },
         "support": {
           "title": "Apoyo y Donaciones"
+        }
+      },
+      "support": {
+        "messaging": {
+          "title": "Enviar Mensajes de Agradecimiento",
+          "description": "Envía mensajes de agradecimiento personalizados a tus seguidores por correo electrónico o WhatsApp.",
+          "subject": "Asunto (Opcional)",
+          "subjectPlaceholder": "Gracias por tu apoyo...",
+          "message": "Mensaje",
+          "messagePlaceholder": "Muchas gracias por tu generoso apoyo. Tu amabilidad significa mucho para nosotros en este momento difícil...",
+          "deliveryMethod": "Método de Entrega",
+          "sendViaEmail": "Enviar por Correo Electrónico",
+          "sendViaWhatsApp": "Enviar por WhatsApp",
+          "selectSupporters": "Seleccionar Seguidores",
+          "deselectAll": "Deseleccionar Todo",
+          "selectAll": "Seleccionar Todo",
+          "selectPage": "Seleccionar Página",
+          "deselectPage": "Deseleccionar Página",
+          "selectAllSupporters": "Seleccionar Todos los Seguidores",
+          "selectAllConfirmTitle": "¿Seleccionar a todos los seguidores?",
+          "selectAllConfirmDescription": "Esto seleccionará a todos los seguidores en todas las páginas. Esta acción puede tardar si hay muchos. ¿Deseas continuar?",
+          "selectAllConfirm": "Seleccionar Todo",
+          "selectAllTooMany": "Demasiados seguidores para seleccionar a la vez",
+          "selectAllSuccess": "Seleccionados todos los seguidores",
+          "clearSelection": "Borrar selección",
+          "selectedCount": "Seleccionados",
+          "selectDescription": "Elige a qué seguidores enviar el mensaje.",
+          "sending": "Enviando...",
+          "sendMessage": "Enviar Mensajes",
+          "noSupporters": {
+            "title": "Aún no hay seguidores para enviar mensajes",
+            "description": "Cuando recibas apoyo, podrás enviar mensajes de agradecimiento a tus seguidores aquí."
+          },
+          "viewSupport": "Ver Apoyo"
         }
       }
     },
@@ -1426,6 +1651,7 @@
         "memorial": "Memorial",
         "privacy": "Privacidad",
         "notifications": "Notificaciones",
+        "account": "Cuenta",
         "advanced": "Avanzado"
       },
       "profile": {
@@ -1508,6 +1734,36 @@
         "account": {
           "title": "Acciones de Cuenta",
           "signOut": "Cerrar Sesión"
+        },
+        "accountDetails": {
+          "title": "Detalles de Cuenta",
+          "description": "Gestiona los detalles de tu cuenta para recibir donaciones y apoyo a través de tus páginas de memorial.",
+          "noAccountsTitle": "No Hay Cuentas Añadidas",
+          "noAccounts": "Añade los detalles de tu cuenta para recibir donaciones y apoyo a través de tus páginas de memorial.",
+          "addFirstAccount": "Añadir Tu Primera Cuenta",
+          "addAccount": "Añadir Nueva Cuenta",
+          "account": "Cuenta",
+          "default": "Principal",
+          "setPrimary": "Establecer como Principal",
+          "setDefault": "Establecer como Predeterminada",
+          "type": "Tipo de Cuenta",
+          "accountName": "Nombre del Titular de la Cuenta",
+          "accountNumber": "Número de Cuenta",
+          "bankName": "Nombre del Banco",
+          "routingNumber": "Número de Ruta",
+          "description": "Descripción (Opcional)",
+          "types": {
+            "bank": "Cuenta Bancaria",
+            "bankDesc": "Cuenta bancaria tradicional",
+            "mobileMoney": "Dinero Móvil",
+            "mobileMoneyDesc": "Servicio de pago móvil",
+            "paypal": "PayPal",
+            "paypalDesc": "Cartera digital PayPal",
+            "stripe": "Stripe",
+            "stripeDesc": "Plataforma de pagos Stripe",
+            "other": "Otro",
+            "otherDesc": "Otro método de pago"
+          }
         }
       }
     },
@@ -1578,6 +1834,11 @@
         "description": "¿Estás seguro de que quieres eliminar \"{{name}}\"? Esta acción no se puede deshacer.",
         "deleting": "Eliminando...",
         "confirm": "Eliminar Plantilla"
+      },
+      "delete": {
+        "confirmTitle": "¿Eliminar Plantilla?",
+        "confirmDescription": "¿Estás seguro de que quieres eliminar \"{{name}}\"? Esta acción no se puede deshacer.",
+        "confirm": "Eliminar"
       },
       "createSuccess": "Plantilla creada exitosamente",
       "createError": "Error al crear plantilla",
@@ -2230,6 +2491,23 @@
       "sending": "Enviando..."
     },
     "roles": {
+      "OWNER": {
+        "name": "Propietario",
+        "short": "Propietario",
+        "description": "Control total - propietario del memorial y gestiona todas las configuraciones",
+        "longDescription": "Propiedad y control completo del memorial",
+        "permissions": {
+          "title": "Lo que puede hacer:",
+          "list": [
+            "Control completo sobre todo el contenido del memorial",
+            "Gestionar configuraciones de facturación y suscripción",
+            "Invitar y eliminar todos los colaboradores",
+            "Editar todas las configuraciones e información del memorial",
+            "Acceder a todas las analíticas y estadísticas",
+            "Eliminar o archivar el memorial"
+          ]
+        }
+      },
       "ADMIN": {
         "name": "Administrador",
         "short": "Administrador",
@@ -2273,9 +2551,25 @@
             "Comentar en publicaciones"
           ]
         }
+      },
+      "VIEWER": {
+        "name": "Observador",
+        "short": "Observador",
+        "description": "Acceso de solo lectura - ver únicamente el contenido del memorial",
+        "longDescription": "Acceso solo para ver el contenido del memorial",
+        "permissions": {
+          "title": "Lo que puede hacer:",
+          "list": [
+            "Ver contenido del memorial e historias",
+            "Navegar fotos y videos",
+            "Leer homenajes y comentarios",
+            "Acceder a información básica del memorial"
+          ]
+        }
       }
     },
     "roleRestrictions": {
+      "OWNER": "Propietario del memorial con control completo sobre todas las funciones.",
       "ADMIN": "Tiene acceso completo de administración excepto configuración de facturación.",
       "EDITOR": "Puede editar contenido y administrar medios.",
       "CONTRIBUTOR": "Puede agregar historias, fotos y homenajes.",
@@ -2678,6 +2972,63 @@
       "footer": {
         "youreReceiving": "Estás recibiendo esto porque estás conectado con la página del memorial de {{memorial}}.",
         "copyright": "© {{year}} ForeverPages. Todos los derechos reservados."
+      }
+    },
+    "support": {
+      "title": "Historial de Apoyo",
+      "subtitle": "Rastrea apoyos enviados y recibidos para memoriales",
+      "displayCurrency": "Moneda de Visualización:",
+      "ratesUpdated": "Tasas actualizadas",
+      "refreshData": "Actualizar Datos",
+      "stats": {
+        "totalReceived": "Total Recibido",
+        "totalSent": "Total Enviado",
+        "supportsReceived": "Apoyos Recibidos",
+        "supportsSent": "Apoyos Enviados",
+        "averageSupport": "Apoyo Promedio",
+        "recentActivity": "Actividad Reciente",
+        "noActivity": "Sin actividad",
+        "supporters": "seguidores",
+        "memorials": "memoriales",
+        "activeSupporters": "Seguidores Activos",
+        "totalTransactions": "Transacciones Totales"
+      },
+      "tabs": {
+        "received": "Recibido",
+        "sent": "Enviado",
+        "message": "Enviar Mensajes"
+      },
+      "empty": {
+        "received": {
+          "title": "No se han recibido apoyos aún",
+          "description": "Cuando las personas apoyen tus memoriales, aparecerán aquí."
+        },
+        "sent": {
+          "title": "No se han enviado apoyos aún",
+          "description": "Cuando apoyes otros memoriales, aparecerán aquí."
+        }
+      },
+      "messaging": {
+        "title": "Enviar Mensajes de Agradecimiento",
+        "description": "Envía mensajes de agradecimiento personalizados a tus seguidores por correo electrónico o WhatsApp.",
+        "subject": "Asunto (Opcional)",
+        "subjectPlaceholder": "Gracias por tu apoyo...",
+        "message": "Mensaje",
+        "messagePlaceholder": "Muchas gracias por tu generoso apoyo. Tu bondad significa mucho para nosotros durante este momento difícil...",
+        "deliveryMethod": "Método de Entrega",
+        "sendViaEmail": "Enviar por Correo Electrónico",
+        "sendViaWhatsApp": "Enviar por WhatsApp",
+        "selectSupporters": "Seleccionar Seguidores",
+        "deselectAll": "Deseleccionar Todo",
+        "selectAll": "Seleccionar Todo",
+        "selectDescription": "Elige a qué seguidores enviar el mensaje.",
+        "sending": "Enviando...",
+        "sendMessage": "Enviar Mensajes",
+        "noSupporters": {
+          "title": "Aún no hay seguidores para enviar mensajes",
+          "description": "Cuando recibas apoyo, podrás enviar mensajes de agradecimiento a tus seguidores aquí."
+        },
+        "viewSupport": "Ver Apoyo"
       }
     }
   }

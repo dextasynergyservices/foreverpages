@@ -216,7 +216,6 @@ export function generateCloudinarySignedUrl(
   resourceType: "image" | "video" | "raw" = "raw"
 ): string {
   const timestamp = Math.round(Date.now() / 1000) + 3600; // Valid for 1 hour
-  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 
   return cloudinary.utils.private_download_url(publicId, resourceType, {
     resource_type: resourceType,

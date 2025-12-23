@@ -1,45 +1,52 @@
 "use client";
 
-import { useState } from 'react'
-import { Card, CardContent } from './card'
-import { Button } from './button'
-import { Textarea } from './textarea'
-import { Input } from './input'
-import { Flame, Share2, Facebook, Twitter, Mail } from 'lucide-react'
-
-const sampleTributes = [
-  {
-    id: 1,
-    name: 'Sarah Mitchell',
-    relation: 'Former Student',
-    message:
-      'Mrs. Thompson changed my life. She believed in me when no one else did. Her kindness and dedication will never be forgotten.',
-    candle: true,
-  },
-  {
-    id: 2,
-    name: 'Robert Thompson Jr.',
-    relation: 'Son',
-    message:
-      'Mom was the heart of our family. Her love, wisdom, and laughter filled our home with joy every single day.',
-    candle: true,
-  },
-  {
-    id: 3,
-    name: 'Linda Parker',
-    relation: 'Colleague',
-    message:
-      '35 years of teaching together, and Eleanor inspired me every single day. A true educator and friend.',
-    candle: true,
-  },
-]
+import { useState } from "react";
+import { Card, CardContent } from "./card";
+import { Button } from "./button";
+import { Textarea } from "./textarea";
+import { Input } from "./input";
+import { Flame, Share2, Facebook, Twitter, Mail } from "lucide-react";
+import { useTemplate } from "../TemplateProvider";
 
 export const TributesModern = () => {
-  const [candleCount, setCandleCount] = useState(147)
+  const { sectionsData } = useTemplate();
+
+  // Get TRIBUTES section data with fallbacks
+  const tributesData = (sectionsData?.TRIBUTES as any) || {};
+
+  const defaultTributes = [
+    {
+      id: 1,
+      name: "Sarah Mitchell",
+      relation: "Former Student",
+      message:
+        "Mrs. Thompson changed my life. She believed in me when no one else did. Her kindness and dedication will never be forgotten.",
+      candle: true,
+    },
+    {
+      id: 2,
+      name: "Robert Thompson Jr.",
+      relation: "Son",
+      message:
+        "Mom was the heart of our family. Her love, wisdom, and laughter filled our home with joy every single day.",
+      candle: true,
+    },
+    {
+      id: 3,
+      name: "Linda Parker",
+      relation: "Colleague",
+      message:
+        "35 years of teaching together, and Eleanor inspired me every single day. A true educator and friend.",
+      candle: true,
+    },
+  ];
+
+  const tributes = tributesData.tributes || defaultTributes;
+  const [candleCount, setCandleCount] = useState(tributesData.candleCount || 147);
 
   const lightCandle = () => {
-    setCandleCount((prev) => prev + 1)
-  }
+    setCandleCount((prev: number) => prev + 1);
+  };
 
   return (
     <section id="legacy" className="relative overflow-hidden px-4 py-20">
@@ -63,7 +70,7 @@ export const TributesModern = () => {
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Left: Tributes */}
           <div className="space-y-6 lg:col-span-2">
-            {sampleTributes.map((tribute, index) => (
+            {tributes.map((tribute: any, index: number) => (
               <div
                 key={tribute.id}
                 className="animate-fade-in-up rounded-2xl border border-cream/20 bg-cream/10 p-6 shadow-elegant backdrop-blur-lg transition-smooth hover:border-soft-gold/30"
@@ -76,20 +83,14 @@ export const TributesModern = () => {
                   <div className="flex-1">
                     <div className="mb-2 flex items-center justify-between">
                       <div>
-                        <h3 className="font-semibold text-cream">
-                          {tribute.name}
-                        </h3>
-                        <p className="text-sm text-cream/80">
-                          {tribute.relation}
-                        </p>
+                        <h3 className="font-semibold text-cream">{tribute.name}</h3>
+                        <p className="text-sm text-cream/80">{tribute.relation}</p>
                       </div>
                       {tribute.candle && (
                         <Flame className="h-5 w-5 animate-flicker text-soft-gold" />
                       )}
                     </div>
-                    <p className="leading-relaxed text-cream/90">
-                      {tribute.message}
-                    </p>
+                    <p className="leading-relaxed text-cream/90">{tribute.message}</p>
                   </div>
                 </div>
               </div>
@@ -102,14 +103,11 @@ export const TributesModern = () => {
             <div className="rounded-2xl border border-cream/20 bg-cream/10 p-6 text-center shadow-elegant backdrop-blur-lg">
               {/* Flame Video with Overlay */}
               <div className="relative mx-auto mb-4 h-32 w-32 overflow-hidden rounded-full">
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="h-full w-full object-cover"
-                >
-                  <source src='https://res.cloudinary.com/dxoorukfj/video/upload/v1764690139/candle1_cjbd2x.mp4' type="video/mp4" />
+                <video autoPlay muted loop playsInline className="h-full w-full object-cover">
+                  <source
+                    src="https://res.cloudinary.com/dxoorukfj/video/upload/v1764690139/candle1_cjbd2x.mp4"
+                    type="video/mp4"
+                  />
                   <div className="h-full w-full bg-gradient-to-br from-orange-900 via-orange-800 to-yellow-900" />
                 </video>
                 {/* Gold overlay for the flame video */}
@@ -118,9 +116,7 @@ export const TributesModern = () => {
                 <div className="absolute inset-0 rounded-full border-4 border-soft-gold/50" />
               </div>
 
-              <p className="mb-2 text-4xl font-bold text-soft-gold">
-                {candleCount}
-              </p>
+              <p className="mb-2 text-4xl font-bold text-soft-gold">{candleCount}</p>
               <p className="mb-4 text-cream/80">Candles Lit</p>
               <Button
                 onClick={lightCandle}
@@ -132,9 +128,7 @@ export const TributesModern = () => {
 
             {/* Social Sharing */}
             <div className="rounded-2xl border border-cream/20 bg-cream/10 p-6 shadow-elegant backdrop-blur-lg">
-              <h3 className="mb-4 text-center font-semibold text-cream">
-                Share This Memorial
-              </h3>
+              <h3 className="mb-4 text-center font-semibold text-cream">Share This Memorial</h3>
               <div className="space-y-2">
                 <Button className="w-full justify-start gap-3 border-2 border-soft-gold bg-transparent font-semibold text-soft-gold transition-all duration-300 hover:bg-soft-gold hover:text-burgundy">
                   <Facebook className="h-5 w-5" />
@@ -157,9 +151,7 @@ export const TributesModern = () => {
 
             {/* Add Tribute Form */}
             <div className="rounded-2xl border border-cream/20 bg-cream/10 p-6 shadow-elegant backdrop-blur-lg">
-              <h3 className="mb-4 text-center font-semibold text-cream">
-                Leave a Tribute
-              </h3>
+              <h3 className="mb-4 text-center font-semibold text-cream">Leave a Tribute</h3>
               <div className="space-y-4">
                 <Input
                   placeholder="Your Name"
@@ -182,5 +174,5 @@ export const TributesModern = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};

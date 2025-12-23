@@ -8,6 +8,8 @@ import { useTheme } from "@/hooks/useTheme";
 import Image from "next/image";
 
 export interface HeroData {
+  firstName?: string;
+  lastName?: string;
   mainImage?: string;
   title?: string;
   subtitle?: string;
@@ -20,14 +22,33 @@ interface HeroEditorProps {
   data: HeroData;
   onChange: (data: HeroData) => void;
   onOpenMediaPicker?: () => void;
+  memorialData?: {
+    firstName?: string;
+    lastName?: string;
+  };
+  onMemorialDataChange?: (data: { firstName?: string; lastName?: string }) => void;
 }
 
-export const HeroEditor: React.FC<HeroEditorProps> = ({ data, onChange, onOpenMediaPicker }) => {
+export const HeroEditor: React.FC<HeroEditorProps> = ({
+  data,
+  onChange,
+  onOpenMediaPicker,
+  memorialData,
+  onMemorialDataChange,
+}) => {
   const { theme } = useTheme();
   const textMuted = theme === "dark" ? "text-white/70" : "text-gray-600";
 
   const handleChange = (field: keyof HeroData, value: string) => {
     onChange({ ...data, [field]: value });
+  };
+
+  const handleNameChange = (field: "firstName" | "lastName", value: string) => {
+    // Update both hero data and memorial data
+    onChange({ ...data, [field]: value });
+    if (onMemorialDataChange) {
+      onMemorialDataChange({ ...memorialData, [field]: value });
+    }
   };
 
   return (
@@ -37,6 +58,36 @@ export const HeroEditor: React.FC<HeroEditorProps> = ({ data, onChange, onOpenMe
         <p className={`text-sm mb-4 ${textMuted}`}>
           The main header section that visitors see first
         </p>
+      </div>
+
+      {/* First Name & Last Name */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border rounded-lg">
+        <div>
+          <Label htmlFor="hero-firstName" className="flex items-center gap-1">
+            First Name <span className="text-red-500">*</span>
+          </Label>
+          <Input
+            id="hero-firstName"
+            placeholder="John"
+            value={data.firstName || memorialData?.firstName || ""}
+            onChange={(e) => handleNameChange("firstName", e.target.value)}
+            required
+          />
+          <p className={`text-xs mt-1 ${textMuted}`}>The deceased person&apos;s first name</p>
+        </div>
+        <div>
+          <Label htmlFor="hero-lastName" className="flex items-center gap-1">
+            Last Name <span className="text-red-500">*</span>
+          </Label>
+          <Input
+            id="hero-lastName"
+            placeholder="Doe"
+            value={data.lastName || memorialData?.lastName || ""}
+            onChange={(e) => handleNameChange("lastName", e.target.value)}
+            required
+          />
+          <p className={`text-xs mt-1 ${textMuted}`}>The deceased person&apos;s last name</p>
+        </div>
       </div>
 
       {/* Main Image */}

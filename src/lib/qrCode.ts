@@ -105,6 +105,6 @@ export async function generateMemorialPageQRCode(
   baseUrl: string,
   options?: QRCodeOptions
 ): Promise<string> {
-  const memorialUrl = `${baseUrl}/memorial/${memorialSlug}`;
+  const memorialUrl = `${baseUrl}/${memorialSlug}`;
   return generateQRCodeDataURL(memorialUrl, options);
 }

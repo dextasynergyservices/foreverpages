@@ -17,23 +17,12 @@ interface ProgressStepsProps {
 export const ProgressSteps: React.FC<ProgressStepsProps> = ({
   steps,
   currentStep,
-  t,
+  t: _t, // Keep for backward compatibility but not used since steps now contain translated titles
   vertical = false,
 }) => {
   const { theme } = useTheme();
-  const stepTitles = [
-    t("dashboard.pageBuilder.steps.chooseTemplate.title"),
-    t("dashboard.pageBuilder.steps.basicInfo.title"),
-    t("dashboard.pageBuilder.steps.details.title"),
-    t("dashboard.pageBuilder.steps.review.title"),
-  ];
-
-  const stepDescriptions = [
-    t("dashboard.pageBuilder.steps.chooseTemplate.description"),
-    t("dashboard.pageBuilder.steps.basicInfo.description"),
-    t("dashboard.pageBuilder.steps.details.description"),
-    t("dashboard.pageBuilder.steps.review.description"),
-  ];
+  // Note: stepTitles and stepDescriptions are now provided via steps prop
+  // This maintains backward compatibility while supporting dynamic step configuration
 
   const textMuted = theme === "dark" ? "text-white/70" : "text-gray-600";
 
@@ -58,8 +47,8 @@ export const ProgressSteps: React.FC<ProgressStepsProps> = ({
               </div>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-1">{stepTitles[index]}</h4>
-              <p className={`text-xs ${textMuted}`}>{stepDescriptions[index]}</p>
+              <h4 className="text-sm font-semibold mb-1">{step.title}</h4>
+              <p className={`text-xs ${textMuted}`}>{step.description}</p>
             </div>
           </div>
         ))}
@@ -87,7 +76,7 @@ export const ProgressSteps: React.FC<ProgressStepsProps> = ({
             </div>
             {index < steps.length - 1 && (
               <div
-                className={`w-5 md:w-10 md:w-16 h-0.5 mx-2 md:mx-4 ${
+                className={`w-5 md:w-10 h-0.5 mx-2 md:mx-4 ${
                   index < currentStep
                     ? theme === "dark"
                       ? "bg-white"
@@ -103,8 +92,10 @@ export const ProgressSteps: React.FC<ProgressStepsProps> = ({
       </div>
 
       <div className="text-center mb-8">
-        <h2 className="text-xl md:text-2xl font-serif font-bold mb-2">{stepTitles[currentStep]}</h2>
-        <p className={textMuted}>{stepDescriptions[currentStep]}</p>
+        <h2 className="text-xl md:text-2xl font-serif font-bold mb-2">
+          {steps[currentStep]?.title}
+        </h2>
+        <p className={textMuted}>{steps[currentStep]?.description}</p>
       </div>
     </>
   );

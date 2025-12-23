@@ -15,9 +15,28 @@ import { DonationsEditor, DonationsData } from "./sectionEditors/DonationsEditor
 import { GuestbookEditor, GuestbookData } from "./sectionEditors/GuestbookEditor";
 import { PhotoAlbumEditor, PhotoAlbumData } from "./sectionEditors/PhotoAlbumEditor";
 import { CustomSectionEditor, CustomSectionData } from "./sectionEditors/CustomSectionEditor";
+import { FamilyTreeEditor, FamilyTreeData } from "./sectionEditors/FamilyTreeEditor";
+import { MemoriesEditor, MemoriesData } from "./sectionEditors/MemoriesEditor";
+import { StoriesEditor, StoriesData } from "./sectionEditors/StoriesEditor";
+import { MilitaryServiceEditor, MilitaryServiceData } from "./sectionEditors/MilitaryServiceEditor";
+import { EducationCareerEditor, EducationCareerData } from "./sectionEditors/EducationCareerEditor";
+import { MapLocationsEditor, MapLocationsData } from "./sectionEditors/MapLocationsEditor";
+import { DocumentsEditor, DocumentsData } from "./sectionEditors/DocumentsEditor";
+import { AudioMemoriesEditor, AudioMemoriesData } from "./sectionEditors/AudioMemoriesEditor";
 import { useTheme } from "@/hooks/useTheme";
 
-type SectionType =
+// Define VirtualCandlesData type
+export interface VirtualCandlesData {
+  candles: Array<{
+    id: string;
+    lightedBy: string;
+    createdAt: string;
+    message?: string;
+  }>;
+  allowPublic: boolean;
+}
+
+export type SectionType =
   | "HERO"
   | "BIOGRAPHY"
   | "GALLERY"
@@ -59,6 +78,15 @@ export type SectionData = {
   GUESTBOOK?: GuestbookData;
   PHOTO_ALBUM?: PhotoAlbumData;
   CUSTOM?: CustomSectionData;
+  FAMILY_TREE?: FamilyTreeData;
+  MEMORIES?: MemoriesData;
+  STORIES?: StoriesData;
+  MILITARY_SERVICE?: MilitaryServiceData;
+  EDUCATION_CAREER?: EducationCareerData;
+  MAP_LOCATIONS?: MapLocationsData;
+  DOCUMENTS?: DocumentsData;
+  AUDIO_MEMORIES?: AudioMemoriesData;
+  VIRTUAL_CANDLES?: VirtualCandlesData;
   [key: string]: unknown;
 };
 
@@ -67,6 +95,17 @@ interface DynamicSectionRendererProps {
   sectionData: SectionData;
   onSectionDataChange: (section: SectionType, data: unknown) => void;
   onOpenMediaPicker?: () => void;
+  memorialData?: {
+    firstName?: string;
+    lastName?: string;
+    birthDate?: string;
+    deathDate?: string;
+    birthYear?: number;
+    deathYear?: number;
+    biography?: string;
+    profilePhoto?: string;
+  };
+  onMemorialDataChange?: (data: Partial<DynamicSectionRendererProps["memorialData"]>) => void;
 }
 
 export const DynamicSectionRenderer: React.FC<DynamicSectionRendererProps> = ({
@@ -74,6 +113,8 @@ export const DynamicSectionRenderer: React.FC<DynamicSectionRendererProps> = ({
   sectionData,
   onSectionDataChange,
   onOpenMediaPicker,
+  memorialData,
+  onMemorialDataChange,
 }) => {
   const { theme } = useTheme();
 
@@ -85,6 +126,8 @@ export const DynamicSectionRenderer: React.FC<DynamicSectionRendererProps> = ({
             data={sectionData.HERO || {}}
             onChange={(data) => onSectionDataChange("HERO", data)}
             onOpenMediaPicker={onOpenMediaPicker}
+            memorialData={memorialData}
+            onMemorialDataChange={onMemorialDataChange}
           />
         );
 
@@ -107,8 +150,10 @@ export const DynamicSectionRenderer: React.FC<DynamicSectionRendererProps> = ({
         return (
           <GalleryEditor
             data={sectionData.GALLERY || { items: [], layout: "grid" }}
-            onChange={(data) => onSectionDataChange("GALLERY", data)}
-            onOpenMediaPicker={onOpenMediaPicker}
+            onChange={(data) => {
+              console.log("DynamicSectionRenderer: Gallery onChange called with:", data);
+              onSectionDataChange("GALLERY", data);
+            }}
           />
         );
 
@@ -215,17 +260,167 @@ export const DynamicSectionRenderer: React.FC<DynamicSectionRendererProps> = ({
           />
         );
 
+      case "VIRTUAL_CANDLES":
+        return (
+          <div
+            className={`p-6 rounded-lg border ${
+              theme === "dark" ? "border-white/10 bg-gray-800" : "border-gray-200 bg-gray-50"
+            }`}
+          >
+            <h3 className="text-lg font-semibold mb-4">Virtual Candles</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Allow Public Candle Lighting
+                </label>
+                <input
+                  type="checkbox"
+                  checked={sectionData.VIRTUAL_CANDLES?.allowPublic ?? true}
+                  onChange={(e) =>
+                    onSectionDataChange("VIRTUAL_CANDLES", {
+                      ...(sectionData.VIRTUAL_CANDLES || {}),
+                      allowPublic: e.target.checked,
+                      candles: sectionData.VIRTUAL_CANDLES?.candles || [],
+                    })
+                  }
+                  className="rounded border-gray-300"
+                />
+              </div>
+              <p className="text-sm text-gray-600">
+                Visitors can light virtual candles in memory. Currently{" "}
+                {sectionData.VIRTUAL_CANDLES?.candles?.length || 0} candles lit.
+              </p>
+            </div>
+          </div>
+        );
+
       // Placeholder for sections not yet implemented
       case "FAMILY_TREE":
+        return (
+          <FamilyTreeEditor
+            data={
+              sectionData.FAMILY_TREE || {
+                members: [],
+                layout: "tree",
+                showPhotos: true,
+                showDates: true,
+              }
+            }
+            onChange={(data) => onSectionDataChange("FAMILY_TREE", data)}
+            onOpenMediaPicker={onOpenMediaPicker}
+          />
+        );
+
       case "MEMORIES":
+        return (
+          <MemoriesEditor
+            data={
+              sectionData.MEMORIES || {
+                memories: [],
+                allowPublicSubmissions: true,
+                requireApproval: false,
+                categories: [],
+              }
+            }
+            onChange={(data) => onSectionDataChange("MEMORIES", data)}
+            onOpenMediaPicker={onOpenMediaPicker}
+          />
+        );
+
       case "STORIES":
+        return (
+          <StoriesEditor
+            data={
+              sectionData.STORIES || {
+                stories: [],
+                allowPublicSubmissions: true,
+                requireApproval: false,
+                showAuthor: true,
+              }
+            }
+            onChange={(data) => onSectionDataChange("STORIES", data)}
+          />
+        );
+
       case "MILITARY_SERVICE":
+        return (
+          <MilitaryServiceEditor
+            data={
+              sectionData.MILITARY_SERVICE || {
+                service: { branch: "", rank: "", yearsOfService: "" },
+                showOnMemorial: true,
+                displayFormat: "detailed",
+              }
+            }
+            onChange={(data) => onSectionDataChange("MILITARY_SERVICE", data)}
+            onOpenMediaPicker={onOpenMediaPicker}
+          />
+        );
+
       case "EDUCATION_CAREER":
-      case "AUDIO_MEMORIES":
-      case "DOCUMENTS":
-      case "VIRTUAL_CANDLES":
-      case "VIRTUAL_FLOWERS":
+        return (
+          <EducationCareerEditor
+            data={
+              sectionData.EDUCATION_CAREER || {
+                education: [],
+                career: [],
+                showEducation: true,
+                showCareer: true,
+              }
+            }
+            onChange={(data) => onSectionDataChange("EDUCATION_CAREER", data)}
+          />
+        );
+
       case "MAP_LOCATIONS":
+        return (
+          <MapLocationsEditor
+            data={
+              sectionData.MAP_LOCATIONS || {
+                locations: [],
+                zoomLevel: 10,
+                showDirections: true,
+              }
+            }
+            onChange={(data) => onSectionDataChange("MAP_LOCATIONS", data)}
+          />
+        );
+
+      case "DOCUMENTS":
+        return (
+          <DocumentsEditor
+            data={
+              sectionData.DOCUMENTS || {
+                documents: [],
+                allowPublicUploads: true,
+                requireApproval: false,
+                maxFileSize: 10,
+                allowedFileTypes: ["pdf", "doc", "docx", "jpg", "png"],
+              }
+            }
+            onChange={(data) => onSectionDataChange("DOCUMENTS", data)}
+            onOpenMediaPicker={onOpenMediaPicker}
+          />
+        );
+
+      case "AUDIO_MEMORIES":
+        return (
+          <AudioMemoriesEditor
+            data={
+              sectionData.AUDIO_MEMORIES || {
+                audioMemories: [],
+                allowPublicUploads: true,
+                requireApproval: false,
+                maxFileSize: 10,
+                allowedFormats: ["mp3", "wav", "m4a"],
+              }
+            }
+            onChange={(data) => onSectionDataChange("AUDIO_MEMORIES", data)}
+            onOpenMediaPicker={onOpenMediaPicker}
+          />
+        );
+
+      case "VIRTUAL_FLOWERS":
         return (
           <div
             className={`p-6 rounded-lg border-2 border-dashed ${

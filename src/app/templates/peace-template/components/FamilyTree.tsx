@@ -1,57 +1,69 @@
-import { Heart } from "lucide-react";
+"use client";
 
-const familyMembers = [
-  {
-    name: "Eleanor Thompson",
-    relation: "Self",
-    level: 0,
-    image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670890/recent_h90dne.png",
-  },
-  {
-    name: "Robert Thompson",
-    relation: "Spouse",
-    level: 0,
-    image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764689692/husband_zlck3i.png",
-  },
-  {
-    name: "Victor Thompson",
-    relation: "First Son",
-    level: 1,
-    image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764689692/first-son_rmc6dh.png",
-  },
-  {
-    name: "Michael Thompson",
-    relation: "Second Son",
-    level: 1,
-    image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764689691/second-son_hvq3l4.png",
-  },
-  {
-    name: "Jennifer Davis",
-    relation: "Daughter",
-    level: 1,
-    image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764689689/daugter_gmzdqr.png",
-  },
-  {
-    name: "Emily Johnson",
-    relation: "Granddaughter",
-    level: 2,
-    image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764689689/grandchild1_xtoehd.png",
-  },
-  {
-    name: "David Johnson",
-    relation: "Grandson",
-    level: 2,
-    image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764689691/grandchild3_gmsvcz.png",
-  },
-  {
-    name: "Grace Thompson",
-    relation: "Granddaughter",
-    level: 2,
-    image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764689691/grandchild2_ttqmc1.png",
-  },
-];
+import { Heart } from "lucide-react";
+import { useTemplate } from "../TemplateProvider";
 
 export const FamilyTree = () => {
+  const { sectionsData } = useTemplate();
+
+  // Get FAMILY_TREE section data with fallbacks
+  const familyData = (sectionsData?.FAMILY_TREE as any) || {};
+  const defaultFamilyMembers = [
+    {
+      name: "Eleanor Thompson",
+      relation: "Self",
+      level: 0,
+      image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670890/recent_h90dne.png",
+    },
+    {
+      name: "Robert Thompson",
+      relation: "Spouse",
+      level: 0,
+      image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764689692/husband_zlck3i.png",
+    },
+    {
+      name: "Victor Thompson",
+      relation: "First Son",
+      level: 1,
+      image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764689692/first-son_rmc6dh.png",
+    },
+    {
+      name: "Michael Thompson",
+      relation: "Second Son",
+      level: 1,
+      image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764689691/second-son_hvq3l4.png",
+    },
+    {
+      name: "Jennifer Davis",
+    },
+    {
+      name: "Jennifer Davis",
+      relation: "Daughter",
+      level: 1,
+      image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764689689/daugter_gmzdqr.png",
+    },
+    {
+      name: "Emily Johnson",
+      relation: "Granddaughter",
+      level: 2,
+      image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764689689/grandchild1_xtoehd.png",
+    },
+    {
+      name: "David Johnson",
+      relation: "Grandson",
+      level: 2,
+      image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764689691/grandchild3_gmsvcz.png",
+    },
+    {
+      name: "Grace Thompson",
+      relation: "Granddaughter",
+      level: 2,
+      image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764689691/grandchild2_ttqmc1.png",
+    },
+  ];
+
+  const familyMembers = familyData.members || defaultFamilyMembers;
+
   return (
     <section className="bg-gradient-to-br from-burgundy/90 via-burgundy/80 to-deep-plum/90 px-4 py-20">
       <div className="mx-auto max-w-7xl">
@@ -69,8 +81,8 @@ export const FamilyTree = () => {
           {/* Generation 1 - Eleanor & Robert */}
           <div className="mb-16 flex justify-center gap-8">
             {familyMembers
-              .filter((m) => m.level === 0)
-              .map((member, index) => (
+              .filter((m: any) => m.level === 0)
+              .map((member: any, index: number) => (
                 <div
                   key={index}
                   className="group animate-fade-in text-center"
@@ -100,8 +112,8 @@ export const FamilyTree = () => {
           {/* Generation 2 - Children */}
           <div className="mb-16 flex flex-wrap justify-center gap-8">
             {familyMembers
-              .filter((m) => m.level === 1)
-              .map((member, index) => (
+              .filter((m: any) => m.level === 1)
+              .map((member: any, index: number) => (
                 <div
                   key={index}
                   className="group animate-fade-in text-center"
@@ -131,8 +143,8 @@ export const FamilyTree = () => {
           {/* Generation 3 - Grandchildren */}
           <div className="flex flex-wrap justify-center gap-6">
             {familyMembers
-              .filter((m) => m.level === 2)
-              .map((member, index) => (
+              .filter((m: any) => m.level === 2)
+              .map((member: any, index: number) => (
                 <div
                   key={index}
                   className="group animate-fade-in text-center"

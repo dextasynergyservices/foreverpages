@@ -107,6 +107,7 @@ function DashboardNavbarContent({ isOpen, onClose, isCollapsed }: DashboardNavba
     { name: t("dashboard.sidebar.nav.builder"), href: "funeral-builder", icon: FileText },
     { name: t("dashboard.sidebar.nav.invitations"), href: "invitations", icon: Mail },
     { name: t("dashboard.sidebar.nav.tributes"), href: "tributes", icon: MessageSquare },
+    { name: t("dashboard.sidebar.nav.support"), href: "support", icon: Heart },
     { name: "Livestreams", href: "livestreams", icon: Video },
     { name: t("dashboard.sidebar.nav.settings"), href: "settings", icon: Settings },
   ];

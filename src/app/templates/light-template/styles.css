@@ -181,6 +181,31 @@ All colors MUST be HSL.
     animation: fade-in-down 0.6s ease-out;
   }
 
+  /* Fade in up animation for tribute cards */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fadeInUp {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  /* Glow effects */
+  .glow-primary {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 20px hsl(var(--gold-glow) / 0.3);
+  }
+
   /* Hover lift effect */
   .hover-lift {
     transition:

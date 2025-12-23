@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useTranslations } from "@/hooks/useTranslations";
 import { formatDistanceToNow } from "date-fns";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
 
@@ -80,6 +80,7 @@ const getNotificationColor = (type: string) => {
 
 export function NotificationBell({ variant = "default" }: NotificationBellProps) {
   const { t } = useTranslations();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
@@ -183,18 +184,55 @@ export function NotificationBell({ variant = "default" }: NotificationBellProps)
     };
   }, [isOpen]);
 
-  const handleNotificationClick = (notification: Notification) => {
-    if (!notification.isRead) {
-      markAsReadMutation.mutate(notification.id);
-    }
-    if (notification.link) {
+  const handleNotificationClick = async (notification: Notification) => {
+    try {
+      // Mark as read if unread
+      if (!notification.isRead) {
+        await markAsReadMutation.mutateAsync(notification.id);
+      }
+
+      // Close the dropdown
       setIsOpen(false);
+
+      // Navigate to the link if it exists
+      const targetLink = notification.link;
+      if (targetLink) {
+        // Check if the link contains an anchor
+        if (targetLink.includes("#")) {
+          // For anchor links, use router.push with smooth scrolling
+          router.push(targetLink);
+
+          // Add a delay to allow page navigation, then scroll to element
+          setTimeout(() => {
+            const anchor = targetLink.split("#")[1];
+            if (anchor) {
+              const element = document.getElementById(anchor);
+              if (element) {
+                element.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+                // Add a subtle highlight animation
+                element.style.transition = "background-color 0.3s ease";
+                element.style.backgroundColor = "rgba(59, 130, 246, 0.1)";
+                setTimeout(() => {
+                  element.style.backgroundColor = "";
+                }, 2000);
+              }
+            }
+          }, 100);
+        } else {
+          // For regular links, just navigate
+          router.push(targetLink);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to handle notification click:", error);
     }
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
-      {/* Bell Button */}
+    <div className="relative">
       <Button
         variant="ghost"
         size={variant === "compact" ? "sm" : "default"}
@@ -270,13 +308,7 @@ export function NotificationBell({ variant = "default" }: NotificationBellProps)
                     )}
                     onClick={() => handleNotificationClick(notification)}
                   >
-                    {notification.link ? (
-                      <Link href={notification.link} className="block">
-                        <NotificationItem notification={notification} />
-                      </Link>
-                    ) : (
-                      <NotificationItem notification={notification} />
-                    )}
+                    <NotificationItem notification={notification} />
                   </div>
                 ))}
               </div>

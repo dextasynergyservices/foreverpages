@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
-import { rateLimitMiddleware } from "@/lib/rate-limit";
-import { paymentGuard } from "@/middleware/payment-guard";
+import { rateLimitMiddleware } from "./lib/rate-limit";
+import { paymentGuard } from "./middleware/payment-guard";
 
 /**
  * Authentication middleware for protecting user-related and admin routes.
@@ -22,6 +22,11 @@ import { paymentGuard } from "@/middleware/payment-guard";
  */
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
+
+  // Allow NextAuth routes to pass through without any middleware interference
+  if (pathname.startsWith("/api/auth/")) {
+    return NextResponse.next();
+  }
 
   // Delegate signup/payment checks to the centralized payment guard helper
   if (pathname === "/signup" || pathname === "/auth/signup") {
@@ -49,14 +54,134 @@ export async function proxy(req: NextRequest) {
 
   // Skip authentication check for certain public routes that are in the matcher
   const publicRoutes = ["/signup", "/auth/signup"];
+  const authRoutes = ["/api/auth"]; // NextAuth routes should not require authentication
   const isPublicRoute = publicRoutes.includes(pathname);
+  const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
 
-  // Get the JWT token from the request (skip for public routes)
-  const token = !isPublicRoute
-    ? await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
-    : null;
+  // Block public access to template development routes
+  if (pathname.startsWith("/templates/")) {
+    return new Response(
+      `<!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Access Restricted - ForeverPages</title>
+          <link rel="preconnect" href="https://fonts.googleapis.com">
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+          <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+          <style>
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+            }
+            :root {
+              --primary: oklch(0.205 0 0);
+              --primary-foreground: oklch(0.985 0 0);
+              --secondary: oklch(0.97 0 0);
+              --secondary-foreground: oklch(0.205 0 0);
+              --muted: oklch(0.97 0 0);
+              --muted-foreground: oklch(0.556 0 0);
+              --border: oklch(0.922 0 0);
+              --background: oklch(1 0 0);
+              --foreground: oklch(0.145 0 0);
+              --card: oklch(1 0 0);
+              --card-foreground: oklch(0.145 0 0);
+              --accent: oklch(0.97 0 0);
+              --accent-foreground: oklch(0.205 0 0);
+              --radius: 0.625rem;
+            }
+            body {
+              font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+              background: oklch(var(--background));
+              color: oklch(var(--foreground));
+              min-height: 100vh;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              line-height: 1.6;
+            }
+            .container {
+              text-align: center;
+              max-width: 500px;
+              padding: 3rem 2rem;
+              background: oklch(var(--card));
+              border-radius: calc(var(--radius) + 4px);
+              border: 1px solid oklch(var(--border));
+              box-shadow: 0 20px 25px -5px oklch(var(--primary) / 0.1),
+                          0 10px 10px -5px oklch(var(--primary) / 0.04);
+              margin: 1rem;
+            }
+            .lock-icon {
+              font-size: 3.5rem;
+              margin-bottom: 1.5rem;
+              color: oklch(var(--muted-foreground));
+            }
+            h1 {
+              font-family: 'Playfair Display', serif;
+              font-size: 2.25rem;
+              margin-bottom: 1rem;
+              font-weight: 600;
+              color: oklch(var(--foreground));
+              letter-spacing: -0.02em;
+            }
+            p {
+              font-size: 1rem;
+              margin-bottom: 2rem;
+              color: oklch(var(--muted-foreground));
+              line-height: 1.7;
+            }
+            .btn {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              padding: 0.75rem 1.5rem;
+              background: oklch(var(--primary));
+              color: oklch(var(--primary-foreground));
+              text-decoration: none;
+              border-radius: var(--radius);
+              font-weight: 500;
+              font-size: 0.875rem;
+              transition: all 0.2s ease;
+              border: 1px solid transparent;
+            }
+            .btn:hover {
+              background: oklch(var(--primary) / 0.9);
+              transform: translateY(-1px);
+              box-shadow: 0 4px 12px oklch(var(--primary) / 0.3);
+            }
+            .btn:focus {
+              outline: 2px solid oklch(var(--ring));
+              outline-offset: 2px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="lock-icon">🔒</div>
+            <h1>Access Restricted</h1>
+            <p>These memorial templates are currently under development and not publicly accessible. Please contact support if you need assistance.</p>
+            <a href="/" class="btn">Return to Homepage</a>
+          </div>
+        </body>
+      </html>`,
+      {
+        status: 403,
+        headers: {
+          "Content-Type": "text/html",
+        },
+      }
+    );
+  }
 
-  if (!token && !isPublicRoute) {
+  // Get the JWT token from the request (skip for public routes and auth routes)
+  const token =
+    !isPublicRoute && !isAuthRoute
+      ? await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+      : null;
+
+  if (!token && !isPublicRoute && !isAuthRoute) {
     const url = req.nextUrl.clone();
     url.pathname = "/auth/login";
     url.searchParams.set("redirect", pathname);
@@ -104,7 +229,7 @@ export async function proxy(req: NextRequest) {
       return NextResponse.redirect(url);
     }
     // Check if user has required role (default to 'user' role)
-    const userRole = (token.role as string) || "user";
+    const userRole = ((token.role as string) || "user").toLowerCase();
 
     // Define role-based permissions
     const rolePermissions = {
@@ -119,7 +244,7 @@ export async function proxy(req: NextRequest) {
         "/api/analytics/",
       ], // Moderator can access user routes
       user: [
-        "/api/user/profile",
+        "/api/user/", // Allow all user API routes
         "/user-dashboard/",
         "/api/memorials/",
         "/api/tributes/",
@@ -154,6 +279,7 @@ export const config = {
   matcher: [
     "/signup", // Payment guard protection
     "/auth/signup", // Actual signup page (after redirect)
+    "/templates/:path*", // Block public access to templates
     "/user-dashboard/:path*",
     "/admin/:path*",
     "/api/user/:path*",

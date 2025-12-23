@@ -10,24 +10,7 @@ export const MusicProvider = ({ children }) => {
   const [isMuted, setIsMuted] = useState(false);
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
 
-  // Auto-play when user first interacts (to handle browser restrictions)
-  useEffect(() => {
-    const handleFirstInteraction = () => {
-      if (!hasUserInteracted) {
-        setHasUserInteracted(true);
-        setIsPlaying(true);
-      }
-    };
-
-    // Listen for user interactions
-    document.addEventListener("click", handleFirstInteraction, { once: true });
-    document.addEventListener("touchstart", handleFirstInteraction, { once: true });
-
-    return () => {
-      document.removeEventListener("click", handleFirstInteraction);
-      document.removeEventListener("touchstart", handleFirstInteraction);
-    };
-  }, [hasUserInteracted]);
+  // Removed autoplay - music will only play when user explicitly clicks play
 
   const togglePlay = () => {
     if (!hasUserInteracted) {

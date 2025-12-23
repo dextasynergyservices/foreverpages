@@ -9,6 +9,20 @@ interface TemplateContextValue {
   memorialId?: string;
   memorial: MemorialData;
   config: TemplateConfig;
+  sectionsData?: Record<string, unknown>;
+  memorialOwnerId?: string;
+  memorialOwnerName?: string;
+  memorialOwnerAccountDetails?: Array<{
+    id: string;
+    type: string;
+    accountName: string;
+    accountNumber: string;
+    bankName?: string;
+    routingNumber?: string;
+    currency: string;
+    isDefault?: boolean;
+    description?: string;
+  }>;
 }
 
 const TemplateContext = createContext<TemplateContextValue | null>(null);
@@ -27,6 +41,7 @@ export function TemplateProvider({
   memorial,
   config,
   customization,
+  sectionsData,
   children,
 }: {
   isPreview: boolean;
@@ -34,8 +49,13 @@ export function TemplateProvider({
   memorial: MemorialData;
   config: TemplateConfig;
   customization?: Partial<DesignTokens>;
+  sectionsData?: Record<string, unknown>;
   children: ReactNode;
 }) {
+  // Extract memorial owner information
+  const memorialOwnerId = memorial.ownerId || "";
+  const memorialOwnerName = memorial.name || "Memorial Owner";
+  const memorialOwnerAccountDetails = memorial.ownerAccountDetails || [];
   // Merge default config with user customization
   const defaultDesign = config.defaultDesign || {
     colors: {
@@ -75,19 +95,36 @@ export function TemplateProvider({
   };
 
   return (
-    <TemplateContext.Provider value={{ isPreview, memorialId, memorial, config }}>
+    <TemplateContext.Provider
+      value={{
+        isPreview,
+        memorialId,
+        memorial,
+        config,
+        sectionsData,
+        memorialOwnerId,
+        memorialOwnerName,
+        memorialOwnerAccountDetails,
+      }}
+    >
       <div
         className="template-root"
         style={
           {
-            // Color CSS Variables
-            "--primary-color": finalDesign.colors.primary,
-            "--secondary-color": finalDesign.colors.secondary,
-            "--accent-color": finalDesign.colors.accent,
+            // Color CSS Variables (matching component expectations)
+            "--primary": finalDesign.colors.primary,
+            "--secondary": finalDesign.colors.secondary,
+            "--accent": finalDesign.colors.accent,
             "--header-bg": finalDesign.colors.headerBg,
             "--header-text": finalDesign.colors.headerText,
             "--body-bg": finalDesign.colors.bodyBg,
             "--body-text": finalDesign.colors.bodyText,
+
+            // Additional CSS variables used by the template
+            "--background": finalDesign.colors.bodyBg,
+            "--foreground": finalDesign.colors.bodyText,
+            "--border": finalDesign.colors.secondary + "40", // Add opacity
+            "--gold-glow": finalDesign.colors.accent,
 
             // Font CSS Variables
             "--font-family": finalDesign.fonts.fontFamily,

@@ -1,14 +1,15 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { TemplateSelection } from "./TemplateSelection";
-import { BasicInfoForm } from "./BasicInfoForm";
 import { SectionData } from "./DynamicSectionRenderer";
-import { CustomizationStep } from "./CustomizationStep";
-import { MemorialDetailsStep } from "./MemorialDetailsStep";
+import { TemplateEditView } from "./TemplateEditView";
 import { ReviewStep } from "./ReviewStep";
 import { useTheme } from "@/hooks/useTheme";
 import { AvailableTemplate, SubscriptionInfo } from "@/hooks/useAvailableTemplates";
 import { DesignTokens } from "./TemplateCustomizer";
+import { Spinner } from "@/components/ui/skeleton-loader";
+import { UserTemplate } from "@/hooks/useUserTemplate";
+import { useUserPublishedStatus } from "@/hooks/useUserPublishedStatus";
 
 interface Template {
   id: string;
@@ -21,6 +22,7 @@ interface Template {
 interface StepContentProps {
   currentStep: number;
   selectedTemplate: string;
+  selectedTemplateSlug?: string; // Add optional slug prop
   setSelectedTemplate: (template: string) => void;
   templates: Template[];
   t: (key: string, params?: unknown, fallback?: string) => string;
@@ -36,8 +38,10 @@ interface StepContentProps {
   onOpenMediaPicker?: () => void;
   isEditMode?: boolean;
   userTemplateId?: string;
+  userTemplate?: UserTemplate; // Use the hook's UserTemplate type
   existingSlug?: string;
   onPublishSuccess?: (url: string) => void;
+  daysRemaining?: number;
   memorialData?: {
     firstName?: string;
     lastName?: string;
@@ -48,11 +52,14 @@ interface StepContentProps {
     deathDate?: string;
     profilePhoto?: string;
   };
+  onMemorialDataChange?: (data: Partial<StepContentProps["memorialData"]>) => void;
+  isLoadingTemplate?: boolean;
 }
 
 export const StepContent: React.FC<StepContentProps> = ({
   currentStep,
   selectedTemplate,
+  selectedTemplateSlug,
   setSelectedTemplate,
   templates,
   availableTemplates,
@@ -67,11 +74,16 @@ export const StepContent: React.FC<StepContentProps> = ({
   onOpenMediaPicker,
   isEditMode,
   userTemplateId,
+  userTemplate,
   existingSlug,
   onPublishSuccess,
+  daysRemaining,
   memorialData,
+  isLoadingTemplate = false,
+  onMemorialDataChange,
 }) => {
   const { theme } = useTheme();
+  const { data: publishedData } = useUserPublishedStatus();
   const cardBorder = theme === "dark" ? "border-white/10" : "border-gray-200";
   const cardBg = theme === "dark" ? "bg-black" : "bg-white";
 
@@ -90,41 +102,107 @@ export const StepContent: React.FC<StepContentProps> = ({
           />
         )}
 
-        {currentStep === 1 && <BasicInfoForm />}
+        {currentStep === 1 && (
+          <>
+            {isLoadingTemplate ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="text-center">
+                  <Spinner className="h-8 w-8 mx-auto mb-4" />
+                  <p className="text-sm text-muted-foreground">Loading template sections...</p>
+                </div>
+              </div>
+            ) : (
+              supportedSections &&
+              sectionData &&
+              onSectionDataChange && (
+                <TemplateEditView
+                  selectedTemplate={selectedTemplate}
+                  selectedTemplateSlug={selectedTemplateSlug} // Pass the slug
+                  supportedSections={supportedSections as string[]}
+                  sectionData={sectionData}
+                  onSectionDataChange={onSectionDataChange}
+                  designTokens={designTokens}
+                  onDesignTokensChange={onDesignTokensChange || (() => {})}
+                  memorialData={memorialData}
+                  onMemorialDataChange={onMemorialDataChange}
+                  userTemplateId={userTemplateId}
+                  onOpenMediaPicker={onOpenMediaPicker}
+                  userTemplate={userTemplate}
+                />
+              )
+            )}
+          </>
+        )}
 
         {currentStep === 2 && (
-          <CustomizationStep
-            selectedTemplate={selectedTemplate}
-            onCustomizationChange={onDesignTokensChange || (() => {})}
-            initialDesign={designTokens}
-            memorialData={memorialData}
-            sectionData={sectionData}
-            supportedSections={supportedSections}
-          />
-        )}
-
-        {currentStep === 3 && supportedSections && sectionData && onSectionDataChange && (
-          <MemorialDetailsStep
-            supportedSections={supportedSections as string[]}
-            sectionData={sectionData}
-            onSectionDataChange={onSectionDataChange}
-            onOpenMediaPicker={onOpenMediaPicker}
-            designTokens={designTokens}
-            memorialData={memorialData}
-          />
-        )}
-
-        {currentStep === 4 && (
-          <ReviewStep
-            selectedTemplate={selectedTemplate}
-            templates={templates}
-            isEditMode={isEditMode}
-            userTemplateId={userTemplateId}
-            firstName={memorialData?.firstName}
-            lastName={memorialData?.lastName}
-            existingSlug={existingSlug}
-            onPublishSuccess={onPublishSuccess}
-          />
+          <>
+            {console.log("DEBUG StepContent: Passing to ReviewStep:", {
+              isEditMode,
+              existingSlug,
+              actualMemorialSlug: publishedData?.publishedMemorial?.slug,
+              actualMemorialId: publishedData?.publishedMemorial?.id,
+              publishedData: publishedData
+                ? {
+                    hasPublished: publishedData.hasPublished,
+                    publishedMemorial: publishedData.publishedMemorial,
+                  }
+                : null,
+              userTemplate: userTemplate
+                ? {
+                    id: userTemplate.id,
+                    isPublished: userTemplate.isPublished,
+                    memorialCount: userTemplate.memorials?.length || 0,
+                    firstMemorialId: userTemplate.memorials?.[0]?.id,
+                  }
+                : null,
+              computedProps: {
+                publishedMemorialUrl:
+                  userTemplate?.isPublished === true || !!publishedData?.hasPublished
+                    ? publishedData?.publishedMemorial?.slug
+                      ? `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/${publishedData.publishedMemorial.slug}`
+                      : existingSlug
+                        ? `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/${existingSlug}`
+                        : undefined
+                    : undefined,
+                memorialId:
+                  publishedData?.publishedMemorial?.id ||
+                  userTemplate?.memorials?.[0]?.id ||
+                  (isEditMode && userTemplate?.isPublished ? userTemplate?.id : undefined),
+                isPublished: userTemplate?.isPublished === true || !!publishedData?.hasPublished,
+                finalSlugUsed: publishedData?.publishedMemorial?.slug || existingSlug,
+              },
+            })}
+            <ReviewStep
+              selectedTemplate={selectedTemplate}
+              templates={templates}
+              isEditMode={isEditMode}
+              userTemplateId={userTemplateId}
+              firstName={memorialData?.firstName}
+              lastName={memorialData?.lastName}
+              existingSlug={publishedData?.publishedMemorial?.slug || existingSlug}
+              onPublishSuccess={onPublishSuccess}
+              memorialData={memorialData}
+              sectionData={sectionData}
+              isInGracePeriod={subscription?.status === "GRACE_PERIOD"}
+              isSubscriptionExpired={subscription?.status === "EXPIRED"}
+              daysRemaining={daysRemaining}
+              publishedMemorialUrl={
+                userTemplate?.isPublished === true || !!publishedData?.hasPublished
+                  ? publishedData?.publishedMemorial?.slug
+                    ? `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/${publishedData.publishedMemorial.slug}`
+                    : existingSlug
+                      ? `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/${existingSlug}`
+                      : undefined
+                  : undefined
+              }
+              memorialId={
+                publishedData?.publishedMemorial?.id ||
+                userTemplate?.memorials?.[0]?.id ||
+                (isEditMode && userTemplate?.isPublished ? userTemplate?.id : undefined)
+              }
+              isPublished={userTemplate?.isPublished === true || !!publishedData?.hasPublished}
+            />
+          </>
         )}
       </CardContent>
     </Card>

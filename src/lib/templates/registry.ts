@@ -1,5 +1,5 @@
 import React from "react";
-import { Template, UserTemplate, Memorial } from "@/generated/prisma";
+import type { Template, UserTemplate, Memorial } from "@/generated/prisma";
 
 export interface TemplateProps {
   memorial: Memorial;

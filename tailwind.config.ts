@@ -137,6 +137,14 @@ const config: Config = {
             transform: "scale(1.02)",
           },
         },
+        shimmer: {
+          "0%": {
+            transform: "translateX(-100%)",
+          },
+          "100%": {
+            transform: "translateX(100%)",
+          },
+        },
       },
       animation: {
         "hero-morph": "hero-morph 8s ease-in-out infinite alternate",
@@ -148,6 +156,7 @@ const config: Config = {
         "gentle-pulse": "gentle-pulse 3s ease-in-out infinite",
         "background-scroll": "background-scroll 100s linear infinite",
         "background-scroll-reduced": "background-scroll 800s linear infinite",
+        shimmer: "shimmer 2s infinite",
       },
     },
   },

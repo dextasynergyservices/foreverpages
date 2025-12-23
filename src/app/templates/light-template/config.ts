@@ -1,3 +1,5 @@
+import { DesignTokens } from "@/components/userDashboard/pageBuilder/TemplateCustomizer";
+
 export interface MemorialData {
   name: string;
   birthYear: string;
@@ -6,9 +8,19 @@ export interface MemorialData {
   portraitUrl: string;
   videoUrl?: string;
   config?: TemplateConfig;
+  ownerId?: string;
+  ownerAccountDetails?: Array<{
+    id: string;
+    type: string;
+    accountName: string;
+    accountNumber: string;
+    bankName?: string;
+    routingNumber?: string;
+    currency: string;
+    isDefault?: boolean;
+    description?: string;
+  }>;
 }
-
-import { DesignTokens } from "@/components/userDashboard/pageBuilder/TemplateCustomizer";
 
 export interface TemplateConfig {
   name: string;
@@ -156,24 +168,63 @@ export function getDefaultPreviewData(): MemorialData {
     tagline: "A life of faith, love, and service to others",
     portraitUrl: "https://res.cloudinary.com/dt7ozsctz/image/upload/v1764166230/thomas1_yuknpv.png",
     videoUrl: "https://res.cloudinary.com/dt7ozsctz/video/upload/v1764165650/bgVideo_kxr78w.mp4",
+    ownerId: "cmhqer9xn000f18ucvgbtvi9j", // Use real user ID that has account details
     config: templateConfig,
   };
 }
 
 // Helper function to fetch memorial data from database
 export async function fetchMemorialData(memorialId: string): Promise<MemorialData> {
-  // TODO: Implement database fetch
-  // const memorial = await prisma.memorial.findUnique({
-  //   where: { id: memorialId },
-  //   include: {
-  //     userTemplate: {
-  //       include: {
-  //         template: true
-  //       }
-  //     }
-  //   }
-  // });
+  try {
+    // Import prisma client
+    const { prisma } = await import("@/lib/prisma");
 
-  // For now, return default data
-  return getDefaultPreviewData();
+    const memorial = await prisma.memorial.findUnique({
+      where: { id: memorialId },
+      include: {
+        userTemplate: {
+          include: {
+            baseTemplate: true,
+          },
+        },
+        owner: {
+          select: {
+            accountDetails: true,
+          },
+        },
+      },
+    });
+
+    if (!memorial) {
+      console.log("Memorial not found, returning default data");
+      return getDefaultPreviewData();
+    }
+
+    // Transform database data to template format
+    const memorialData: MemorialData = {
+      name: `${memorial.firstName} ${memorial.lastName}`.trim(),
+      birthYear: memorial.birthDate
+        ? new Date(memorial.birthDate).getFullYear().toString()
+        : "1950",
+      deathYear: memorial.deathDate
+        ? new Date(memorial.deathDate).getFullYear().toString()
+        : "2023",
+      tagline: memorial.biography?.substring(0, 100) || "A life well lived",
+      portraitUrl: (memorial as any).profileImageUrl || "/placeholder-portrait.jpg",
+      videoUrl: (memorial as any).videoUrl || undefined,
+      ownerId: memorial.ownerId,
+      ownerAccountDetails: (memorial.owner?.accountDetails as any) || [],
+      config: memorial.userTemplate?.customization
+        ? {
+            ...templateConfig,
+            defaultDesign: memorial.userTemplate.customization as any,
+          }
+        : templateConfig,
+    };
+
+    return memorialData;
+  } catch (error) {
+    console.error("Error fetching memorial data:", error);
+    return getDefaultPreviewData();
+  }
 }

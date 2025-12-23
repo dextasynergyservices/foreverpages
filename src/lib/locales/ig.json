@@ -314,13 +314,89 @@
     },
     "copyright": "ForeverPages. Emebere ya n'ịhụnanya iji sọpụrụ ndụ ọ bụla."
   },
+  "memorial": {
+    "status": {
+      "active": "Na-arụ ọrụ",
+      "expired": "Agwụla",
+      "gracePeriod": "Oge Amara",
+      "lifetime": "Nnwere Onwe Ndụ",
+      "ownerPreview": "Nlele Onye Nwe",
+      "unknown": "Ọdnọdụ Amaghị"
+    },
+    "expiry": {
+      "owner": {
+        "expired": {
+          "title": "Ndenye Aha Agwụla",
+          "description": "Ncheta a adịghị ugbu a maka ọdịmma. Megharia ndenye aha gị iji weghachi nnwere onwe."
+        }
+      },
+      "public": {
+        "expired": {
+          "title": "Ncheta Adịghị Ugbu A",
+          "description": "Ndenye aha maka {{name}} agwụla. Biko kpọrọ onye nwe ihu iji weghachi nnwere onwe."
+        }
+      },
+      "gracePeriod": {
+        "title": "Ndenye Aha na Oge Amara",
+        "description": "Ncheta a ga-adịghị ụbọchị {{days}}. Megharia ndenye aha gị iji kwado nnwere onwe."
+      },
+      "ownerPreview": {
+        "title": "Nlele Ọnọdụ - Ndenye Aha Agwụla",
+        "description": "Naanị gị nwere ike ịhụ ncheta a. Megharia ndenye aha gị iji mee ka ọ pụta ihe ọzọ."
+      },
+      "renewButton": "Megharia Ndenye Aha"
+    },
+    "expired": {
+      "title": "Ncheta Adịghị Ugbu A",
+      "message": "Ihu ncheta maka {{name}} adịghị ugbu a n'ihi na ndenye aha agwụla.",
+      "info": "Nke a bụ ịnọdụ nwa oge. Ozugbo onye nwe ihu meghariri ndenye aha ha, ncheta a ga-adị ọzọ.",
+      "contactTitle": "Kpọrọ Onye Nwe Ihu",
+      "contactMessage": "Ọ bụrụ na ị chọrọ ịnweta ncheta a ngwa ngwa, biko kpọrọ onye nwe ihu iji rịọ megharia.",
+      "contactOwner": "Kpọrọ Onye Nwe",
+      "createOwn": "Ị chọrọ ịmepụta ncheta maka onye ị hụrụ n'anya?",
+      "viewPackages": "Lee Ngwugwu Anyị"
+    }
+  },
   "common": {
     "loading": "Na-ebu...",
     "error": "Enwere mperi",
     "retry": "Nwaa Ọzọ",
     "close": "Mechie",
     "save": "Chekwaa",
-    "cancel": "Kagbuo"
+    "cancel": "Kagbuo",
+    "confirm": "Kwenye",
+    "delete": "Hichapụ"
+  },
+
+  "errors": {
+    "boundary": {
+      "title": "Ihe Adịghị Mma Mere",
+      "description": "Mperi a na-atụghị anya ya mere",
+      "retry": "Nwaa Ọzọ"
+    },
+    "generic": {
+      "title": "Mperi",
+      "message": "Mperi a na-atụghị anya ya mere. Biko nwaa ọzọ."
+    },
+    "warning": {
+      "title": "Ịdọ Aka Na Ntị"
+    },
+    "network": {
+      "title": "Mperi Njikọ",
+      "message": "Enweghị ike ijikọ. Biko lelee njikọ ịntanetị gị wee nwaa ọzọ."
+    },
+    "actions": {
+      "retry": "Nwaa Ọzọ",
+      "dismiss": "Wepụ"
+    }
+  },
+
+  "tutorial": {
+    "step": "Nzọụkwụ {{current}} nke {{total}}",
+    "previous": "Nke Gara Aga",
+    "next": "Osote",
+    "finish": "Mechaa",
+    "skip": "Mafere Nkuzi"
   },
   "faq": {
     "title": "Ajụjụ Ndị A Na-ajụkarị",
@@ -383,6 +459,7 @@
         "builder": "Onye Na-ewu Ncheta",
         "invitations": "Ọkpụkpọ",
         "tributes": "Nkwanye Ugwu",
+        "support": "Nkwado",
         "templates": "Ụdị",
         "settings": "Ntọala"
       }
@@ -619,6 +696,11 @@
         },
         "deleting": "Na-ehichapụ...",
         "confirm": "Hichapụ Ụdị"
+      },
+      "delete": {
+        "confirmTitle": "Hichapụ Ụdị?",
+        "confirmDescription": "Ị ji n'aka na ịchọrọ ihichapụ \"{{name}}\"? Enweghị ike ịweghachi omume a.",
+        "confirm": "Hichapụ"
       },
       "actions": {
         "createSuccess": "E mepụtara ụdị nke ọma",
@@ -1250,7 +1332,11 @@
       "steps": {
         "chooseTemplate": {
           "title": "Họrọ Ụdị",
-          "description": "Họrọ nhazi na-asọpụrụ onye ahụ nwụrụ anwụ"
+          "description": "Họrọ ụdị template dabara na ọhụụ gị"
+        },
+        "editTemplate": {
+          "title": "Dezie Ụdị",
+          "description": "Hazie agba, ọdịnaya, na ngalaba"
         },
         "basicInfo": {
           "title": "Ozi Ndị Isi",
@@ -1265,8 +1351,8 @@
           "description": "Chọọ agba na nlereanya"
         },
         "review": {
-          "title": "Nyochaa",
-          "description": "Nyochaa ma mepụta ncheta gị"
+          "title": "Nyochaa & Bipụta",
+          "description": "Nyochaa ma bipụta ibe ncheta gị"
         }
       },
       "buttons": {
@@ -1274,6 +1360,47 @@
         "next": "Nke na-esote",
         "create": "Mepụta Ncheta",
         "creating": "Na-emepụta..."
+      },
+      "saveIndicator": {
+        "saving": "Na-echekwa...",
+        "saved": "Echekwara",
+        "error": "Njehie na nchekwa"
+      },
+      "editView": {
+        "title": "Dezie Ụdị",
+        "editor": "Onye Ndezie",
+        "preview": "Nlele",
+        "designTokens": "Nhazi na Agba",
+        "sections": "Ngalaba Ọdịnaya",
+        "previewMode": "Ụdị Nlele",
+        "desktop": "Desktọpụ",
+        "tablet": "Taabletị",
+        "mobile": "Ekwentị"
+      },
+      "mediaPicker": {
+        "title": "Họrọ Mgbasa Ozi Site na Gallery",
+        "searchPlaceholder": "Chọọ site na aha ma ọ bụ nkọwa...",
+        "all": "Niile",
+        "images": "Foto",
+        "videos": "Vidiyo",
+        "imagesUsed": "Foto:",
+        "videosUsed": "Vidiyo:",
+        "error": "Enweghị ike ibu mgbasa ozi",
+        "noMedia": "Ahụghị mgbasa ozi ọ bụla",
+        "uploadFirst": "Buru ụfọdụ mgbasa ozi na gallery gị mbụ",
+        "selected": "ahọrọla",
+        "addSelected": "Tinye Ndị Ahọrọla"
+      },
+      "gallery": {
+        "title": "Gallery Foto na Vidiyo",
+        "description": "Tinye foto na vidiyo na-eme mmemme ndụ ha",
+        "layout": "Nhazi Gallery",
+        "addMedia": "Tinye Foto/Vidiyo Site na Gallery",
+        "noMedia": "Atinyebeghị mgbasa ozi ọ bụla",
+        "clickToAdd": "Pịa bọtịnụ dị n'elu ka ị tinye foto na vidiyo",
+        "caption": "Nkọwa (Nhọrọ)",
+        "captionPlaceholder": "Tinye nkọwa...",
+        "remove": "Wepụ mgbasa ozi"
       },
       "sidebar": {
         "title": "Nzọụkwụ nrụpụta",
@@ -1412,7 +1539,22 @@
             "Ncheta na-egbuke egbuke",
             "Tọ́n na-enye obi ụtọ"
           ]
-        }
+        },
+        "status": {
+          "live": "Na-adị ndụ",
+          "draft": "Ndokwa",
+          "expired": "Agwụla"
+        },
+        "actions": {
+          "viewLive": "Lee Na-adị Ndụ",
+          "edit": "Degharia",
+          "delete": "Hichapụ",
+          "continue": "Gaa n'ihu",
+          "deleteDraft": "Hichapụ Ndokwa"
+        },
+        "views": "nlele",
+        "created": "Emepụtara",
+        "updated": "Emelitere"
       },
       "loadingTemplates": "Ibu ndokwa...",
       "mustSignInTitle": "Biko banye",
@@ -1422,11 +1564,39 @@
         "signinNeeded": "Banye ka ị nwee ike ike na ndokwa ndị ọzọ"
       },
       "review": {
+        "title": "Njikere ịmepụta Ncheta",
+        "description": "Ihu peeji ncheta gị mara mma adị njikere ka emepụta. Ị nwere ike mgbe niile degharia na tinye ọdịmma karịa emesia.",
         "templateLabel": "Ụdị:",
         "privacyLabel": "Nchekwa:",
         "privacyValue": "Ọhaneze",
         "featuresLabel": "Ihe Ndị Ngọsi:",
-        "featuresValue": "Ike Zuru"
+        "featuresValue": "Ike Zuru",
+        "publishButton": "Bipụta Ncheta",
+        "updateButton": "Melite Ncheta",
+        "deleteMemorial": "Hichapụ Ncheta",
+        "validationRequired": "Biko mechaa ihe ndị a tupu ibipụta:",
+        "missingFirstName": "Tinye aha mbụ nke onye nwụrụ anwụ",
+        "missingLastName": "Tinye aha ikpeazụ nke onye nwụrụ anwụ",
+        "missingSections": "Tinye opekata mpe otu ngalaba ọdịmma",
+        "sectionsConfigured": "Ngalaba Ahaziri:",
+        "memorialFor": "Ncheta Maka:",
+        "memorialPublished": "Ncheta No Na Ndụ",
+        "memorialUrl": "URL Ncheta:",
+        "autoSaveNote": "Mgbanwe ndị a na-echekwa onwe ha ma ga-egosipụta ozugbo na ncheta gị dị ndụ.",
+        "editModeHelpText": "Ncheta gị dị ndụ. Mgbanwe ọbụla ga-egosipụta ozugbo.",
+        "helpText": "Mgbe ebipụtara, ncheta gị ga-adị ndụ ma onye ọbụla nwere njikọ ga-enweta ya.",
+        "urlCopied": "URL ncheta edeturu na clipboard!",
+        "copyFailed": "Odeghị mma idetu URL",
+        "unpublishButton": "Kwụsị ibipụta Ncheta",
+        "unpublishSuccess": "Ncheta kwụsịrị ibipụta nke ọma",
+        "unpublishError": "Ọdịda na-akwụsị ibipụta ncheta",
+        "slugUpdateSuccess": "URL ncheta melitere nke ọma",
+        "slugUpdateError": "Ọdịda na-emelite URL ncheta",
+        "slugTaken": "URL a ewerela",
+        "editSlugHint": "Nke a ga-agbanwe adreesị webụ nke ncheta gị. Gbaa mbọ melite njikọ ndị ọzọ.",
+        "unpublishConfirmTitle": "Kwụsị ibipụta Ncheta?",
+        "unpublishConfirmMessage": "Ị ji n'aka na ị chọrọ ikwụsị ibipụta ncheta a? Ihe ncheta agaghị adịkwa ndị oka rue mgbe ị ga-abipụtakwa ya ọzọ.",
+        "confirmUnpublish": "Kwụsị ibipụta Ncheta"
       },
       "publish": {
         "title": "Bipụta Ncheta",
@@ -1454,13 +1624,39 @@
           "slugTooLong": "URL agaghị ebo ihe onyonyo 50",
           "slugInvalid": "URL nwere ike ịgụ agụụ, ọnụ ọgụgụ, usoro ndụ na ndụ ndụ naanị",
           "slugTaken": "URL a ejiri na. Biko zaa nnukwu ihe."
-        }
+        },
+        "suggestions": "URL Ndị A Tụrụ Anya:",
+        "previewUrl": "Nlele:"
+      },
+      "deleteMemorial": {
+        "title": "Hichapụ Ncheta",
+        "description": "Omume a agaghị akagbu. Ihichapụ ncheta a ga:",
+        "warning": "Ị ji n'ezie?",
+        "consequence1": "Hichapụ peeji ncheta na ọdịmma ya niile ruo mgbe ebighị ebi",
+        "consequence2": "Wepụ oku niile na ohere ndị na-arụ ọrụ",
+        "consequence3": "Hichapụ ụgwọ niile na nkasi obi",
+        "consequence4": "Wepụ ncheta n'igwe nchọgharị",
+        "memorialName": "Ncheta:",
+        "memorialUrl": "URL:",
+        "confirmationLabel": "Pịnyụ slug nke ncheta ka gosi ihichapụ",
+        "confirmationHint": "Pịnye kpọmkwem:",
+        "deleteButton": "Hichapụ Ncheta",
+        "deleting": "Na-ehichapụ...",
+        "cancel": "Kagbuo",
+        "successTitle": "Ncheta Ehichapụla",
+        "successMessage": "Ncheta ehichapụla ruo mgbe ebighị ebi"
       },
       "autoSave": {
         "saving": "Ezi...",
         "saved": "Eziri",
         "error": "Ọdịda na-ezi",
         "lastSaved": "Ezikorom {{time}}"
+      },
+      "unsavedChanges": {
+        "title": "Mgbanwe A Na-echekwaghị",
+        "message": "I nwere mgbanwe a na-echekwaghị. Ị ji n'aka na ị chọrọ ịpụ?",
+        "leave": "Pụọ",
+        "stay": "Nọrọ"
       },
       "subscription": {
         "banner": {
@@ -1606,6 +1802,36 @@
         "account": {
           "title": "Omume Akaụntụ",
           "signOut": "Pụọ"
+        },
+        "accountDetails": {
+          "title": "Nkọwa Akaụntụ",
+          "description": "Jikwaa nkọwa akaụntụ gị maka ịnata onyinye na nkwado site na ibe ncheta gị.",
+          "noAccountsTitle": "Enweghị Akaụntụ Agbakwunyere",
+          "noAccounts": "Tinye nkọwa akaụntụ gị ka ị nweta onyinye na nkwado site na ibe ncheta gị.",
+          "addFirstAccount": "Tinye Akaụntụ Mbụ Gị",
+          "addAccount": "Tinye Akaụntụ Ọhụụ",
+          "account": "Akaụntụ",
+          "default": "Isi",
+          "setPrimary": "Mee Ka Ọ Bụrụ Isi",
+          "setDefault": "Setịa Ka Ndabara",
+          "type": "Ụdị Akaụntụ",
+          "accountName": "Aha Onye Nwe Akaụntụ",
+          "accountNumber": "Nọmba Akaụntụ",
+          "bankName": "Aha Ụlọ Akụ",
+          "routingNumber": "Nọmba Ụzọ",
+          "description": "Nkọwa (Nhọrọ)",
+          "types": {
+            "bank": "Akaụntụ Ụlọ Akụ",
+            "bankDesc": "Akaụntụ ụlọ akụ ọdịnala",
+            "mobileMoney": "Ego Mkpanaaka",
+            "mobileMoneyDesc": "Ọrụ ịkwụ ụgwọ mkpanaaka",
+            "paypal": "PayPal",
+            "paypalDesc": "Akpa dijitalụ PayPal",
+            "stripe": "Stripe",
+            "stripeDesc": "Ikpo okwu ịkwụ ụgwọ Stripe",
+            "other": "Ndị Ọzọ",
+            "otherDesc": "Ụzọ ịkwụ ụgwọ ọzọ"
+          }
         }
       }
     },
@@ -2299,9 +2525,42 @@
             "Lelee ọdịnaya ncheta niile"
           ]
         }
+      },
+      "OWNER": {
+        "name": "Onye Nwe",
+        "short": "Owner",
+        "description": "Njikwa zuru ezu na ikike niile",
+        "longDescription": "Onye nwe nwere njikwa zuru ezu nke peeji ncheta, gụnyere ike ịhichapụ ya kpamkpam.",
+        "permissions": {
+          "title": "Ikike:",
+          "list": [
+            "Njikwa zuru ezu nke ncheta niile",
+            "Tinye, dezie, ma ọ bụ hichapụ ọdịnaya ọ bụla",
+            "Jikwaa ndị nkwado niile",
+            "Jikwaa ntọala ncheta niile",
+            "Hichapụ peeji ncheta kpamkpam",
+            "Nyefe ikike onye nwe"
+          ]
+        }
+      },
+      "VIEWER": {
+        "name": "Onye Nlele",
+        "short": "Viewer",
+        "description": "Naanị ikike ịlelee",
+        "longDescription": "Ndị nlele nwere ike ịlelee ọdịnaya ncheta naanị mana ha enweghị ike ime mgbanwe ọ bụla.",
+        "permissions": {
+          "title": "Ikike:",
+          "list": [
+            "Lelee ọdịnaya ncheta niile",
+            "Lelee oge ndụ na ihe ncheta",
+            "Lelee foto na vidiyo",
+            "Gụọ nkwupụta na ekele"
+          ]
+        }
       }
     },
     "roleRestrictions": {
+      "OWNER": "Onye nwe nwere ikike zuru ezu ijikwa ndị nkwado niile",
       "ADMIN": "Naanị ndị nchịkwa nwere ike ijikwa ndị nkwado",
       "EDITOR": "Ndị ndezi enweghị ike ijikwa ndị nkwado. Kpọtụrụ onye nwe peeji maka ikike ndị ọzọ.",
       "CONTRIBUTOR": "Ndị ntinye enweghị ike ijikwa ndị nkwado. Kpọtụrụ onye nwe peeji maka ikike ndị ọzọ.",
@@ -2960,6 +3219,69 @@
       "marketplace": "Ebe Ahịa",
       "analytics": "Ntụle",
       "customization": "Nhazi"
+    },
+    "support": {
+      "title": "Akụkọ Nkwado",
+      "subtitle": "Soro nkwado ndị ezigara na ndị natara maka ncheta",
+      "displayCurrency": "Ego Ngosi:",
+      "ratesUpdated": "Ọnụ ego emelitela",
+      "refreshData": "Melite Data",
+      "stats": {
+        "totalReceived": "Ngụkọta Natara",
+        "totalSent": "Ngụkọta Zigara",
+        "supportsReceived": "Nkwado Ndị Natara",
+        "supportsSent": "Nkwado Ndị Zigara",
+        "averageSupport": "Nkwado Nkezi",
+        "recentActivity": "Mmemme Na-adịbeghị anya",
+        "noActivity": "Enweghị mmemme"
+      },
+      "tabs": {
+        "received": "Natara",
+        "sent": "Zigara",
+        "message": "Ziga Ozi"
+      },
+      "empty": {
+        "received": {
+          "title": "Enwetabeghị nkwado ọ bụla ugbu a",
+          "description": "Mgbe ndị mmadụ kwadoro ncheta gị, ha ga-apụta ebe a."
+        },
+        "sent": {
+          "title": "Ezigabeghị nkwado ọ bụla ugbu a",
+          "description": "Mgbe ị kwadoro ncheta ndị ọzọ, ha ga-apụta ebe a."
+        }
+      },
+      "messaging": {
+        "title": "Ziga Ozi Ekele",
+        "description": "Ziga ozi ekele ahaziri onwe gị na ndị nkwado gị site na email ma ọ bụ WhatsApp.",
+        "subject": "Isiokwu (Nhọrọ)",
+        "subjectPlaceholder": "Daalụ maka nkwado gị...",
+        "message": "Ozi",
+        "messagePlaceholder": "Daalụ nke ukwuu maka nkwado gị na-enye mmadụ obi ụtọ. Obiọma gị pụtara ihe dị ukwuu nye anyị n'oge a siri ike...",
+        "deliveryMethod": "Ụzọ Izipu",
+        "sendViaEmail": "Ziga site na Email",
+        "sendViaWhatsApp": "Ziga site na WhatsApp",
+        "selectSupporters": "Họọ Ndị Nkwado",
+        "deselectAll": "Wepụ Nhọrọ Niile",
+        "selectAll": "Họọ Niile",
+        "selectPage": "Họọ Peeji",
+        "deselectPage": "Wepụ Peeji",
+        "selectAllSupporters": "Họọ Ndị Nkwado Nke niile",
+        "selectAllConfirmTitle": "Họọ ndị nkwado niile?",
+        "selectAllConfirmDescription": "A ga-ahọrọ ndị nkwado niile na ibe niile. Nke a nwere ike were oge maka ọtụtụ ndekọ. Ị ga-aga n'ihu?",
+        "selectAllConfirm": "Họọ Niile",
+        "selectAllTooMany": "Otu ọtụtụ ndị nkwado iji họrọ n'otu oge",
+        "selectAllSuccess": "Họrọla ndị nkwado niile",
+        "clearSelection": "Wepụ Nhọrọ",
+        "selectedCount": "Họrọ",
+        "selectDescription": "Họọ ndị nkwado ị chọrọ iziga ozi.",
+        "sending": "Na-eziga...",
+        "sendMessage": "Ziga Ozi",
+        "noSupporters": {
+          "title": "Enweghi ndị nkwado izigara ozi ugbu a",
+          "description": "Mgbe ị natara nkwado, ị ga-enwe ike iziga ozi ekele na ndị nkwado gị ebe a."
+        },
+        "viewSupport": "Lee Nkwado"
+      }
     }
   }
 }

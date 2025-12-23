@@ -1,51 +1,60 @@
 "use client";
 
-import { useState, useEffect } from 'react'
-
-const lifeStages = [
-  {
-    id: 1,
-    image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670890/recent_h90dne.png",
-    stage: 'Mama in Her Recent Years',
-    age: '70-79',
-    description: 'Wisdom and grace in her golden years',
-  },
-  {
-    id: 2,
-    image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670889/prime_xfxwj0.png",
-    stage: 'Mama in Her Prime of Life',
-    age: '40-69',
-    description: 'Thriving in her career and family life',
-  },
-  {
-    id: 3,
-    image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670889/young_torvo8.png",
-    stage: 'Mama as a Young Adult',
-    age: '20-39',
-    description: 'Starting her teaching career and family',
-  },
-  {
-    id: 4,
-    image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670889/child_nholqm.png",
-    stage: 'Mama as a Child',
-    age: '0-19',
-    description: 'Growing up full of dreams and laughter',
-  },
-]
+import { useState, useEffect } from "react";
+import { useTemplate } from "../TemplateProvider";
 
 export const HeroModern = () => {
-  const [currentStage, setCurrentStage] = useState(0)
-  const [isHovering, setIsHovering] = useState(false)
+  const { sectionsData } = useTemplate();
+
+  // Get HERO section data with fallbacks
+  const heroData = (sectionsData?.HERO as any) || {};
+  const defaultLifeStages = [
+    {
+      id: 1,
+      image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670890/recent_h90dne.png",
+      stage: "Mama in Her Recent Years",
+      age: "70-79",
+      description: "Wisdom and grace in her golden years",
+    },
+    {
+      id: 2,
+      image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670889/prime_xfxwj0.png",
+      stage: "Mama in Her Prime of Life",
+      age: "40-69",
+      description: "Thriving in her career and family life",
+    },
+    {
+      id: 3,
+      image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670889/young_torvo8.png",
+      stage: "Mama as a Young Adult",
+      age: "20-39",
+      description: "Starting her teaching career and family",
+    },
+    {
+      id: 4,
+      image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670889/child_nholqm.png",
+      stage: "Mama as a Child",
+      age: "0-19",
+      description: "Growing up full of dreams and laughter",
+    },
+  ];
+
+  const lifeStages = heroData.lifeStages || defaultLifeStages;
+  const mainTitle = heroData.title || "In Loving Memory";
+  const subtitle = heroData.subtitle || "A Celebration of Life";
+
+  const [currentStage, setCurrentStage] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
 
   // Auto-rotate when not hovering
   useEffect(() => {
     if (!isHovering) {
       const interval = setInterval(() => {
-        setCurrentStage((prev) => (prev + 1) % lifeStages.length)
-      }, 4000)
-      return () => clearInterval(interval)
+        setCurrentStage((prev) => (prev + 1) % lifeStages.length);
+      }, 4000);
+      return () => clearInterval(interval);
     }
-  }, [isHovering])
+  }, [isHovering]);
 
   return (
     <section
@@ -77,21 +86,19 @@ export const HeroModern = () => {
                 <span className="h-2 w-2 animate-pulse rounded-full bg-soft-gold" />
                 {lifeStages[currentStage].stage}
               </p>
-              <p className="text-xs text-deep-plum/80">
-                {lifeStages[currentStage].description}
-              </p>
+              <p className="text-xs text-deep-plum/80">{lifeStages[currentStage].description}</p>
             </div>
 
             {/* Navigation dots */}
             <div className="absolute bottom-4 right-4 flex gap-2 rounded-full bg-cream/90 px-3 py-2 backdrop-blur-sm">
-              {lifeStages.map((stage, index) => (
+              {lifeStages.map((stage: any, index: number) => (
                 <button
                   key={stage.id}
                   onClick={() => setCurrentStage(index)}
                   className={`h-3 w-3 rounded-full transition-all duration-300 ${
                     index === currentStage
-                      ? 'scale-125 bg-soft-gold'
-                      : 'bg-burgundy/40 hover:bg-burgundy/60'
+                      ? "scale-125 bg-soft-gold"
+                      : "bg-burgundy/40 hover:bg-burgundy/60"
                   }`}
                   title={stage.stage}
                 />
@@ -100,9 +107,7 @@ export const HeroModern = () => {
 
             {/* Stage indicator */}
             <div className="absolute left-4 top-4 rounded-full bg-soft-gold/20 px-3 py-1 backdrop-blur-sm">
-              <p className="text-xs font-medium text-cream">
-                {lifeStages[currentStage].age}
-              </p>
+              <p className="text-xs font-medium text-cream">{lifeStages[currentStage].age}</p>
             </div>
           </div>
 
@@ -112,9 +117,7 @@ export const HeroModern = () => {
               {/* Decorative element */}
               <div className="mb-2 flex items-center gap-3">
                 <div className="h-1 w-8 rounded-full bg-soft-gold" />
-                <span className="font-accent text-sm italic text-cream/80">
-                  In Loving Memory
-                </span>
+                <span className="font-accent text-sm italic text-cream/80">In Loving Memory</span>
                 <div className="h-1 w-8 rounded-full bg-soft-gold" />
               </div>
 
@@ -184,5 +187,5 @@ export const HeroModern = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};

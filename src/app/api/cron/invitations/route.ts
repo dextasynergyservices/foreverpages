@@ -58,8 +58,8 @@ export async function GET(request: NextRequest) {
     for (const invitation of scheduledInvitations) {
       try {
         // Send email via Brevo
-        if (invitation.sentViaEmail) {
-          const emailContent = buildEmailContent(invitation);
+        if (invitation.sentViaEmail && invitation.email) {
+          const emailContent = buildEmailContent(invitation as unknown as InvitationWithRelations);
           const sendSmtpEmail = new Brevo.SendSmtpEmail();
           sendSmtpEmail.to = [{ email: invitation.email, name: invitation.name || undefined }];
           sendSmtpEmail.sender = {
@@ -127,8 +127,11 @@ export async function GET(request: NextRequest) {
         for (const daysBefore of reminderDays) {
           if (daysUntilFuneral === daysBefore && !remindersSent[daysBefore.toString()]) {
             // Send reminder email
-            if (invitation.sentViaEmail) {
-              const reminderContent = buildReminderEmail(invitation, daysBefore);
+            if (invitation.sentViaEmail && invitation.email) {
+              const reminderContent = buildReminderEmail(
+                invitation as unknown as InvitationWithRelations,
+                daysBefore
+              );
               const sendSmtpEmail = new Brevo.SendSmtpEmail();
               sendSmtpEmail.to = [{ email: invitation.email, name: invitation.name || undefined }];
               sendSmtpEmail.sender = {
