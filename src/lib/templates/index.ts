@@ -7,9 +7,9 @@ export * from "../../components/templates/base/TemplateRenderer";
 
 // Register static templates (templates bundled with the app)
 import { registerTemplate } from "./registry";
-import { ClassicMemorialTemplate } from "../../components/templates/components/classic/MemorialTemplate";
-import { LightMemorialTemplate } from "../../components/templates/components/light-template/MemorialTemplate";
-import { PeaceMemorialTemplate } from "../../components/templates/components/peace-template/MemorialTemplate";
+import { ClassicMemorialTemplate } from "@/components/templates/components/classic/MemorialTemplate";
+import { LightMemorialTemplate } from "@/components/templates/components/light-template/MemorialTemplate";
+import { PeaceMemorialTemplate } from "@/components/templates/components/peace-template/MemorialTemplate";
 
 // Register classic template (always available)
 registerTemplate("classic", {

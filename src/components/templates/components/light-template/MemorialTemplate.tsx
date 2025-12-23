@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Template, UserTemplate, Memorial } from "@/generated/prisma";
+import type { Template, UserTemplate, Memorial } from "@/generated/prisma";
 import StarField from "@/app/templates/light-template/components/StarField";
 import HeroSection from "@/app/templates/light-template/components/HeroSection";
 import LifeJourney from "@/app/templates/light-template/components/LifeJourney";
