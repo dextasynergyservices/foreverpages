@@ -23,11 +23,6 @@ import { paymentGuard } from "./middleware/payment-guard";
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Allow NextAuth routes to pass through without any middleware interference
-  if (pathname.startsWith("/api/auth/")) {
-    return NextResponse.next();
-  }
-
   // Delegate signup/payment checks to the centralized payment guard helper
   if (pathname === "/signup" || pathname === "/auth/signup") {
     const result = await paymentGuard(req);
@@ -55,8 +50,13 @@ export async function proxy(req: NextRequest) {
   // Skip authentication check for certain public routes that are in the matcher
   const publicRoutes = ["/signup", "/auth/signup"];
   const authRoutes = ["/api/auth"]; // NextAuth routes should not require authentication
+
+  // 2FA login routes that need to be accessible during login (before session exists)
+  const twoFactorLoginRoutes = ["/api/user/2fa/send-code", "/api/user/2fa/verify"];
+
   const isPublicRoute = publicRoutes.includes(pathname);
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
+  const isTwoFactorLoginRoute = twoFactorLoginRoutes.some((route) => pathname.startsWith(route));
 
   // Block public access to template development routes
   if (pathname.startsWith("/templates/")) {
@@ -175,13 +175,22 @@ export async function proxy(req: NextRequest) {
     );
   }
 
-  // Get the JWT token from the request (skip for public routes and auth routes)
+  // Get the JWT token from the request (skip for public routes, auth routes, and 2FA login routes)
   const token =
-    !isPublicRoute && !isAuthRoute
+    !isPublicRoute && !isAuthRoute && !isTwoFactorLoginRoute
       ? await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
       : null;
 
-  if (!token && !isPublicRoute && !isAuthRoute) {
+  if (!token && !isPublicRoute && !isAuthRoute && !isTwoFactorLoginRoute) {
+    // For API routes, return JSON error instead of redirecting
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json(
+        { message: "Unauthorized - Authentication required" },
+        { status: 401 }
+      );
+    }
+
+    // For page routes, redirect to login
     const url = req.nextUrl.clone();
     url.pathname = "/auth/login";
     url.searchParams.set("redirect", pathname);
@@ -213,14 +222,16 @@ export async function proxy(req: NextRequest) {
   }
 
   // Role-based access control for user-related routes
+  // BUT exclude 2FA login routes (they need to be accessible during login)
   if (
-    pathname.startsWith("/api/user/") ||
-    pathname.startsWith("/user-dashboard/") ||
-    pathname.startsWith("/api/memorials/") ||
-    pathname.startsWith("/api/tributes/") ||
-    pathname.startsWith("/api/invitations/") ||
-    pathname.startsWith("/api/gallery/") ||
-    pathname.startsWith("/api/analytics/")
+    !isTwoFactorLoginRoute &&
+    (pathname.startsWith("/api/user/") ||
+      pathname.startsWith("/user-dashboard/") ||
+      pathname.startsWith("/api/memorials/") ||
+      pathname.startsWith("/api/tributes/") ||
+      pathname.startsWith("/api/invitations/") ||
+      pathname.startsWith("/api/gallery/") ||
+      pathname.startsWith("/api/analytics/"))
   ) {
     if (!token) {
       const url = req.nextUrl.clone();

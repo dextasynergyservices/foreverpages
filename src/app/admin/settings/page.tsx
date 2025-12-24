@@ -7,7 +7,7 @@ export default function AdminSettingsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center space-x-3">
-        <Settings className="h-6 w-6 text-purple-600" />
+        <Settings className="h-6 w-6 text-gray-900 dark:text-gray-100" />
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -21,7 +21,7 @@ export default function AdminSettingsPage() {
         {/* Notifications */}
         <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
           <div className="mb-4 flex items-center space-x-3">
-            <Bell className="h-5 w-5 text-purple-600" />
+            <Bell className="h-5 w-5 text-gray-900 dark:text-gray-100" />
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Notifications</h2>
           </div>
           <div className="space-y-4">
@@ -71,7 +71,7 @@ export default function AdminSettingsPage() {
         {/* Security */}
         <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
           <div className="mb-4 flex items-center space-x-3">
-            <Shield className="h-5 w-5 text-purple-600" />
+            <Shield className="h-5 w-5 text-gray-900 dark:text-gray-100" />
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Security</h2>
           </div>
           <div className="space-y-4">
@@ -110,7 +110,7 @@ export default function AdminSettingsPage() {
         {/* Database */}
         <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
           <div className="mb-4 flex items-center space-x-3">
-            <Database className="h-5 w-5 text-purple-600" />
+            <Database className="h-5 w-5 text-gray-900 dark:text-gray-100" />
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Database</h2>
           </div>
           <div className="space-y-4">
@@ -136,7 +136,7 @@ export default function AdminSettingsPage() {
         {/* System */}
         <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
           <div className="mb-4 flex items-center space-x-3">
-            <Globe className="h-5 w-5 text-purple-600" />
+            <Globe className="h-5 w-5 text-gray-900 dark:text-gray-100" />
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">System</h2>
           </div>
           <div className="space-y-4">
@@ -144,7 +144,7 @@ export default function AdminSettingsPage() {
               <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
                 Default Language
               </label>
-              <select className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+              <select className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-gray-700 dark:border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-700 dark:ring-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                 <option value="en">English</option>
                 <option value="fr">Français</option>
                 <option value="es">Español</option>
@@ -157,7 +157,7 @@ export default function AdminSettingsPage() {
               <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
                 Date Format
               </label>
-              <select className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+              <select className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-gray-700 dark:border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-700 dark:ring-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                 <option value="MM/DD/YYYY">MM/DD/YYYY</option>
                 <option value="DD/MM/YYYY">DD/MM/YYYY</option>
                 <option value="YYYY-MM-DD">YYYY-MM-DD</option>
@@ -167,7 +167,7 @@ export default function AdminSettingsPage() {
               <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
                 Timezone
               </label>
-              <select className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+              <select className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-gray-700 dark:border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-700 dark:ring-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                 <option value="UTC">UTC</option>
                 <option value="Africa/Lagos">Africa/Lagos (WAT)</option>
                 <option value="America/New_York">America/New York (EST)</option>

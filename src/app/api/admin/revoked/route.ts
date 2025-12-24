@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { listRevokedJtis } from "@/lib/rateLimiter";
+import log from "@/lib/logger";
 
 export async function GET(req: Request) {
   const session = await getServerSession(authOptions as unknown as Record<string, unknown>);
@@ -28,7 +29,7 @@ export async function GET(req: Request) {
     });
     return NextResponse.json({ data: result.items, total: result.total });
   } catch (err) {
-    console.warn("Failed to parse pagination params, falling back:", err);
+    log.warn("Failed to parse pagination params, falling back:", err);
     const result = await listRevokedJtis();
     return NextResponse.json({ data: result.items, total: result.total });
   }

@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import { addMonths } from "date-fns";
+import log from "@/lib/logger";
 
 /**
  * GET /api/admin/recordings
@@ -150,7 +151,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Error fetching recordings:", error);
+    log.error("Error fetching recordings:", error);
     return NextResponse.json({ error: "Failed to fetch recordings" }, { status: 500 });
   }
 }
@@ -217,7 +218,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: "Invalid action" }, { status: 400 });
     }
   } catch (error) {
-    console.error("Error updating recordings:", error);
+    log.error("Error updating recordings:", error);
     return NextResponse.json({ error: "Failed to update recordings" }, { status: 500 });
   }
 }

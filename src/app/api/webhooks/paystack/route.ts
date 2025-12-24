@@ -9,6 +9,7 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import log from "@/lib/logger"; // Added logger import
 import {
   validateWebhookSignature,
   parseWebhookPayload,
@@ -24,7 +25,7 @@ export async function POST(req: Request) {
     const signature = headersList.get("x-paystack-signature");
 
     if (!signature) {
-      console.error("❌ Webhook rejected: Missing Paystack signature");
+      log.error("Webhook rejected: Missing Paystack signature");
       return NextResponse.json({ success: false, error: "Missing signature" }, { status: 401 });
     }
 
@@ -32,13 +33,13 @@ export async function POST(req: Request) {
     const isValid = validateWebhookSignature(signature, body);
 
     if (!isValid) {
-      console.error("❌ Webhook rejected: Invalid Paystack signature");
+      log.error("Webhook rejected: Invalid Paystack signature");
       return NextResponse.json({ success: false, error: "Invalid signature" }, { status: 401 });
     }
 
     // Parse webhook payload
     const payload = parseWebhookPayload(body);
-    console.log(`📨 Webhook received: ${payload.event}`);
+    log.info(`Webhook received: ${payload.event}`, { event: payload.event });
 
     // Handle different event types
     switch (payload.event) {
@@ -51,12 +52,12 @@ export async function POST(req: Request) {
         break;
 
       default:
-        console.log(`ℹ️ Unhandled webhook event: ${payload.event}`);
+        log.warn(`Unhandled webhook event: ${payload.event}`, { event: payload.event });
     }
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("❌ Webhook processing failed:", error);
+    log.error("Webhook processing failed", { error });
 
     const errorMessage = error instanceof Error ? error.message : "Webhook processing failed";
 
@@ -70,7 +71,7 @@ export async function POST(req: Request) {
 async function handleChargeSuccess(payload: PaystackWebhookPayload) {
   const { reference, amount, currency } = payload.data;
 
-  console.log(`✅ Processing successful charge: ${reference}`);
+  log.info(`Processing successful charge: ${reference}`, { reference });
 
   try {
     // Find payment record
@@ -80,13 +81,13 @@ async function handleChargeSuccess(payload: PaystackWebhookPayload) {
     });
 
     if (!payment) {
-      console.error(`❌ Payment not found for reference: ${reference}`);
+      log.error("Payment not found for reference", { reference });
       return;
     }
 
     // Check if payment was already processed
     if (payment.status === "SUCCESS") {
-      console.log("Payment already processed, skipping:", reference);
+      log.info("Payment already processed, skipping", { reference });
       return; // Already processed
     }
 
@@ -138,7 +139,9 @@ async function handleChargeSuccess(payload: PaystackWebhookPayload) {
             },
           });
 
-          console.log(`✅ Subscription upgraded to lifetime: ${payment.subscriptionId}`);
+          log.info(`Subscription upgraded to lifetime: ${payment.subscriptionId}`, {
+            subscriptionId: payment.subscriptionId,
+          });
         }
       } else {
         // Regular plan subscription payment
@@ -184,16 +187,19 @@ async function handleChargeSuccess(payload: PaystackWebhookPayload) {
           },
         });
 
-        console.log(`✅ Subscription created: ${subscription.id} for payment: ${payment.id}`);
+        log.info(`Subscription created: ${subscription.id} for payment: ${payment.id}`, {
+          subscriptionId: subscription.id,
+          paymentId: payment.id,
+        });
       }
     } else {
-      console.log(
-        `ℹ️ Payment marked as SUCCESS but no subscription created (userId null): ${payment.id}`
-      );
-      console.log("Subscription will be created when user completes signup");
+      log.info("Payment marked as SUCCESS but no subscription created (userId null)", {
+        paymentId: payment.id,
+      });
+      log.info("Subscription will be created when user completes signup");
     }
   } catch (error) {
-    console.error(`❌ Failed to process successful charge for ${reference}:`, error);
+    log.error("Failed to process successful charge", { reference, error });
     throw error;
   }
 }
@@ -204,7 +210,7 @@ async function handleChargeSuccess(payload: PaystackWebhookPayload) {
 async function handleChargeFailed(payload: PaystackWebhookPayload) {
   const { reference, gateway_response } = payload.data;
 
-  console.log(`❌ Processing failed charge: ${reference}`);
+  log.warn(`Processing failed charge: ${reference}`, { reference });
 
   try {
     // Find payment record
@@ -244,7 +250,7 @@ async function handleChargeFailed(payload: PaystackWebhookPayload) {
       });
     }
 
-    console.log(`✅ Payment marked as failed: ${payment.id}`);
+    log.info(`Payment marked as failed: ${payment.id}`, { paymentId: payment.id });
   } catch (error) {
     console.error(`❌ Failed to process failed charge for ${reference}:`, error);
     throw error;

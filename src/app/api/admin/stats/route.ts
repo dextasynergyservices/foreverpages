@@ -8,6 +8,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
+import log from "@/lib/logger";
 
 export async function GET() {
   try {
@@ -183,7 +184,7 @@ export async function GET() {
       },
     });
   } catch (error) {
-    console.error("[ADMIN STATS ERROR]", error);
+    log.error("[ADMIN STATS ERROR]", error);
     return NextResponse.json({ success: false, error: "Failed to fetch stats" }, { status: 500 });
   }
 }

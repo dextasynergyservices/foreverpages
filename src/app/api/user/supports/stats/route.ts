@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import log from "@/lib/logger";
 
 /**
  * Get exchange rates from the same API used by the frontend
@@ -10,25 +11,25 @@ async function getExchangeRates(): Promise<Record<string, number>> {
   try {
     // Use the same environment variable as the frontend
     const apiKey = process.env.NEXT_PUBLIC_EXCHANGE_RATE_API_KEY;
-    console.log("🔑 Exchange API Key available:", !!apiKey);
+    log.info("🔑 Exchange API Key available:", !!apiKey);
 
     const apiUrl = apiKey
       ? `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`
       : `https://api.exchangerate-api.com/v4/latest/USD`;
 
-    console.log("📡 Fetching exchange rates from:", apiUrl.replace(apiKey || "", "HIDDEN"));
+    log.info("📡 Fetching exchange rates from:", apiUrl.replace(apiKey || "", "HIDDEN"));
 
     const response = await fetch(apiUrl);
-    console.log("📨 Exchange API response status:", response.status);
+    log.info("📨 Exchange API response status:", response.status);
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.log("❌ Exchange API error response:", errorText);
+      log.info("❌ Exchange API error response:", errorText);
       throw new Error(`Exchange rate API returned ${response.status}: ${errorText}`);
     }
 
     const data = await response.json();
-    console.log("💱 Exchange API data received:", {
+    log.info("💱 Exchange API data received:", {
       success: data.result || "unknown",
       ratesCount: Object.keys(data.rates || {}).length,
       NGN: data.rates?.NGN,
@@ -38,11 +39,11 @@ async function getExchangeRates(): Promise<Record<string, number>> {
     if (data && data.rates) {
       return data.rates;
     } else {
-      console.log("❌ Invalid exchange rate API response format:", data);
+      log.info("❌ Invalid exchange rate API response format:", data);
       throw new Error("Invalid exchange rate API response format");
     }
   } catch (error) {
-    console.error("❌ Failed to fetch exchange rates:", error);
+    log.error("❌ Failed to fetch exchange rates:", error);
     throw error;
   }
 }
@@ -60,17 +61,17 @@ export async function GET(_req: NextRequest) {
     }
 
     const userId = session.user.id;
-    console.log("📊 Stats API called for userId:", userId);
+    log.info("📊 Stats API called for userId:", userId);
 
     // Get real exchange rates from the same API used by frontend
     let exchangeRates: Record<string, number>;
     try {
       exchangeRates = await getExchangeRates();
-      console.log("💱 Exchange rates fetched successfully");
+      log.info("💱 Exchange rates fetched successfully");
     } catch (error) {
-      console.error("❌ Exchange rates unavailable:", error);
+      log.error("❌ Exchange rates unavailable:", error);
       // Temporary fallback to show data while debugging
-      console.log("🔄 Using temporary fallback rates for debugging");
+      log.info("🔄 Using temporary fallback rates for debugging");
       exchangeRates = {
         USD: 1.0,
         NGN: 1650.0,
@@ -99,7 +100,7 @@ export async function GET(_req: NextRequest) {
         createdAt: "desc",
       },
     });
-    console.log("🔍 Found received supports:", receivedSupports.length, "records");
+    log.info("🔍 Found received supports:", receivedSupports.length);
 
     // Get sent supports with individual records to handle currency conversion
     const sentSupports = await prisma.memorialSupport.findMany({
@@ -111,7 +112,7 @@ export async function GET(_req: NextRequest) {
         currency: true,
       },
     });
-    console.log("🔍 Found sent supports:", sentSupports.length, "records");
+    log.info("🔍 Found sent supports:", sentSupports.length);
 
     // Convert all amounts to USD and sum (using same logic as frontend)
     const totalReceivedUSD = receivedSupports.reduce((total, support) => {
@@ -189,7 +190,7 @@ export async function GET(_req: NextRequest) {
       lastMonthTotal,
     };
 
-    console.log("💰 Support stats calculation:", {
+    log.info("💰 Support stats calculation:", {
       userId,
       receivedSupports: receivedSupports.map((s) => ({
         amount: s.amount,
@@ -226,7 +227,7 @@ export async function GET(_req: NextRequest) {
       stats,
     });
   } catch (error) {
-    console.error("Error fetching support stats:", error);
+    log.error("Error fetching support stats:", error);
     return NextResponse.json(
       {
         success: false,

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { listRevocationAudit } from "@/lib/rateLimiter";
+import log from "@/lib/logger";
 
 export async function GET(req: Request) {
   const session = await getServerSession(authOptions as unknown as Record<string, unknown>);
@@ -40,7 +41,7 @@ export async function GET(req: Request) {
     const slice = filtered.slice(start, start + limit);
     return NextResponse.json({ data: slice, total });
   } catch (err) {
-    console.warn("Error listing audit:", err);
+    log.warn("Error listing audit:", err);
     const entries = await listRevocationAudit(200);
     return NextResponse.json({ data: entries, total: entries.length });
   }

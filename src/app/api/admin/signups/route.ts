@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
+import log from "@/lib/logger";
 
 export async function GET(req: NextRequest) {
   try {
@@ -160,7 +161,7 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("[ADMIN SIGNUPS ERROR]", error);
+    log.error("[ADMIN SIGNUPS ERROR]", error);
     return NextResponse.json({ success: false, error: "Failed to fetch signups" }, { status: 500 });
   }
 }

@@ -222,7 +222,7 @@ export default function RecordingsPage() {
                   {statistics.totalRecordings}
                 </p>
               </div>
-              <Video className="h-12 w-12 text-purple-600" />
+              <Video className="h-12 w-12 text-gray-900 dark:text-gray-100" />
             </div>
           </div>
 
@@ -390,7 +390,7 @@ export default function RecordingsPage() {
                     <Link
                       href={`/${recording.memorialSlug}`}
                       target="_blank"
-                      className="font-medium text-purple-600 hover:underline dark:text-purple-400"
+                      className="font-medium text-gray-900 dark:text-gray-100 hover:underline dark:text-gray-300"
                     >
                       {recording.memorialName}
                     </Link>
