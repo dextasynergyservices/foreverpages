@@ -2270,6 +2270,7 @@
       },
       "verifying": "Verifying...",
       "resendCode": "Resend code",
+      "codeSent": "Verification code sent to your email",
       "useBackupCode": "Use backup code instead",
       "backupCode": {
         "title": "Enter Backup Code",

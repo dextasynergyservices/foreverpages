@@ -2293,6 +2293,7 @@
       },
       "verifying": "Verificando...",
       "resendCode": "Reenviar código",
+      "codeSent": "Código de verificación enviado a tu correo electrónico",
       "useBackupCode": "Usar código de respaldo en su lugar",
       "backupCode": {
         "title": "Ingresar Código de Respaldo",

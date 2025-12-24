@@ -2260,6 +2260,7 @@
       },
       "verifying": "Vérification...",
       "resendCode": "Renvoyer le code",
+      "codeSent": "Code de vérification envoyé à votre email",
       "useBackupCode": "Utiliser un code de secours à la place",
       "backupCode": {
         "title": "Entrez un Code de Secours",

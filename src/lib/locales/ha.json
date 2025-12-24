@@ -2672,6 +2672,7 @@
       },
       "verifying": "Verifying...",
       "resendCode": "Resend code",
+      "codeSent": "An aika lambar tabbatarwa zuwa imel ɗinku",
       "useBackupCode": "Use backup code instead",
       "backupCode": {
         "title": "Enter Backup Code",
