@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { LoadingSpinner, AuthFormSkeleton } from "@/components/ui/skeleton";
 import TwoFactorVerification from "./TwoFactorVerification";
 import { useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 
 interface RateLimitInfo {
   lockoutUntil: number;
@@ -47,6 +48,32 @@ export default function LoginPage() {
   const [rateLimitInfo, setRateLimitInfo] = useState<RateLimitInfo | null>(null);
   const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
   const [countdown, setCountdown] = useState<string>("");
+
+  // Check if user is already authenticated using TanStack Query
+  const { data: session } = useQuery({
+    queryKey: ["session"],
+    queryFn: async () => {
+      const response = await fetch("/api/auth/session");
+      if (!response.ok) return null;
+      return response.json();
+    },
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
+
+  // Redirect authenticated users immediately
+  useEffect(() => {
+    if (session?.user) {
+      const redirect = searchParams?.get("redirect");
+      if (redirect) {
+        window.location.href = decodeURIComponent(redirect);
+      } else if (session.user.role === "ADMIN" || session.user.role === "SUPER_ADMIN") {
+        window.location.href = "/admin";
+      } else {
+        window.location.href = "/user-dashboard";
+      }
+    }
+  }, [session, searchParams]);
 
   // Load form data and rate limit info from localStorage on component mount
   useEffect(() => {
@@ -283,6 +310,14 @@ export default function LoginPage() {
         setRateLimitInfo(null);
         setRemainingAttempts(null);
 
+        // Check for redirect parameter first
+        const redirect = searchParams?.get("redirect");
+        if (redirect) {
+          // Redirect to the originally requested page
+          window.location.href = decodeURIComponent(redirect);
+          return;
+        }
+
         // Wait a bit for session to be established, then fetch user role and redirect
         setTimeout(async () => {
           try {
@@ -300,7 +335,7 @@ export default function LoginPage() {
             // Fallback to user dashboard
             window.location.href = "/user-dashboard";
           }
-        }, 1000);
+        }, 500); // Reduced timeout for faster redirect
       } else {
         toast.error("Login failed - please try again");
         setIsLoading(false);
