@@ -288,15 +288,32 @@ export default function LoginPage() {
         }
         setIsLoading(false);
       } else if (result?.ok) {
+        toast.success("Login successful! Redirecting...");
         // Clear saved form data and rate limit on successful login
         localStorage.removeItem("loginFormData");
         localStorage.removeItem("loginRateLimit");
         setRateLimitInfo(null);
         setRemainingAttempts(null);
 
-        // Let NextAuth handle the redirect using the callbackUrl
-        toast.success("Login successful! Redirecting...");
-        window.location.href = result.url || callbackUrl;
+        // Wait a bit for session to be established, then fetch user role and redirect
+        setTimeout(async () => {
+          try {
+            const response = await fetch("/api/auth/session");
+            const session = await response.json();
+
+            // Admin users always go to admin dashboard (override callbackUrl)
+            if (session?.user?.role === "ADMIN" || session?.user?.role === "SUPER_ADMIN") {
+              window.location.href = "/admin";
+            } else {
+              // Regular users: use NextAuth's result.url or the callbackUrl
+              window.location.href = result.url || callbackUrl;
+            }
+          } catch (error) {
+            console.error("Error fetching session:", error);
+            // Fallback: use NextAuth's result.url or callbackUrl (preserves original behavior)
+            window.location.href = result.url || callbackUrl;
+          }
+        }, 1000);
       } else {
         toast.error("Login failed - please try again");
         setIsLoading(false);
