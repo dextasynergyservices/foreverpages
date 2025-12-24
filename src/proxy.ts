@@ -48,7 +48,7 @@ export async function proxy(req: NextRequest) {
   }
 
   // Skip authentication check for certain public routes that are in the matcher
-  const publicRoutes = ["/signup", "/auth/signup"];
+  const publicRoutes = ["/signup", "/auth/signup", "/auth/login"];
   const authRoutes = ["/api/auth"]; // NextAuth routes should not require authentication
 
   // 2FA login routes that need to be accessible during login (before session exists)
