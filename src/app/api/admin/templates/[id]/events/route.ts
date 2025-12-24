@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-
-const prisma = new PrismaClient();
 
 function serializeEvent(data: unknown) {
   return `data: ${JSON.stringify(data)}\n\n`;
@@ -75,13 +73,13 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
       await pollOnce();
 
       // Poll every 2s
-      const iv = setInterval(async () => {
+      const iv: NodeJS.Timeout = setInterval(async () => {
         if (closed) return clearInterval(iv);
         await pollOnce();
       }, 2000);
 
       // Keep the stream alive with comments
-      const keepAlive = setInterval(() => {
+      const keepAlive: NodeJS.Timeout = setInterval(() => {
         if (closed) return clearInterval(keepAlive);
         controller.enqueue(`: keep-alive\n\n`);
       }, 15000);

@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { dispatchTemplateBuild } from "@/lib/github/dispatch";
-import { PrismaClient } from "@/generated/prisma";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

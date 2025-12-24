@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { isValidRSVPTokenFormat, isRSVPTokenExpired } from "@/lib/rsvpTokens";
 import { sendEmail } from "@/lib/email";
 import {
   generateRSVPNotificationEmail,
   generateRSVPNotificationSubject,
 } from "@/lib/emailTemplates/rsvpNotification";
-
-const prisma = new PrismaClient();
 
 /**
  * GET /api/invitations/rsvp?token=xxx

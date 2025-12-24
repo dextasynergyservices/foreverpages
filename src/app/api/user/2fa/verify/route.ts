@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { verifyTOTPCode, verifyBackupCode } from "@/lib/two-factor";
 import crypto from "crypto";
-
-const prisma = new PrismaClient();
 
 /**
  * POST /api/user/2fa/verify - Verify 2FA code during login

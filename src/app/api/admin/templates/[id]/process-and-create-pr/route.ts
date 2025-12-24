@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { dispatchTemplateBuild } from "@/lib/github/dispatch";
 
-const prisma = new PrismaClient();
 export const runtime = "nodejs";
 export const maxDuration = 300; // 5 minutes timeout
 

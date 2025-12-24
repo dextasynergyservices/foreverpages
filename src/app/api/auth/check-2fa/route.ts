@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
 import bcrypt from "bcryptjs";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 /**
  * POST /api/auth/check-2fa - Check if user has 2FA enabled before login

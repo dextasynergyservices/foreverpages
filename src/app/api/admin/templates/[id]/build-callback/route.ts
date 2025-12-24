@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient, Prisma } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
+import { Prisma } from "@/generated/prisma";
 import {
   processTemplateAssets,
   createTemplateSections,
@@ -9,7 +10,6 @@ import os from "os";
 import path from "path";
 import AdmZip from "adm-zip";
 
-const prisma = new PrismaClient();
 export const runtime = "nodejs";
 export const maxDuration = 300; // 5 minutes max
 

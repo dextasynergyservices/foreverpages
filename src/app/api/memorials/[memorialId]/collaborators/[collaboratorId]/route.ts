@@ -1,10 +1,8 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { getUserMemorialRole } from "@/lib/permissions";
-
-const prisma = new PrismaClient();
 
 /**
  * PATCH /api/memorials/[memorialId]/collaborators/[collaboratorId]

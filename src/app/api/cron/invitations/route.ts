@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import * as Brevo from "@getbrevo/brevo";
-
-const prisma = new PrismaClient();
 
 // Initialize Brevo client
 const brevoApiInstance = new Brevo.TransactionalEmailsApi();
