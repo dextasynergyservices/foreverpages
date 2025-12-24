@@ -126,7 +126,7 @@ export default function CategoriesPage() {
     return (
       <div className="p-6">
         <div className="flex h-64 items-center justify-center">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-purple-600 border-t-transparent"></div>
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-900 dark:border-gray-100 border-t-transparent"></div>
         </div>
       </div>
     );

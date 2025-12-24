@@ -144,7 +144,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(body, { status: 400 });
     }
 
-    let template;
+    let template: Awaited<ReturnType<typeof prisma.template.create>>;
     try {
       if (replaceTemplateId) {
         // Update existing template and remove previous assets
@@ -388,7 +388,7 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * Handle Next.js template upload
+ * Handle Next.js template upload with enhanced scaffold generation
  */
 async function handleNextJsTemplateUpload(
   validation: Awaited<ReturnType<typeof validateAndExtractZip>>,
@@ -401,6 +401,9 @@ async function handleNextJsTemplateUpload(
     const { createTemplateSectionsData, extractSupportedSections, readTemplateManifest } =
       await import("@/lib/template/nextjs-processor");
     const { createPrForTemplate } = await import("@/lib/github/pr");
+    const { processTemplateUpload, prepareFilesForPR } = await import(
+      "@/lib/template/enhanced-upload-handler"
+    );
 
     if (!validation.tempDir) {
       return NextResponse.json({ message: "No extracted directory available" }, { status: 500 });
@@ -409,6 +412,26 @@ async function handleNextJsTemplateUpload(
     const manifest = readTemplateManifest(validation.tempDir);
     if (!manifest) {
       return NextResponse.json({ message: "Failed to read manifest" }, { status: 400 });
+    }
+
+    // 🔥 Enhanced: Process template with scaffold generator
+    const enhancedResult = await processTemplateUpload(validation.tempDir);
+
+    if (!enhancedResult.success) {
+      console.error("Template scaffold generation failed:", enhancedResult.errors);
+      return NextResponse.json(
+        {
+          message: "Template scaffold generation failed",
+          errors: enhancedResult.errors,
+          warnings: enhancedResult.warnings,
+        },
+        { status: 400 }
+      );
+    }
+
+    // Log scaffold generation warnings
+    if (enhancedResult.warnings.length > 0) {
+      console.warn("Template scaffold warnings:", enhancedResult.warnings);
     }
 
     // Read config.ts to get defaultDesign and customization
@@ -424,55 +447,56 @@ async function handleNextJsTemplateUpload(
     }
 
     // Create template in database with PROCESSING status
-    const template = await prisma.template.create({
-      data: {
-        name: manifest.name,
-        slug: manifest.slug,
-        description: manifest.description || null,
-        version: manifest.version,
-        previewImage:
-          validation.uploaded?.preview?.url || `/templates/${manifest.slug}/preview.png`,
-        thumbnailImage:
-          validation.uploaded?.thumbnail?.url || `/templates/${manifest.slug}/thumbnail.png`,
-        componentPath: `templates/${manifest.slug}`,
-        configPath: `templates/${manifest.slug}/config`,
-        isNextJsTemplate: true,
-        previewMode: "NATIVE",
-        processingStatus: "PROCESSING",
-        layoutType: "FLEXIBLE",
-        isActive: false,
-        isFeatured: false,
-        storagePath: validation.tempDir,
-        manifest: JSON.parse(JSON.stringify(manifest)) as Prisma.InputJsonValue,
-        packageUrl: validation.uploaded?.package?.url || null,
-        defaultConfig: JSON.parse(
-          JSON.stringify(configData.defaultDesign || manifest.customization || {})
-        ) as Prisma.InputJsonValue,
-        supportedSections: extractSupportedSections(manifest).map((section) => {
-          // Map to valid Prisma enum values
-          const mappings: Record<string, string> = {
-            FAMILY: "FAMILY_TREE",
-            VIDEO_TRIBUTES: "VIDEO_GALLERY",
-          };
-          return mappings[section] || section;
-        }) as Array<
-          | "HERO"
-          | "VIRTUAL_CANDLES"
-          | "TIMELINE"
-          | "GALLERY"
-          | "TRIBUTES"
-          | "CONDOLENCES"
-          | "BIOGRAPHY"
-          | "FAMILY_TREE"
-          | "VIDEO_GALLERY"
-          | "DONATIONS"
-        >,
-        categoryId: categoryIds[0] || null,
-        plans: {
-          connect: planIds.map((id) => ({ id })),
+    const template: Awaited<ReturnType<typeof prisma.template.create>> =
+      await prisma.template.create({
+        data: {
+          name: manifest.name,
+          slug: manifest.slug,
+          description: manifest.description || null,
+          version: manifest.version,
+          previewImage:
+            validation.uploaded?.preview?.url || `/templates/${manifest.slug}/preview.png`,
+          thumbnailImage:
+            validation.uploaded?.thumbnail?.url || `/templates/${manifest.slug}/thumbnail.png`,
+          componentPath: `templates/${manifest.slug}`,
+          configPath: `templates/${manifest.slug}/config`,
+          isNextJsTemplate: true,
+          previewMode: "NATIVE",
+          processingStatus: "PROCESSING",
+          layoutType: "FLEXIBLE",
+          isActive: false,
+          isFeatured: false,
+          storagePath: validation.tempDir,
+          manifest: JSON.parse(JSON.stringify(manifest)) as Prisma.InputJsonValue,
+          packageUrl: validation.uploaded?.package?.url || null,
+          defaultConfig: JSON.parse(
+            JSON.stringify(configData.defaultDesign || manifest.customization || {})
+          ) as Prisma.InputJsonValue,
+          supportedSections: extractSupportedSections(manifest).map((section) => {
+            // Map to valid Prisma enum values
+            const mappings: Record<string, string> = {
+              FAMILY: "FAMILY_TREE",
+              VIDEO_TRIBUTES: "VIDEO_GALLERY",
+            };
+            return mappings[section] || section;
+          }) as Array<
+            | "HERO"
+            | "VIRTUAL_CANDLES"
+            | "TIMELINE"
+            | "GALLERY"
+            | "TRIBUTES"
+            | "CONDOLENCES"
+            | "BIOGRAPHY"
+            | "FAMILY_TREE"
+            | "VIDEO_GALLERY"
+            | "DONATIONS"
+          >,
+          categoryId: categoryIds[0] || null,
+          plans: {
+            connect: planIds.map((id) => ({ id })),
+          },
         },
-      },
-    });
+      });
 
     // Create template sections
     const sectionsData = createTemplateSectionsData(manifest);
@@ -506,9 +530,14 @@ async function handleNextJsTemplateUpload(
 
     console.log(`✅ Next.js template registered in database: ${template.id}`);
 
-    // Collect all files from the extracted directory for PR
-    const files = collectTemplateFiles(validation.tempDir, manifest.slug);
-    if (!files.length) {
+    // 🔥 Enhanced: Use prepareFilesForPR to properly merge uploaded and scaffold files
+    const mergedFiles = prepareFilesForPR(
+      validation.tempDir,
+      enhancedResult.generatedFiles,
+      manifest.slug
+    );
+
+    if (!mergedFiles.length) {
       return NextResponse.json({ message: "No files found in template package" }, { status: 400 });
     }
 
@@ -521,6 +550,12 @@ async function handleNextJsTemplateUpload(
       .slice(0, 60);
     const branch = `template/${safeSlug}-${template.id}-${Date.now()}`;
     const title = `Add Next.js template: ${manifest.name}`;
+
+    // 🔥 Enhanced: Include auto-generated files info in PR body
+    const autoGenFilesList = enhancedResult.generatedFiles
+      .map((f) => `  - \`${f.path}\` - ${f.description}`)
+      .join("\n");
+
     const body = `## Next.js Template Upload
 
 **Template:** ${manifest.name}
@@ -535,17 +570,30 @@ ${manifest.description || "No description provided"}
 ### Sections
 ${extractSupportedSections(manifest).join(", ")}
 
-### Files
-- ${files.length} files in template package
-- Template location: \`src/app/templates/${manifest.slug}/\`
-${files.find((f) => f.path.includes("public/")) ? `- Public assets: \`public/templates/${manifest.slug}/\`` : ""}
+### Files Summary
+- **Total files:** ${mergedFiles.length}
+- **Auto-generated files:** ${enhancedResult.generatedFiles.length}
+- **Uploaded files:** ${mergedFiles.length - enhancedResult.generatedFiles.length}
+
+### Auto-Generated Files
+The following files were auto-generated by the template scaffold system:
+${autoGenFilesList || "  - None (all files provided in upload)"}
+
+### File Locations
+- Template: \`src/app/templates/${manifest.slug}/\`
+- MemorialTemplate Bridge: \`src/components/templates/components/${manifest.slug}/MemorialTemplate.tsx\`
+${mergedFiles.find((f) => f.path.includes("public/")) ? `- Public assets: \`public/templates/${manifest.slug}/\`` : ""}
+
+${enhancedResult.warnings.length > 0 ? `### Warnings\n${enhancedResult.warnings.map((w) => `- ${w}`).join("\n")}` : ""}
 
 ---
-*This PR was automatically created by the template upload system.*`;
+*This PR was automatically created by the enhanced template upload system with scaffold generation.*`;
 
-    console.log(`📤 Creating GitHub PR with ${files.length} files for template ${template.id}`);
+    console.log(
+      `📤 Creating GitHub PR with ${mergedFiles.length} files (${enhancedResult.generatedFiles.length} auto-generated) for template ${template.id}`
+    );
 
-    const pr = await createPrForTemplate(branch, files, title, body, "develop");
+    const pr = await createPrForTemplate(branch, mergedFiles, title, body, "develop");
 
     // Update template with PR info
     await prisma.template.update({
@@ -554,7 +602,7 @@ ${files.find((f) => f.path.includes("public/")) ? `- Public assets: \`public/tem
         prNumber: pr.number.toString(),
         prUrl: pr.url,
         processingStatus: "VALIDATED",
-        processingLogs: "PR created successfully - awaiting merge to become active",
+        processingLogs: `PR created successfully - ${enhancedResult.generatedFiles.length} files auto-generated. Awaiting merge to become active.`,
       },
     });
 
@@ -576,6 +624,11 @@ ${files.find((f) => f.path.includes("public/")) ? `- Public assets: \`public/tem
           url: pr.url,
           branch,
         },
+        scaffold: {
+          generated: enhancedResult.generatedFiles.length,
+          files: enhancedResult.generatedFiles.map((f) => f.path),
+          warnings: enhancedResult.warnings,
+        },
         manifest: validation.manifest,
         uploaded: validation.uploaded,
         note: "Template will be active after PR is merged to develop branch",
@@ -591,74 +644,4 @@ ${files.find((f) => f.path.includes("public/")) ? `- Public assets: \`public/tem
       { status: 500 }
     );
   }
-}
-
-/**
- * Collect all files from template directory for GitHub PR
- */
-function collectTemplateFiles(
-  extractedDir: string,
-  slug: string
-): Array<{ path: string; content: string | Buffer }> {
-  const files: Array<{ path: string; content: string | Buffer }> = [];
-  const stack = [extractedDir];
-
-  while (stack.length) {
-    const currentPath = stack.pop()!;
-    const entries = fs.readdirSync(currentPath, { withFileTypes: true });
-
-    for (const entry of entries) {
-      const fullPath = path.join(currentPath, entry.name);
-
-      if (entry.isDirectory()) {
-        // Skip these directories
-        if (["node_modules", ".git", ".next", "dist", "build"].includes(entry.name)) {
-          continue;
-        }
-        stack.push(fullPath);
-        continue;
-      }
-
-      if (entry.isFile()) {
-        // Get path relative to extracted directory
-        const relativePath = path.relative(extractedDir, fullPath).replace(/\\/g, "/");
-
-        // Determine final path in repository
-        let finalPath: string;
-        if (relativePath.startsWith("public/")) {
-          // Public assets go to public/templates/[slug]/
-          const publicRelative = relativePath.replace(/^public\//, "");
-          finalPath = `public/templates/${slug}/${publicRelative}`;
-        } else {
-          // Everything else goes to src/app/templates/[slug]/
-          finalPath = `src/app/templates/${slug}/${relativePath}`;
-        }
-
-        // Read file content
-        const ext = path.extname(entry.name).toLowerCase();
-        const isBinary = [
-          ".png",
-          ".jpg",
-          ".jpeg",
-          ".gif",
-          ".webp",
-          ".ico",
-          ".woff",
-          ".woff2",
-          ".ttf",
-          ".eot",
-        ].includes(ext);
-
-        if (isBinary) {
-          const buffer = fs.readFileSync(fullPath);
-          files.push({ path: finalPath, content: buffer });
-        } else {
-          const content = fs.readFileSync(fullPath, "utf8");
-          files.push({ path: finalPath, content });
-        }
-      }
-    }
-  }
-
-  return files;
 }

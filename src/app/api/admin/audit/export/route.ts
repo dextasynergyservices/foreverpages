@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { listRevocationAudit } from "@/lib/rateLimiter";
+import log from "@/lib/logger";
 
 export async function GET(req: Request) {
   const session = await getServerSession(authOptions as unknown as Record<string, unknown>);
@@ -56,7 +57,7 @@ export async function GET(req: Request) {
       },
     });
   } catch (err) {
-    console.warn("Error exporting audit:", err);
+    log.warn("Error exporting audit:", err);
     return NextResponse.json({ error: "export_failed" }, { status: 500 });
   }
 }

@@ -108,6 +108,12 @@ export default function UploadTemplateDialog({
   const xhrRef = useRef<XMLHttpRequest | null>(null);
   const [processStep, setProcessStep] = useState<StepStatus>("idle");
   const [uploadStep, setUploadStep] = useState<StepStatus>("idle");
+  // 🔥 Enhanced: Scaffold generation info
+  const [scaffoldInfo, setScaffoldInfo] = useState<{
+    generated: number;
+    files: string[];
+    warnings: string[];
+  } | null>(null);
 
   const getManifestString = (m: PreviewManifest, key: string): string | undefined => {
     if (!m) return undefined;
@@ -523,6 +529,31 @@ export default function UploadTemplateDialog({
         else setGeneratedManifest(null);
         if (Array.isArray(gn)) setGeneratedNotes(gn);
         else setGeneratedNotes(null);
+
+        // 🔥 Enhanced: Capture scaffold generation info
+        const scaffoldData =
+          data?.data && typeof data.data === "object"
+            ? (
+                data.data as {
+                  scaffold?: { generated?: number; files?: string[]; warnings?: string[] };
+                }
+              ).scaffold
+            : undefined;
+        if (scaffoldData) {
+          setScaffoldInfo({
+            generated: scaffoldData.generated || 0,
+            files: scaffoldData.files || [],
+            warnings: scaffoldData.warnings || [],
+          });
+          if ((scaffoldData.generated ?? 0) > 0) {
+            toast.success(
+              `🚀 ${scaffoldData.generated} files auto-generated including MemorialTemplate bridge`,
+              { duration: 6000 }
+            );
+          }
+        } else {
+          setScaffoldInfo(null);
+        }
 
         // For Next.js templates, set process step to done immediately (PR created)
         // For React SPA templates, start processing step
@@ -1024,7 +1055,54 @@ export default function UploadTemplateDialog({
                     View Published
                   </a>
                 )}
-                {uploadedTemplateId && (
+              </div>
+              {/* 🔥 Enhanced: Display scaffold generation info */}
+              {scaffoldInfo && scaffoldInfo.generated > 0 && (
+                <div className="mt-4 p-3 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800">
+                  <div className="flex items-center gap-2 text-green-700 dark:text-green-400 font-medium">
+                    <span>🚀</span>
+                    <span>
+                      {scaffoldInfo.generated} file{scaffoldInfo.generated !== 1 ? "s" : ""}{" "}
+                      auto-generated
+                    </span>
+                  </div>
+                  <details className="mt-2">
+                    <summary className="cursor-pointer text-sm text-green-600 dark:text-green-500 hover:underline">
+                      View generated files
+                    </summary>
+                    <ul className="mt-2 text-xs space-y-1 max-h-40 overflow-auto font-mono">
+                      {scaffoldInfo.files.map((file, i) => (
+                        <li key={i} className="text-gray-700 dark:text-gray-300">
+                          {file.includes("MemorialTemplate") ? (
+                            <span className="font-semibold text-blue-600 dark:text-blue-400">
+                              ⭐ {file}
+                            </span>
+                          ) : file.includes("SupportModal") ? (
+                            <span className="font-semibold text-gray-900 dark:text-gray-100 dark:text-purple-400">
+                              💜 {file}
+                            </span>
+                          ) : (
+                            <span>📄 {file}</span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                  {scaffoldInfo.warnings.length > 0 && (
+                    <div className="mt-2 text-xs text-yellow-700 dark:text-yellow-400">
+                      <strong>Warnings:</strong>
+                      <ul className="list-disc list-inside">
+                        {scaffoldInfo.warnings.map((w, i) => (
+                          <li key={i}>{w}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+              {/* Rebuild button */}
+              {uploadedTemplateId && (
+                <div className="mt-2">
                   <button
                     className="btn-ghost"
                     onClick={async () => {
@@ -1075,8 +1153,8 @@ export default function UploadTemplateDialog({
                       "Re-run CI"
                     )}
                   </button>
-                )}
-              </div>
+                </div>
+              )}
               {logs && (
                 <pre className="mt-3 max-h-48 overflow-auto whitespace-pre-wrap bg-slate-50 p-3 text-sm">
                   {logs}

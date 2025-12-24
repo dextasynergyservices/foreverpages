@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
+import log from "@/lib/logger";
 
 /**
  * GET: Fetch all user's media uploads across all memorials with plan limits
@@ -43,7 +44,7 @@ export async function GET(request: NextRequest) {
     const collaboratorMemorialIds = collaboratorInvitations.map((inv) => inv.memorialId);
     const memorialOwnerIds = collaboratorInvitations.map((inv) => inv.memorial.ownerId);
 
-    console.log("🎨 DEBUG - Media API Query:", {
+    log.info("🎨 DEBUG - Media API Query:", {
       userId: session.user.id,
       collaboratorCount: collaboratorInvitations.length,
       collaboratorMemorialIds,
@@ -141,8 +142,8 @@ export async function GET(request: NextRequest) {
     // Get total count
     const totalCount = await prisma.upload.count({ where });
 
-    console.log("🎨 DEBUG - Media Query WHERE clause:", JSON.stringify(where, null, 2));
-    console.log("🎨 DEBUG - Total media count found:", totalCount);
+    log.info("🎨 DEBUG - Media Query WHERE clause:", JSON.stringify(where, null, 2));
+    log.info("🎨 DEBUG - Total media count found:", totalCount);
 
     // Debug: Check if media exists for this memorial at all
     if (totalCount === 0 && collaboratorMemorialIds.length > 0) {
@@ -158,7 +159,7 @@ export async function GET(request: NextRequest) {
       const allOwnerMedia = await prisma.upload.count({
         where: { uploaderId: { in: memorialOwnerIds } },
       });
-      console.log("🔍 DEBUG - Media exists check:", {
+      log.info("🔍 DEBUG - Media exists check:", {
         mediaInCollaboratorMemorials: memorialMediaCheck,
         mediaInOwnerMemorials: ownerMediaCheck,
         mediaInOwnerLibrary: ownerLibraryCheck,
@@ -192,7 +193,7 @@ export async function GET(request: NextRequest) {
       take: limit,
     });
 
-    console.log("🎨 DEBUG - Media found:", {
+    log.info("🎨 DEBUG - Media found:", {
       count: uploads.length,
       memorialIds: [...new Set(uploads.map((u) => u.memorialId).filter(Boolean))],
       uploaders: [...new Set(uploads.map((u) => u.uploaderId))],
@@ -296,7 +297,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Error fetching user media:", error);
+    log.error("Error fetching user media:", error);
     return NextResponse.json({ success: false, error: "Failed to fetch media" }, { status: 500 });
   }
 }

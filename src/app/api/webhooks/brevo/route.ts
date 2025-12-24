@@ -6,6 +6,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { updateEmailStatus } from "@/lib/email-logger";
+import log from "@/lib/logger";
 
 /**
  * Brevo webhook event structure
@@ -26,7 +27,7 @@ export async function POST(req: NextRequest) {
   try {
     const events: BrevoWebhookEvent[] = await req.json();
 
-    console.log(`[BREVO WEBHOOK] Received ${events.length} event(s)`);
+    log.info(`[BREVO WEBHOOK] Received ${events.length} event(s)`);
 
     // Process each event
     for (const event of events) {
@@ -35,7 +36,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, processed: events.length });
   } catch (error) {
-    console.error("[BREVO WEBHOOK ERROR]", error);
+    log.error("[BREVO WEBHOOK ERROR]", error);
     return NextResponse.json(
       { success: false, error: "Failed to process webhook" },
       { status: 500 }
@@ -47,7 +48,7 @@ async function processBrevoEvent(event: BrevoWebhookEvent) {
   try {
     const messageId = event["message-id"];
 
-    console.log(`[BREVO WEBHOOK] Processing ${event.event} for ${event.email}`);
+    log.info(`[BREVO WEBHOOK] Processing ${event.event} for ${event.email}`);
 
     switch (event.event) {
       case "delivered":
@@ -90,10 +91,10 @@ async function processBrevoEvent(event: BrevoWebhookEvent) {
         break;
 
       default:
-        console.log(`[BREVO WEBHOOK] Unknown event type: ${event.event}`);
+        log.info(`[BREVO WEBHOOK] Unknown event type: ${event.event}`);
     }
   } catch (error) {
-    console.error(`[BREVO WEBHOOK ERROR] Failed to process event:`, error);
+    log.error(`[BREVO WEBHOOK ERROR] Failed to process event:`, error);
   }
 }
 

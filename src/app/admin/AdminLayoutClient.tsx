@@ -86,7 +86,7 @@ export default function AdminLayoutClient({
       <div className="flex min-h-screen">
         {/* Sidebar */}
         <aside
-          className={`transform border-r border-gray-200 bg-white transition-all duration-300 ease-in-out dark:border-gray-700 dark:bg-gray-800 ${
+          className={`fixed lg:static inset-y-0 left-0 z-50 transform border-r border-gray-200 bg-white transition-all duration-300 ease-in-out dark:border-gray-700 dark:bg-gray-800 ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
           } ${sidebarCollapsed ? "lg:w-20" : "lg:w-64"} w-64 flex-shrink-0`}
         >
@@ -97,7 +97,7 @@ export default function AdminLayoutClient({
                 href="/admin"
                 className={`flex items-center space-x-2 ${sidebarCollapsed ? "lg:justify-center" : ""}`}
               >
-                <LayoutDashboard className="h-6 w-6 text-purple-600 flex-shrink-0" />
+                <LayoutDashboard className="h-6 w-6 text-primary flex-shrink-0" />
                 <span
                   className={`text-xl font-bold text-gray-900 dark:text-white transition-opacity ${sidebarCollapsed ? "lg:hidden" : ""}`}
                 >
@@ -113,7 +113,7 @@ export default function AdminLayoutClient({
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 space-y-1 p-4">
+            <nav className="flex-1 space-y-1 overflow-y-auto p-4">
               <NavLink
                 href="/admin"
                 icon={<LayoutDashboard className="h-5 w-5" />}
@@ -241,7 +241,7 @@ export default function AdminLayoutClient({
               <div
                 className={`flex items-center ${sidebarCollapsed ? "lg:justify-center" : "space-x-3"}`}
               >
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-purple-600 text-white">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
                   {userName?.[0]?.toUpperCase() || "A"}
                 </div>
                 <div className={`min-w-0 flex-1 ${sidebarCollapsed ? "lg:hidden" : ""}`}>
@@ -265,7 +265,7 @@ export default function AdminLayoutClient({
         </aside>
 
         {/* Main Content */}
-        <div className="flex-1 flex flex-col min-h-screen">
+        <div className="flex-1 flex flex-col min-h-screen w-full lg:w-auto">
           {/* Top Bar */}
           <header className="sticky top-0 z-30 border-b border-gray-200 bg-white px-4 py-4 dark:border-gray-700 dark:bg-gray-800 lg:px-8">
             <div className="flex items-center justify-between">
@@ -309,7 +309,7 @@ export default function AdminLayoutClient({
           </header>
 
           {/* Page Content */}
-          <main className="flex-1 p-4 lg:p-8">{children}</main>
+          <main className="flex-1 p-4 lg:p-8 w-full overflow-x-hidden">{children}</main>
         </div>
       </div>
     </div>
@@ -336,7 +336,7 @@ function NavLink({
         collapsed ? "lg:justify-center" : "space-x-3"
       } ${
         active
-          ? "bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400"
+          ? "bg-gray-100 text-gray-900 dark:bg-gray-800/20 dark:text-gray-300"
           : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
       }`}
       title={collapsed ? String(children) : undefined}
