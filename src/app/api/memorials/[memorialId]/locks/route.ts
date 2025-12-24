@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { getUserMemorialRole } from "@/lib/permissions";
-
-const prisma = new PrismaClient();
 
 // Lock expires after 5 minutes of inactivity
 const LOCK_TIMEOUT_MINUTES = 5;

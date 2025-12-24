@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { sendEmail } from "@/lib/email";
 import {
   generateInvitationEmailHTML,
@@ -19,8 +19,6 @@ import {
   generateCalendarInviteFilename,
 } from "@/lib/calendarInvite";
 import { generateInvitationRSVPQRCode } from "@/lib/qrCode";
-
-const prisma = new PrismaClient();
 
 export async function GET() {
   try {

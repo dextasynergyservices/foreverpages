@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { generateEmailCode } from "@/lib/two-factor";
 import { sendEmail } from "@/lib/email";
-
-const prisma = new PrismaClient();
 
 /**
  * POST /api/user/2fa/send-code - Send 2FA code via email

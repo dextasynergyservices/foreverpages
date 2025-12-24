@@ -2,7 +2,7 @@ import NextAuth, { type NextAuthOptions, type DefaultSession } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { checkLoginRateLimit, recordFailedLogin, resetLoginAttempts } from "@/lib/rate-limit";
 
@@ -23,8 +23,6 @@ declare module "next-auth/jwt" {
     role: string;
   }
 }
-
-const prisma = new PrismaClient();
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),

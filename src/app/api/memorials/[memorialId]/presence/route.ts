@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { getUserMemorialRole } from "@/lib/permissions";
-
-const prisma = new PrismaClient();
 
 // Presence heartbeat threshold - consider user offline after 30 seconds
 const PRESENCE_TIMEOUT_SECONDS = 30;

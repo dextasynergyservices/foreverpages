@@ -1,10 +1,8 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { createPrForTemplate } from "@/lib/github/pr";
 import fs from "fs";
 import path from "path";
-
-const prisma = new PrismaClient();
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
   const id = params.id;

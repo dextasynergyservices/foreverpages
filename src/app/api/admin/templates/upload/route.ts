@@ -5,9 +5,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/route";
 import { validateAndExtractZip } from "@/lib/template/validation";
 import { deleteFromCloudinary, extractPublicId } from "@/lib/cloudinary";
-import { PrismaClient, Prisma } from "@/generated/prisma";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
+import { Prisma } from "@/generated/prisma";
 
 export const runtime = "nodejs";
 
