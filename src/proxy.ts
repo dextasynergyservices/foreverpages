@@ -207,6 +207,14 @@ export async function proxy(req: NextRequest) {
   // Special handling for admin routes - only admin role can access
   if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin/")) {
     if (!token) {
+      // For API routes, return JSON error instead of redirecting
+      if (pathname.startsWith("/api/")) {
+        return NextResponse.json(
+          { message: "Unauthorized - Authentication required" },
+          { status: 401 }
+        );
+      }
+      // For page routes, redirect to login
       const url = req.nextUrl.clone();
       url.pathname = "/auth/login";
       url.searchParams.set("redirect", pathname);
@@ -241,6 +249,14 @@ export async function proxy(req: NextRequest) {
       pathname.startsWith("/api/analytics/"))
   ) {
     if (!token) {
+      // For API routes, return JSON error instead of redirecting
+      if (pathname.startsWith("/api/")) {
+        return NextResponse.json(
+          { message: "Unauthorized - Authentication required" },
+          { status: 401 }
+        );
+      }
+      // For page routes, redirect to login
       const url = req.nextUrl.clone();
       url.pathname = "/auth/login";
       url.searchParams.set("redirect", pathname);
