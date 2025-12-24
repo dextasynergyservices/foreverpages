@@ -2281,6 +2281,7 @@
       },
       "verifying": "Na-enyocha...",
       "resendCode": "Zigharịa koodu",
+      "codeSent": "Ezigara koodu nkwenye na email gị",
       "useBackupCode": "Jiri koodu nchekwa kama",
       "backupCode": {
         "title": "Tinye Koodu Nchekwa",

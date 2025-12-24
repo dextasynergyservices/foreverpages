@@ -32,15 +32,15 @@ export default function TwoFactorVerification({
   const [backupCode, setBackupCode] = useState("");
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  // Auto-send email code if method is EMAIL
+  // Auto-send email code if method is EMAIL (only once)
   useEffect(() => {
     if (method === "EMAIL") {
-      sendEmailCode();
+      sendEmailCode(false); // false = initial send, not a resend
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [method]);
+  }, []); // Empty dependency array to run only once
 
-  const sendEmailCode = async () => {
+  const sendEmailCode = async (isResend = true) => {
     try {
       const res = await fetch("/api/user/2fa/send-code", {
         method: "POST",
@@ -50,7 +50,12 @@ export default function TwoFactorVerification({
 
       if (!res.ok) throw new Error("Failed to send code");
 
-      toast.success(t.t("twoFactor.verification.resendCode"));
+      // Show different message for initial send vs resend
+      if (isResend) {
+        toast.success(t.t("twoFactor.verification.resendCode"));
+      } else {
+        toast.success(t.t("twoFactor.verification.codeSent"));
+      }
     } catch {
       toast.error(t.t("twoFactor.verification.error.failed"));
     }
@@ -266,7 +271,7 @@ export default function TwoFactorVerification({
 
               {method === "EMAIL" && (
                 <button
-                  onClick={sendEmailCode}
+                  onClick={() => sendEmailCode(true)}
                   className={`w-full text-center text-sm mb-4 ${
                     theme === "dark"
                       ? "text-blue-400 hover:text-blue-300"

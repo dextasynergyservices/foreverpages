@@ -13,7 +13,6 @@ import toast from "react-hot-toast";
 import { LoadingSpinner, AuthFormSkeleton } from "@/components/ui/skeleton";
 import TwoFactorVerification from "./TwoFactorVerification";
 import { useSearchParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
 
 interface RateLimitInfo {
   lockoutUntil: number;
@@ -48,32 +47,6 @@ export default function LoginPage() {
   const [rateLimitInfo, setRateLimitInfo] = useState<RateLimitInfo | null>(null);
   const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
   const [countdown, setCountdown] = useState<string>("");
-
-  // Check if user is already authenticated using TanStack Query
-  const { data: session } = useQuery({
-    queryKey: ["session"],
-    queryFn: async () => {
-      const response = await fetch("/api/auth/session");
-      if (!response.ok) return null;
-      return response.json();
-    },
-    retry: false,
-    refetchOnWindowFocus: false,
-  });
-
-  // Redirect authenticated users immediately
-  useEffect(() => {
-    if (session?.user) {
-      const redirect = searchParams?.get("redirect");
-      if (redirect) {
-        window.location.href = decodeURIComponent(redirect);
-      } else if (session.user.role === "ADMIN" || session.user.role === "SUPER_ADMIN") {
-        window.location.href = "/admin";
-      } else {
-        window.location.href = "/user-dashboard";
-      }
-    }
-  }, [session, searchParams]);
 
   // Load form data and rate limit info from localStorage on component mount
   useEffect(() => {
@@ -190,9 +163,16 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     setIsGoogleLoading(true);
     try {
-      // Preserve any query parameters (like payment ID) in callback
+      // Get redirect parameter or default to user dashboard
+      const redirect = searchParams?.get("redirect");
       const paymentId = searchParams?.get("payment");
-      const callbackUrl = paymentId ? `/user-dashboard?payment=${paymentId}` : "/user-dashboard";
+
+      let callbackUrl = "/user-dashboard";
+      if (redirect) {
+        callbackUrl = decodeURIComponent(redirect);
+      } else if (paymentId) {
+        callbackUrl = `/user-dashboard?payment=${paymentId}`;
+      }
 
       await signIn("google", { callbackUrl });
     } catch (error) {
@@ -265,10 +245,15 @@ export default function LoginPage() {
       }
 
       // No 2FA, proceed with normal login
+      // Get redirect parameter or default to user dashboard
+      const redirect = searchParams?.get("redirect");
+      const callbackUrl = redirect ? decodeURIComponent(redirect) : "/user-dashboard";
+
       const result = await signIn("credentials", {
         identifier: formData.identifier,
         password: formData.password,
         recaptchaToken,
+        callbackUrl,
         redirect: false,
       });
 
@@ -303,39 +288,15 @@ export default function LoginPage() {
         }
         setIsLoading(false);
       } else if (result?.ok) {
-        toast.success("Login successful! Redirecting...");
         // Clear saved form data and rate limit on successful login
         localStorage.removeItem("loginFormData");
         localStorage.removeItem("loginRateLimit");
         setRateLimitInfo(null);
         setRemainingAttempts(null);
 
-        // Check for redirect parameter first
-        const redirect = searchParams?.get("redirect");
-        if (redirect) {
-          // Redirect to the originally requested page
-          window.location.href = decodeURIComponent(redirect);
-          return;
-        }
-
-        // Wait a bit for session to be established, then fetch user role and redirect
-        setTimeout(async () => {
-          try {
-            const response = await fetch("/api/auth/session");
-            const session = await response.json();
-
-            // Redirect based on user role
-            if (session?.user?.role === "ADMIN" || session?.user?.role === "SUPER_ADMIN") {
-              window.location.href = "/admin";
-            } else {
-              window.location.href = "/user-dashboard";
-            }
-          } catch (error) {
-            console.error("Error fetching session:", error);
-            // Fallback to user dashboard
-            window.location.href = "/user-dashboard";
-          }
-        }, 500); // Reduced timeout for faster redirect
+        // Let NextAuth handle the redirect using the callbackUrl
+        toast.success("Login successful! Redirecting...");
+        window.location.href = result.url || callbackUrl;
       } else {
         toast.error("Login failed - please try again");
         setIsLoading(false);

@@ -2254,6 +2254,7 @@
       },
       "verifying": "N jẹrisi...",
       "resendCode": "Tun firanṣẹ koodu",
+      "codeSent": "A ti fi koodu ìdánilójú ránṣẹ́ sí ímeèlì rẹ",
       "useBackupCode": "Lo koodu ipamọ dipo",
       "backupCode": {
         "title": "Tẹ Koodu Ipamọ Sii",
