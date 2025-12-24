@@ -178,7 +178,14 @@ export async function proxy(req: NextRequest) {
   // Get the JWT token from the request (skip for public routes, auth routes, and 2FA login routes)
   const token =
     !isPublicRoute && !isAuthRoute && !isTwoFactorLoginRoute
-      ? await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+      ? await getToken({
+          req,
+          secret: process.env.NEXTAUTH_SECRET,
+          cookieName:
+            process.env.NODE_ENV === "production"
+              ? "__Secure-next-auth.session-token"
+              : "next-auth.session-token",
+        })
       : null;
 
   if (!token && !isPublicRoute && !isAuthRoute && !isTwoFactorLoginRoute) {
@@ -292,6 +299,7 @@ export const config = {
     "/auth/signup", // Actual signup page (after redirect)
     "/auth/login", // Login page (needed for public route check)
     "/templates/:path*", // Block public access to templates
+    "/user-dashboard", // User dashboard base route
     "/user-dashboard/:path*",
     "/admin/:path*",
     "/api/user/:path*",
