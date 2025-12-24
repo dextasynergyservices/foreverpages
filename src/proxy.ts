@@ -290,6 +290,7 @@ export const config = {
   matcher: [
     "/signup", // Payment guard protection
     "/auth/signup", // Actual signup page (after redirect)
+    "/auth/login", // Login page (needed for public route check)
     "/templates/:path*", // Block public access to templates
     "/user-dashboard/:path*",
     "/admin/:path*",
