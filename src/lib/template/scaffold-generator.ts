@@ -22,6 +22,14 @@ export type {
 };
 export { DEFAULT_DESIGN_TOKENS };
 
+// Helper function to convert slug to PascalCase
+function toPascalCase(str: string): string {
+  return str
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join("");
+}
+
 /**
  * Main entry point: generate all scaffold files for a template
  */
@@ -721,13 +729,19 @@ export default function ${toPascalCase(config.slug)}Layout({
 
 /**
  * 🔥 CRITICAL: Generate MemorialTemplate.tsx - Bridge component
+ * This component bridges the Prisma Memorial model to the template's expected format.
+ * It uses the shared SupportModal from @/components/modals/SupportModal for consistency.
  */
 export function generateMemorialTemplate(config: TemplateScaffoldConfig): string {
-  const componentImports = config.sections
-    .filter((s) => s.component)
+  // Deduplicate components (in case manifest has duplicates)
+  const uniqueComponents = [
+    ...new Set(config.sections.filter((s) => s.component).map((s) => s.component)),
+  ];
+
+  const componentImports = uniqueComponents
     .map(
-      (s) =>
-        `import ${s.component} from "@/app/templates/${config.slug}/components/${s.component}";`
+      (component) =>
+        `import ${component} from "@/app/templates/${config.slug}/components/${component}";`
     )
     .join("\n");
 
@@ -740,12 +754,11 @@ export function generateMemorialTemplate(config: TemplateScaffoldConfig): string
 
   return `"use client";
 
-import React, { useState } from "react";
+import React, { useState, createContext, useContext } from "react";
 import type { Template, UserTemplate, Memorial } from "@/generated/prisma";
 import { TemplateProvider } from "@/app/templates/${config.slug}/TemplateProvider";
-import { templateConfig } from "@/app/templates/${config.slug}/config";
-import { DesignTokens } from "@/components/userDashboard/pageBuilder/TemplateCustomizer";
-import SupportModal from "@/app/templates/${config.slug}/components/SupportModal";
+import { templateConfig, type DesignTokens } from "@/app/templates/${config.slug}/config";
+import SupportModal from "@/components/modals/SupportModal";
 ${componentImports}
 
 interface MemorialTemplateProps {
@@ -755,6 +768,24 @@ interface MemorialTemplateProps {
   };
   config?: Record<string, unknown>;
 }
+
+// Context for SupportModal to be accessible from any child component
+interface SupportModalContextType {
+  openSupportModal: () => void;
+  closeSupportModal: () => void;
+  isOpen: boolean;
+}
+
+const SupportModalContext = createContext<SupportModalContextType | null>(null);
+
+// Export hook for child components to trigger the support modal
+export const useSupportModal = () => {
+  const context = useContext(SupportModalContext);
+  if (!context) {
+    throw new Error("useSupportModal must be used within MemorialTemplate");
+  }
+  return context;
+};
 
 // Convert Prisma Memorial to template's expected MemorialData format
 function convertMemorialData(memorial: Memorial, userTemplate: UserTemplate) {
@@ -805,84 +836,62 @@ export const ${pascalName}MemorialTemplate: React.FC<MemorialTemplateProps> = ({
   const memorialData = convertMemorialData(memorial, userTemplate);
   const [supportModalOpen, setSupportModalOpen] = useState(false);
 
-  // Safely convert customization to DesignTokens
-  let customization: DesignTokens;
-  const defaultTokens: DesignTokens = {
-    colors: {
-      primary: "#1f2937",
-      secondary: "#6366f1",
-      accent: "#ec4899",
-      headerBg: "#111827",
-      headerText: "#ffffff",
-      bodyBg: "#f9fafb",
-      bodyText: "#1f2937",
-    },
-    fonts: {
-      fontFamily: "Inter",
-      headingSize: "large",
-      bodySize: "medium",
-    },
-    layout: {
-      spacing: "comfortable",
-      borderRadius: "moderate",
-      containerWidth: "standard",
-    },
+  // Support modal context value for child components
+  const supportModalContextValue: SupportModalContextType = {
+    openSupportModal: () => setSupportModalOpen(true),
+    closeSupportModal: () => setSupportModalOpen(false),
+    isOpen: supportModalOpen,
   };
+
+  // Use template's default design tokens as fallback
+  const defaultTokens = templateConfig.defaultDesign;
+
+  // Safely convert customization to DesignTokens
+  let customization: DesignTokens | undefined;
 
   try {
     if (userTemplate.customization && typeof userTemplate.customization === "object") {
       customization = userTemplate.customization as unknown as DesignTokens;
     } else {
-      customization = templateConfig.defaultDesign || defaultTokens;
+      customization = defaultTokens;
     }
   } catch (error) {
     console.warn("Failed to parse user customization:", error);
-    customization = templateConfig.defaultDesign || defaultTokens;
+    customization = defaultTokens;
   }
 
   return (
-    <TemplateProvider
-      isPreview={true}
-      memorialId={memorial.id}
-      memorial={memorialData}
-      config={templateConfig}
-      customization={customization}
-      sectionsData={memorialData.sectionsData}
-    >
-      <div className="relative min-h-screen overflow-x-hidden">
-        <style jsx global>{\`
-          .template-preview {
-            scroll-behavior: smooth;
-            contain: layout style;
-          }
-        \`}</style>
-        <main className="relative z-10">
+    <SupportModalContext.Provider value={supportModalContextValue}>
+      <TemplateProvider
+        isPreview={true}
+        memorialId={memorial.id}
+        memorial={memorialData}
+        config={templateConfig}
+        customization={customization}
+        sectionsData={memorialData.sectionsData}
+      >
+        <div className="relative min-h-screen overflow-x-hidden">
+          <style jsx global>{\`
+            .template-preview {
+              scroll-behavior: smooth;
+              contain: layout style;
+            }
+          \`}</style>
+          <main className="relative z-10">
 ${componentJsx}
-        </main>
+          </main>
 
-        {/* Support Modal Integration */}
-        <SupportModal
-          isOpen={supportModalOpen}
-          onClose={() => setSupportModalOpen(false)}
-          memorialOwner={{
-            id: memorial.ownerId,
-            email: "",
-          }}
-          memorialId={memorial.id}
-          onSuccess={() => {
-            // Optionally refresh support data
-            console.log("Support submitted successfully");
-          }}
-        />
-      </div>
-    </TemplateProvider>
+          {/* Support Modal Integration - Uses shared component */}
+          <SupportModal
+            isOpen={supportModalOpen}
+            onClose={() => setSupportModalOpen(false)}
+            memorialOwnerId={memorial.ownerId}
+            memorialId={memorial.id}
+          />
+        </div>
+      </TemplateProvider>
+    </SupportModalContext.Provider>
   );
-};
-
-// Export function to open support modal (can be called from template components)
-export const useSupportModal = () => {
-  // This hook can be used by template components to trigger the support modal
-  // Implementation depends on how the template wants to expose this functionality
 };
 
 export default ${pascalName}MemorialTemplate;
@@ -890,7 +899,9 @@ export default ${pascalName}MemorialTemplate;
 }
 
 /**
- * 🔥 NEW: Generate SupportModal.tsx - Support/Donation modal
+ * 🔥 NEW: Generate SupportModal.tsx - Re-exports the shared SupportModal component
+ * Templates use the shared SupportModal from @/components/modals/SupportModal
+ * This file provides a convenient re-export for template-specific imports
  */
 export function generateSupportModal(config: TemplateScaffoldConfig): string {
   const templateName = config.name;
@@ -900,428 +911,28 @@ export function generateSupportModal(config: TemplateScaffoldConfig): string {
 
 /**
  * SupportModal for ${templateName}
- * Auto-generated support/donation modal for the ${templateSlug} template
+ * Re-exports the shared SupportModal component for the ${templateSlug} template
+ *
+ * The shared SupportModal provides:
+ * - Multi-currency support (USD, EUR, GBP, NGN)
+ * - Multiple payment methods (Bank, Mobile Money, PayPal, Stripe)
+ * - Donor information collection
+ * - Copy-to-clipboard for payment details
+ * - Responsive design with dark mode support
  */
 
-import React, { useState, useEffect, useCallback } from "react";
-import { X, Copy, Check, Heart } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textArea";
-import { Button } from "@/components/ui/button";
-import { CountryCodeSelect } from "@/components/ui/country-code-select";
+export { default } from "@/components/modals/SupportModal";
+export { default as SupportModal } from "@/components/modals/SupportModal";
 
-interface AccountDetail {
-  id: string;
-  type: "BANK" | "MOBILE_MONEY" | "PAYPAL" | "STRIPE" | "bank" | "mobile_money" | "paypal" | "stripe";
-  accountName: string;
-  accountNumber: string;
-  bankName?: string;
-  routingNumber?: string;
-  provider?: string;
-  currency: string;
-  instructions?: string;
-  isDefault?: boolean;
-  description?: string;
-}
-
-interface SupportModalProps {
+// SupportModal props interface for reference
+export interface SupportModalProps {
   isOpen: boolean;
   onClose: () => void;
-  memorialOwner?: {
-    id: string;
-    firstName?: string | null;
-    lastName?: string | null;
-    email: string;
-    accountDetails?: AccountDetail[];
-  } | null;
+  memorialOwnerName?: string;
+  memorialTitle?: string;
+  memorialOwnerId?: string;
   memorialId?: string;
-  onSuccess?: () => void;
-  presetAmounts?: number[];
 }
-
-const SupportModal: React.FC<SupportModalProps> = ({
-  isOpen,
-  onClose,
-  memorialOwner,
-  memorialId,
-  onSuccess,
-  presetAmounts,
-}) => {
-  const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
-  const [customAmount, setCustomAmount] = useState("");
-  const [selectedAccount, setSelectedAccount] = useState<AccountDetail | null>(null);
-  const [copiedField, setCopiedField] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [accountDetails, setAccountDetails] = useState<AccountDetail[]>([]);
-  const [donationMessage, setDonationMessage] = useState("");
-  const [donorName, setDonorName] = useState("");
-  const [donorEmail, setDonorEmail] = useState("");
-  const [donorPhone, setDonorPhone] = useState("");
-  const [donorCountryCode, setDonorCountryCode] = useState("+234");
-  const [donorPhoneValid, setDonorPhoneValid] = useState(true);
-  const [selectedCurrency, setSelectedCurrency] = useState("USD");
-
-  // Currency-specific amounts
-  const getCurrencyAmounts = (currency: string) => {
-    if (presetAmounts && presetAmounts.length > 0) {
-      return presetAmounts;
-    }
-    switch (currency) {
-      case "NGN":
-        return [5000, 20000, 25000, 50000, 100000, 250000];
-      case "USD":
-      case "EUR":
-      case "GBP":
-      default:
-        return [10, 25, 50, 100, 250, 500];
-    }
-  };
-
-  const predefinedAmounts = getCurrencyAmounts(selectedCurrency);
-  const currencies = [
-    { code: "USD", symbol: "$", name: "US Dollar" },
-    { code: "EUR", symbol: "€", name: "Euro" },
-    { code: "GBP", symbol: "£", name: "British Pound" },
-    { code: "NGN", symbol: "₦", name: "Nigerian Naira" },
-  ];
-
-  const loadAccountDetails = useCallback(async () => {
-    const effectiveOwnerId = memorialOwner?.id;
-    if (!effectiveOwnerId) return;
-
-    setIsLoading(true);
-    try {
-      const response = await fetch(\`/api/public/owner/\${effectiveOwnerId}/account-details\`);
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success && data.accountDetails) {
-          setAccountDetails(data.accountDetails);
-          const defaultAccount = data.accountDetails.find((acc: AccountDetail) => acc.isDefault);
-          setSelectedAccount(defaultAccount || data.accountDetails[0] || null);
-        }
-      }
-    } catch (error) {
-      console.error("Failed to load account details:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [memorialOwner?.id]);
-
-  useEffect(() => {
-    if (isOpen) {
-      loadAccountDetails();
-    }
-  }, [isOpen, loadAccountDetails]);
-
-  const copyToClipboard = async (text: string, fieldName: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopiedField(fieldName);
-      setTimeout(() => setCopiedField(null), 2000);
-    } catch (error) {
-      console.error("Failed to copy:", error);
-    }
-  };
-
-  const handleSubmitSupport = async () => {
-    if (!selectedAccount || (!selectedAmount && !customAmount)) return;
-
-    if (!donorName.trim()) {
-      alert("Please enter your name.");
-      return;
-    }
-
-    if (!donorEmail.trim()) {
-      alert("Please enter your email address.");
-      return;
-    }
-
-    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
-    if (!emailRegex.test(donorEmail.trim())) {
-      alert("Please enter a valid email address.");
-      return;
-    }
-
-    if (donorPhone.trim() && !donorPhoneValid) {
-      alert("Please enter a valid phone number.");
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const amount = selectedAmount || parseFloat(customAmount);
-
-      const response = await fetch("/api/memorial/support", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          memorialOwnerId: memorialOwner?.id,
-          memorialId,
-          amount,
-          currency: selectedCurrency,
-          accountType: selectedAccount.type,
-          donorName: donorName.trim(),
-          donorEmail: donorEmail.trim(),
-          donorPhone: donorPhone.trim() ? \`\${donorCountryCode}\${donorPhone.trim()}\` : undefined,
-          message: donationMessage,
-        }),
-      });
-
-      const responseData = await response.json();
-      if (responseData.success) {
-        // Reset form
-        setSelectedAmount(null);
-        setCustomAmount("");
-        setDonationMessage("");
-        setDonorName("");
-        setDonorEmail("");
-        setDonorPhone("");
-        onSuccess?.();
-        onClose();
-      }
-    } catch (error) {
-      console.error("Support submission error:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const getAccountTypeDisplay = (type: string) => {
-    const upperType = type.toUpperCase();
-    switch (upperType) {
-      case "BANK":
-        return "Bank Account";
-      case "MOBILE_MONEY":
-        return "Mobile Money";
-      case "PAYPAL":
-        return "PayPal";
-      case "STRIPE":
-        return "Credit Card";
-      default:
-        return type;
-    }
-  };
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6 shadow-2xl">
-        <div className="mb-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="rounded-full bg-primary/20 p-2">
-              <Heart className="h-5 w-5 text-primary" />
-            </div>
-            <div>
-              <h2 className="text-xl font-bold">Support Memorial</h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Honor their memory with a donation</p>
-            </div>
-          </div>
-          <Button variant="ghost" size="sm" onClick={onClose} className="rounded-full p-1">
-            <X className="h-5 w-5" />
-          </Button>
-        </div>
-
-        <div className="space-y-6">
-          {/* Donor Name */}
-          <div className="space-y-3">
-            <Label>Your Name <span className="text-red-500">*</span></Label>
-            <Input
-              type="text"
-              value={donorName}
-              onChange={(e) => setDonorName(e.target.value)}
-              placeholder="Enter your full name"
-              required
-            />
-          </div>
-
-          {/* Donor Email */}
-          <div className="space-y-3">
-            <Label>Email Address <span className="text-red-500">*</span></Label>
-            <Input
-              type="email"
-              value={donorEmail}
-              onChange={(e) => setDonorEmail(e.target.value)}
-              placeholder="Enter your email address"
-              required
-            />
-          </div>
-
-          {/* Donor Phone */}
-          <div className="space-y-3">
-            <Label>Phone Number (Optional)</Label>
-            <div className="flex gap-2">
-              <CountryCodeSelect
-                value={donorCountryCode}
-                onValueChange={setDonorCountryCode}
-              />
-              <Input
-                type="tel"
-                value={donorPhone}
-                onChange={(e) => {
-                  const value = e.target.value.replace(/[^\\d]/g, "");
-                  setDonorPhone(value);
-                  setDonorPhoneValid(value.length === 0 || value.length >= 7);
-                }}
-                placeholder="Enter phone number"
-                className="flex-1"
-              />
-            </div>
-          </div>
-
-          {/* Currency Selection */}
-          <div className="space-y-3">
-            <Label>Currency</Label>
-            <div className="grid grid-cols-2 gap-2">
-              {currencies.map((currency) => (
-                <button
-                  key={currency.code}
-                  onClick={() => {
-                    setSelectedCurrency(currency.code);
-                    setSelectedAmount(null);
-                    setCustomAmount("");
-                  }}
-                  className={\`rounded-lg border p-3 text-left transition-all \${
-                    selectedCurrency === currency.code
-                      ? "border-primary bg-primary/10"
-                      : "border-gray-200 dark:border-gray-700 hover:border-primary/50"
-                  }\`}
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">{currency.symbol}</span>
-                    <div>
-                      <div className="text-sm font-medium">{currency.code}</div>
-                      <div className="text-xs opacity-80">{currency.name}</div>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Amount Selection */}
-          <div className="space-y-3">
-            <Label>Amount</Label>
-            <div className="grid grid-cols-3 gap-2">
-              {predefinedAmounts.map((amount) => (
-                <button
-                  key={amount}
-                  onClick={() => {
-                    setSelectedAmount(amount);
-                    setCustomAmount("");
-                  }}
-                  className={\`rounded-lg border py-2 text-sm font-medium transition-all \${
-                    selectedAmount === amount
-                      ? "border-primary bg-primary text-white"
-                      : "border-gray-200 dark:border-gray-700 hover:border-primary/50"
-                  }\`}
-                >
-                  {currencies.find((c) => c.code === selectedCurrency)?.symbol}
-                  {amount.toLocaleString()}
-                </button>
-              ))}
-            </div>
-            <Input
-              type="number"
-              value={customAmount}
-              onChange={(e) => {
-                setCustomAmount(e.target.value);
-                setSelectedAmount(null);
-              }}
-              placeholder="Custom amount"
-              min="1"
-            />
-          </div>
-
-          {/* Memorial Message */}
-          <div className="space-y-3">
-            <Label>Memorial Message (Optional)</Label>
-            <Textarea
-              value={donationMessage}
-              onChange={(e) => setDonationMessage(e.target.value)}
-              placeholder="Share a memory or message of support..."
-              rows={3}
-            />
-          </div>
-
-          {/* Payment Method Selection */}
-          {accountDetails.length > 0 && (
-            <div className="space-y-3">
-              <Label>Payment Method</Label>
-              <div className="space-y-2">
-                {accountDetails.map((account) => (
-                  <button
-                    key={account.id}
-                    onClick={() => setSelectedAccount(account)}
-                    className={\`w-full rounded-lg border p-3 text-left transition-all \${
-                      selectedAccount?.id === account.id
-                        ? "border-primary bg-primary/10"
-                        : "border-gray-200 dark:border-gray-700 hover:border-primary/50"
-                    }\`}
-                  >
-                    <div className="font-medium">{getAccountTypeDisplay(account.type)}</div>
-                    <div className="text-sm opacity-80">
-                      {account.accountName} • {account.currency}
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Payment Details */}
-          {selectedAccount && (
-            <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
-              <h3 className="mb-3 font-semibold">Payment Details</h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center justify-between">
-                  <span className="opacity-80">Account Name:</span>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono">{selectedAccount.accountName}</span>
-                    <button onClick={() => copyToClipboard(selectedAccount.accountName, "name")}>
-                      {copiedField === "name" ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3 opacity-60" />}
-                    </button>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="opacity-80">Account Number:</span>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono">{selectedAccount.accountNumber}</span>
-                    <button onClick={() => copyToClipboard(selectedAccount.accountNumber, "number")}>
-                      {copiedField === "number" ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3 opacity-60" />}
-                    </button>
-                  </div>
-                </div>
-                {selectedAccount.bankName && (
-                  <div className="flex items-center justify-between">
-                    <span className="opacity-80">Bank Name:</span>
-                    <span className="font-mono">{selectedAccount.bankName}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Submit Button */}
-          <Button
-            onClick={handleSubmitSupport}
-            disabled={isLoading || !selectedAccount || (!selectedAmount && !customAmount)}
-            className="w-full"
-          >
-            {isLoading ? "Processing..." : "Complete Donation"}
-          </Button>
-
-          <p className="text-xs text-center opacity-60">
-            Your donation will be sent directly to the memorial owner's account.
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default SupportModal;
 `;
 }
 
@@ -1329,34 +940,39 @@ export default SupportModal;
  * Generate placeholder component for sections
  */
 export function generatePlaceholderComponent(
-  config: TemplateScaffoldConfig,
+  _config: TemplateScaffoldConfig,
   section: TemplateSection
 ): string {
+  const componentName = section.component;
+  const sectionId = section.id;
+  const sectionName = section.name;
+  const sectionDescription = section.description || "Add your content here.";
+
   return `"use client";
 
 import React from "react";
 import { useTemplate } from "../TemplateProvider";
 
-interface ${section.component}Props {
+interface ${componentName}Props {
   className?: string;
 }
 
-const ${section.component}: React.FC<${section.component}Props> = ({ className = "" }) => {
+const ${componentName}: React.FC<${componentName}Props> = ({ className = "" }) => {
   const { memorial, isPreview } = useTemplate();
 
   return (
-    <section id="${section.id}" className={\`template-section \${className}\`}>
+    <section id="${sectionId}" className={\`template-section \\\${className}\`}>
       <div className="template-container">
         <div className="template-section-header">
-          <h2 className="template-section-title">${section.name}</h2>
+          <h2 className="template-section-title">${sectionName}</h2>
           <p className="template-section-subtitle">
             {isPreview ? "Preview Mode" : "Live Mode"}
           </p>
         </div>
         <div className="template-card">
           <p>
-            This is the ${section.name} section for {memorial.name}.
-            ${section.description || "Add your content here."}
+            This is the ${sectionName} section for {memorial.name}.
+            ${sectionDescription}
           </p>
         </div>
       </div>
@@ -1364,14 +980,6 @@ const ${section.component}: React.FC<${section.component}Props> = ({ className =
   );
 };
 
-export default ${section.component};
+export default ${componentName};
 `;
-}
-
-// Helper function to convert slug to PascalCase
-function toPascalCase(str: string): string {
-  return str
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join("");
 }
