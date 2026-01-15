@@ -242,9 +242,12 @@ async function detectSectionsFromUpload(templatePath: string): Promise<TemplateS
 
       const componentName = file.replace(/\.(tsx|jsx)$/, "");
 
-      // Skip utility files
+      // Skip utility files and modal components
       if (componentName.startsWith("use") || componentName.endsWith("Context")) continue;
       if (componentName === "SupportModal") continue; // We'll generate this
+      if (componentName === "BlessingModal") continue; // Modal, not a section
+      if (componentName === "Navbar" || componentName === "Footer") continue; // Layout components
+      if (componentName === "MusicPlayer") continue; // Utility component
 
       // Try to determine section type from component name
       const sectionId = componentNameToSectionId(componentName);
@@ -276,21 +279,28 @@ function componentNameToSectionId(componentName: string): string {
     candlesanctuary: "candles",
     candles: "candles",
     lifejourney: "journey",
+    lifesection: "biography",
     timeline: "timeline",
     photogallery: "gallery",
     gallery: "gallery",
     tributesection: "tributes",
     tributes: "tributes",
     tribute: "tributes",
-    condolence: "condolence",
-    condolences: "condolence",
+    prayerwall: "tributes",
+    condolence: "condolences",
+    condolences: "condolences",
+    condolencessection: "condolences",
     biography: "biography",
     familytree: "family",
     family: "family",
     videogallery: "video",
     donations: "donations",
+    supportsection: "donations",
+    support: "donations",
     footer: "footer",
     navigation: "navigation",
+    navbar: "navigation",
+    musicplayer: "music",
   };
 
   return mappings[lowerName] || lowerName.replace(/section$/i, "");
@@ -309,6 +319,7 @@ function componentNameToDisplayName(componentName: string): string {
 
 /**
  * Merge manifest sections with detected sections
+ * Deduplicates by both section ID and component name
  */
 function mergeSections(
   manifestSections: TemplateSection[],
@@ -316,13 +327,16 @@ function mergeSections(
 ): TemplateSection[] {
   if (manifestSections.length > 0) {
     // Use manifest sections as source of truth
-    // Add any detected sections not in manifest
+    // Deduplicate by both ID and component name
     const manifestIds = new Set(manifestSections.map((s) => s.id));
+    const manifestComponents = new Set(manifestSections.map((s) => s.component).filter(Boolean));
 
     for (const detected of detectedSections) {
-      if (!manifestIds.has(detected.id)) {
-        manifestSections.push(detected);
-      }
+      // Skip if already in manifest by ID or component name
+      if (manifestIds.has(detected.id)) continue;
+      if (detected.component && manifestComponents.has(detected.component)) continue;
+
+      manifestSections.push(detected);
     }
 
     return manifestSections;

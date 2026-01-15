@@ -1078,8 +1078,8 @@ export default function UploadTemplateDialog({
                               ⭐ {file}
                             </span>
                           ) : file.includes("SupportModal") ? (
-                            <span className="font-semibold text-gray-900 dark:text-gray-100 dark:text-purple-400">
-                              💜 {file}
+                            <span className="font-semibold text-gray-900 dark:text-gray-100">
+                              {file}
                             </span>
                           ) : (
                             <span>📄 {file}</span>

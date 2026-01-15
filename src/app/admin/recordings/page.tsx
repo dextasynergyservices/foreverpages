@@ -390,7 +390,7 @@ export default function RecordingsPage() {
                     <Link
                       href={`/${recording.memorialSlug}`}
                       target="_blank"
-                      className="font-medium text-gray-900 dark:text-gray-100 hover:underline dark:text-gray-300"
+                      className="font-medium text-gray-900 dark:text-gray-100 hover:underline"
                     >
                       {recording.memorialName}
                     </Link>

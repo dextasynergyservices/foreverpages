@@ -4,8 +4,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import UploadTemplateDialog from "@/components/admin/UploadTemplateDialog";
+import TemplateConfigWizard from "@/components/admin/TemplateConfigWizard";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { Trash2, Edit, Upload, Loader2 } from "lucide-react";
+import { Trash2, Edit, Upload, Loader2, Wand2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -75,6 +76,7 @@ export default function TemplateManagementDashboard() {
   type ErrorResponse = { message?: string } | null;
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [showUpload, setShowUpload] = useState(false);
+  const [showWizard, setShowWizard] = useState(false);
   const [reuploadFor, setReuploadFor] = useState<string | null>(null);
   const [showVersionsFor, setShowVersionsFor] = useState<string | null>(null);
   const [versions, setVersions] = useState<TemplateVersionBrief[]>([]);
@@ -316,6 +318,9 @@ export default function TemplateManagementDashboard() {
             <option value="ERROR">Error</option>
             <option value="SECURITY_REVIEW">Security Review</option>
           </select>
+          <Button variant="outline" onClick={() => setShowWizard(true)}>
+            <Wand2 className="w-4 h-4 mr-2" /> Config Wizard
+          </Button>
           <Button onClick={() => setShowUpload(true)}>
             <Upload className="w-4 h-4 mr-2" /> Upload Template
           </Button>
@@ -539,6 +544,22 @@ export default function TemplateManagementDashboard() {
         open={showUpload}
         onOpenChange={(v) => setShowUpload(v)}
         hideTrigger
+      />
+
+      {/* Template Configuration Wizard - Advanced scaffold generation with quality checks */}
+      <TemplateConfigWizard
+        open={showWizard}
+        onOpenChange={(open) => {
+          setShowWizard(open);
+          if (!open) {
+            queryClient.invalidateQueries({ queryKey: ["admin-templates-dashboard"] });
+          }
+        }}
+        onComplete={() => {
+          setShowWizard(false);
+          queryClient.invalidateQueries({ queryKey: ["admin-templates-dashboard"] });
+          toastNotification.success("Template scaffold generated successfully");
+        }}
       />
 
       <Dialog open={!!showVersionsFor} onOpenChange={() => setShowVersionsFor(null)}>
