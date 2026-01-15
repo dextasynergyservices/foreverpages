@@ -5,35 +5,62 @@ import Image from "next/image";
 
 const FamilyTree = () => {
   const familyData = {
-    name: 'Robert Nyesom',
-    photo: 'https://res.cloudinary.com/dxoorukfj/image/upload/v1764852176/thomas1_itt2fo.png',
+    name: "Robert Nyesom",
+    photo: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764852176/thomas1_itt2fo.png",
     spouse: {
-      name: 'Wife Name',
-      photo: 'https://res.cloudinary.com/dxoorukfj/image/upload/v1764852084/wife_ljyofq.png',
+      name: "Wife Name",
+      photo: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764852084/wife_ljyofq.png",
     },
     children: [
       {
         id: 1,
-        name: 'Chima Nyesom',
-        photo: 'https://res.cloudinary.com/dxoorukfj/image/upload/v1764852082/son1_mv9fh2.png',
+        name: "Chima Nyesom",
+        photo: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764852082/son1_mv9fh2.png",
         grandchildren: [
-          { id: 1, name: 'Grandchild 1', photo: 'https://res.cloudinary.com/dxoorukfj/image/upload/v1764852080/grand-daughter1_q6jocp.png' },
-          { id: 2, name: 'Grandchild 2', photo: 'https://res.cloudinary.com/dxoorukfj/image/upload/v1764852081/grand-daughter2_tqroux.png' },
+          {
+            id: 1,
+            name: "Grandchild 1",
+            photo:
+              "https://res.cloudinary.com/dxoorukfj/image/upload/v1764852080/grand-daughter1_q6jocp.png",
+          },
+          {
+            id: 2,
+            name: "Grandchild 2",
+            photo:
+              "https://res.cloudinary.com/dxoorukfj/image/upload/v1764852081/grand-daughter2_tqroux.png",
+          },
         ],
       },
       {
         id: 2,
-        name: 'Chidi Nyesom',
-        photo: 'https://res.cloudinary.com/dxoorukfj/image/upload/v1764852083/son2_y4u8mz.png',
-        grandchildren: [{ id: 3, name: 'Grandchild 3', photo: 'https://res.cloudinary.com/dxoorukfj/image/upload/v1764852084/grandson1_k7vl7f.png' }],
+        name: "Chidi Nyesom",
+        photo: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764852083/son2_y4u8mz.png",
+        grandchildren: [
+          {
+            id: 3,
+            name: "Grandchild 3",
+            photo:
+              "https://res.cloudinary.com/dxoorukfj/image/upload/v1764852084/grandson1_k7vl7f.png",
+          },
+        ],
       },
       {
         id: 3,
-        name: 'Chinyere George',
-        photo: 'https://res.cloudinary.com/dxoorukfj/image/upload/v1764852091/daughter_ywjod0.png',
+        name: "Chinyere George",
+        photo: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764852091/daughter_ywjod0.png",
         grandchildren: [
-          { id: 4, name: 'Grandchild 4', photo: 'https://res.cloudinary.com/dxoorukfj/image/upload/v1764852085/grandson2_j8ogni.png' },
-          { id: 5, name: 'Grandchild 5', photo: 'https://res.cloudinary.com/dxoorukfj/image/upload/v1764852081/grand-daughter3_az7l0h.png' },
+          {
+            id: 4,
+            name: "Grandchild 4",
+            photo:
+              "https://res.cloudinary.com/dxoorukfj/image/upload/v1764852085/grandson2_j8ogni.png",
+          },
+          {
+            id: 5,
+            name: "Grandchild 5",
+            photo:
+              "https://res.cloudinary.com/dxoorukfj/image/upload/v1764852081/grand-daughter3_az7l0h.png",
+          },
         ],
       },
     ],
@@ -44,7 +71,9 @@ const FamilyTree = () => {
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
-        style={{ backgroundImage: `url(https://res.cloudinary.com/dxoorukfj/image/upload/v1764852092/family_pzt4mm.png)` }}
+        style={{
+          backgroundImage: `url(https://res.cloudinary.com/dxoorukfj/image/upload/v1764852092/family_pzt4mm.png)`,
+        }}
       ></div>
 
       {/* Light green gradient overlay */}
@@ -159,7 +188,7 @@ const FamilyTree = () => {
                     <div className="w-0.5 h-8 bg-gradient-to-b from-amber-300/30 to-transparent" />
                   </div>
                   <div className="space-y-3">
-                    {child.grandchildren.map(grandchild => (
+                    {child.grandchildren.map((grandchild) => (
                       <div
                         key={grandchild.id}
                         className="flex items-center gap-3 p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-all border border-white/10"
@@ -167,6 +196,8 @@ const FamilyTree = () => {
                         <Image
                           src={grandchild.photo}
                           alt={grandchild.name}
+                          width={128}
+                          height={128}
                           className="w-32 h-32 rounded-full object-cover border-2 border-amber-300/20"
                         />
                         <div>
