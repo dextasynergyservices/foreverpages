@@ -32,13 +32,20 @@ const format = winston.format.combine(
   winston.format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`)
 );
 
+// Check if we're in a serverless environment (Vercel, AWS Lambda, etc.)
+// These environments have read-only filesystems
+const isServerless =
+  process.env.VERCEL === "1" ||
+  process.env.AWS_LAMBDA_FUNCTION_NAME ||
+  process.env.NETLIFY === "true";
+
 // Define transports
 const transports = [
   // Console transport for all environments
   new winston.transports.Console(),
 
-  // File transports for production
-  ...(process.env.NODE_ENV === "production"
+  // File transports for production (but NOT on serverless platforms)
+  ...(process.env.NODE_ENV === "production" && !isServerless
     ? [
         new winston.transports.File({
           filename: "logs/error.log",
