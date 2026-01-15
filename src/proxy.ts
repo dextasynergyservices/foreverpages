@@ -58,8 +58,24 @@ export async function proxy(req: NextRequest) {
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
   const isTwoFactorLoginRoute = twoFactorLoginRoutes.some((route) => pathname.startsWith(route));
 
-  // Block public access to template development routes
+  // Handle template routes - allow authenticated users to preview templates
   if (pathname.startsWith("/templates/")) {
+    // Get the JWT token to check if user is authenticated
+    const token = await getToken({
+      req,
+      secret: process.env.NEXTAUTH_SECRET,
+      cookieName:
+        process.env.NODE_ENV === "production"
+          ? "__Secure-next-auth.session-token"
+          : "next-auth.session-token",
+    });
+
+    // Allow authenticated users to access template previews
+    if (token) {
+      return NextResponse.next();
+    }
+
+    // Block public/unauthenticated access to template routes
     return new Response(
       `<!DOCTYPE html>
       <html lang="en">
