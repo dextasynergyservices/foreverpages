@@ -1,0 +1,106 @@
+{
+  "name": "Loved Forever",
+  "slug": "loved-forever-template",
+  "version": "1.0.0",
+  "description": "A spiritual memorial template with nature-inspired design, elegant lavender gradients, and warm golden accents",
+  "author": "ForeverPages",
+  "category": "spiritual",
+  "tier": "premium",
+  "preview": {
+    "thumbnail": "/templates/loved-forever-template/preview-thumb.jpg",
+    "fullPreview": "/templates/loved-forever-template/preview-full.jpg"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "name": "Hero Section",
+      "component": "HeroSection",
+      "required": true,
+      "description": "Video background hero with portrait and memorial details"
+    },
+    {
+      "id": "biography",
+      "name": "Life Story",
+      "component": "LifeSection",
+      "required": false,
+      "description": "Biography section with elegant glass-effect card"
+    },
+    {
+      "id": "family",
+      "name": "Family Tree",
+      "component": "FamilyTree",
+      "required": false,
+      "description": "Visual family tree with photos"
+    },
+    {
+      "id": "gallery",
+      "name": "Photo Gallery",
+      "component": "PhotoGallery",
+      "required": false,
+      "description": "Categorized photo gallery with lightbox"
+    },
+    {
+      "id": "tributes",
+      "name": "Tributes",
+      "component": "PrayerWall",
+      "required": false,
+      "description": "Prayer wall for sharing tributes and offerings"
+    },
+    {
+      "id": "donations",
+      "name": "Support",
+      "component": "SupportSection",
+      "required": false,
+      "description": "Family support and donation section"
+    },
+    {
+      "id": "condolences",
+      "name": "Condolence Book",
+      "component": "CondolencesSection",
+      "required": false,
+      "description": "Condolence messages and letters"
+    }
+  ],
+  "features": [
+    "Video hero background",
+    "Nature-inspired lavender gradient theme",
+    "Interactive family tree",
+    "Categorized photo gallery with lightbox",
+    "Tribute wall with offerings (candle/flower/heart)",
+    "Condolence book with letter uploads",
+    "Background music player",
+    "Blessing/donation modal",
+    "Responsive mobile navigation",
+    "Glass-effect card designs"
+  ],
+  "designTokens": {
+    "colors": {
+      "primary": "#9F7AEA",
+      "secondary": "#4299E1",
+      "accent": "#F6E05E",
+      "background": "#1a202c"
+    },
+    "fonts": {
+      "heading": "Playfair Display",
+      "body": "Nunito"
+    }
+  },
+  "files": [
+    "config.ts",
+    "layout.tsx",
+    "page.tsx",
+    "styles.css",
+    "TemplateProvider.tsx",
+    "components/HeroSection.tsx",
+    "components/LifeSection.tsx",
+    "components/FamilyTree.tsx",
+    "components/PhotoGallery.tsx",
+    "components/PrayerWall.tsx",
+    "components/SupportSection.tsx",
+    "components/CondolencesSection.tsx",
+    "components/BlessingModal.tsx",
+    "components/Navbar.tsx",
+    "components/Footer.tsx",
+    "components/MusicPlayer.tsx"
+  ]
+}

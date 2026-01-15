@@ -1,0 +1,155 @@
+"use client";
+
+import React, { useState, createContext, useContext } from "react";
+import type { Template, UserTemplate, Memorial } from "@/generated/prisma";
+import { TemplateProvider } from "@/app/templates/loved-forever-template/TemplateProvider";
+import { templateConfig, type DesignTokens } from "@/app/templates/loved-forever-template/config";
+import SupportModal from "@/components/modals/SupportModal";
+import HeroSection from "@/app/templates/loved-forever-template/components/HeroSection";
+import LifeSection from "@/app/templates/loved-forever-template/components/LifeSection";
+import FamilyTree from "@/app/templates/loved-forever-template/components/FamilyTree";
+import PhotoGallery from "@/app/templates/loved-forever-template/components/PhotoGallery";
+import PrayerWall from "@/app/templates/loved-forever-template/components/PrayerWall";
+import SupportSection from "@/app/templates/loved-forever-template/components/SupportSection";
+import CondolencesSection from "@/app/templates/loved-forever-template/components/CondolencesSection";
+
+interface MemorialTemplateProps {
+  memorial: Memorial;
+  userTemplate: UserTemplate & {
+    baseTemplate: Template;
+  };
+  config?: Record<string, unknown>;
+}
+
+// Context for SupportModal to be accessible from any child component
+interface SupportModalContextType {
+  openSupportModal: () => void;
+  closeSupportModal: () => void;
+  isOpen: boolean;
+}
+
+const SupportModalContext = createContext<SupportModalContextType | null>(null);
+
+// Export hook for child components to trigger the support modal
+export const useSupportModal = () => {
+  const context = useContext(SupportModalContext);
+  if (!context) {
+    throw new Error("useSupportModal must be used within MemorialTemplate");
+  }
+  return context;
+};
+
+// Convert Prisma Memorial to template's expected MemorialData format
+function convertMemorialData(memorial: Memorial, userTemplate: UserTemplate) {
+  // Safely convert customization to DesignTokens
+  let customDesignTokens: DesignTokens | undefined;
+  try {
+    if (userTemplate.customization && typeof userTemplate.customization === "object") {
+      customDesignTokens = userTemplate.customization as unknown as DesignTokens;
+    }
+  } catch (error) {
+    console.warn("Failed to parse user customization:", error);
+  }
+
+  // Safely convert sections to sections data
+  let sectionsData = {};
+  try {
+    if (userTemplate.sections && typeof userTemplate.sections === "object") {
+      sectionsData = userTemplate.sections as Record<string, unknown>;
+    }
+  } catch (error) {
+    console.warn("Failed to parse user sections:", error);
+  }
+
+  return {
+    name: `${memorial.firstName} ${memorial.lastName}`,
+    birthYear: memorial.birthDate
+      ? new Date(memorial.birthDate).getFullYear().toString()
+      : "Unknown",
+    deathYear: memorial.deathDate
+      ? new Date(memorial.deathDate).getFullYear().toString()
+      : "Unknown",
+    tagline: "Forever in our hearts",
+    portraitUrl: memorial.profilePhoto || "",
+    videoUrl: undefined,
+    ownerId: memorial.ownerId,
+    sectionsData,
+    config: {
+      ...templateConfig,
+      defaultDesign: customDesignTokens || templateConfig.defaultDesign,
+    },
+  };
+}
+
+export const LovedForeverTemplateMemorialTemplate: React.FC<MemorialTemplateProps> = ({
+  memorial,
+  userTemplate,
+}) => {
+  const memorialData = convertMemorialData(memorial, userTemplate);
+  const [supportModalOpen, setSupportModalOpen] = useState(false);
+
+  // Support modal context value for child components
+  const supportModalContextValue: SupportModalContextType = {
+    openSupportModal: () => setSupportModalOpen(true),
+    closeSupportModal: () => setSupportModalOpen(false),
+    isOpen: supportModalOpen,
+  };
+
+  // Use template's default design tokens as fallback
+  const defaultTokens = templateConfig.defaultDesign;
+
+  // Safely convert customization to DesignTokens
+  let customization: DesignTokens | undefined;
+
+  try {
+    if (userTemplate.customization && typeof userTemplate.customization === "object") {
+      customization = userTemplate.customization as unknown as DesignTokens;
+    } else {
+      customization = defaultTokens;
+    }
+  } catch (error) {
+    console.warn("Failed to parse user customization:", error);
+    customization = defaultTokens;
+  }
+
+  return (
+    <SupportModalContext.Provider value={supportModalContextValue}>
+      <TemplateProvider
+        isPreview={true}
+        memorialId={memorial.id}
+        memorial={memorialData}
+        config={templateConfig}
+        customization={customization}
+        sectionsData={memorialData.sectionsData}
+      >
+        <div className="relative min-h-screen overflow-x-hidden">
+          <style jsx global>{`
+            .template-preview {
+              scroll-behavior: smooth;
+              contain: layout style;
+            }
+          `}</style>
+          <main className="relative z-10">
+            <HeroSection />
+            <LifeSection />
+            <FamilyTree />
+            <PhotoGallery />
+            <PrayerWall />
+            <SupportSection />
+            <CondolencesSection />
+          </main>
+
+          {/* Support Modal Integration - Uses shared component */}
+          <SupportModal
+            isOpen={supportModalOpen}
+            onClose={() => setSupportModalOpen(false)}
+            memorialOwnerId={memorial.ownerId}
+            memorialId={memorial.id}
+          />
+        </div>
+      </TemplateProvider>
+    </SupportModalContext.Provider>
+  );
+};
+
+export default LovedForeverTemplateMemorialTemplate;
