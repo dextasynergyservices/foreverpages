@@ -32,6 +32,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
             thumbnailImage: true,
             supportedSections: true,
             layoutType: true,
+            manifest: true,
           },
         },
         memorials: {
@@ -110,6 +111,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
             thumbnailImage: true,
             supportedSections: true,
             layoutType: true,
+            manifest: true,
           },
         },
         memorials: {

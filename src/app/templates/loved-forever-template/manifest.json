@@ -23,7 +23,8 @@
       "name": "Life Story",
       "component": "LifeSection",
       "required": false,
-      "description": "Biography section with elegant glass-effect card"
+      "description": "Biography section with elegant glass-effect card",
+      "supportedFields": ["fullStory", "legacy"]
     },
     {
       "id": "family",

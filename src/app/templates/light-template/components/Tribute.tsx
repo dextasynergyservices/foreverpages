@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Input } from "./ui/input";
-import { Heart, Quote, Gift, ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { Heart, Quote, Gift, ChevronLeft, ChevronRight, Star, Loader2 } from "lucide-react";
 import { useTemplate } from "../TemplateProvider";
 import SupportModal from "@/components/modals/SupportModal";
+import toast from "react-hot-toast";
 
 interface Tribute {
   id: string;
@@ -20,6 +21,7 @@ interface Tribute {
 const TributeSection = () => {
   const {
     sectionsData,
+    memorial,
     memorialId,
     memorialOwnerId,
     memorialOwnerName,
@@ -28,52 +30,49 @@ const TributeSection = () => {
 
   // Get TRIBUTES section data with fallbacks
   const tributesData = (sectionsData?.TRIBUTES as any) || {};
-  const defaultTributes = [
-    {
-      id: "1",
-      name: "Sarah Anderson",
-      relationship: "Wife",
-      message:
-        "My dearest John, your love was the anchor of our family. Your wisdom, kindness, and unwavering faith continue to guide us every day. The memories we built over 49 years will forever be my greatest treasure.",
-      date: "December 1, 2024",
-      favorite: true,
-    },
-    {
-      id: "2",
-      name: "Emily Anderson",
-      relationship: "Daughter",
-      message:
-        "Dad, you were my hero and my guiding light. Thank you for teaching me about strength, compassion, and what it means to be a good person. I will carry your lessons with me always.",
-      date: "November 30, 2024",
-      favorite: true,
-    },
-    {
-      id: "3",
-      name: "Michael Anderson",
-      relationship: "Son",
-      message:
-        "Dad, your legacy lives on through all of us. Thank you for being the rock of our family and showing us what true character means.",
-      date: "November 29, 2024",
-    },
-    {
-      id: "4",
-      name: "Robert Johnson",
-      relationship: "Brother",
-      message:
-        "John was the best brother anyone could ask for. His laughter and wisdom will be deeply missed by all who knew him.",
-      date: "November 28, 2024",
-    },
-    {
-      id: "5",
-      name: "Jennifer Martinez",
-      relationship: "Friend",
-      message:
-        "John had a heart of gold and always knew how to make everyone feel special. He will be deeply missed.",
-      date: "November 27, 2024",
-    },
-  ];
+  const sectionTitle = tributesData.title || "Loving Tributes";
+  const sectionSubtitle = tributesData.subtitle || "Words of love and remembrance";
 
-  const [tributes, setTributes] = useState<Tribute[]>(tributesData.tributes || defaultTributes);
+  // Settings from editor
+  const allowPublicTributes = tributesData.allowPublicTributes !== false;
+
+  // State for tributes - fetch from API instead of hardcoded
+  const [tributes, setTributes] = useState<Tribute[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch approved tributes from database
+  useEffect(() => {
+    const fetchTributes = async () => {
+      const id = memorial?.id || memorialId;
+      if (!id) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/public/memorial/${id}/tributes`);
+        if (response.ok) {
+          const data = await response.json();
+          // Transform API response to match component format
+          const formattedTributes = (data.tributes || []).map((t: any) => ({
+            id: t.id,
+            name: t.name,
+            relationship: t.relationship || "Friend",
+            message: t.message,
+            date: t.timestamp || new Date().toLocaleDateString(),
+            favorite: false,
+          }));
+          setTributes(formattedTributes);
+        }
+      } catch (error) {
+        console.error("Error fetching tributes:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTributes();
+  }, [memorial?.id, memorialId]);
 
   const [newTribute, setNewTribute] = useState({
     name: "",
@@ -119,29 +118,38 @@ const TributeSection = () => {
     e.preventDefault();
     if (!newTribute.name || !newTribute.message) return;
 
+    const id = memorial?.id || memorialId;
+    if (!id) {
+      toast.error("Memorial not found");
+      return;
+    }
+
     setIsSubmitting(true);
 
-    // Simulate API call with loading state
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      // Submit tribute to API
+      const response = await fetch(`/api/public/memorial/${id}/tributes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: newTribute.name,
+          relationship: newTribute.relationship || "Friend",
+          message: newTribute.message,
+        }),
+      });
 
-    const tribute: Tribute = {
-      id: Date.now().toString(),
-      name: newTribute.name,
-      relationship: newTribute.relationship || "Friend",
-      message: newTribute.message,
-      date: new Date().toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
-    };
-
-    setTributes([tribute, ...tributes]);
-    setNewTribute({ name: "", relationship: "", message: "" });
-    setIsSubmitting(false);
-
-    // Reset to page 1 when new tribute is added so user sees their tribute
-    setCurrentPage(1);
+      if (response.ok) {
+        setNewTribute({ name: "", relationship: "", message: "" });
+        toast.success("Your tribute has been submitted for review");
+      } else {
+        toast.error("Failed to submit tribute");
+      }
+    } catch (error) {
+      console.error("Error submitting tribute:", error);
+      toast.error("Failed to submit tribute");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const toggleFavorite = (id: string) => {
@@ -247,13 +255,13 @@ const TributeSection = () => {
             <div className="h-px w-8 md:w-16 bg-primary/50 flex-1 max-w-16"></div>
             <Quote className="h-6 w-6 md:h-8 md:w-8 text-primary" />
             <h2 className="font-script text-4xl md:text-5xl lg:text-6xl text-gold px-2">
-              Loving Tributes
+              {sectionTitle}
             </h2>
             <Quote className="h-6 w-6 md:h-8 md:w-8 text-primary" />
             <div className="h-px w-8 md:w-16 bg-primary/50 flex-1 max-w-16"></div>
           </div>
           <p className="text-gray-300 text-base md:text-lg italic max-w-2xl mx-auto px-4">
-            Share your memories, stories, and messages of love and remembrance
+            {sectionSubtitle}
           </p>
         </div>
 
@@ -343,7 +351,12 @@ const TributeSection = () => {
 
         {/* Tributes Grid */}
         <div className="grid gap-4 md:gap-6 mb-8 md:mb-12">
-          {pagination.currentTributes.length > 0 ? (
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 text-primary animate-spin mb-3" />
+              <p className="text-gray-400">Loading tributes...</p>
+            </div>
+          ) : pagination.currentTributes.length > 0 ? (
             pagination.currentTributes.map((tribute, index) => (
               <div
                 key={tribute.id}
@@ -389,8 +402,10 @@ const TributeSection = () => {
               </div>
             ))
           ) : (
-            <div className="text-center py-8 text-gray-400">
-              No tributes found. Be the first to share a memory.
+            <div className="text-center py-12 bg-black/40 rounded-xl border border-primary/20">
+              <Heart className="h-12 w-12 text-primary/30 mx-auto mb-4" />
+              <p className="text-gray-300 text-lg mb-2">No Tributes Yet</p>
+              <p className="text-gray-500 text-sm">Be the first to share a loving tribute</p>
             </div>
           )}
         </div>

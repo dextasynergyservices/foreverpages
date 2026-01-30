@@ -113,7 +113,7 @@ const CreateMemorial = () => {
   const { status: sessionStatus } = useSession();
 
   // Auto-save for published memorials in edit mode
-  const { autoSave } = useMemorialAutoSave({
+  const { autoSave, saveStatus } = useMemorialAutoSave({
     userTemplateId: currentTemplate?.id,
     memorialSlug: publishedData?.publishedMemorial?.slug,
     enabled: true,
@@ -149,24 +149,31 @@ const CreateMemorial = () => {
       }
 
       // Set section data
-      if (editTemplate.sections) {
-        setSectionData(editTemplate.sections as unknown as SectionData);
+      const sections = editTemplate.sections as unknown as SectionData;
+      if (sections) {
+        setSectionData(sections);
       }
 
-      // Set memorial basic info if memorial exists
-      if (editTemplate.memorials && editTemplate.memorials.length > 0) {
-        const memorial = editTemplate.memorials[0];
-        // Note: We would need to fetch full memorial data to get birthDate, deathDate, etc.
-        // For now, we set what's available
-        setMemorialBasicInfo({
-          firstName: memorial.firstName || "",
-          lastName: memorial.lastName || "",
-          birthDate: "",
-          deathDate: "",
-          biography: "",
-          profilePhoto: "",
-        });
-      }
+      // Set memorial basic info - prefer hero section data, fall back to memorial record
+      const heroData = sections?.hero as
+        | {
+            firstName?: string;
+            lastName?: string;
+            birthDate?: string;
+            deathDate?: string;
+            mainImage?: string;
+          }
+        | undefined;
+      const memorial = editTemplate.memorials?.[0];
+
+      setMemorialBasicInfo({
+        firstName: heroData?.firstName || memorial?.firstName || "",
+        lastName: heroData?.lastName || memorial?.lastName || "",
+        birthDate: heroData?.birthDate || "",
+        deathDate: heroData?.deathDate || "",
+        biography: "",
+        profilePhoto: heroData?.mainImage || "",
+      });
     }
   }, [isEditMode, editTemplate]);
 
@@ -257,8 +264,20 @@ const CreateMemorial = () => {
       const initialSectionData: SectionData = {};
       const supportedSections = currentTemplate.baseTemplate.supportedSections;
 
+      // Always include HEADER section for all templates
+      initialSectionData.HEADER = {
+        logo: "",
+        siteName: "In Loving Memory",
+        tagline: "",
+        showNavigation: true,
+        showSocialLinks: false,
+      };
+
       supportedSections.forEach((section) => {
         switch (section) {
+          case "HEADER":
+            // Already initialized above
+            break;
           case "HERO":
             initialSectionData.HERO = {
               title:
@@ -501,10 +520,23 @@ const CreateMemorial = () => {
 
       // Initialize default sections based on supportedSections
       const initialSections: Record<string, unknown> = {};
+
+      // Always include HEADER section for all templates
+      initialSections["HEADER"] = {
+        logo: "",
+        siteName: "In Loving Memory",
+        tagline: "",
+        showNavigation: true,
+        showSocialLinks: false,
+      };
+
       if (selectedBaseTemplate?.features) {
         const supportedSections = selectedBaseTemplate.features;
         supportedSections.forEach((section) => {
           switch (section) {
+            case "HEADER":
+              // Already initialized above
+              break;
             case "HERO":
               initialSections["HERO"] = {
                 title:
@@ -857,6 +889,75 @@ const CreateMemorial = () => {
     >
       <Header />
 
+      {/* Auto-save status indicator for published memorials in edit mode */}
+      {isEditMode && currentTemplate?.isPublished && (
+        <div className="max-w-7xl mx-auto px-4 md:px-6 pt-4">
+          <div
+            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm ${
+              saveStatus === "saving"
+                ? theme === "dark"
+                  ? "bg-blue-500/20 text-blue-200"
+                  : "bg-blue-100 text-blue-700"
+                : saveStatus === "saved"
+                  ? theme === "dark"
+                    ? "bg-green-500/20 text-green-200"
+                    : "bg-green-100 text-green-700"
+                  : saveStatus === "error"
+                    ? theme === "dark"
+                      ? "bg-red-500/20 text-red-200"
+                      : "bg-red-100 text-red-700"
+                    : theme === "dark"
+                      ? "bg-white/10 text-white/70"
+                      : "bg-gray-100 text-gray-600"
+            }`}
+          >
+            {saveStatus === "saving" ? (
+              <>
+                <div className="animate-spin rounded-full h-3.5 w-3.5 border-2 border-current border-t-transparent" />
+                <span>{t("dashboard.pageBuilder.autoSave.saving", {}, "Saving...")}</span>
+              </>
+            ) : saveStatus === "saved" ? (
+              <>
+                <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span>
+                  {t("dashboard.pageBuilder.autoSave.allChangesSaved", {}, "All changes saved")}
+                </span>
+              </>
+            ) : saveStatus === "error" ? (
+              <>
+                <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span>{t("dashboard.pageBuilder.autoSave.errorSaving", {}, "Error saving")}</span>
+              </>
+            ) : (
+              <>
+                <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span>
+                  {t("dashboard.pageBuilder.autoSave.autoSaveEnabled", {}, "Auto-save enabled")}
+                </span>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Active template banner */}
       {activeTemplate && (
         <div className="max-w-7xl mx-auto px-4 md:px-6 pt-6">
@@ -1051,7 +1152,15 @@ const CreateMemorial = () => {
                   hasActiveTemplate={!!currentTemplate}
                   supportedSections={
                     // Get sections from the base template definition (what sections this template supports)
-                    currentTemplate?.baseTemplate?.supportedSections || []
+                    // Always include HEADER section at the beginning for all templates
+                    currentTemplate?.baseTemplate?.supportedSections
+                      ? [
+                          "HEADER",
+                          ...currentTemplate.baseTemplate.supportedSections.filter(
+                            (s) => s !== "HEADER"
+                          ),
+                        ]
+                      : ["HEADER"]
                   }
                   sectionData={sectionData}
                   onSectionDataChange={handleSectionDataChange}

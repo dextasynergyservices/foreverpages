@@ -19,6 +19,10 @@ export interface GalleryItem {
 }
 
 export interface GalleryData {
+  // Section content fields
+  title?: string;
+  subtitle?: string;
+  // Structure fields
   items: GalleryItem[];
   layout?: "grid" | "masonry" | "carousel";
 }
@@ -94,6 +98,45 @@ export const GalleryEditor: React.FC<GalleryEditorProps> = ({ data, onChange }) 
               "Add photos and videos that celebrate their life"
             )}
           </p>
+        </div>
+
+        {/* Section Content */}
+        <div
+          className={`space-y-4 p-4 rounded-lg ${
+            theme === "dark" ? "bg-gray-800/50" : "bg-gray-50"
+          }`}
+        >
+          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Section Content</h4>
+          <div>
+            <Label htmlFor="gallery-title">Section Title</Label>
+            <input
+              id="gallery-title"
+              type="text"
+              className={`w-full px-3 py-2 rounded-md border ${
+                theme === "dark"
+                  ? "bg-gray-800 border-gray-700 text-white"
+                  : "bg-white border-gray-200 text-gray-900"
+              }`}
+              placeholder="Photo Gallery"
+              value={data.title || ""}
+              onChange={(e) => onChange({ ...data, title: e.target.value })}
+            />
+          </div>
+          <div>
+            <Label htmlFor="gallery-subtitle">Subtitle</Label>
+            <input
+              id="gallery-subtitle"
+              type="text"
+              className={`w-full px-3 py-2 rounded-md border ${
+                theme === "dark"
+                  ? "bg-gray-800 border-gray-700 text-white"
+                  : "bg-white border-gray-200 text-gray-900"
+              }`}
+              placeholder="A collection of cherished memories"
+              value={data.subtitle || ""}
+              onChange={(e) => onChange({ ...data, subtitle: e.target.value })}
+            />
+          </div>
         </div>
 
         {/* Layout Selection */}

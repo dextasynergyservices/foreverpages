@@ -149,6 +149,10 @@ export const GalleryModern = () => {
     setCurrentPage(1);
   }, []);
 
+  // Section content from sectionsData
+  const sectionTitle = galleryData.title || "Cherished Memories";
+  const sectionSubtitle = galleryData.subtitle || "Moments that made life beautiful";
+
   return (
     <>
       <section
@@ -158,9 +162,9 @@ export const GalleryModern = () => {
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 animate-fade-in text-center">
             <h2 className="mb-1 font-heading text-2xl font-bold leading-tight text-cream md:mb-2 md:text-6xl">
-              Cherished Memories
+              {sectionTitle}
             </h2>
-            <p className="text-cream/80">Moments that made life beautiful</p>
+            <p className="text-cream/80">{sectionSubtitle}</p>
           </div>
 
           {/* Enhanced Media Grid */}

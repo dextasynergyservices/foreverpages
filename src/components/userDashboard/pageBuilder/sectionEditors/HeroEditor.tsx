@@ -25,8 +25,15 @@ interface HeroEditorProps {
   memorialData?: {
     firstName?: string;
     lastName?: string;
+    birthDate?: string;
+    deathDate?: string;
   };
-  onMemorialDataChange?: (data: { firstName?: string; lastName?: string }) => void;
+  onMemorialDataChange?: (data: {
+    firstName?: string;
+    lastName?: string;
+    birthDate?: string;
+    deathDate?: string;
+  }) => void;
 }
 
 export const HeroEditor: React.FC<HeroEditorProps> = ({
@@ -44,6 +51,14 @@ export const HeroEditor: React.FC<HeroEditorProps> = ({
   };
 
   const handleNameChange = (field: "firstName" | "lastName", value: string) => {
+    // Update both hero data and memorial data
+    onChange({ ...data, [field]: value });
+    if (onMemorialDataChange) {
+      onMemorialDataChange({ ...memorialData, [field]: value });
+    }
+  };
+
+  const handleDateChange = (field: "birthDate" | "deathDate", value: string) => {
     // Update both hero data and memorial data
     onChange({ ...data, [field]: value });
     if (onMemorialDataChange) {
@@ -153,8 +168,8 @@ export const HeroEditor: React.FC<HeroEditorProps> = ({
           <Input
             id="hero-birth"
             type="date"
-            value={data.birthDate || ""}
-            onChange={(e) => handleChange("birthDate", e.target.value)}
+            value={data.birthDate || memorialData?.birthDate || ""}
+            onChange={(e) => handleDateChange("birthDate", e.target.value)}
           />
         </div>
         <div>
@@ -162,8 +177,8 @@ export const HeroEditor: React.FC<HeroEditorProps> = ({
           <Input
             id="hero-death"
             type="date"
-            value={data.deathDate || ""}
-            onChange={(e) => handleChange("deathDate", e.target.value)}
+            value={data.deathDate || memorialData?.deathDate || ""}
+            onChange={(e) => handleDateChange("deathDate", e.target.value)}
           />
         </div>
       </div>

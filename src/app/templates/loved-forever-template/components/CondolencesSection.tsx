@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { toast } from "sonner";
+import { useState, useRef, useEffect } from "react";
+import toast from "react-hot-toast";
 import {
   Upload,
   X,
@@ -11,11 +11,14 @@ import {
   Download,
   ChevronLeft,
   ChevronRight,
+  Heart,
+  Loader2,
 } from "lucide-react";
 import Image from "next/image";
+import { useTemplate } from "../TemplateProvider";
 
 interface Condolence {
-  id: number;
+  id: number | string;
   name: string;
   organization?: string;
   relationship: string;
@@ -25,58 +28,48 @@ interface Condolence {
 }
 
 const CondolencesSection = () => {
-  const [condolences, setCondolences] = useState<Condolence[]>([
-    {
-      id: 1,
-      name: "The Thompson Family",
-      relationship: "Family Friends",
-      message:
-        "Our deepest sympathies and prayers are with you all. [Name] was an incredible person who touched so many lives. We will miss [him/her] dearly. His kindness and wisdom guided us through many difficult times, and his memory will forever be etched in our hearts.",
-      date: "2 days ago",
-    },
-    {
-      id: 2,
-      name: "Dr. James Patterson",
-      organization: "St. Mary's Hospital",
-      relationship: "Colleague",
-      message:
-        "A remarkable soul who made this world a better place. My heartfelt condolences to the entire family. May [his/her] memory be a blessing. Working alongside [Name] was a privilege I will always cherish.",
-      date: "3 days ago",
-    },
-    {
-      id: 3,
-      name: "Maria Gonzalez",
-      relationship: "Neighbor",
-      message:
-        "Heaven has gained another angel. Sending love, strength, and prayers to all who knew and loved [Name]. The neighborhood won't be the same without [his/her] warm presence.",
-      date: "4 days ago",
-    },
-    {
-      id: 4,
-      name: "Robert Wilson",
-      relationship: "Former Student",
-      message:
-        "[Name] was more than a teacher to me - [he/she] was a mentor and a guiding light. The lessons [he/she] taught extended far beyond the classroom and have shaped the person I am today.",
-      date: "5 days ago",
-    },
-    {
-      id: 5,
-      name: "The Johnson Family",
-      relationship: "Church Members",
-      message:
-        "Our church community mourns the loss of such a faithful servant. [Name]'s dedication and kindness touched everyone [he/she] met. May God's peace comfort the family.",
-      date: "1 week ago",
-    },
-    {
-      id: 6,
-      name: "Lisa Chen",
-      organization: "Community Center",
-      relationship: "Volunteer Partner",
-      message:
-        "Working alongside [Name] at the community center was an honor. [His/Her] compassion and commitment to helping others was truly inspiring. [He/She] will be deeply missed.",
-      date: "1 week ago",
-    },
-  ]);
+  const { sectionsData, memorial } = useTemplate();
+
+  // Get condolences data from sectionsData
+  const condolencesData = (sectionsData?.CONDOLENCES || {}) as Record<string, unknown>;
+
+  // Settings from editor
+  const allowPublicCondolences = condolencesData.allowPublicCondolences !== false;
+  const allowLetterUpload = condolencesData.allowLetterUpload === true;
+
+  // Section customization
+  const sectionTitle = (condolencesData.title as string) || "Condolences";
+  const sectionSubtitle =
+    (condolencesData.subtitle as string) || "Share your memories and condolences with the family";
+
+  // State for condolences (fetched from API, not hardcoded)
+  const [condolences, setCondolences] = useState<Condolence[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch approved condolences from database
+  useEffect(() => {
+    const fetchCondolences = async () => {
+      if (!memorial?.id) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        // Fetch approved condolences for this memorial
+        const response = await fetch(`/api/public/memorial/${memorial.id}/condolences`);
+        if (response.ok) {
+          const data = await response.json();
+          setCondolences(data.condolences || []);
+        }
+      } catch (error) {
+        console.error("Error fetching condolences:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCondolences();
+  }, [memorial?.id]);
 
   const [newCondolence, setNewCondolence] = useState({
     name: "",
@@ -111,32 +104,45 @@ const CondolencesSection = () => {
       return;
     }
 
+    if (!memorial?.id) {
+      toast.error("Memorial not found");
+      return;
+    }
+
     setIsSubmitting(true);
 
-    // Simulate upload delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      // Submit condolence to API
+      const response = await fetch(`/api/public/memorial/${memorial.id}/condolences`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: newCondolence.name,
+          organization: newCondolence.organization || undefined,
+          relationship: newCondolence.relationship,
+          message: newCondolence.message,
+          letter: newCondolence.letter || undefined,
+        }),
+      });
 
-    const condolence: Condolence = {
-      id: Date.now(),
-      name: newCondolence.name,
-      organization: newCondolence.organization || undefined,
-      relationship: newCondolence.relationship,
-      message: newCondolence.message,
-      letter: newCondolence.letter || undefined,
-      date: "Just now",
-    };
-
-    setCondolences([condolence, ...condolences]);
-    setNewCondolence({
-      name: "",
-      organization: "",
-      relationship: "",
-      message: "",
-      letter: "",
-    });
-    setIsSubmitting(false);
-    setCurrentPage(1); // Reset to first page when new condolence is added
-    toast.success("Your condolence has been shared");
+      if (response.ok) {
+        setNewCondolence({
+          name: "",
+          organization: "",
+          relationship: "",
+          message: "",
+          letter: "",
+        });
+        toast.success("Your condolence has been submitted for review");
+      } else {
+        toast.error("Failed to submit condolence");
+      }
+    } catch (error) {
+      console.error("Error submitting condolence:", error);
+      toast.error("Failed to submit condolence");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleLetterUpload = (event: React.ChangeEvent<HTMLInputElement>) => {

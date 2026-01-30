@@ -3,45 +3,131 @@
 import { useState, useEffect } from "react";
 import { useTemplate } from "../TemplateProvider";
 
+// Helper function to extract year from various date formats
+const extractYear = (dateValue: unknown): string => {
+  if (!dateValue) return "";
+
+  // If it's already just a year number or string
+  if (typeof dateValue === "number") return String(dateValue);
+  if (typeof dateValue === "string") {
+    // Check if it's a full date string (contains - or /)
+    if (dateValue.includes("-") || dateValue.includes("/")) {
+      const date = new Date(dateValue);
+      if (!isNaN(date.getTime())) {
+        return String(date.getFullYear());
+      }
+    }
+    // Otherwise treat as year string
+    return dateValue;
+  }
+
+  // If it's a Date object
+  if (dateValue instanceof Date && !isNaN(dateValue.getTime())) {
+    return String(dateValue.getFullYear());
+  }
+
+  return "";
+};
+
+// Helper to format full date for display
+const formatDate = (dateValue: unknown): string => {
+  if (!dateValue) return "";
+
+  if (typeof dateValue === "string" && (dateValue.includes("-") || dateValue.includes("/"))) {
+    const date = new Date(dateValue);
+    if (!isNaN(date.getTime())) {
+      return date.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
+    }
+  }
+
+  return String(dateValue);
+};
+
 export const HeroModern = () => {
-  const { sectionsData } = useTemplate();
+  const { sectionsData, memorial } = useTemplate();
 
   // Get HERO section data with fallbacks
-  const heroData = (sectionsData?.HERO as any) || {};
+  const heroData = (sectionsData?.HERO as Record<string, unknown>) || {};
+
+  // Get dynamic data from hero section or memorial
+  const firstName = (heroData.firstName as string) || memorial?.firstName || "Eleanor Grace";
+  const lastName = (heroData.lastName as string) || memorial?.lastName || "Thompson";
+  const displayName = `${firstName} ${lastName}`;
+
+  // Get dates
+  const birthDate = (heroData.birthDate as string) || "";
+  const deathDate = (heroData.deathDate as string) || "";
+  const birthYear = extractYear(birthDate) || extractYear(memorial?.birthDate);
+  const deathYear = extractYear(deathDate) || extractYear(memorial?.deathDate);
+
+  // Format display dates
+  const formattedBirthDate = formatDate(birthDate) || "March 15, 1945";
+  const formattedDeathDate = formatDate(deathDate) || "November 2, 2024";
+  const displayDates = `${formattedBirthDate} — ${formattedDeathDate}`;
+
+  // Calculate age
+  const calculateAge = (): string => {
+    if (birthYear && deathYear) {
+      const age = parseInt(deathYear) - parseInt(birthYear);
+      return `${age} years young`;
+    }
+    return "79 years young";
+  };
+
+  // Get profile image
+  const profileImage =
+    (heroData.portraitUrl as string) || (heroData.mainImage as string) || memorial?.profileImage;
+
+  // Get other hero data
+  const quote =
+    (heroData.quote as string) || "A life beautifully lived deserves to be beautifully remembered";
+  const location = (heroData.location as string) || "Lagos, Nigeria";
+  const profession = (heroData.profession as string) || "Beloved Elementary School Teacher";
+
   const defaultLifeStages = [
     {
       id: 1,
-      image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670890/recent_h90dne.png",
-      stage: "Mama in Her Recent Years",
-      age: "70-79",
-      description: "Wisdom and grace in her golden years",
+      image:
+        profileImage ||
+        "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670890/recent_h90dne.png",
+      stage: `${firstName} in Recent Years`,
+      age: deathYear || "70-79",
+      description: "Wisdom and grace in golden years",
     },
     {
       id: 2,
-      image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670889/prime_xfxwj0.png",
-      stage: "Mama in Her Prime of Life",
+      image:
+        profileImage ||
+        "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670889/prime_xfxwj0.png",
+      stage: `${firstName} in Prime of Life`,
       age: "40-69",
-      description: "Thriving in her career and family life",
+      description: "Thriving in career and family life",
     },
     {
       id: 3,
-      image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670889/young_torvo8.png",
-      stage: "Mama as a Young Adult",
+      image:
+        profileImage ||
+        "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670889/young_torvo8.png",
+      stage: `${firstName} as a Young Adult`,
       age: "20-39",
-      description: "Starting her teaching career and family",
+      description: "Starting career and family",
     },
     {
       id: 4,
-      image: "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670889/child_nholqm.png",
-      stage: "Mama as a Child",
+      image:
+        profileImage ||
+        "https://res.cloudinary.com/dxoorukfj/image/upload/v1764670889/child_nholqm.png",
+      stage: `${firstName} as a Child`,
       age: "0-19",
       description: "Growing up full of dreams and laughter",
     },
   ];
 
-  const lifeStages = heroData.lifeStages || defaultLifeStages;
-  const mainTitle = heroData.title || "In Loving Memory";
-  const subtitle = heroData.subtitle || "A Celebration of Life";
+  const lifeStages = (heroData.lifeStages as typeof defaultLifeStages) || defaultLifeStages;
 
   const [currentStage, setCurrentStage] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
@@ -73,7 +159,7 @@ export const HeroModern = () => {
               <img
                 key={lifeStages[currentStage].id} // Force re-render on change
                 src={lifeStages[currentStage].image}
-                alt={`Eleanor - ${lifeStages[currentStage].stage}`}
+                alt={`${displayName} - ${lifeStages[currentStage].stage}`}
                 className="h-full w-full object-cover transition-all duration-700 ease-in-out"
               />
               {/* Gold overlay on hover */}
@@ -122,11 +208,9 @@ export const HeroModern = () => {
               </div>
 
               <h1 className="mb-2 font-heading text-2xl font-bold leading-tight text-cream md:text-6xl">
-                Eleanor Grace Thompson
+                {displayName}
               </h1>
-              <p className="font-accent text-xl text-soft-gold md:text-3xl">
-                March 15, 1945 — November 2, 2024
-              </p>
+              <p className="font-accent text-xl text-soft-gold md:text-3xl">{displayDates}</p>
             </div>
 
             <div className="space-y-4 text-cream/90">
@@ -136,7 +220,7 @@ export const HeroModern = () => {
                 </div>
                 <div>
                   <p className="font-semibold text-cream">Age</p>
-                  <p>79 years young</p>
+                  <p>{calculateAge()}</p>
                 </div>
               </div>
 
@@ -146,7 +230,7 @@ export const HeroModern = () => {
                 </div>
                 <div>
                   <p className="font-semibold text-cream">Home</p>
-                  <p>Lagos, Nigeria</p>
+                  <p>{location}</p>
                 </div>
               </div>
 
@@ -156,7 +240,7 @@ export const HeroModern = () => {
                 </div>
                 <div>
                   <p className="font-semibold text-cream">Profession</p>
-                  <p>Beloved Elementary School Teacher</p>
+                  <p>{profession}</p>
                 </div>
               </div>
             </div>
@@ -164,7 +248,7 @@ export const HeroModern = () => {
             {/* Quote */}
             <blockquote className="rounded-r-2xl border-l-4 border-soft-gold bg-cream/5 py-4 pl-6 backdrop-blur-sm">
               <p className="text-l font-accent italic leading-relaxed text-cream md:text-xl">
-                "A life beautifully lived deserves to be beautifully remembered"
+                &ldquo;{quote}&rdquo;
               </p>
             </blockquote>
 

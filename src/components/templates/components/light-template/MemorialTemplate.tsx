@@ -18,7 +18,14 @@ import { templateConfig } from "@/app/templates/light-template/config";
 import { DesignTokens } from "@/components/userDashboard/pageBuilder/TemplateCustomizer";
 
 interface MemorialTemplateProps {
-  memorial: Memorial;
+  memorial: Memorial & {
+    owner?: {
+      id: string;
+      name: string | null;
+      email: string;
+      accountDetails?: unknown[];
+    };
+  };
   userTemplate: UserTemplate & {
     baseTemplate: Template;
   };
@@ -26,7 +33,10 @@ interface MemorialTemplateProps {
 }
 
 // Convert Prisma Memorial to template's expected MemorialData format
-function convertMemorialData(memorial: Memorial, userTemplate: UserTemplate) {
+function convertMemorialData(
+  memorial: Memorial & { owner?: { id: string; name: string | null; accountDetails?: unknown[] } },
+  userTemplate: UserTemplate
+) {
   // Safely convert customization to DesignTokens
   let customDesignTokens: DesignTokens | undefined;
   try {
@@ -48,6 +58,7 @@ function convertMemorialData(memorial: Memorial, userTemplate: UserTemplate) {
   }
 
   return {
+    id: memorial.id, // Include memorial ID for API calls
     name: `${memorial.firstName} ${memorial.lastName}`,
     birthYear: memorial.birthDate
       ? new Date(memorial.birthDate).getFullYear().toString()
@@ -59,6 +70,20 @@ function convertMemorialData(memorial: Memorial, userTemplate: UserTemplate) {
     portraitUrl: memorial.profilePhoto || "",
     videoUrl: undefined,
     sectionsData, // Include sections data from UserTemplate
+    // Include owner info for donation/support modal
+    ownerId: memorial.ownerId || memorial.owner?.id || "",
+    ownerAccountDetails:
+      (memorial.owner?.accountDetails as Array<{
+        id: string;
+        type: string;
+        accountName: string;
+        accountNumber: string;
+        bankName?: string;
+        routingNumber?: string;
+        currency: string;
+        isDefault?: boolean;
+        description?: string;
+      }>) || [],
     config: {
       ...templateConfig,
       // Merge user customization from UserTemplate

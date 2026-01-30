@@ -95,10 +95,13 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({
 
   // Validation checks
   const validationResults = useMemo(() => {
+    // Check for firstName/lastName in hero section data as well
+    const heroData = sectionData?.hero as { firstName?: string; lastName?: string } | undefined;
+
     const checks = {
       hasTemplate: isEditMode ? !!userTemplateId : !!selectedTemplate, // For new memorials, check selectedTemplate
-      hasFirstName: !!(firstName || memorialData?.firstName),
-      hasLastName: !!(lastName || memorialData?.lastName),
+      hasFirstName: !!(firstName || memorialData?.firstName || heroData?.firstName),
+      hasLastName: !!(lastName || memorialData?.lastName || heroData?.lastName),
       hasSections: Object.keys(sectionData).length > 0,
       hasActiveSubscription: !isSubscriptionExpired,
     };

@@ -1,11 +1,18 @@
 "use client";
 
 import React from "react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { BiographyEditor, BiographyData } from "./sectionEditors/BiographyEditor";
 import { GalleryEditor, GalleryData } from "./sectionEditors/GalleryEditor";
 import { TimelineEditor, TimelineData } from "./sectionEditors/TimelineEditor";
 import { TributesEditor, TributesData } from "./sectionEditors/TributesEditor";
 import { HeroEditor, HeroData } from "./sectionEditors/HeroEditor";
+import { HeaderEditor, HeaderData } from "./sectionEditors/HeaderEditor";
 import { FuneralInfoEditor, FuneralInfoData } from "./sectionEditors/FuneralInfoEditor";
 import { AchievementsEditor, AchievementsData } from "./sectionEditors/AchievementsEditor";
 import { VideoGalleryEditor, VideoGalleryData } from "./sectionEditors/VideoGalleryEditor";
@@ -24,6 +31,28 @@ import { MapLocationsEditor, MapLocationsData } from "./sectionEditors/MapLocati
 import { DocumentsEditor, DocumentsData } from "./sectionEditors/DocumentsEditor";
 import { AudioMemoriesEditor, AudioMemoriesData } from "./sectionEditors/AudioMemoriesEditor";
 import { useTheme } from "@/hooks/useTheme";
+import {
+  Layout,
+  ImageIcon,
+  BookOpen,
+  Users,
+  Clock,
+  MessageSquare,
+  Heart,
+  Gift,
+  Camera,
+  Video,
+  Quote,
+  FileText,
+  Award,
+  GraduationCap,
+  Shield,
+  MapPin,
+  Music,
+  Flame,
+  Flower,
+  Settings,
+} from "lucide-react";
 
 // Define VirtualCandlesData type
 export interface VirtualCandlesData {
@@ -37,6 +66,7 @@ export interface VirtualCandlesData {
 }
 
 export type SectionType =
+  | "HEADER"
   | "HERO"
   | "BIOGRAPHY"
   | "GALLERY"
@@ -64,6 +94,7 @@ export type SectionType =
   | "CUSTOM";
 
 export type SectionData = {
+  HEADER?: HeaderData;
   BIOGRAPHY?: BiographyData;
   GALLERY?: GalleryData;
   TIMELINE?: TimelineData;
@@ -94,6 +125,7 @@ interface DynamicSectionRendererProps {
   supportedSections: SectionType[];
   sectionData: SectionData;
   onSectionDataChange: (section: SectionType, data: unknown) => void;
+  sectionFieldMap?: Record<string, string[]>;
   onOpenMediaPicker?: () => void;
   memorialData?: {
     firstName?: string;
@@ -112,6 +144,7 @@ export const DynamicSectionRenderer: React.FC<DynamicSectionRendererProps> = ({
   supportedSections,
   sectionData,
   onSectionDataChange,
+  sectionFieldMap,
   onOpenMediaPicker,
   memorialData,
   onMemorialDataChange,
@@ -119,7 +152,19 @@ export const DynamicSectionRenderer: React.FC<DynamicSectionRendererProps> = ({
   const { theme } = useTheme();
 
   const renderSectionEditor = (sectionType: SectionType) => {
+    // Get supported fields for this section from the map
+    const supportedFields =
+      sectionFieldMap?.[sectionType] || sectionFieldMap?.[sectionType.toLowerCase()];
+
     switch (sectionType) {
+      case "HEADER":
+        return (
+          <HeaderEditor
+            data={sectionData.HEADER || {}}
+            onChange={(data) => onSectionDataChange("HEADER", data)}
+          />
+        );
+
       case "HERO":
         return (
           <HeroEditor
@@ -143,6 +188,7 @@ export const DynamicSectionRenderer: React.FC<DynamicSectionRendererProps> = ({
               }
             }
             onChange={(data) => onSectionDataChange("BIOGRAPHY", data)}
+            supportedFields={supportedFields}
           />
         );
 
@@ -441,15 +487,102 @@ export const DynamicSectionRenderer: React.FC<DynamicSectionRendererProps> = ({
     }
   };
 
-  return (
-    <div className="space-y-8">
-      {supportedSections.map((sectionType) => (
-        <div key={sectionType} id={`section-${sectionType}`}>
-          {renderSectionEditor(sectionType)}
-        </div>
-      ))}
+  // Get section display info (label and icon)
+  const getSectionInfo = (sectionType: SectionType): { label: string; icon: React.ReactNode } => {
+    const iconClass = "h-4 w-4 mr-2 flex-shrink-0";
+    switch (sectionType) {
+      case "HEADER":
+        return { label: "Header & Navigation", icon: <Layout className={iconClass} /> };
+      case "HERO":
+        return { label: "Hero Section", icon: <ImageIcon className={iconClass} /> };
+      case "BIOGRAPHY":
+        return { label: "Biography / Life Story", icon: <BookOpen className={iconClass} /> };
+      case "FAMILY_TREE":
+        return { label: "Family Tree", icon: <Users className={iconClass} /> };
+      case "TIMELINE":
+        return { label: "Timeline", icon: <Clock className={iconClass} /> };
+      case "GALLERY":
+        return { label: "Photo Gallery", icon: <Camera className={iconClass} /> };
+      case "PHOTO_ALBUM":
+        return { label: "Photo Albums", icon: <Camera className={iconClass} /> };
+      case "VIDEO_GALLERY":
+        return { label: "Video Gallery", icon: <Video className={iconClass} /> };
+      case "TRIBUTES":
+      case "TESTIMONIALS":
+        return { label: "Tributes & Testimonials", icon: <Heart className={iconClass} /> };
+      case "CONDOLENCES":
+        return { label: "Condolences", icon: <MessageSquare className={iconClass} /> };
+      case "GUESTBOOK":
+        return { label: "Guestbook", icon: <MessageSquare className={iconClass} /> };
+      case "DONATIONS":
+        return { label: "Donations & Support", icon: <Gift className={iconClass} /> };
+      case "FUNERAL_INFO":
+        return { label: "Funeral Information", icon: <FileText className={iconClass} /> };
+      case "ACHIEVEMENTS":
+        return { label: "Achievements", icon: <Award className={iconClass} /> };
+      case "QUOTES":
+        return { label: "Quotes", icon: <Quote className={iconClass} /> };
+      case "MEMORIES":
+        return { label: "Memories", icon: <Heart className={iconClass} /> };
+      case "STORIES":
+        return { label: "Stories", icon: <BookOpen className={iconClass} /> };
+      case "MILITARY_SERVICE":
+        return { label: "Military Service", icon: <Shield className={iconClass} /> };
+      case "EDUCATION_CAREER":
+        return { label: "Education & Career", icon: <GraduationCap className={iconClass} /> };
+      case "MAP_LOCATIONS":
+        return { label: "Map & Locations", icon: <MapPin className={iconClass} /> };
+      case "DOCUMENTS":
+        return { label: "Documents", icon: <FileText className={iconClass} /> };
+      case "AUDIO_MEMORIES":
+        return { label: "Audio Memories", icon: <Music className={iconClass} /> };
+      case "VIRTUAL_CANDLES":
+        return { label: "Virtual Candles", icon: <Flame className={iconClass} /> };
+      case "VIRTUAL_FLOWERS":
+        return { label: "Virtual Flowers", icon: <Flower className={iconClass} /> };
+      case "CUSTOM":
+        return { label: "Custom Section", icon: <Settings className={iconClass} /> };
+    }
+  };
 
-      {supportedSections.length === 0 && (
+  return (
+    <div className="space-y-2">
+      {supportedSections.length > 0 ? (
+        <Accordion
+          type="multiple"
+          defaultValue={supportedSections.slice(0, 2)}
+          className="w-full space-y-2"
+        >
+          {supportedSections.map((sectionType) => {
+            const { label, icon } = getSectionInfo(sectionType);
+            const editor = renderSectionEditor(sectionType);
+
+            if (!editor) return null;
+
+            return (
+              <AccordionItem
+                key={sectionType}
+                value={sectionType}
+                className={`border rounded-lg px-4 ${
+                  theme === "dark"
+                    ? "border-white/10 bg-gray-900/50"
+                    : "border-gray-200 bg-gray-50/50"
+                }`}
+              >
+                <AccordionTrigger className="hover:no-underline py-3">
+                  <div className="flex items-center text-sm font-medium">
+                    {icon}
+                    <span className="truncate">{label}</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="pb-4">
+                  <div id={`section-${sectionType}`}>{editor}</div>
+                </AccordionContent>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
+      ) : (
         <div
           className={`text-center py-12 border-2 border-dashed rounded-lg ${
             theme === "dark" ? "border-white/10" : "border-gray-200"

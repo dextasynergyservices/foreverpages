@@ -21,7 +21,8 @@
       "id": "journey",
       "name": "Life Journey",
       "component": "LifeJourney",
-      "required": false
+      "required": false,
+      "supportedFields": []
     },
     {
       "id": "gallery",

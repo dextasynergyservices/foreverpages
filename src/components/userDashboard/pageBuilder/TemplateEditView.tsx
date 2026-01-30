@@ -41,6 +41,7 @@ interface TemplateEditViewProps {
   userTemplateId?: string;
   onOpenMediaPicker?: () => void;
   userTemplate?: UserTemplate; // Use the hook's UserTemplate type
+  sectionFieldMap?: Record<string, string[]>;
 }
 
 type PreviewMode = "desktop" | "tablet" | "mobile";
@@ -58,6 +59,7 @@ export const TemplateEditView: React.FC<TemplateEditViewProps> = ({
   userTemplateId,
   onOpenMediaPicker,
   userTemplate,
+  sectionFieldMap,
 }) => {
   const { theme } = useTheme();
   const { t } = useTranslations();
@@ -226,6 +228,7 @@ export const TemplateEditView: React.FC<TemplateEditViewProps> = ({
                       onOpenMediaPicker={onOpenMediaPicker}
                       memorialData={memorialData}
                       onMemorialDataChange={onMemorialDataChange}
+                      sectionFieldMap={sectionFieldMap}
                     />
                   </AccordionContent>
                 </AccordionItem>
@@ -388,6 +391,7 @@ export const TemplateEditView: React.FC<TemplateEditViewProps> = ({
                     onOpenMediaPicker={onOpenMediaPicker}
                     memorialData={memorialData}
                     onMemorialDataChange={onMemorialDataChange}
+                    sectionFieldMap={sectionFieldMap}
                   />
                 </AccordionContent>
               </AccordionItem>

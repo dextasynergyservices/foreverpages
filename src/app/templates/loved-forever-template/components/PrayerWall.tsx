@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { toast } from "sonner";
-import { Upload, X, ChevronDown, ChevronUp, Share2, User } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import toast from "react-hot-toast";
+import { Upload, X, ChevronDown, ChevronUp, Share2, User, Heart, Loader2 } from "lucide-react";
 import Image from "next/image";
+import { useTemplate } from "../TemplateProvider";
 
 interface Tribute {
-  id: number;
+  id: number | string;
   name: string;
   relationship: string;
   message: string;
@@ -17,35 +18,47 @@ interface Tribute {
 }
 
 const TributeSection = () => {
-  const [tributes, setTributes] = useState<Tribute[]>([
-    {
-      id: 1,
-      name: "Sarah Johnson",
-      relationship: "Daughter",
-      message:
-        "Dad, your guidance and love shaped me into the person I am today. I miss our Sunday conversations and your wise counsel. You were my hero and always will be. The memories we shared will forever be cherished in my heart. From teaching me how to ride a bike to walking me down the aisle, every moment was special. Your legacy lives on through all the lives you've touched.",
-      offering: "candle",
-      timestamp: "2 hours ago",
-    },
-    {
-      id: 2,
-      name: "Michael Chen",
-      relationship: "Friend & Colleague",
-      message:
-        "Thomas was the most genuine person I've ever known. His integrity and kindness inspired everyone around him. I'll never forget the time he stayed late to help me with that important project, even though he had his own deadlines. His selflessness knew no bounds.",
-      offering: "flower",
-      timestamp: "5 hours ago",
-    },
-    {
-      id: 3,
-      name: "Emma Rodriguez",
-      relationship: "Neighbor",
-      message:
-        "An angel on earth, now an angel in heaven. Thomas always had a smile and helping hand for everyone. We love you always. The neighborhood won't be the same without your morning walks and cheerful greetings.",
-      offering: "heart",
-      timestamp: "1 day ago",
-    },
-  ]);
+  const { sectionsData, memorial } = useTemplate();
+
+  // Get TRIBUTES section data with fallbacks
+  const tributesData = (sectionsData?.TRIBUTES as Record<string, unknown>) || {};
+  const sectionTitle = (tributesData.title as string) || "Share Your Love";
+  const sectionSubtitle =
+    (tributesData.subtitle as string) ||
+    "Light a candle, drop a flower, or share your heart with a tribute message";
+
+  // Settings from editor
+  const allowPublicTributes = tributesData.allowPublicTributes !== false;
+  const showVirtualOfferings = tributesData.showVirtualOfferings !== false;
+
+  // State for tributes (fetched from API, not hardcoded)
+  const [tributes, setTributes] = useState<Tribute[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch approved tributes from database
+  useEffect(() => {
+    const fetchTributes = async () => {
+      if (!memorial?.id) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        // Fetch approved tributes for this memorial
+        const response = await fetch(`/api/public/memorial/${memorial.id}/tributes`);
+        if (response.ok) {
+          const data = await response.json();
+          setTributes(data.tributes || []);
+        }
+      } catch (error) {
+        console.error("Error fetching tributes:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTributes();
+  }, [memorial?.id]);
 
   const [newTribute, setNewTribute] = useState({
     name: "",
@@ -65,31 +78,45 @@ const TributeSection = () => {
       return;
     }
 
+    if (!memorial?.id) {
+      toast.error("Memorial not found");
+      return;
+    }
+
     setIsSubmitting(true);
 
-    // Simulate upload delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      // Submit tribute to API
+      const response = await fetch(`/api/public/memorial/${memorial.id}/tributes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: newTribute.name,
+          relationship: newTribute.relationship,
+          message: newTribute.message,
+          photo: newTribute.photo || undefined,
+          offering: newTribute.offering,
+        }),
+      });
 
-    const tribute: Tribute = {
-      id: Date.now(),
-      name: newTribute.name,
-      relationship: newTribute.relationship,
-      message: newTribute.message,
-      photo: newTribute.photo || undefined,
-      offering: newTribute.offering,
-      timestamp: "Just now",
-    };
-
-    setTributes([tribute, ...tributes]);
-    setNewTribute({
-      name: "",
-      relationship: "",
-      message: "",
-      photo: "",
-      offering: "candle",
-    });
-    setIsSubmitting(false);
-    toast.success("Tribute sent with love 💝");
+      if (response.ok) {
+        setNewTribute({
+          name: "",
+          relationship: "",
+          message: "",
+          photo: "",
+          offering: "candle",
+        });
+        toast.success("Your tribute has been submitted for review");
+      } else {
+        toast.error("Failed to submit tribute");
+      }
+    } catch (error) {
+      console.error("Error submitting tribute:", error);
+      toast.error("Failed to submit tribute");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +131,7 @@ const TributeSection = () => {
     }
   };
 
-  const toggleTributeExpand = (id: number) => {
+  const toggleTributeExpand = (id: number | string) => {
     setTributes(
       tributes.map((tribute) =>
         tribute.id === id ? { ...tribute, isExpanded: !tribute.isExpanded } : tribute
@@ -191,217 +218,240 @@ const TributeSection = () => {
         <div className="relative container mx-auto max-w-6xl z-10">
           <div className="text-center mb-8 md:mb-12">
             <h2 className="font-heading text-3xl md:text-5xl font-bold mb-3 md:mb-4 text-amber-100">
-              Share Your Love
+              {sectionTitle}
             </h2>
             <p className="font-body text-amber-50/80 text-base md:text-lg max-w-2xl mx-auto px-4">
-              Light a candle, drop a flower, or share your heart with a tribute message
+              {sectionSubtitle}
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-6 md:gap-8 items-start">
-            {/* Tribute Form */}
-            <div className="backdrop-blur-xl bg-white/10 rounded-2xl md:rounded-3xl p-6 md:p-8 border border-white/15 shadow-2xl">
-              <h3 className="font-heading text-xl md:text-2xl font-semibold mb-4 md:mb-6 text-amber-100 text-center">
-                Send a Tribute
-              </h3>
+          <div
+            className={`grid ${allowPublicTributes ? "lg:grid-cols-2" : "lg:grid-cols-1 max-w-2xl mx-auto"} gap-6 md:gap-8 items-start`}
+          >
+            {/* Tribute Form - Only show if public tributes allowed */}
+            {allowPublicTributes && (
+              <div className="backdrop-blur-xl bg-white/10 rounded-2xl md:rounded-3xl p-6 md:p-8 border border-white/15 shadow-2xl">
+                <h3 className="font-heading text-xl md:text-2xl font-semibold mb-4 md:mb-6 text-amber-100 text-center">
+                  Send a Tribute
+                </h3>
 
-              <div className="space-y-4 md:space-y-6">
-                {/* Name & Relationship */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                <div className="space-y-4 md:space-y-6">
+                  {/* Name & Relationship */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                    <div>
+                      <label className="font-body text-amber-200/80 text-sm mb-2 block">
+                        Your Name *
+                      </label>
+                      <input
+                        type="text"
+                        value={newTribute.name}
+                        onChange={(e) => setNewTribute({ ...newTribute, name: e.target.value })}
+                        className="w-full bg-white/10 border border-white/20 text-amber-100 placeholder-amber-100/50 backdrop-blur-sm rounded-md px-3 py-2"
+                        placeholder="Enter your name"
+                      />
+                    </div>
+                    <div>
+                      <label className="font-body text-amber-200/80 text-sm mb-2 block">
+                        Relationship *
+                      </label>
+                      <input
+                        type="text"
+                        value={newTribute.relationship}
+                        onChange={(e) =>
+                          setNewTribute({ ...newTribute, relationship: e.target.value })
+                        }
+                        className="w-full bg-white/10 border border-white/20 text-amber-100 placeholder-amber-100/50 backdrop-blur-sm rounded-md px-3 py-2"
+                        placeholder="e.g., Daughter, Friend"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Photo Upload */}
                   <div>
                     <label className="font-body text-amber-200/80 text-sm mb-2 block">
-                      Your Name *
+                      Memory Photo (Optional)
                     </label>
-                    <input
-                      type="text"
-                      value={newTribute.name}
-                      onChange={(e) => setNewTribute({ ...newTribute, name: e.target.value })}
-                      className="w-full bg-white/10 border border-white/20 text-amber-100 placeholder-amber-100/50 backdrop-blur-sm rounded-md px-3 py-2"
-                      placeholder="Enter your name"
-                    />
-                  </div>
-                  <div>
-                    <label className="font-body text-amber-200/80 text-sm mb-2 block">
-                      Relationship *
-                    </label>
-                    <input
-                      type="text"
-                      value={newTribute.relationship}
-                      onChange={(e) =>
-                        setNewTribute({ ...newTribute, relationship: e.target.value })
-                      }
-                      className="w-full bg-white/10 border border-white/20 text-amber-100 placeholder-amber-100/50 backdrop-blur-sm rounded-md px-3 py-2"
-                      placeholder="e.g., Daughter, Friend"
-                    />
-                  </div>
-                </div>
-
-                {/* Photo Upload */}
-                <div>
-                  <label className="font-body text-amber-200/80 text-sm mb-2 block">
-                    Memory Photo (Optional)
-                  </label>
-                  <div className="flex items-center gap-3 md:gap-4">
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      onChange={handlePhotoUpload}
-                      accept="image/*"
-                      className="hidden"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="bg-white/5 border border-white/20 text-amber-100 hover:bg-white/10 hover:text-amber-50 backdrop-blur-sm flex-1 text-sm md:text-base rounded-md px-4 py-2 flex items-center justify-center"
-                    >
-                      <Upload className="w-4 h-4 mr-2" />
-                      {newTribute.photo ? "Change" : "Upload Photo"}
-                    </button>
-                    {newTribute.photo && (
-                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg overflow-hidden border-2 border-amber-300/30">
-                        <Image
-                          src={newTribute.photo}
-                          alt="Preview"
-                          className="w-full h-full object-cover"
-                          width={48}
-                          height={48}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Message */}
-                <div>
-                  <label className="font-body text-amber-200/80 text-sm mb-2 block">
-                    Your Message *
-                  </label>
-                  <textarea
-                    value={newTribute.message}
-                    onChange={(e) => setNewTribute({ ...newTribute, message: e.target.value })}
-                    className="w-full bg-white/10 border border-white/20 text-amber-100 placeholder-amber-100/50 backdrop-blur-sm min-h-[100px] md:min-h-[120px] text-sm md:text-base rounded-md px-3 py-2"
-                    placeholder="Share your favorite memory or message..."
-                  />
-                </div>
-
-                {/* Offering Selection */}
-                <div>
-                  <label className="font-body text-amber-200/80 text-sm mb-3 block">
-                    Choose Your Offering
-                  </label>
-                  <div className="grid grid-cols-3 gap-2 md:gap-3">
-                    {(["candle", "flower", "heart"] as const).map((offering) => (
+                    <div className="flex items-center gap-3 md:gap-4">
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handlePhotoUpload}
+                        accept="image/*"
+                        className="hidden"
+                      />
                       <button
-                        key={offering}
                         type="button"
-                        onClick={() => setNewTribute({ ...newTribute, offering })}
-                        className={`p-3 md:p-4 rounded-xl border-2 backdrop-blur-sm transition-all duration-300 flex flex-col items-center ${
-                          newTribute.offering === offering
-                            ? "border-amber-300 bg-amber-500/20 scale-105"
-                            : "border-white/20 bg-white/5 hover:bg-white/10 hover:scale-102"
-                        }`}
+                        onClick={() => fileInputRef.current?.click()}
+                        className="bg-white/5 border border-white/20 text-amber-100 hover:bg-white/10 hover:text-amber-50 backdrop-blur-sm flex-1 text-sm md:text-base rounded-md px-4 py-2 flex items-center justify-center"
                       >
-                        <div className="text-xl md:text-2xl mb-1">{getOfferingIcon(offering)}</div>
-                        <span className="font-body text-amber-100 text-xs md:text-sm capitalize">
-                          {offering}
-                        </span>
+                        <Upload className="w-4 h-4 mr-2" />
+                        {newTribute.photo ? "Change" : "Upload Photo"}
                       </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Submit Button */}
-                <button
-                  onClick={handleSubmitTribute}
-                  disabled={isSubmitting}
-                  className={`w-full ${getOfferingButtonColor(newTribute.offering)} text-amber-100 font-body font-semibold py-4 md:py-6 text-base md:text-lg transition-all duration-300 hover:scale-105 shadow-2xl backdrop-blur-sm border rounded-md flex items-center justify-center disabled:opacity-50`}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 md:h-5 md:w-5 border-b-2 border-amber-100 mr-2"></div>
-                      Sending...
-                    </>
-                  ) : (
-                    <>{getOfferingIcon(newTribute.offering)} Send Tribute</>
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {/* Tributes Display */}
-            <div className="space-y-4 max-h-[500px] md:max-h-[600px] overflow-y-auto pr-1 md:pr-2">
-              {tributes.map((tribute) => (
-                <div
-                  key={tribute.id}
-                  className={`backdrop-blur-xl ${getOfferingColor(tribute.offering)} rounded-xl md:rounded-2xl p-4 md:p-6 border shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-101`}
-                >
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-3 md:mb-4">
-                    <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
-                      {tribute.photo ? (
-                        <Image
-                          src={tribute.photo}
-                          alt={tribute.name}
-                          className="w-8 h-8 md:w-12 md:h-12 rounded-full object-cover border-2 border-amber-300/30 shadow-lg flex-shrink-0"
-                          width={48}
-                          height={48}
-                        />
-                      ) : (
-                        <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-amber-400/20 flex items-center justify-center border-2 border-amber-300/30 shadow-lg flex-shrink-0">
-                          <User className="w-3 h-3 md:w-5 md:h-5 text-amber-300" />
+                      {newTribute.photo && (
+                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg overflow-hidden border-2 border-amber-300/30">
+                          <Image
+                            src={newTribute.photo}
+                            alt="Preview"
+                            className="w-full h-full object-cover"
+                            width={48}
+                            height={48}
+                          />
                         </div>
                       )}
-                      <div className="min-w-0 flex-1">
-                        <h4 className="font-body font-semibold text-amber-100 text-sm md:text-base truncate">
-                          {tribute.name}
-                        </h4>
-                        <p className="font-body text-amber-200/60 text-xs md:text-sm truncate">
-                          {tribute.relationship}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right flex-shrink-0 ml-2">
-                      <div className="text-lg md:text-2xl">{getOfferingIcon(tribute.offering)}</div>
-                      <p className="font-body text-amber-200/40 text-xs">{tribute.timestamp}</p>
                     </div>
                   </div>
 
                   {/* Message */}
-                  <div className="mb-3 md:mb-4">
-                    <p className="font-body text-amber-50/90 leading-relaxed text-sm md:text-base">
-                      {tribute.isExpanded ? tribute.message : truncateMessage(tribute.message)}
-                    </p>
-                    {tribute.message.length > 120 && (
-                      <button
-                        onClick={() => toggleTributeExpand(tribute.id)}
-                        className="flex items-center gap-1 mt-2 text-amber-300 hover:text-amber-200 transition-colors font-body text-xs md:text-sm"
-                      >
-                        {tribute.isExpanded ? (
-                          <>
-                            Show Less <ChevronUp className="w-3 h-3 md:w-4 md:h-4" />
-                          </>
-                        ) : (
-                          <>
-                            Read More <ChevronDown className="w-3 h-3 md:w-4 md:h-4" />
-                          </>
-                        )}
-                      </button>
-                    )}
+                  <div>
+                    <label className="font-body text-amber-200/80 text-sm mb-2 block">
+                      Your Message *
+                    </label>
+                    <textarea
+                      value={newTribute.message}
+                      onChange={(e) => setNewTribute({ ...newTribute, message: e.target.value })}
+                      className="w-full bg-white/10 border border-white/20 text-amber-100 placeholder-amber-100/50 backdrop-blur-sm min-h-[100px] md:min-h-[120px] text-sm md:text-base rounded-md px-3 py-2"
+                      placeholder="Share your favorite memory or message..."
+                    />
                   </div>
 
-                  {/* Actions - Removed Like and Pray buttons */}
-                  <div className="flex items-center justify-between pt-3 md:pt-4 border-t border-white/10">
-                    <button
-                      onClick={() => openTributeModal(tribute)}
-                      className="flex items-center gap-1 md:gap-2 text-amber-200/70 hover:text-amber-100 transition-colors font-body text-xs md:text-sm"
-                    >
-                      <Share2 className="w-3 h-3 md:w-4 md:h-4" />
-                      View Full
-                    </button>
-                    {/* Removed Like and Pray buttons section */}
+                  {/* Offering Selection */}
+                  <div>
+                    <label className="font-body text-amber-200/80 text-sm mb-3 block">
+                      Choose Your Offering
+                    </label>
+                    <div className="grid grid-cols-3 gap-2 md:gap-3">
+                      {(["candle", "flower", "heart"] as const).map((offering) => (
+                        <button
+                          key={offering}
+                          type="button"
+                          onClick={() => setNewTribute({ ...newTribute, offering })}
+                          className={`p-3 md:p-4 rounded-xl border-2 backdrop-blur-sm transition-all duration-300 flex flex-col items-center ${
+                            newTribute.offering === offering
+                              ? "border-amber-300 bg-amber-500/20 scale-105"
+                              : "border-white/20 bg-white/5 hover:bg-white/10 hover:scale-102"
+                          }`}
+                        >
+                          <div className="text-xl md:text-2xl mb-1">
+                            {getOfferingIcon(offering)}
+                          </div>
+                          <span className="font-body text-amber-100 text-xs md:text-sm capitalize">
+                            {offering}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
+
+                  {/* Submit Button */}
+                  <button
+                    onClick={handleSubmitTribute}
+                    disabled={isSubmitting}
+                    className={`w-full ${getOfferingButtonColor(newTribute.offering)} text-amber-100 font-body font-semibold py-4 md:py-6 text-base md:text-lg transition-all duration-300 hover:scale-105 shadow-2xl backdrop-blur-sm border rounded-md flex items-center justify-center disabled:opacity-50`}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 md:h-5 md:w-5 border-b-2 border-amber-100 mr-2"></div>
+                        Sending...
+                      </>
+                    ) : (
+                      <>{getOfferingIcon(newTribute.offering)} Send Tribute</>
+                    )}
+                  </button>
                 </div>
-              ))}
+              </div>
+            )}
+
+            {/* Tributes Display */}
+            <div className="space-y-4 max-h-[500px] md:max-h-[600px] overflow-y-auto pr-1 md:pr-2">
+              {isLoading ? (
+                <div className="backdrop-blur-xl bg-white/10 rounded-2xl p-8 border border-white/15 flex flex-col items-center justify-center">
+                  <Loader2 className="w-8 h-8 text-amber-300 animate-spin mb-3" />
+                  <p className="font-body text-amber-100/70 text-sm">Loading tributes...</p>
+                </div>
+              ) : tributes.length === 0 ? (
+                <div className="backdrop-blur-xl bg-white/10 rounded-2xl p-8 border border-white/15 text-center">
+                  <Heart className="w-12 h-12 text-amber-300/50 mx-auto mb-4" />
+                  <h4 className="font-heading text-lg text-amber-100 mb-2">No Tributes Yet</h4>
+                  <p className="font-body text-amber-100/60 text-sm">
+                    Be the first to share a loving tribute
+                  </p>
+                </div>
+              ) : (
+                tributes.map((tribute) => (
+                  <div
+                    key={tribute.id}
+                    className={`backdrop-blur-xl ${getOfferingColor(tribute.offering)} rounded-xl md:rounded-2xl p-4 md:p-6 border shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-101`}
+                  >
+                    {/* Header */}
+                    <div className="flex items-start justify-between mb-3 md:mb-4">
+                      <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
+                        {tribute.photo ? (
+                          <Image
+                            src={tribute.photo}
+                            alt={tribute.name}
+                            className="w-8 h-8 md:w-12 md:h-12 rounded-full object-cover border-2 border-amber-300/30 shadow-lg flex-shrink-0"
+                            width={48}
+                            height={48}
+                          />
+                        ) : (
+                          <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-amber-400/20 flex items-center justify-center border-2 border-amber-300/30 shadow-lg flex-shrink-0">
+                            <User className="w-3 h-3 md:w-5 md:h-5 text-amber-300" />
+                          </div>
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <h4 className="font-body font-semibold text-amber-100 text-sm md:text-base truncate">
+                            {tribute.name}
+                          </h4>
+                          <p className="font-body text-amber-200/60 text-xs md:text-sm truncate">
+                            {tribute.relationship}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right flex-shrink-0 ml-2">
+                        <div className="text-lg md:text-2xl">
+                          {getOfferingIcon(tribute.offering)}
+                        </div>
+                        <p className="font-body text-amber-200/40 text-xs">{tribute.timestamp}</p>
+                      </div>
+                    </div>
+
+                    {/* Message */}
+                    <div className="mb-3 md:mb-4">
+                      <p className="font-body text-amber-50/90 leading-relaxed text-sm md:text-base">
+                        {tribute.isExpanded ? tribute.message : truncateMessage(tribute.message)}
+                      </p>
+                      {tribute.message.length > 120 && (
+                        <button
+                          onClick={() => toggleTributeExpand(tribute.id)}
+                          className="flex items-center gap-1 mt-2 text-amber-300 hover:text-amber-200 transition-colors font-body text-xs md:text-sm"
+                        >
+                          {tribute.isExpanded ? (
+                            <>
+                              Show Less <ChevronUp className="w-3 h-3 md:w-4 md:h-4" />
+                            </>
+                          ) : (
+                            <>
+                              Read More <ChevronDown className="w-3 h-3 md:w-4 md:h-4" />
+                            </>
+                          )}
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Actions - Removed Like and Pray buttons */}
+                    <div className="flex items-center justify-between pt-3 md:pt-4 border-t border-white/10">
+                      <button
+                        onClick={() => openTributeModal(tribute)}
+                        className="flex items-center gap-1 md:gap-2 text-amber-200/70 hover:text-amber-100 transition-colors font-body text-xs md:text-sm"
+                      >
+                        <Share2 className="w-3 h-3 md:w-4 md:h-4" />
+                        View Full
+                      </button>
+                      {/* Removed Like and Pray buttons section */}
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>

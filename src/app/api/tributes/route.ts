@@ -80,6 +80,17 @@ export async function GET() {
         updatedAt: true,
         authorName: true,
         authorEmail: true,
+        title: true,
+        images: true,
+        videos: true,
+        attachments: true,
+        memorial: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
         author: {
           select: {
             name: true,
@@ -89,19 +100,66 @@ export async function GET() {
       },
     });
 
+    // Get condolences (posts with type CONDOLENCE) for user's memorials
+    const condolences = await prisma.post.findMany({
+      where: {
+        memorialId: { in: memorialIds },
+        type: "CONDOLENCE",
+      },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        content: true,
+        isApproved: true,
+        createdAt: true,
+        updatedAt: true,
+        authorName: true,
+        authorEmail: true,
+        title: true,
+        images: true,
+        videos: true,
+        attachments: true,
+        memorial: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+        author: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    // Helper to format post data
+    const formatPost = (post: (typeof tributes)[0]) => ({
+      id: post.id,
+      author: post.author?.name || post.authorName || "Anonymous",
+      email: post.author?.email || post.authorEmail || "anonymous@example.com",
+      message: post.content,
+      relationship: post.title || "Friend",
+      date: post.createdAt.toISOString().split("T")[0],
+      status: post.isApproved ? "approved" : "pending",
+      createdAt: post.createdAt.toISOString(),
+      updatedAt: post.updatedAt.toISOString(),
+      memorialId: post.memorial?.id,
+      memorialName: post.memorial
+        ? `${post.memorial.firstName} ${post.memorial.lastName}`.trim()
+        : "Unknown",
+      images: post.images || [],
+      videos: post.videos || [],
+      attachments: post.attachments || [],
+    });
+
     return NextResponse.json({
-      message: "Tributes retrieved successfully",
+      message: "Tributes and condolences retrieved successfully",
       data: {
-        tributes: tributes.map((tribute) => ({
-          id: tribute.id,
-          author: tribute.author?.name || tribute.authorName || "Anonymous",
-          email: tribute.author?.email || tribute.authorEmail || "anonymous@example.com",
-          message: tribute.content,
-          date: tribute.createdAt.toISOString().split("T")[0], // Format as YYYY-MM-DD
-          status: tribute.isApproved ? "approved" : "pending",
-          createdAt: tribute.createdAt.toISOString(),
-          updatedAt: tribute.updatedAt.toISOString(),
-        })),
+        tributes: tributes.map(formatPost),
+        condolences: condolences.map(formatPost),
       },
     });
   } catch (error) {
@@ -132,11 +190,11 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ message: "Missing required fields: id, status" }, { status: 400 });
     }
 
-    // Verify the tribute (post) exists
+    // Verify the tribute/condolence (post) exists
     const tribute = await prisma.post.findFirst({
       where: {
         id,
-        type: "TRIBUTE",
+        type: { in: ["TRIBUTE", "CONDOLENCE"] },
       },
       include: {
         memorial: {
@@ -146,7 +204,7 @@ export async function PATCH(request: NextRequest) {
     });
 
     if (!tribute || !tribute.memorial) {
-      return NextResponse.json({ message: "Tribute not found" }, { status: 404 });
+      return NextResponse.json({ message: "Tribute or condolence not found" }, { status: 404 });
     }
 
     // Check if user owns the memorial or is a collaborator with moderate_content permission

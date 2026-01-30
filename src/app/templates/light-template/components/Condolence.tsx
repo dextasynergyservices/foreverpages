@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import type { FormEvent, ChangeEvent } from "react";
 import Image from "next/image";
 import { Button } from "./ui/button";
@@ -21,8 +21,10 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  Loader2,
 } from "lucide-react";
 import { useTemplate } from "../TemplateProvider";
+import toast from "react-hot-toast";
 
 interface Condolence {
   id: string;
@@ -37,79 +39,70 @@ interface Condolence {
 }
 
 const CondolenceWall = () => {
-  const { sectionsData } = useTemplate();
+  const { sectionsData, memorial } = useTemplate();
 
   // Get CONDOLENCE section data with fallbacks
-  const condolenceData = (sectionsData?.CONDOLENCE as any) || {};
+  const condolenceData =
+    (sectionsData?.CONDOLENCE as any) || (sectionsData?.CONDOLENCES as any) || {};
 
-  // Generate more sample data for pagination
-  const generateSampleData = (): Condolence[] => {
-    const sampleMessages = [
-      "Your light continues to shine in our hearts. May you rest in eternal peace.",
-      "A true servant of God. Your legacy of kindness will never be forgotten.",
-      "Thank you for being such an inspiration to our community. You will be deeply missed.",
-      "Your wisdom and guidance shaped so many lives. Forever in our hearts.",
-      "A beautiful soul who touched everyone they met. Rest in peace.",
-      "Your memory will live on through the lives you've touched.",
-      "Heaven has gained an angel. You will be forever missed.",
-      "Your kindness knew no bounds. Thank you for everything.",
-      "A life well-lived and a legacy that will endure for generations.",
-      "Your spirit will continue to guide and inspire us always.",
-    ];
+  // Settings from editor
+  const allowPublicCondolences = condolenceData.allowPublicCondolences !== false;
+  const allowLetterUpload = condolenceData.allowLetterUpload === true;
 
-    const sampleNames = [
-      "Sarah M.",
-      "Robert K.",
-      "Emily W.",
-      "Michael T.",
-      "Jennifer L.",
-      "David R.",
-      "Lisa P.",
-      "Christopher M.",
-      "Amanda B.",
-      "James K.",
-      "Maria S.",
-      "Thomas W.",
-      "Nancy P.",
-      "Richard B.",
-      "Susan M.",
-    ];
+  // Section customization
+  const sectionTitle = condolenceData.title || "Condolences";
+  const sectionSubtitle =
+    condolenceData.subtitle || "Share your memories and condolences with the family";
 
-    return Array.from({ length: 24 }, (_, index) => ({
-      id: (index + 1).toString(),
-      name: sampleNames[index % sampleNames.length],
-      message: sampleMessages[index % sampleMessages.length],
-      date: new Date(2024, 10, 30 - index).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
-      letterFile:
-        index % 3 === 0
-          ? {
-              type: index % 2 === 0 ? "image" : "pdf",
-              url:
-                index % 2 === 0
-                  ? "https://images.unsplash.com/photo-1548607997-1a023f76374e?w=600&h=800&fit=crop"
-                  : "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-              name: index % 2 === 0 ? "personal_letter.jpg" : "memories_with_john.pdf",
-            }
-          : undefined,
-    }));
-  };
+  // State for condolences (fetched from API, not hardcoded)
+  const [condolences, setCondolences] = useState<Condolence[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [condolences] = useState<Condolence[]>(condolenceData.condolences || generateSampleData());
+  // Fetch approved condolences from database
+  useEffect(() => {
+    const fetchCondolences = async () => {
+      if (!memorial?.id) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/public/memorial/${memorial.id}/condolences`);
+        if (response.ok) {
+          const data = await response.json();
+          // Transform API response to match component format
+          const formattedCondolences = (data.condolences || []).map((c: any) => ({
+            id: c.id,
+            name: c.name,
+            message: c.message,
+            date: c.timestamp || new Date().toLocaleDateString(),
+            letterFile: c.photo
+              ? { type: "image" as const, url: c.photo, name: "letter" }
+              : undefined,
+          }));
+          setCondolences(formattedCondolences);
+        }
+      } catch (error) {
+        console.error("Error fetching condolences:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCondolences();
+  }, [memorial?.id]);
+
   const [newCondolence, setNewCondolence] = useState({
     name: "",
     message: "",
     letterFile: null as File | null,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showFileInput, setShowFileInput] = useState(false);
   const [selectedFile, setSelectedFile] = useState<Condolence | null>(null);
   const [pdfZoom, setPdfZoom] = useState(100);
   const [currentPage, setCurrentPage] = useState(1);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  // itemsPerPage is fixed at 4, kept as const to avoid unused variable warning
 
   // Pagination calculations
   const itemsPerPage = 4;
@@ -119,18 +112,54 @@ const CondolenceWall = () => {
   const endIndex = startIndex + itemsPerPage;
   const currentItems = condolences.slice(startIndex, endIndex);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (newCondolence.name && newCondolence.message) {
-      // In a real app, you would add the new condolence to the state
-      // For now, we'll just reset the form
-      setNewCondolence({ name: "", message: "", letterFile: null });
-      setShowFileInput(false);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
+    if (!newCondolence.name || !newCondolence.message) return;
+
+    if (!memorial?.id) {
+      toast.error("Memorial not found");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Convert file to base64 if present
+      let letterData: string | undefined;
+      if (newCondolence.letterFile) {
+        letterData = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target?.result as string);
+          reader.readAsDataURL(newCondolence.letterFile!);
+        });
       }
-      // Show success message or redirect to first page to see the new entry
-      setCurrentPage(1);
+
+      // Submit condolence to API
+      const response = await fetch(`/api/public/memorial/${memorial.id}/condolences`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: newCondolence.name,
+          message: newCondolence.message,
+          letter: letterData, // Send file as base64
+        }),
+      });
+
+      if (response.ok) {
+        setNewCondolence({ name: "", message: "", letterFile: null });
+        setShowFileInput(false);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+        toast.success("Your condolence has been submitted for review");
+      } else {
+        toast.error("Failed to submit condolence");
+      }
+    } catch (error) {
+      console.error("Error submitting condolence:", error);
+      toast.error("Failed to submit condolence");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -392,81 +421,94 @@ const CondolenceWall = () => {
 
         {/* Condolence Cards Grid */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {currentItems.map((condolence, index) => {
-            const FileIcon = condolence.letterFile
-              ? getFileIcon(condolence.letterFile.type)
-              : FileText;
-            return (
-              <div
-                key={condolence.id}
-                className="group bg-card/80 backdrop-blur-sm border-2 border-primary/20 rounded-2xl p-6 hover:border-primary/40 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                {/* Header with decorative elements */}
-                <div className="relative mb-6">
-                  <div className="absolute -top-4 -left-4 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                    <Heart className="h-3 w-3 text-primary fill-primary" />
-                  </div>
-                  <div className="text-center">
-                    <h3 className="font-heading text-xl text-primary mb-2">{condolence.name}</h3>
-                    <div className="text-foreground/50 text-sm">{condolence.date}</div>
-                  </div>
-                  <div className="absolute -top-4 -right-4 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                    <Heart className="h-3 w-3 text-primary fill-primary" />
-                  </div>
-                </div>
-
-                {/* Message */}
-                <div className="space-y-4">
-                  <div className="border-l-4 border-primary/30 pl-4 py-2">
-                    <p className="text-foreground leading-relaxed italic">{condolence.message}</p>
-                  </div>
-
-                  {/* File Section */}
-                  {condolence.letterFile && (
-                    <div className="bg-background/50 rounded-lg p-4 border border-primary/20">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-2 text-primary">
-                          <FileIcon className="h-4 w-4" />
-                          <span className="font-semibold text-sm">
-                            {getFileTypeText(condolence.letterFile.type)}
-                          </span>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => openFileViewer(condolence)}
-                            className="border-primary/30 hover:border-primary hover:bg-primary/10 rounded-lg"
-                          >
-                            <Eye className="h-3 w-3 mr-1" />
-                            View
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => downloadFile(condolence)}
-                            className="border-primary/30 hover:border-primary hover:bg-primary/10 rounded-lg"
-                          >
-                            <Download className="h-3 w-3 mr-1" />
-                            Download
-                          </Button>
-                        </div>
-                      </div>
-                      <p className="text-foreground/80 text-sm">{condolence.letterFile.name}</p>
+          {isLoading ? (
+            <div className="col-span-2 flex flex-col items-center justify-center py-16">
+              <Loader2 className="h-8 w-8 text-primary animate-spin mb-3" />
+              <p className="text-foreground/60">Loading condolences...</p>
+            </div>
+          ) : currentItems.length === 0 ? (
+            <div className="col-span-2 text-center py-16 bg-card/50 rounded-2xl border border-primary/20">
+              <Heart className="h-12 w-12 text-primary/30 mx-auto mb-4" />
+              <p className="text-foreground/80 text-lg mb-2">No Condolences Yet</p>
+              <p className="text-foreground/50 text-sm">Be the first to share your condolences</p>
+            </div>
+          ) : (
+            currentItems.map((condolence, index) => {
+              const FileIcon = condolence.letterFile
+                ? getFileIcon(condolence.letterFile.type)
+                : FileText;
+              return (
+                <div
+                  key={condolence.id}
+                  className="group bg-card/80 backdrop-blur-sm border-2 border-primary/20 rounded-2xl p-6 hover:border-primary/40 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  {/* Header with decorative elements */}
+                  <div className="relative mb-6">
+                    <div className="absolute -top-4 -left-4 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <Heart className="h-3 w-3 text-primary fill-primary" />
                     </div>
-                  )}
-                </div>
+                    <div className="text-center">
+                      <h3 className="font-heading text-xl text-primary mb-2">{condolence.name}</h3>
+                      <div className="text-foreground/50 text-sm">{condolence.date}</div>
+                    </div>
+                    <div className="absolute -top-4 -right-4 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <Heart className="h-3 w-3 text-primary fill-primary" />
+                    </div>
+                  </div>
 
-                {/* Bottom decorative line */}
-                <div className="mt-6 pt-4 border-t border-primary/10">
-                  <div className="flex justify-center">
-                    <div className="w-16 h-px bg-primary/30"></div>
+                  {/* Message */}
+                  <div className="space-y-4">
+                    <div className="border-l-4 border-primary/30 pl-4 py-2">
+                      <p className="text-foreground leading-relaxed italic">{condolence.message}</p>
+                    </div>
+
+                    {/* File Section */}
+                    {condolence.letterFile && (
+                      <div className="bg-background/50 rounded-lg p-4 border border-primary/20">
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2 text-primary">
+                            <FileIcon className="h-4 w-4" />
+                            <span className="font-semibold text-sm">
+                              {getFileTypeText(condolence.letterFile.type)}
+                            </span>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => openFileViewer(condolence)}
+                              className="border-primary/30 hover:border-primary hover:bg-primary/10 rounded-lg"
+                            >
+                              <Eye className="h-3 w-3 mr-1" />
+                              View
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => downloadFile(condolence)}
+                              className="border-primary/30 hover:border-primary hover:bg-primary/10 rounded-lg"
+                            >
+                              <Download className="h-3 w-3 mr-1" />
+                              Download
+                            </Button>
+                          </div>
+                        </div>
+                        <p className="text-foreground/80 text-sm">{condolence.letterFile.name}</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Bottom decorative line */}
+                  <div className="mt-6 pt-4 border-t border-primary/10">
+                    <div className="flex justify-center">
+                      <div className="w-16 h-px bg-primary/30"></div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          )}
         </div>
 
         {/* Beautiful Pagination */}

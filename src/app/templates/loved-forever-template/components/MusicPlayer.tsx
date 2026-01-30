@@ -17,7 +17,7 @@ const MusicPlayer = () => {
           setIsPlaying(true);
         }
       } catch {
-        console.log('Autoplay prevented. User interaction required.');
+        console.log("Autoplay prevented. User interaction required.");
         // Autoplay was prevented, we'll wait for user interaction
       }
     };
@@ -38,7 +38,7 @@ const MusicPlayer = () => {
       }
       setUserInteracted(true);
     } catch (error) {
-      console.log('Play failed:', error);
+      console.log("Play failed:", error);
     }
   };
 
@@ -49,7 +49,7 @@ const MusicPlayer = () => {
         setIsPlaying(true);
         setUserInteracted(true);
       } catch (error) {
-        console.log('Play failed after interaction:', error);
+        console.log("Play failed after interaction:", error);
       }
     }
   };
@@ -58,7 +58,10 @@ const MusicPlayer = () => {
     <>
       {/* Hidden audio element */}
       <audio ref={audioRef} loop preload="auto">
-        <source src='https://res.cloudinary.com/dxoorukfj/video/upload/v1764855706/Don_Williams_-_I_Believe_In_You_Roger_Cook_Sam_Hogin_1980__mp3.pm_kfxbjf.mp3' type="audio/mpeg" />
+        <source
+          src="https://res.cloudinary.com/dxoorukfj/video/upload/v1764855706/Don_Williams_-_I_Believe_In_You_Roger_Cook_Sam_Hogin_1980__mp3.pm_kfxbjf.mp3"
+          type="audio/mpeg"
+        />
         Your browser does not support the audio element.
       </audio>
 
@@ -67,7 +70,7 @@ const MusicPlayer = () => {
         <button
           onClick={togglePlay}
           className="flex items-center justify-center w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 shadow-lg hover:bg-white/30 transition-all duration-300 group"
-          aria-label={isPlaying ? 'Pause background music' : 'Play background music'}
+          aria-label={isPlaying ? "Pause background music" : "Play background music"}
         >
           {isPlaying ? (
             <span className="text-white text-lg">⏸️</span>
