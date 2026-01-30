@@ -3,7 +3,30 @@
 import { useTemplate } from "../TemplateProvider";
 
 const LifeSection = () => {
-  const { memorial } = useTemplate();
+  const { memorial, sectionsData } = useTemplate();
+
+  // Get biography data from sectionsData first, then memorial
+  const biographyData = (sectionsData?.BIOGRAPHY || {}) as Record<string, unknown>;
+
+  // Biography content priority: sectionsData.fullStory > sectionsData.content > memorial.biography
+  const biographyContent =
+    (biographyData.fullStory as string) ||
+    (biographyData.content as string) ||
+    (biographyData.biography as string) ||
+    memorial.biography ||
+    "";
+
+  // Title from sectionsData or default
+  const sectionTitle = (biographyData.title as string) || "A Life Well Lived";
+
+  // Default intro text (shown when no biography content)
+  const defaultIntro = `${memorial.name || "They"} touched countless lives with kindness, wisdom, and unwavering love. Their spirit continues to guide and inspire us all.`;
+
+  // Quote from sectionsData or default
+  const quote =
+    (biographyData.quote as string) ||
+    "I have fought the good fight, I have finished the race, I have kept the faith.";
+  const quoteSource = (biographyData.quoteSource as string) || "2 Timothy 4:7";
 
   return (
     <section id="life" className="relative py-20 px-4 text-white overflow-hidden">
@@ -25,30 +48,32 @@ const LifeSection = () => {
       <div className="relative container mx-auto max-w-4xl z-10">
         <div className="backdrop-blur-md bg-white/10 rounded-3xl p-8 md:p-12 border border-white/15 shadow-[0_0_40px_rgba(0,0,0,0.3)] animate-fade-in-up">
           <h2 className="font-heading text-4xl md:text-5xl font-bold text-center mb-8 text-amber-100">
-            A Life Well Lived
+            {sectionTitle}
           </h2>
 
           <div className="space-y-6 font-body text-lg leading-relaxed text-amber-50/90">
-            {memorial.biography ? (
-              memorial.biography
+            {biographyContent ? (
+              biographyContent
                 .split("\n\n")
                 .map((paragraph, index) => <p key={index}>{paragraph}</p>)
             ) : (
-              <p>
-                {memorial.name} touched countless lives with kindness, wisdom, and unwavering love.
-                Their spirit continues to guide and inspire us all.
-              </p>
+              <p>{defaultIntro}</p>
             )}
           </div>
 
-          <div className="mt-10 p-6 bg-gradient-to-r from-amber-800/25 to-emerald-800/15 rounded-2xl border border-amber-700/25 shadow-inner">
-            <p className="font-body italic text-center text-lg text-amber-100">
-              &ldquo;I have fought the good fight, I have finished the race, I have kept the
-              faith.&rdquo;
-              <br />
-              <span className="text-sm text-amber-200/70">— 2 Timothy 4:7</span>
-            </p>
-          </div>
+          {quote && (
+            <div className="mt-10 p-6 bg-gradient-to-r from-amber-800/25 to-emerald-800/15 rounded-2xl border border-amber-700/25 shadow-inner">
+              <p className="font-body italic text-center text-lg text-amber-100">
+                &ldquo;{quote}&rdquo;
+                {quoteSource && (
+                  <>
+                    <br />
+                    <span className="text-sm text-amber-200/70">— {quoteSource}</span>
+                  </>
+                )}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>

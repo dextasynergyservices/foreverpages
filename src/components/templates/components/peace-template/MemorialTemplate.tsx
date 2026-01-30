@@ -13,7 +13,14 @@ import { TributesModern } from "@/app/templates/peace-template/components/Tribut
 import { FamilyTree } from "@/app/templates/peace-template/components/FamilyTree";
 
 interface MemorialTemplateProps {
-  memorial: Memorial;
+  memorial: Memorial & {
+    owner?: {
+      id: string;
+      name: string | null;
+      email: string;
+      accountDetails?: unknown[];
+    };
+  };
   userTemplate: UserTemplate & {
     baseTemplate: Template;
   };
@@ -21,7 +28,7 @@ interface MemorialTemplateProps {
 }
 
 export const PeaceMemorialTemplate: React.FC<MemorialTemplateProps> = ({
-  memorial: _memorial,
+  memorial,
   userTemplate,
 }) => {
   // Safely convert customization - peace template expects different DesignTokens format
@@ -44,8 +51,35 @@ export const PeaceMemorialTemplate: React.FC<MemorialTemplateProps> = ({
     console.warn("Failed to parse user sections:", error);
   }
 
+  // Convert memorial to expected format
+  const memorialData = {
+    id: memorial.id,
+    firstName: memorial.firstName,
+    lastName: memorial.lastName,
+    birthDate: memorial.birthDate,
+    deathDate: memorial.deathDate,
+    biography: memorial.biography,
+    profileImage: memorial.profilePhoto,
+  };
+
+  // Extract owner data for donation modal
+  const memorialOwner = memorial.owner
+    ? {
+        id: memorial.owner.id,
+        firstName: memorial.owner.name?.split(" ")[0] || null,
+        lastName: memorial.owner.name?.split(" ").slice(1).join(" ") || null,
+        email: memorial.owner.email,
+        accountDetails: memorial.owner.accountDetails || [],
+      }
+    : null;
+
   return (
-    <TemplateProvider customization={customization} sectionsData={sectionsData}>
+    <TemplateProvider
+      customization={customization}
+      sectionsData={sectionsData}
+      memorial={memorialData}
+      memorialOwner={memorialOwner}
+    >
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
         {/* Optimizations for preview scrolling */}
         <style jsx global>{`

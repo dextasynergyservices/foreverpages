@@ -20,6 +20,7 @@ interface TemplateRendererProps {
     birthYear?: number;
     deathYear?: number;
     biography?: string;
+    profilePhoto?: string;
   };
   supportedSections?: string[];
   isLoading?: boolean;
@@ -231,7 +232,11 @@ export const TemplateRenderer: React.FC<TemplateRendererProps> = ({
       charitableWork: null,
       legacyMessage: null,
       finalWishes: null,
-      profilePhoto: null,
+      // Pass profilePhoto from memorialData or HERO section
+      profilePhoto:
+        memorialData?.profilePhoto ||
+        ((sectionData?.HERO as Record<string, unknown>)?.mainImage as string) ||
+        null,
       coverPhoto: null,
       config: {
         sections: sectionData || {},

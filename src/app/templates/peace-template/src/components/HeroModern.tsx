@@ -34,39 +34,75 @@ const defaultLifeStages = [
   },
 ];
 
+// Helper function to extract year from various date formats
+const extractYear = (dateValue: unknown): string => {
+  if (!dateValue) return "";
+
+  // If it's already just a year number or string
+  if (typeof dateValue === "number") return String(dateValue);
+  if (typeof dateValue === "string") {
+    // Check if it's a full date string (contains - or /)
+    if (dateValue.includes("-") || dateValue.includes("/")) {
+      const date = new Date(dateValue);
+      if (!isNaN(date.getTime())) {
+        return String(date.getFullYear());
+      }
+    }
+    // Otherwise treat as year string
+    return dateValue;
+  }
+
+  // If it's a Date object
+  if (dateValue instanceof Date && !isNaN(dateValue.getTime())) {
+    return String(dateValue.getFullYear());
+  }
+
+  return "";
+};
+
 export const HeroModern = () => {
-  const { memorial } = useTemplate();
+  const { memorial, sectionsData } = useTemplate();
   const [currentStage, setCurrentStage] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
 
-  // Use memorial data or fallback to defaults
-  const displayName = memorial
-    ? `${memorial.firstName} ${memorial.lastName}`
-    : "Eleanor Grace Thompson";
+  // Get hero data from sectionsData if available
+  const heroData = (sectionsData?.HERO || {}) as Record<string, unknown>;
 
-  const displayDates = memorial
-    ? `${memorial.dateOfBirth ? new Date(memorial.dateOfBirth).getFullYear() : ""} - ${memorial.dateOfDeath ? new Date(memorial.dateOfDeath).getFullYear() : ""}`
-    : "1944 - 2024";
+  // Use hero data first, then memorial data, then defaults
+  const firstName = (heroData.firstName as string) || memorial?.firstName || "Eleanor Grace";
+  const lastName = (heroData.lastName as string) || memorial?.lastName || "Thompson";
+  const displayName = `${firstName} ${lastName}`;
 
-  const profileImage = memorial?.profileImage || defaultLifeStages[0].image;
+  // Get dates from hero data or memorial, using extractYear helper
+  const birthYear = extractYear(heroData.birthDate) || extractYear(memorial?.birthDate);
+  const deathYear = extractYear(heroData.deathDate) || extractYear(memorial?.deathDate);
+  const displayDates = birthYear || deathYear ? `${birthYear} - ${deathYear}` : "1944 - 2024";
+
+  // Get profile image from hero data or memorial
+  const profileImage =
+    (heroData.portraitUrl as string) ||
+    (heroData.mainImage as string) ||
+    memorial?.profileImage ||
+    defaultLifeStages[0].image;
 
   // Create life stages with memorial data
-  const lifeStages = memorial
-    ? [
-        {
-          id: 1,
-          image: profileImage,
-          stage: `${memorial.firstName} in Recent Years`,
-          age: displayDates.split(" - ")[1] || "Recent",
-          description: "Wisdom and grace in golden years",
-        },
-        ...defaultLifeStages.slice(1).map((stage, index) => ({
-          ...stage,
-          stage: `${memorial.firstName} ${stage.stage.toLowerCase()}`,
-          image: profileImage, // Use same image for all stages if only one available
-        })),
-      ]
-    : defaultLifeStages;
+  const lifeStages =
+    firstName !== "Eleanor Grace"
+      ? [
+          {
+            id: 1,
+            image: profileImage,
+            stage: `${firstName} in Recent Years`,
+            age: deathYear || "Recent",
+            description: "Wisdom and grace in golden years",
+          },
+          ...defaultLifeStages.slice(1).map((stage) => ({
+            ...stage,
+            stage: `${firstName} ${stage.stage.toLowerCase()}`,
+            image: profileImage, // Use same image for all stages if only one available
+          })),
+        ]
+      : defaultLifeStages;
 
   // Auto-rotate when not hovering
   useEffect(() => {

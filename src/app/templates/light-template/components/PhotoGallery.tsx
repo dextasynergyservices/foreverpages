@@ -112,6 +112,12 @@ const PhotoGallery = () => {
     setLightboxOpen(false);
   };
 
+  // Section content from sectionsData
+  const sectionTitle = galleryData.title || "Treasured Moments";
+  const sectionSubtitle =
+    galleryData.subtitle ||
+    "A visual journey through a life filled with love, faith, and beautiful memories";
+
   return (
     <>
       <section id="gallery" className="relative py-20 px-4 md:px-8">
@@ -133,12 +139,10 @@ const PhotoGallery = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-4 mb-6">
               <div className="h-px w-20 bg-primary/30"></div>
-              <h2 className="font-script text-2xl md:text-6xl text-gold">Treasured Moments</h2>
+              <h2 className="font-script text-2xl md:text-6xl text-gold">{sectionTitle}</h2>
               <div className="h-px w-20 bg-primary/30"></div>
             </div>
-            <p className="text-foreground/70 text-lg italic max-w-2xl mx-auto">
-              A visual journey through a life filled with love, faith, and beautiful memories
-            </p>
+            <p className="text-foreground/70 text-lg italic max-w-2xl mx-auto">{sectionSubtitle}</p>
           </div>
 
           {/* Media Grid */}

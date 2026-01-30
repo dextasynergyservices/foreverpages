@@ -121,6 +121,12 @@ const PhotoGallery = () => {
 
   const currentItem = mediaItems[currentIndex];
 
+  // Section content from sectionsData
+  const sectionTitle = (galleryData.title as string) || "Sacred Memories";
+  const sectionSubtitle =
+    (galleryData.subtitle as string) ||
+    "A collection of cherished moments that capture a life beautifully lived";
+
   return (
     <>
       <section id="photos" className="relative py-20 px-4 text-white overflow-hidden">
@@ -145,10 +151,10 @@ const PhotoGallery = () => {
           {/* Section Header */}
           <div className="text-center mb-12">
             <h2 className="font-heading text-4xl md:text-5xl font-bold text-amber-100 animate-fade-in-up">
-              Sacred Memories
+              {sectionTitle}
             </h2>
             <p className="text-amber-100/70 mt-4 text-lg italic max-w-2xl mx-auto">
-              A visual journey through a life filled with love, faith, and beautiful memories
+              {sectionSubtitle}
             </p>
           </div>
 

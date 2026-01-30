@@ -188,10 +188,27 @@ export interface Tribute {
   author: string;
   email: string;
   message: string;
+  relationship?: string;
   date: string;
   status: "pending" | "approved" | "rejected" | "flagged";
   createdAt: string;
   updatedAt: string;
+  memorialId?: string;
+  memorialName?: string;
+}
+
+export interface Condolence {
+  id: string;
+  author: string;
+  email: string;
+  message: string;
+  relationship?: string;
+  date: string;
+  status: "pending" | "approved" | "rejected" | "flagged";
+  createdAt: string;
+  updatedAt: string;
+  memorialId?: string;
+  memorialName?: string;
 }
 
 export function useTributes() {
@@ -200,6 +217,7 @@ export function useTributes() {
     queryFn: () =>
       apiFetch<{
         tributes: Tribute[];
+        condolences: Condolence[];
       }>("/api/tributes"),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });

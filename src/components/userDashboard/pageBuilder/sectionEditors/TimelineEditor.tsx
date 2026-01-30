@@ -17,6 +17,10 @@ export interface TimelineEvent {
 }
 
 export interface TimelineData {
+  // Section content fields
+  title?: string;
+  subtitle?: string;
+  // Structure fields
   events: TimelineEvent[];
 }
 
@@ -64,6 +68,31 @@ export const TimelineEditor: React.FC<TimelineEditorProps> = ({ data, onChange }
         <p className={`text-sm mb-4 ${textMuted}`}>
           Chronicle the milestones and memorable moments of their life
         </p>
+      </div>
+
+      {/* Section Content */}
+      <div
+        className={`space-y-4 p-4 rounded-lg ${theme === "dark" ? "bg-gray-800/50" : "bg-gray-50"}`}
+      >
+        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Section Content</h4>
+        <div>
+          <Label htmlFor="timeline-title">Section Title</Label>
+          <Input
+            id="timeline-title"
+            placeholder="Life Journey"
+            value={data.title || ""}
+            onChange={(e) => onChange({ ...data, title: e.target.value })}
+          />
+        </div>
+        <div>
+          <Label htmlFor="timeline-subtitle">Subtitle</Label>
+          <Input
+            id="timeline-subtitle"
+            placeholder="Milestones and memorable moments"
+            value={data.subtitle || ""}
+            onChange={(e) => onChange({ ...data, subtitle: e.target.value })}
+          />
+        </div>
       </div>
 
       <Button onClick={addEvent} className="w-full" variant="outline">

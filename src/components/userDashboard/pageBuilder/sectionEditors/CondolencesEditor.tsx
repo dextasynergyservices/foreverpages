@@ -3,10 +3,9 @@
 import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textArea";
-import { Button } from "@/components/ui/button";
-import { Plus, Trash2, Heart } from "lucide-react";
+import { Heart, MessageSquare, Shield, FileText, ExternalLink } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
+import Link from "next/link";
 
 export interface CondolenceMessage {
   id: string;
@@ -17,9 +16,15 @@ export interface CondolenceMessage {
 }
 
 export interface CondolencesData {
+  // Section content fields
+  title?: string;
+  subtitle?: string;
+  // Structure fields - condolences come from public submissions
   allowPublicCondolences: boolean;
   requireApproval: boolean;
-  condolences: CondolenceMessage[];
+  allowLetterUpload?: boolean; // Allow visitors to upload condolence letters
+  // Legacy field for backwards compatibility
+  condolences?: CondolenceMessage[];
 }
 
 interface CondolencesEditorProps {
@@ -31,52 +36,90 @@ export const CondolencesEditor: React.FC<CondolencesEditorProps> = ({ data, onCh
   const { theme } = useTheme();
   const textMuted = theme === "dark" ? "text-white/70" : "text-gray-600";
 
-  const addCondolence = () => {
-    const newCondolence: CondolenceMessage = {
-      id: `condolence-${Date.now()}`,
-      author: "",
-      message: "",
-      date: new Date().toISOString().split("T")[0],
-      approved: true,
-    };
-    onChange({ ...data, condolences: [...data.condolences, newCondolence] });
-  };
-
-  const updateCondolence = (
-    condolenceId: string,
-    field: keyof CondolenceMessage,
-    value: string | boolean
-  ) => {
-    const updatedCondolences = data.condolences.map((condolence) =>
-      condolence.id === condolenceId ? { ...condolence, [field]: value } : condolence
-    );
-    onChange({ ...data, condolences: updatedCondolences });
-  };
-
-  const removeCondolence = (condolenceId: string) => {
-    const updatedCondolences = data.condolences.filter((c) => c.id !== condolenceId);
-    onChange({ ...data, condolences: updatedCondolences });
-  };
-
   return (
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-semibold mb-2">Condolence Messages</h3>
         <p className={`text-sm mb-4 ${textMuted}`}>
-          Allow visitors to share their condolences and sympathy
+          Configure how visitors can leave condolence messages
         </p>
       </div>
 
-      {/* Settings */}
+      {/* Info Box */}
+      <div
+        className={`p-4 rounded-lg border ${
+          theme === "dark" ? "border-blue-500/30 bg-blue-500/10" : "border-blue-200 bg-blue-50"
+        }`}
+      >
+        <div className="flex gap-3">
+          <MessageSquare
+            className={`h-5 w-5 mt-0.5 ${theme === "dark" ? "text-blue-400" : "text-blue-600"}`}
+          />
+          <div>
+            <p
+              className={`text-sm font-medium ${theme === "dark" ? "text-blue-300" : "text-blue-800"}`}
+            >
+              How Condolences Work
+            </p>
+            <p
+              className={`text-sm mt-1 ${theme === "dark" ? "text-blue-300/80" : "text-blue-700"}`}
+            >
+              Visitors to the memorial page can submit condolence messages. You can review and
+              approve these submissions from your{" "}
+              <Link
+                href="/user-dashboard?section=tributes"
+                className="underline hover:no-underline inline-flex items-center gap-1"
+              >
+                Tributes Dashboard
+                <ExternalLink className="h-3 w-3" />
+              </Link>
+              .
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Section Content */}
+      <div
+        className={`space-y-4 p-4 rounded-lg ${theme === "dark" ? "bg-gray-800/50" : "bg-gray-50"}`}
+      >
+        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Section Content</h4>
+        <div>
+          <Label htmlFor="condolence-title">Section Title</Label>
+          <Input
+            id="condolence-title"
+            placeholder="Condolences"
+            value={data.title || ""}
+            onChange={(e) => onChange({ ...data, title: e.target.value })}
+          />
+        </div>
+        <div>
+          <Label htmlFor="condolence-subtitle">Subtitle</Label>
+          <Input
+            id="condolence-subtitle"
+            placeholder="Share your words of comfort and support"
+            value={data.subtitle || ""}
+            onChange={(e) => onChange({ ...data, subtitle: e.target.value })}
+          />
+        </div>
+      </div>
+
+      {/* Settings Toggles */}
       <div className="space-y-4">
+        {/* Allow Public Condolences Toggle */}
         <div
           className={`flex items-center justify-between p-4 rounded-lg border ${
             theme === "dark" ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"
           }`}
         >
-          <div>
-            <p className="font-medium">Allow Public Condolences</p>
-            <p className={`text-sm ${textMuted}`}>Let visitors leave condolence messages</p>
+          <div className="flex items-start gap-3">
+            <Heart
+              className={`h-5 w-5 mt-0.5 ${theme === "dark" ? "text-red-400" : "text-red-600"}`}
+            />
+            <div>
+              <p className="font-medium">Allow Public Condolences</p>
+              <p className={`text-sm ${textMuted}`}>Let visitors submit condolence messages</p>
+            </div>
           </div>
           <button
             onClick={() =>
@@ -98,109 +141,105 @@ export const CondolencesEditor: React.FC<CondolencesEditorProps> = ({ data, onCh
           </button>
         </div>
 
-        <div
-          className={`flex items-center justify-between p-4 rounded-lg border ${
-            theme === "dark" ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"
-          }`}
-        >
-          <div>
-            <p className="font-medium">Require Approval</p>
-            <p className={`text-sm ${textMuted}`}>Review messages before displaying them</p>
-          </div>
-          <button
-            onClick={() => onChange({ ...data, requireApproval: !data.requireApproval })}
-            className={`relative w-12 h-6 rounded-full transition-colors ${
-              data.requireApproval
-                ? "bg-blue-600"
-                : theme === "dark"
-                  ? "bg-white/20"
-                  : "bg-gray-300"
-            }`}
-          >
-            <div
-              className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                data.requireApproval ? "left-7" : "left-1"
-              }`}
-            />
-          </button>
-        </div>
-      </div>
-
-      {/* Add Condolence Button */}
-      <Button onClick={addCondolence} className="w-full" variant="outline">
-        <Plus className="h-4 w-4 mr-2" />
-        Add Condolence Message
-      </Button>
-
-      {/* Condolences List */}
-      <div className="space-y-4">
-        {data.condolences.length === 0 ? (
+        {/* Require Approval Toggle */}
+        {data.allowPublicCondolences && (
           <div
-            className={`text-center py-12 border-2 border-dashed rounded-lg ${
-              theme === "dark" ? "border-white/10" : "border-gray-200"
+            className={`flex items-center justify-between p-4 rounded-lg border ${
+              theme === "dark" ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"
             }`}
           >
-            <Heart className={`h-12 w-12 mx-auto mb-3 ${textMuted}`} />
-            <p className={textMuted}>No condolence messages yet</p>
-          </div>
-        ) : (
-          data.condolences.map((condolence) => (
-            <div
-              key={condolence.id}
-              className={`p-6 rounded-lg border ${
-                theme === "dark" ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"
-              }`}
-            >
-              <div className="flex items-start justify-between mb-4">
-                <Heart className="h-5 w-5 text-red-500" />
-                <button
-                  onClick={() => removeCondolence(condolence.id)}
-                  className={`p-2 rounded-md transition-colors ${
-                    theme === "dark"
-                      ? "hover:bg-red-500/20 text-red-400"
-                      : "hover:bg-red-100 text-red-600"
-                  }`}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor={`condolence-author-${condolence.id}`}>Author Name *</Label>
-                    <Input
-                      id={`condolence-author-${condolence.id}`}
-                      placeholder="Name"
-                      value={condolence.author}
-                      onChange={(e) => updateCondolence(condolence.id, "author", e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor={`condolence-date-${condolence.id}`}>Date</Label>
-                    <Input
-                      id={`condolence-date-${condolence.id}`}
-                      type="date"
-                      value={condolence.date}
-                      onChange={(e) => updateCondolence(condolence.id, "date", e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor={`condolence-message-${condolence.id}`}>Message *</Label>
-                  <Textarea
-                    id={`condolence-message-${condolence.id}`}
-                    placeholder="Condolence message..."
-                    rows={4}
-                    value={condolence.message}
-                    onChange={(e) => updateCondolence(condolence.id, "message", e.target.value)}
-                  />
-                </div>
+            <div className="flex items-start gap-3">
+              <Shield
+                className={`h-5 w-5 mt-0.5 ${theme === "dark" ? "text-green-400" : "text-green-600"}`}
+              />
+              <div>
+                <p className="font-medium">Require Approval</p>
+                <p className={`text-sm ${textMuted}`}>
+                  Review condolences before they appear on the memorial
+                </p>
               </div>
             </div>
-          ))
+            <button
+              onClick={() => onChange({ ...data, requireApproval: !data.requireApproval })}
+              className={`relative w-12 h-6 rounded-full transition-colors ${
+                data.requireApproval
+                  ? "bg-blue-600"
+                  : theme === "dark"
+                    ? "bg-white/20"
+                    : "bg-gray-300"
+              }`}
+            >
+              <div
+                className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
+                  data.requireApproval ? "left-7" : "left-1"
+                }`}
+              />
+            </button>
+          </div>
         )}
+
+        {/* Allow Letter Upload Toggle */}
+        {data.allowPublicCondolences && (
+          <div
+            className={`flex items-center justify-between p-4 rounded-lg border ${
+              theme === "dark" ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"
+            }`}
+          >
+            <div className="flex items-start gap-3">
+              <FileText
+                className={`h-5 w-5 mt-0.5 ${theme === "dark" ? "text-purple-400" : "text-purple-600"}`}
+              />
+              <div>
+                <p className="font-medium">Allow Letter Uploads</p>
+                <p className={`text-sm ${textMuted}`}>
+                  Let visitors upload condolence letters as images or PDFs
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => onChange({ ...data, allowLetterUpload: !data.allowLetterUpload })}
+              className={`relative w-12 h-6 rounded-full transition-colors ${
+                data.allowLetterUpload
+                  ? "bg-blue-600"
+                  : theme === "dark"
+                    ? "bg-white/20"
+                    : "bg-gray-300"
+              }`}
+            >
+              <div
+                className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
+                  data.allowLetterUpload ? "left-7" : "left-1"
+                }`}
+              />
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Dashboard Link */}
+      <div
+        className={`p-4 rounded-lg border ${
+          theme === "dark" ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"
+        }`}
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="font-medium">Manage Condolences</p>
+            <p className={`text-sm ${textMuted}`}>
+              View, approve, or decline submitted condolences
+            </p>
+          </div>
+          <Link
+            href="/user-dashboard?section=tributes"
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              theme === "dark"
+                ? "bg-white/10 hover:bg-white/20 text-white"
+                : "bg-gray-100 hover:bg-gray-200 text-gray-900"
+            }`}
+          >
+            View Condolences
+          </Link>
+        </div>
       </div>
     </div>
   );

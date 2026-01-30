@@ -58,6 +58,7 @@ export default async function MemorialPage({ params }: MemorialPageProps) {
           id: true,
           name: true,
           email: true,
+          accountDetails: true, // Include account details for donation modal
         },
       },
       userTemplate: {

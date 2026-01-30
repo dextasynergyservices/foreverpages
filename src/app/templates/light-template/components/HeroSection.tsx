@@ -5,19 +5,48 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import { useTemplate } from "../TemplateProvider";
 
+// Helper function to extract year from date string or Date object
+const extractYear = (dateValue: unknown): string => {
+  if (!dateValue) return "";
+  if (typeof dateValue === "string") {
+    // If it's already a year (4 digits)
+    if (/^\d{4}$/.test(dateValue)) return dateValue;
+    // If it's a date string like "1990-01-15"
+    const date = new Date(dateValue);
+    if (!isNaN(date.getTime())) {
+      return date.getFullYear().toString();
+    }
+    return dateValue;
+  }
+  if (dateValue instanceof Date && !isNaN(dateValue.getTime())) {
+    return dateValue.getFullYear().toString();
+  }
+  return "";
+};
+
 const HeroSection = () => {
   const { sectionsData, memorial } = useTemplate();
 
   // Get HERO section data with fallbacks
-  const heroData = (sectionsData?.HERO as any) || {};
-  const title = heroData.title || memorial.name || "Memorial Title";
+  const heroData = (sectionsData?.HERO as Record<string, unknown>) || {};
+  const title = (heroData.title as string) || memorial.name || "Memorial Title";
   const mainImage =
-    heroData.mainImage ||
+    (heroData.mainImage as string) ||
     memorial.portraitUrl ||
     "https://res.cloudinary.com/dt7ozsctz/image/upload/v1764166230/thomas1_yuknpv.png";
-  const quote = heroData.quote || "Forever in our hearts";
-  const birthYear = heroData.birthYear || memorial.birthYear || "1952";
-  const deathYear = heroData.deathYear || memorial.deathYear || "2024";
+  const quote = (heroData.quote as string) || "Forever in our hearts";
+
+  // Handle both birthYear and birthDate fields (editor saves birthDate, but we display year)
+  const birthYear =
+    extractYear(heroData.birthDate) ||
+    extractYear(heroData.birthYear) ||
+    memorial.birthYear ||
+    "1952";
+  const deathYear =
+    extractYear(heroData.deathDate) ||
+    extractYear(heroData.deathYear) ||
+    memorial.deathYear ||
+    "2024";
 
   const scrollToNext = () => {
     const nextSection = document.getElementById("candles");

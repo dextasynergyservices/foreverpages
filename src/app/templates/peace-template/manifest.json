@@ -19,7 +19,18 @@
       "id": "biography",
       "name": "Biography",
       "component": "Biography",
-      "required": true
+      "required": true,
+      "supportedFields": [
+        "fullStory",
+        "birthDate",
+        "deathDate",
+        "birthPlace",
+        "earlyLife",
+        "education",
+        "career",
+        "personalLife",
+        "legacy"
+      ]
     },
     {
       "id": "timeline",

@@ -22,6 +22,7 @@ export interface DesignTokens {
 }
 
 export interface MemorialData {
+  id?: string;
   name: string;
   birthYear: string;
   deathYear: string;
@@ -30,6 +31,7 @@ export interface MemorialData {
   videoUrl?: string;
   biography?: string;
   config?: TemplateConfig;
+  sectionsData?: Record<string, unknown>;
   ownerId?: string;
   ownerAccountDetails?: Array<{
     id: string;

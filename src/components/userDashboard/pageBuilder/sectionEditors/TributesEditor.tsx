@@ -2,10 +2,10 @@
 
 import React from "react";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textArea";
-import { Button } from "@/components/ui/button";
-import { Plus, Trash2, Heart } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Heart, MessageCircle, Shield, ExternalLink } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
+import Link from "next/link";
 
 export interface TributeItem {
   id: string;
@@ -16,8 +16,15 @@ export interface TributeItem {
 }
 
 export interface TributesData {
-  tributes: TributeItem[];
+  // Section content fields
+  title?: string;
+  subtitle?: string;
+  // Structure fields - removed manual tributes array since tributes come from public
   allowPublicTributes?: boolean;
+  requireApproval?: boolean;
+  showVirtualOfferings?: boolean; // Show candle/flower offerings
+  // Legacy field for backwards compatibility
+  tributes?: TributeItem[];
 }
 
 interface TributesEditorProps {
@@ -29,160 +36,202 @@ export const TributesEditor: React.FC<TributesEditorProps> = ({ data, onChange }
   const { theme } = useTheme();
   const textMuted = theme === "dark" ? "text-white/70" : "text-gray-600";
 
-  const addTribute = () => {
-    const newTribute: TributeItem = {
-      id: `tribute-${Date.now()}`,
-      author: "",
-      relationship: "",
-      message: "",
-      date: new Date().toISOString().split("T")[0],
-    };
-    onChange({ ...data, tributes: [...data.tributes, newTribute] });
-  };
-
-  const updateTribute = (tributeId: string, field: keyof TributeItem, value: string) => {
-    const updatedTributes = data.tributes.map((tribute) =>
-      tribute.id === tributeId ? { ...tribute, [field]: value } : tribute
-    );
-    onChange({ ...data, tributes: updatedTributes });
-  };
-
-  const removeTribute = (tributeId: string) => {
-    const updatedTributes = data.tributes.filter((tribute) => tribute.id !== tributeId);
-    onChange({ ...data, tributes: updatedTributes });
-  };
-
-  const togglePublicTributes = () => {
-    onChange({ ...data, allowPublicTributes: !data.allowPublicTributes });
-  };
-
   return (
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-semibold mb-2">Tributes & Memories</h3>
         <p className={`text-sm mb-4 ${textMuted}`}>
-          Share heartfelt tributes and cherished memories
+          Configure how visitors can leave tributes on the memorial page
         </p>
       </div>
 
-      {/* Allow Public Tributes Toggle */}
+      {/* Info Box */}
       <div
-        className={`flex items-center justify-between p-4 rounded-lg border ${
+        className={`p-4 rounded-lg border ${
+          theme === "dark" ? "border-blue-500/30 bg-blue-500/10" : "border-blue-200 bg-blue-50"
+        }`}
+      >
+        <div className="flex gap-3">
+          <MessageCircle
+            className={`h-5 w-5 mt-0.5 ${theme === "dark" ? "text-blue-400" : "text-blue-600"}`}
+          />
+          <div>
+            <p
+              className={`text-sm font-medium ${theme === "dark" ? "text-blue-300" : "text-blue-800"}`}
+            >
+              How Tributes Work
+            </p>
+            <p
+              className={`text-sm mt-1 ${theme === "dark" ? "text-blue-300/80" : "text-blue-700"}`}
+            >
+              Visitors to the memorial page can submit their own tributes and memories. You can
+              review, approve, or decline these submissions from your{" "}
+              <Link
+                href="/user-dashboard?section=tributes"
+                className="underline hover:no-underline inline-flex items-center gap-1"
+              >
+                Tributes Dashboard
+                <ExternalLink className="h-3 w-3" />
+              </Link>
+              .
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Section Content */}
+      <div
+        className={`space-y-4 p-4 rounded-lg ${theme === "dark" ? "bg-gray-800/50" : "bg-gray-50"}`}
+      >
+        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Section Content</h4>
+        <div>
+          <Label htmlFor="tribute-title">Section Title</Label>
+          <Input
+            id="tribute-title"
+            placeholder="Tributes & Memories"
+            value={data.title || ""}
+            onChange={(e) => onChange({ ...data, title: e.target.value })}
+          />
+        </div>
+        <div>
+          <Label htmlFor="tribute-subtitle">Subtitle</Label>
+          <Input
+            id="tribute-subtitle"
+            placeholder="Share your memories and love"
+            value={data.subtitle || ""}
+            onChange={(e) => onChange({ ...data, subtitle: e.target.value })}
+          />
+        </div>
+      </div>
+
+      {/* Settings Toggles */}
+      <div className="space-y-4">
+        {/* Allow Public Tributes Toggle */}
+        <div
+          className={`flex items-center justify-between p-4 rounded-lg border ${
+            theme === "dark" ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"
+          }`}
+        >
+          <div className="flex items-start gap-3">
+            <Heart
+              className={`h-5 w-5 mt-0.5 ${theme === "dark" ? "text-pink-400" : "text-pink-600"}`}
+            />
+            <div>
+              <p className="font-medium">Allow Public Tributes</p>
+              <p className={`text-sm ${textMuted}`}>Let visitors submit tributes and memories</p>
+            </div>
+          </div>
+          <button
+            onClick={() => onChange({ ...data, allowPublicTributes: !data.allowPublicTributes })}
+            className={`relative w-12 h-6 rounded-full transition-colors ${
+              data.allowPublicTributes
+                ? "bg-blue-600"
+                : theme === "dark"
+                  ? "bg-white/20"
+                  : "bg-gray-300"
+            }`}
+          >
+            <div
+              className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
+                data.allowPublicTributes ? "left-7" : "left-1"
+              }`}
+            />
+          </button>
+        </div>
+
+        {/* Require Approval Toggle */}
+        {data.allowPublicTributes && (
+          <div
+            className={`flex items-center justify-between p-4 rounded-lg border ${
+              theme === "dark" ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"
+            }`}
+          >
+            <div className="flex items-start gap-3">
+              <Shield
+                className={`h-5 w-5 mt-0.5 ${theme === "dark" ? "text-green-400" : "text-green-600"}`}
+              />
+              <div>
+                <p className="font-medium">Require Approval</p>
+                <p className={`text-sm ${textMuted}`}>
+                  Review tributes before they appear on the memorial
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => onChange({ ...data, requireApproval: !data.requireApproval })}
+              className={`relative w-12 h-6 rounded-full transition-colors ${
+                data.requireApproval
+                  ? "bg-blue-600"
+                  : theme === "dark"
+                    ? "bg-white/20"
+                    : "bg-gray-300"
+              }`}
+            >
+              <div
+                className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
+                  data.requireApproval ? "left-7" : "left-1"
+                }`}
+              />
+            </button>
+          </div>
+        )}
+
+        {/* Show Virtual Offerings Toggle */}
+        <div
+          className={`flex items-center justify-between p-4 rounded-lg border ${
+            theme === "dark" ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"
+          }`}
+        >
+          <div className="flex items-start gap-3">
+            <span className="text-xl">🕯️</span>
+            <div>
+              <p className="font-medium">Show Virtual Offerings</p>
+              <p className={`text-sm ${textMuted}`}>
+                Allow visitors to light candles, send flowers, and hearts
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => onChange({ ...data, showVirtualOfferings: !data.showVirtualOfferings })}
+            className={`relative w-12 h-6 rounded-full transition-colors ${
+              data.showVirtualOfferings
+                ? "bg-blue-600"
+                : theme === "dark"
+                  ? "bg-white/20"
+                  : "bg-gray-300"
+            }`}
+          >
+            <div
+              className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
+                data.showVirtualOfferings ? "left-7" : "left-1"
+              }`}
+            />
+          </button>
+        </div>
+      </div>
+
+      {/* Dashboard Link */}
+      <div
+        className={`p-4 rounded-lg border ${
           theme === "dark" ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"
         }`}
       >
-        <div>
-          <p className="font-medium">Allow Public Tributes</p>
-          <p className={`text-sm ${textMuted}`}>Let visitors leave their own tributes</p>
-        </div>
-        <button
-          onClick={togglePublicTributes}
-          className={`relative w-12 h-6 rounded-full transition-colors ${
-            data.allowPublicTributes
-              ? "bg-blue-600"
-              : theme === "dark"
-                ? "bg-white/20"
-                : "bg-gray-300"
-          }`}
-        >
-          <div
-            className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
-              data.allowPublicTributes ? "left-7" : "left-1"
-            }`}
-          />
-        </button>
-      </div>
-
-      <Button onClick={addTribute} className="w-full" variant="outline">
-        <Plus className="h-4 w-4 mr-2" />
-        Add Tribute
-      </Button>
-
-      <div className="space-y-4">
-        {data.tributes.length === 0 ? (
-          <div
-            className={`text-center py-12 border-2 border-dashed rounded-lg ${
-              theme === "dark" ? "border-white/10" : "border-gray-200"
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="font-medium">Manage Tributes</p>
+            <p className={`text-sm ${textMuted}`}>View, approve, or decline submitted tributes</p>
+          </div>
+          <Link
+            href="/user-dashboard?section=tributes"
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              theme === "dark"
+                ? "bg-white/10 hover:bg-white/20 text-white"
+                : "bg-gray-100 hover:bg-gray-200 text-gray-900"
             }`}
           >
-            <Heart className={`h-12 w-12 mx-auto mb-3 ${textMuted}`} />
-            <p className={textMuted}>No tributes added yet</p>
-            <p className={`text-xs mt-1 ${textMuted}`}>Add tributes from family and friends</p>
-          </div>
-        ) : (
-          data.tributes.map((tribute) => (
-            <div
-              key={tribute.id}
-              className={`p-6 rounded-lg border ${
-                theme === "dark" ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"
-              }`}
-            >
-              <div className="flex items-start justify-between mb-4">
-                <Heart
-                  className={`h-5 w-5 ${theme === "dark" ? "text-pink-400" : "text-pink-600"}`}
-                />
-                <button
-                  onClick={() => removeTribute(tribute.id)}
-                  className={`p-2 rounded-md transition-colors ${
-                    theme === "dark"
-                      ? "hover:bg-red-500/20 text-red-400"
-                      : "hover:bg-red-100 text-red-600"
-                  }`}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor={`tribute-author-${tribute.id}`}>Author Name *</Label>
-                    <input
-                      id={`tribute-author-${tribute.id}`}
-                      type="text"
-                      placeholder="Full name"
-                      value={tribute.author}
-                      onChange={(e) => updateTribute(tribute.id, "author", e.target.value)}
-                      className={`w-full mt-1 px-3 py-2 rounded-md border ${
-                        theme === "dark"
-                          ? "bg-black border-white/10 text-white"
-                          : "bg-white border-gray-300 text-gray-900"
-                      }`}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor={`tribute-relationship-${tribute.id}`}>
-                      Relationship (Optional)
-                    </Label>
-                    <input
-                      id={`tribute-relationship-${tribute.id}`}
-                      type="text"
-                      placeholder="e.g., Sister, Friend, Colleague"
-                      value={tribute.relationship || ""}
-                      onChange={(e) => updateTribute(tribute.id, "relationship", e.target.value)}
-                      className={`w-full mt-1 px-3 py-2 rounded-md border ${
-                        theme === "dark"
-                          ? "bg-black border-white/10 text-white"
-                          : "bg-white border-gray-300 text-gray-900"
-                      }`}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor={`tribute-message-${tribute.id}`}>Tribute Message *</Label>
-                  <Textarea
-                    id={`tribute-message-${tribute.id}`}
-                    placeholder="Share your memories and feelings..."
-                    rows={4}
-                    value={tribute.message}
-                    onChange={(e) => updateTribute(tribute.id, "message", e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
-          ))
-        )}
+            View Tributes
+          </Link>
+        </div>
       </div>
     </div>
   );

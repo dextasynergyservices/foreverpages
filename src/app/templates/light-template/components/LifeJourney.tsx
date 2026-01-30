@@ -101,6 +101,9 @@ const LifeJourney = () => {
   // Get TIMELINE/BIOGRAPHY section data with fallbacks
   const timelineData = (sectionsData?.TIMELINE as any) || {};
   const events = timelineData.events || defaultEvents;
+  const sectionTitle = timelineData.title || "A Life Well Lived";
+  const sectionSubtitle =
+    timelineData.subtitle || "Celebrating the milestones that shaped an extraordinary journey";
 
   return (
     <section id="journey" className="relative py-20 px-4 md:px-8">
@@ -124,11 +127,9 @@ const LifeJourney = () => {
           <div className="inline-block mb-4">
             <div className="flex items-center justify-center gap-3 mb-4"></div>
             <h2 className="font-heading text-2xl md:text-5xl text-primary uppercase tracking-wider mb-4">
-              A Life Well Lived
+              {sectionTitle}
             </h2>
-            <p className="text-foreground/70 text-lg italic max-w-2xl mx-auto">
-              Celebrating the milestones that shaped an extraordinary journey
-            </p>
+            <p className="text-foreground/70 text-lg italic max-w-2xl mx-auto">{sectionSubtitle}</p>
           </div>
         </div>
 

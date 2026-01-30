@@ -114,22 +114,95 @@ export const StepContent: React.FC<StepContentProps> = ({
             ) : (
               supportedSections &&
               sectionData &&
-              onSectionDataChange && (
-                <TemplateEditView
-                  selectedTemplate={selectedTemplate}
-                  selectedTemplateSlug={selectedTemplateSlug} // Pass the slug
-                  supportedSections={supportedSections as string[]}
-                  sectionData={sectionData}
-                  onSectionDataChange={onSectionDataChange}
-                  designTokens={designTokens}
-                  onDesignTokensChange={onDesignTokensChange || (() => {})}
-                  memorialData={memorialData}
-                  onMemorialDataChange={onMemorialDataChange}
-                  userTemplateId={userTemplateId}
-                  onOpenMediaPicker={onOpenMediaPicker}
-                  userTemplate={userTemplate}
-                />
-              )
+              onSectionDataChange &&
+              (() => {
+                // Fallback field mappings by template slug when manifest doesn't have supportedFields
+                const templateFieldDefaults: Record<string, Record<string, string[]>> = {
+                  "loved-forever-template": {
+                    BIOGRAPHY: ["fullStory", "legacy"],
+                    biography: ["fullStory", "legacy"],
+                  },
+                  "peace-template": {
+                    BIOGRAPHY: [
+                      "fullStory",
+                      "birthDate",
+                      "deathDate",
+                      "birthPlace",
+                      "earlyLife",
+                      "education",
+                      "career",
+                      "personalLife",
+                      "legacy",
+                    ],
+                    biography: [
+                      "fullStory",
+                      "birthDate",
+                      "deathDate",
+                      "birthPlace",
+                      "earlyLife",
+                      "education",
+                      "career",
+                      "personalLife",
+                      "legacy",
+                    ],
+                  },
+                  "light-template": {
+                    BIOGRAPHY: [], // Uses timeline, not biography fields
+                    biography: [],
+                  },
+                };
+
+                // Build sectionFieldMap from template manifest if available
+                type ManifestSection = { id?: string; supportedFields?: string[] };
+                type BaseWithManifest = {
+                  baseTemplate?: {
+                    slug?: string;
+                    manifest?: {
+                      sections?: ManifestSection[];
+                    };
+                  };
+                };
+                const baseTemplate = (userTemplate as unknown as BaseWithManifest)?.baseTemplate;
+                const manifestSections = baseTemplate?.manifest?.sections;
+                const templateSlug = baseTemplate?.slug || selectedTemplateSlug || "";
+
+                let sectionFieldMap: Record<string, string[]> | undefined;
+
+                // First try to get from manifest
+                if (Array.isArray(manifestSections)) {
+                  sectionFieldMap = {};
+                  for (const s of manifestSections) {
+                    if (s.id && s.supportedFields) {
+                      const idUpper = s.id.toUpperCase().replace(/-/g, "_");
+                      sectionFieldMap[idUpper] = s.supportedFields;
+                      sectionFieldMap[s.id] = s.supportedFields;
+                    }
+                  }
+                }
+
+                // If no fields found, use fallback based on template slug
+                if (!sectionFieldMap || Object.keys(sectionFieldMap).length === 0) {
+                  sectionFieldMap = templateFieldDefaults[templateSlug];
+                }
+
+                return (
+                  <TemplateEditView
+                    selectedTemplate={selectedTemplate}
+                    selectedTemplateSlug={selectedTemplateSlug}
+                    supportedSections={supportedSections as string[]}
+                    sectionData={sectionData}
+                    onSectionDataChange={onSectionDataChange}
+                    designTokens={designTokens}
+                    onDesignTokensChange={onDesignTokensChange || (() => {})}
+                    memorialData={memorialData}
+                    onMemorialDataChange={onMemorialDataChange}
+                    userTemplateId={userTemplateId}
+                    onOpenMediaPicker={onOpenMediaPicker}
+                    userTemplate={userTemplate}
+                    sectionFieldMap={sectionFieldMap}
+                  />
+                );
+              })()
             )}
           </>
         )}

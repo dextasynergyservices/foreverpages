@@ -8,16 +8,18 @@ import { AlertTriangle, RefreshCw } from "lucide-react";
 
 interface QueryErrorBoundaryProps {
   children: React.ReactNode;
-  fallback?: React.ComponentType<{ error: Error; resetErrorBoundary: () => void }>;
+  fallback?: React.ComponentType<{ error: unknown; resetErrorBoundary: () => void }>;
 }
 
 function DefaultErrorFallback({
   error,
   resetErrorBoundary,
 }: {
-  error: Error;
+  error: unknown;
   resetErrorBoundary: () => void;
 }) {
+  const errorMessage =
+    error instanceof Error ? error.message : "An unexpected error occurred. Please try again.";
   return (
     <div className="min-h-[400px] flex items-center justify-center p-4">
       <div className="text-center max-w-md">
@@ -27,9 +29,7 @@ function DefaultErrorFallback({
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
           Something went wrong
         </h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
-          {error.message || "An unexpected error occurred. Please try again."}
-        </p>
+        <p className="text-gray-600 dark:text-gray-400 mb-6">{errorMessage}</p>
         <Button onClick={resetErrorBoundary} className="inline-flex items-center gap-2">
           <RefreshCw className="w-4 h-4" />
           Try Again
@@ -57,7 +57,7 @@ export function QueryErrorBoundary({
 // Higher-order component for wrapping components with error boundary
 export function withQueryErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
-  fallback?: React.ComponentType<{ error: Error; resetErrorBoundary: () => void }>
+  fallback?: React.ComponentType<{ error: unknown; resetErrorBoundary: () => void }>
 ) {
   const WrappedComponent = (props: P) => (
     <QueryErrorBoundary fallback={fallback}>

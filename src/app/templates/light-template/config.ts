@@ -1,6 +1,7 @@
 import { DesignTokens } from "@/components/userDashboard/pageBuilder/TemplateCustomizer";
 
 export interface MemorialData {
+  id?: string;
   name: string;
   birthYear: string;
   deathYear: string;
@@ -8,6 +9,7 @@ export interface MemorialData {
   portraitUrl: string;
   videoUrl?: string;
   config?: TemplateConfig;
+  sectionsData?: Record<string, unknown>;
   ownerId?: string;
   ownerAccountDetails?: Array<{
     id: string;

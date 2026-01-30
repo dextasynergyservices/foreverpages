@@ -46,6 +46,8 @@ export function TemplateProvider({
   customization,
   sectionsData,
   children,
+  onOpenBlessingModal,
+  onCloseBlessingModal,
 }: {
   isPreview: boolean;
   memorialId?: string;
@@ -54,11 +56,14 @@ export function TemplateProvider({
   customization?: Partial<DesignTokens>;
   sectionsData?: Record<string, unknown>;
   children: ReactNode;
+  onOpenBlessingModal?: () => void;
+  onCloseBlessingModal?: () => void;
 }) {
-  // Modal state
-  const [isBlessingModalOpen, setIsBlessingModalOpen] = useState(false);
-  const openBlessingModal = () => setIsBlessingModalOpen(true);
-  const closeBlessingModal = () => setIsBlessingModalOpen(false);
+  // Modal state - use external handlers if provided, otherwise internal state
+  const [internalBlessingModalOpen, setInternalBlessingModalOpen] = useState(false);
+  const isBlessingModalOpen = internalBlessingModalOpen;
+  const openBlessingModal = onOpenBlessingModal || (() => setInternalBlessingModalOpen(true));
+  const closeBlessingModal = onCloseBlessingModal || (() => setInternalBlessingModalOpen(false));
 
   // Extract memorial owner information
   const memorialOwnerId = memorial.ownerId || "";

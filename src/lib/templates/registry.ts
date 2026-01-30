@@ -2,7 +2,14 @@ import React from "react";
 import type { Template, UserTemplate, Memorial } from "@/generated/prisma";
 
 export interface TemplateProps {
-  memorial: Memorial;
+  memorial: Memorial & {
+    owner?: {
+      id: string;
+      name: string | null;
+      email: string;
+      accountDetails?: unknown[];
+    };
+  };
   userTemplate: UserTemplate & {
     baseTemplate: Template;
   };
