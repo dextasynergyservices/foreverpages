@@ -33,7 +33,7 @@ interface MemorialWithTemplate extends Memorial {
     id: string;
     name: string | null;
     email: string;
-    accountDetails?: unknown[] | null;
+    accountDetails?: unknown;
   };
   userTemplate:
     | (UserTemplate & {
