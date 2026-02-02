@@ -186,7 +186,12 @@ export const CondolencesSection: React.FC<CondolencesSectionProps> = ({ memorial
   };
 
   const getAuthorName = (condolence: Condolence): string => {
-    if (condolence.isAnonymous) {
+    // Check if anonymous: either isAnonymous flag or authorName is "Anonymous"
+    const isAnon =
+      condolence.isAnonymous ||
+      condolence.authorName === "Anonymous" ||
+      (!condolence.author && !condolence.authorId);
+    if (isAnon) {
       return t("condolences.anonymous", {}, "Anonymous");
     }
     return condolence.author?.name || t("condolences.anonymous", {}, "Anonymous");
@@ -234,7 +239,7 @@ export const CondolencesSection: React.FC<CondolencesSectionProps> = ({ memorial
                   placeholder={t(
                     "condolences.placeholder",
                     {
-                      name: `${memorial.deceasedFirstName || memorial.firstName || ""} ${memorial.deceasedLastName || memorial.lastName || ""}`.trim(),
+                      name: `${memorial.firstName || ""} ${memorial.lastName || ""}`.trim(),
                     },
                     "Share your thoughts and memories..."
                   )}
@@ -353,7 +358,9 @@ export const CondolencesSection: React.FC<CondolencesSectionProps> = ({ memorial
                       }}
                     >
                       <div style={avatarStyle}>
-                        {condolence.isAnonymous ? (
+                        {condolence.isAnonymous ||
+                        condolence.authorName === "Anonymous" ||
+                        !condolence.author ? (
                           <User size={18} />
                         ) : condolence.author?.image ? (
                           <Image

@@ -192,7 +192,7 @@ export const FamilyTreeSection: React.FC<FamilyTreeSectionProps> = ({
                 <h3 style={groupTitleStyle}>
                   <Users size={18} />
                   {getRelationshipLabel(
-                    relationship as import("@prisma/client").FamilyRelationship,
+                    relationship as unknown as import("@/generated/prisma").FamilyRelationship,
                     (key) => t(key, {}, key.split(".").pop() || key)
                   )}
                   {members.length > 1 && (

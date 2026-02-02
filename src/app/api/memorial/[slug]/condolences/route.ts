@@ -139,8 +139,8 @@ export async function POST(
         id: true,
         ownerId: true,
         visibility: true,
-        deceasedFirstName: true,
-        deceasedLastName: true,
+        firstName: true,
+        lastName: true,
       },
     });
 
@@ -169,13 +169,14 @@ export async function POST(
     const validatedData = condolenceSchema.parse(body);
 
     // Create the condolence post
+    // Note: isAnonymous is stored as authorName = "Anonymous" and authorId = null for anonymous posts
     const condolence = await prisma.post.create({
       data: {
         content: validatedData.content,
         type: "CONDOLENCE",
-        isAnonymous: validatedData.isAnonymous,
         memorialId,
-        authorId: session.user.id,
+        authorId: validatedData.isAnonymous ? null : session.user.id,
+        authorName: validatedData.isAnonymous ? "Anonymous" : null,
       },
       include: {
         author: {
@@ -193,16 +194,15 @@ export async function POST(
     });
 
     // Notify memorial owner if different from author
-    if (memorial.ownerId !== session.user.id) {
+    if (memorial.ownerId !== session.user.id && !validatedData.isAnonymous) {
       try {
         await prisma.notification.create({
           data: {
             type: "NEW_TRIBUTE", // Using NEW_TRIBUTE for condolences
             title: "New Condolence Message",
-            message: `${validatedData.isAnonymous ? "Someone" : session.user.name || "A visitor"} left a condolence message on the memorial for ${memorial.deceasedFirstName} ${memorial.deceasedLastName}`,
+            message: `${session.user.name || "A visitor"} left a condolence message on the memorial for ${memorial.firstName} ${memorial.lastName}`,
             userId: memorial.ownerId,
-            relatedId: condolence.id,
-            relatedType: "POST",
+            link: `/memorial/${memorialId}#condolences`,
           },
         });
       } catch (notificationError) {

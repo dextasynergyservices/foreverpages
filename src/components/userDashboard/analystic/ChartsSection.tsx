@@ -108,11 +108,11 @@ export const ChartsSection: React.FC<ChartsSectionProps> = ({
                       color: theme === "dark" ? "#ffffff" : "#000000",
                     }}
                     labelStyle={{ color: theme === "dark" ? "#ffffff" : "#000000" }}
-                    formatter={(value: number) => [
-                      value,
+                    formatter={(value) => [
+                      value ?? 0,
                       t("dashboard.analytics.visitorTrends.visitors", {}, "Visitors"),
                     ]}
-                    labelFormatter={(label) => label}
+                    labelFormatter={(label) => String(label)}
                   />
                   <Area
                     type="monotone"

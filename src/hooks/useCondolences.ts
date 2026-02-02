@@ -14,11 +14,13 @@ export interface CondolenceComment extends Comment {
 }
 
 export interface Condolence extends Post {
-  author: CondolenceAuthor;
+  author: CondolenceAuthor | null;
   comments: CondolenceComment[];
   _count: {
     comments: number;
   };
+  // Computed property - true if authorId is null and authorName is "Anonymous"
+  isAnonymous?: boolean;
 }
 
 export interface CondolenceInput {

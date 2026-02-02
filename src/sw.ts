@@ -5,6 +5,7 @@ import { precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from "workbox-strategies";
 import { ExpirationPlugin } from "workbox-expiration";
+// @ts-expect-error - workbox-cacheable-response types may not be available
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 
 declare const self: ServiceWorkerGlobalScope;
@@ -242,15 +243,16 @@ self.addEventListener("push", (event: PushEvent) => {
         ];
     }
 
-    const options: NotificationOptions = {
+    // Use type assertion for extended notification options not in the base TypeScript type
+    const options = {
       body: data.body || "You have a new notification",
       icon: data.icon || "/icons/icon-192x192.png",
       badge: data.badge || "/icons/badge-72x72.png",
-      image: data.image,
       data: {
         url: data.url || "/",
         type: data.type,
         memorialSlug: data.memorialSlug,
+        image: data.image, // Store image in data for custom handling
       },
       tag: data.tag || `notification-${Date.now()}`,
       renotify: data.renotify || false,
@@ -259,7 +261,7 @@ self.addEventListener("push", (event: PushEvent) => {
       actions: actions,
       vibrate: [200, 100, 200],
       timestamp: data.timestamp || Date.now(),
-    };
+    } as NotificationOptions & { renotify?: boolean; vibrate?: number[]; timestamp?: number };
 
     event.waitUntil(self.registration.showNotification(data.title || "ForeverPages", options));
   } catch (error) {

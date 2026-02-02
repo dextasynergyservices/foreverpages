@@ -54,8 +54,8 @@ export async function POST(request: NextRequest) {
           select: {
             id: true,
             slug: true,
-            deceasedFirstName: true,
-            deceasedLastName: true,
+            firstName: true,
+            lastName: true,
             ownerId: true,
           },
         },
@@ -95,13 +95,12 @@ export async function POST(request: NextRequest) {
           data: {
             status: "PENDING",
             expiresAt: newExpiresAt,
-            updatedAt: new Date(),
           },
         });
 
         // Build names for notifications
         const deceasedName =
-          `${invitation.memorial.deceasedFirstName || ""} ${invitation.memorial.deceasedLastName || ""}`.trim();
+          `${invitation.memorial.firstName || ""} ${invitation.memorial.lastName || ""}`.trim();
         const inviterName = invitation.invitedBy?.name || "Someone";
 
         // Send email notification if email is provided
