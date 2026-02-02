@@ -1624,7 +1624,69 @@
           "archive": "Archive Memorial",
           "archiveDescription": "Make the memorial private and stop accepting new tributes",
           "delete": "Delete Memorial",
-          "deleteDescription": "Permanently delete this memorial and all associated data. This cannot be undone."
+          "deleteDescription": "Permanently delete this memorial and all associated data. This cannot be undone.",
+          "deleteAccount": "Delete ForeverPages Account",
+          "deleteAccountDescription": "Permanently delete your ForeverPages account and all associated data. This action cannot be undone.",
+          "archiveDialog": {
+            "title": "Archive Memorial",
+            "description": "This will make your memorial private and no longer publicly visible.",
+            "warningTitle": "What happens when you archive:",
+            "warning1": "The memorial will no longer be publicly accessible",
+            "warning2": "You can unarchive it later from the memorial settings",
+            "warning3": "All content will be preserved",
+            "memorialLabel": "Memorial:",
+            "confirmLabel": "Type {word} to confirm:",
+            "confirmWord": "ARCHIVE",
+            "confirmPlaceholder": "Type ARCHIVE",
+            "cancel": "Cancel",
+            "confirm": "Archive Memorial",
+            "archiving": "Archiving...",
+            "success": "Memorial has been archived. It is no longer publicly visible.",
+            "error": "Failed to archive memorial",
+            "noMemorial": "No memorial found",
+            "confirmError": "Please type ARCHIVE to confirm"
+          },
+          "deleteDialog": {
+            "title": "Delete Memorial Permanently",
+            "description": "This action is irreversible. All memorial data will be permanently deleted.",
+            "warningTitle": "This will permanently delete:",
+            "warning1": "All memorial content and biography",
+            "warning2": "All uploaded photos and media",
+            "warning3": "All tributes and condolences",
+            "warning4": "All collaborator access",
+            "warning5": "All event and service information",
+            "memorialLabel": "Memorial:",
+            "slugLabel": "Slug:",
+            "confirmLabel": "Type the memorial slug {slug} to confirm:",
+            "confirmPlaceholder": "Type {slug}",
+            "cancel": "Cancel",
+            "confirm": "Delete Memorial Permanently",
+            "deleting": "Deleting...",
+            "success": "Memorial has been permanently deleted.",
+            "error": "Failed to delete memorial",
+            "noMemorial": "No memorial found",
+            "confirmError": "Please type \"{slug}\" to confirm"
+          },
+          "deleteAccountDialog": {
+            "title": "Delete ForeverPages Account",
+            "description": "This action is irreversible. Your entire account will be permanently deleted.",
+            "warningTitle": "This will permanently delete:",
+            "warning1": "Your ForeverPages account",
+            "warning2": "All memorials you own",
+            "warning3": "All uploaded content and media",
+            "warning4": "All collaborator relationships",
+            "warning5": "Your subscription and payment history",
+            "accountLabel": "Account:",
+            "confirmLabel": "Type your username {username} to confirm:",
+            "confirmPlaceholder": "Type {username}",
+            "cancel": "Cancel",
+            "confirm": "Delete Account Permanently",
+            "deleting": "Deleting Account...",
+            "success": "Your account has been permanently deleted.",
+            "error": "Failed to delete account",
+            "noAccount": "Unable to verify account",
+            "confirmError": "Please type your username \"{username}\" to confirm"
+          }
         },
         "account": {
           "title": "Account Actions",
@@ -1730,10 +1792,13 @@
         "viewMemorial": "View Memorial",
         "created": "Created",
         "status": "Status",
+        "statusLive": "Live",
+        "statusDraft": "Draft",
         "photos": "Photos",
         "approvedTributes": "Approved Tributes",
         "serviceRsvps": "Service RSVPs",
-        "memorialPage": "Memorial Page"
+        "memorialPage": "Memorial Page",
+        "noMemorial": "No memorial found"
       },
       "collaboratorMemorials": {
         "title": "Memorials You're Managing",
@@ -2240,7 +2305,8 @@
     },
     "banner": {
       "offlineMessage": "You're currently offline.",
-      "pendingActions": "You have {count} pending action{{count !== 1 ? 's' : ''}} that will sync when you're back online."
+      "pendingActions": "You have {count} pending action{{count !== 1 ? 's' : ''}} that will sync when you're back online.",
+      "limitedFeatures": "You're offline. Some features may be limited."
     },
     "lastSync": "Last sync: {{synced}} synced, {{failed}} failed",
     "loading": {
@@ -2249,6 +2315,114 @@
       "actionsQueued": "{count} action{{count !== 1 ? 's' : ''}} queued",
       "willSyncWhenOnline": "will sync when online",
       "savedLocally": "Will be saved locally and synced when online"
+    },
+    "saveForOffline": {
+      "button": "Save for Offline",
+      "saving": "Saving...",
+      "saved": "Saved Offline"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "Install ForeverPages",
+      "description": "Install our app for the best experience with offline access and push notifications.",
+      "button": "Install App",
+      "dismiss": "Not Now",
+      "later": "Maybe Later",
+      "benefits": {
+        "title": "Why install?",
+        "offline": "Access memorials offline",
+        "notifications": "Get push notifications",
+        "faster": "Faster loading times",
+        "homeScreen": "Quick access from home screen"
+      },
+      "ios": {
+        "title": "Install on iOS",
+        "step1": "Tap the Share button",
+        "step2": "Scroll down and tap \"Add to Home Screen\"",
+        "step3": "Tap \"Add\" to confirm",
+        "shareIcon": "Share icon in Safari"
+      },
+      "android": {
+        "title": "Install on Android",
+        "step1": "Tap the menu button (⋮)",
+        "step2": "Select \"Add to Home Screen\" or \"Install App\"",
+        "step3": "Tap \"Add\" or \"Install\" to confirm"
+      },
+      "installed": "App Installed",
+      "alreadyInstalled": "ForeverPages is already installed on your device."
+    }
+  },
+  "pushNotifications": {
+    "title": "Push Notifications",
+    "description": "Manage your push notification preferences",
+    "enable": "Enable Notifications",
+    "disable": "Disable Notifications",
+    "enabled": "Notifications Enabled",
+    "disabled": "Notifications Disabled",
+    "permissionDenied": "Permission Denied",
+    "permissionDeniedDescription": "Please enable notifications in your browser settings to receive updates.",
+    "notSupported": "Not Supported",
+    "notSupportedDescription": "Push notifications are not supported in your browser.",
+    "preferences": {
+      "title": "Notification Preferences",
+      "description": "Choose which notifications you want to receive",
+      "tributes": {
+        "label": "New Tributes",
+        "description": "Get notified when someone leaves a tribute on your memorial"
+      },
+      "livestream": {
+        "label": "Livestream Events",
+        "description": "Get notified about upcoming and live memorial services"
+      },
+      "anniversary": {
+        "label": "Anniversary Reminders",
+        "description": "Receive reminders for birth and passing anniversaries"
+      },
+      "system": {
+        "label": "System Updates",
+        "description": "Important updates about ForeverPages"
+      }
+    },
+    "testNotification": "Send Test Notification",
+    "testSent": "Test notification sent",
+    "saving": "Saving preferences...",
+    "saved": "Preferences saved",
+    "error": {
+      "subscribeFailed": "Failed to enable notifications",
+      "unsubscribeFailed": "Failed to disable notifications",
+      "updateFailed": "Failed to update preferences"
+    }
+  },
+  "qrCode": {
+    "title": "QR Code",
+    "description": "Share this QR code to let others easily access the memorial",
+    "generating": "Generating QR code...",
+    "download": "Download QR Code",
+    "downloadPng": "Download PNG",
+    "downloadSvg": "Download SVG",
+    "copyLink": "Copy Link",
+    "linkCopied": "Link copied to clipboard",
+    "shareQr": "Share QR Code",
+    "customize": {
+      "title": "Customize QR Code",
+      "tab": "Customize",
+      "presets": "Color Presets",
+      "custom": "Custom Colors",
+      "size": "Size",
+      "margin": "Margin",
+      "foreground": "Foreground Color",
+      "background": "Background Color",
+      "preview": "Preview"
+    },
+    "print": {
+      "title": "Print Instructions",
+      "description": "Print this QR code for funeral programs, memorial cards, or display at the service.",
+      "forMemorial": "QR Code for {{name}}'s Memorial"
+    },
+    "error": {
+      "generateFailed": "Failed to generate QR code",
+      "downloadFailed": "Failed to download QR code"
     }
   },
   "twoFactor": {
@@ -3007,6 +3181,60 @@
       "performance": "Performance",
       "security": "Security",
       "bestPractices": "Best Practices"
+    }
+  },
+  "familyTree": {
+    "title": "Family",
+    "born": "Born",
+    "passed": "Passed",
+    "deceased": "Deceased",
+    "loading": "Loading family members...",
+    "empty": "No family members have been added yet."
+  },
+  "relationships": {
+    "spouse": "Spouse",
+    "partner": "Partner",
+    "father": "Father",
+    "mother": "Mother",
+    "son": "Son",
+    "daughter": "Daughter",
+    "brother": "Brother",
+    "sister": "Sister",
+    "grandfather": "Grandfather",
+    "grandmother": "Grandmother",
+    "grandson": "Grandson",
+    "granddaughter": "Granddaughter",
+    "uncle": "Uncle",
+    "aunt": "Aunt",
+    "nephew": "Nephew",
+    "niece": "Niece",
+    "cousin": "Cousin",
+    "other": "Other"
+  },
+  "condolences": {
+    "title": "Condolences",
+    "placeholder": "Share your thoughts and memories...",
+    "postAnonymously": "Post anonymously",
+    "submit": "Send Condolence",
+    "signInToPost": "Sign in to leave a condolence message",
+    "empty": "No condolences yet. Be the first to share your thoughts.",
+    "count": "{count} condolence(s)",
+    "loadMore": "Load More",
+    "anonymous": "Anonymous",
+    "reply": "reply",
+    "replies": "replies",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this condolence?",
+    "success": {
+      "posted": "Your condolence has been posted",
+      "deleted": "Condolence deleted"
+    },
+    "errors": {
+      "emptyMessage": "Please enter a message",
+      "loginRequired": "Please sign in to leave a condolence",
+      "postFailed": "Failed to post condolence. Please try again.",
+      "deleteFailed": "Failed to delete condolence",
+      "loadFailed": "Failed to load condolences"
     }
   }
 }

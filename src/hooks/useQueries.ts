@@ -80,6 +80,59 @@ export function useUser() {
   });
 }
 
+// User Memorials query
+export interface UserMemorial {
+  id: string;
+  name: string;
+  slug: string;
+  firstName?: string;
+  lastName?: string;
+  isPublished: boolean;
+  createdAt: string;
+}
+
+export interface UserMemorialsResponse {
+  ownedMemorials: UserMemorial[];
+  collaboratorMemorials: UserMemorial[];
+}
+
+export function useUserMemorials() {
+  return useQuery({
+    queryKey: ["userMemorials"],
+    queryFn: async () => {
+      const response = await fetch("/api/user/memorials");
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      }
+      return response.json() as Promise<UserMemorialsResponse>;
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
+
+// Get memorial details for deletion confirmation
+export function useMemorialDetails(memorialId: string | null) {
+  return useQuery({
+    queryKey: ["memorialDetails", memorialId],
+    queryFn: async () => {
+      if (!memorialId) return null;
+      const response = await fetch(`/api/memorials/${memorialId}`);
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      }
+      const data = await response.json();
+      return data.data as {
+        id: string;
+        slug: string;
+        firstName: string;
+        lastName: string;
+      };
+    },
+    enabled: !!memorialId,
+    staleTime: 10 * 60 * 1000, // 10 minutes
+  });
+}
+
 // Mutations
 export function useCreateMemorial() {
   const queryClient = useQueryClient();
@@ -140,6 +193,19 @@ export function useAnalytics() {
           views: number;
           percentage: number;
         }>;
+        dailyVisitorTrends: Array<{
+          date: string;
+          visitors: number;
+        }>;
+        memorialSummary: {
+          name: string;
+          slug: string;
+          status: string;
+          createdAt: string;
+          photoCount: number;
+          approvedTributes: number;
+          serviceRsvps: number;
+        } | null;
       }>("/api/analytics"),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });

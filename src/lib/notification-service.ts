@@ -4,7 +4,8 @@
  * Central service for sending notifications across multiple channels:
  * - Email (via Brevo)
  * - WhatsApp (via Green API)
- * - Future: SMS, Push Notifications
+ * - SMS (via Twilio)
+ * - Future: Push Notifications
  *
  * Features:
  * - User preference management (opt-in/opt-out per channel)
@@ -31,6 +32,13 @@ import {
   sendRecordingDeletedWhatsApp,
 } from "@/lib/whatsapp-service";
 
+import {
+  sendStreamScheduledSMS,
+  sendStreamLiveSMS,
+  sendRecordingReadySMS,
+  isSMSConfigured,
+} from "@/lib/sms-service";
+
 import { prisma } from "@/lib/prisma";
 
 /**
@@ -51,7 +59,7 @@ export enum NotificationEvent {
 export enum NotificationChannel {
   EMAIL = "EMAIL",
   WHATSAPP = "WHATSAPP",
-  SMS = "SMS", // Future
+  SMS = "SMS",
   PUSH = "PUSH", // Future
 }
 
@@ -147,8 +155,8 @@ interface UserNotificationPreferences {
  * For now, use default preferences. In future, read from User model.
  */
 async function getUserPreferences(): Promise<UserNotificationPreferences> {
-  // TODO: Read from User model fields (emailNotifications, whatsappNotifications, etc.)
-  // For now, default to email only (WhatsApp requires opt-in)
+  // TODO: Read from User model fields (emailNotifications, whatsappNotifications, smsNotifications, etc.)
+  // For now, default to email only (WhatsApp and SMS require opt-in)
 
   // Future implementation:
   // const user = await prisma.user.findUnique({
@@ -157,13 +165,15 @@ async function getUserPreferences(): Promise<UserNotificationPreferences> {
   //     emailNotifications: true,
   //     whatsappOptIn: true,
   //     whatsappNumber: true,
+  //     smsOptIn: true,
+  //     phoneNumber: true,
   //   },
   // });
 
   return {
     email: true, // Always send email if user has email
     whatsapp: false, // Requires explicit opt-in + phone number
-    sms: false,
+    sms: isSMSConfigured(), // Enable if Twilio is configured
     push: false,
   };
 }
@@ -189,7 +199,8 @@ export async function sendNotification(
       select: {
         email: true,
         name: true,
-        // Future: whatsappNumber, whatsappOptIn, etc.
+        phone: true, // For SMS notifications
+        // Future: whatsappNumber, whatsappOptIn, smsOptIn, etc.
       },
     });
 
@@ -224,7 +235,17 @@ export async function sendNotification(
     //   }
     // }
 
-    // TODO: SMS notifications
+    // Send SMS notification
+    if (preferences.sms && user.phone) {
+      try {
+        await sendSMSNotification(user.phone, recipientName, event, params);
+        result.sentChannels.push(NotificationChannel.SMS);
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : "Unknown error";
+        result.errors.push({ channel: NotificationChannel.SMS, error: errorMsg });
+      }
+    }
+
     // TODO: Push notifications
 
     result.success = result.sentChannels.length > 0;
@@ -459,6 +480,76 @@ async function sendWhatsAppNotification(
         streamTitle: p.streamTitle,
         deletedAt: p.deletedAt,
       });
+      break;
+    }
+
+    default:
+      throw new Error(`Unknown notification event: ${event}`);
+  }
+}
+
+/**
+ * Send SMS notification based on event type
+ */
+async function sendSMSNotification(
+  phoneNumber: string,
+  name: string,
+  event: NotificationEvent,
+  params: NotificationParams
+): Promise<void> {
+  switch (event) {
+    case NotificationEvent.STREAM_SCHEDULED: {
+      const p = params as StreamScheduledParams;
+      await sendStreamScheduledSMS(phoneNumber, {
+        memorialName: p.memorialName,
+        streamTitle: p.streamTitle,
+        scheduledDate: p.scheduledFor.toLocaleDateString(),
+        scheduledTime: p.scheduledFor.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        streamUrl: p.streamUrl,
+      });
+      break;
+    }
+
+    case NotificationEvent.STREAM_LIVE: {
+      const p = params as StreamLiveParams;
+      await sendStreamLiveSMS(phoneNumber, {
+        memorialName: p.memorialName,
+        streamTitle: p.streamTitle,
+        streamUrl: p.streamUrl,
+      });
+      break;
+    }
+
+    case NotificationEvent.STREAM_ENDED: {
+      // No SMS for stream ended - not critical enough
+      console.log(`SMS not sent for STREAM_ENDED to ${phoneNumber} - event type not critical`);
+      break;
+    }
+
+    case NotificationEvent.RECORDING_READY: {
+      const p = params as RecordingReadyParams;
+      await sendRecordingReadySMS(phoneNumber, {
+        memorialName: p.memorialName,
+        recordingUrl: p.recordingUrl,
+        expiresAt: p.expiresAt.toLocaleDateString(),
+      });
+      break;
+    }
+
+    case NotificationEvent.RECORDING_EXPIRING: {
+      // No SMS for recording expiring - email is sufficient
+      console.log(
+        `SMS not sent for RECORDING_EXPIRING to ${phoneNumber} - email notification sufficient`
+      );
+      break;
+    }
+
+    case NotificationEvent.RECORDING_DELETED: {
+      // No SMS for recording deleted - not critical
+      console.log(`SMS not sent for RECORDING_DELETED to ${phoneNumber} - event type not critical`);
       break;
     }
 

@@ -65,9 +65,11 @@ export const StatsGrid: React.FC<StatsGridProps> = ({ stats }) => {
                   <p className="text-2xl md:text-3xl font-semibold leading-none tracking-tight">
                     {stat.value}
                   </p>
-                  <p className={`text-sm mt-1 ${textMuted}`}>
-                    {stat.change} {t("dashboard.analytics.fromLastPeriod")}
-                  </p>
+                  {stat.change && (
+                    <p className={`text-sm mt-1 ${textMuted}`}>
+                      {stat.change} {t("dashboard.analytics.fromLastPeriod")}
+                    </p>
+                  )}
                 </div>
                 <div className={`p-3 rounded-full ${bgMuted}`}>
                   <IconComponent className="h-6 w-6" />

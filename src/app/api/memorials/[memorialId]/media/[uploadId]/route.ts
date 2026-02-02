@@ -128,10 +128,9 @@ export async function PATCH(request: NextRequest, { params }: RouteContext) {
     // Check if user is ADMIN/EDITOR collaborator on memorial owned by uploader
     const isCollaborator = await prisma.invitation.findFirst({
       where: {
-        invitedUserId: session.user.id,
         status: "ACCEPTED",
-        expiresAt: { gte: new Date() },
         role: { in: ["ADMIN", "EDITOR"] },
+        OR: [{ invitedUserId: session.user.id }, { email: session.user.email || "" }],
         memorial: {
           ownerId: upload.uploaderId,
         },

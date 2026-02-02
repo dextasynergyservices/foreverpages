@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,13 +17,32 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@radix-ui/react-select";
-import { User, Bell, Shield, Globe, Trash2, Download, LogOut } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  User,
+  Bell,
+  Shield,
+  Globe,
+  Trash2,
+  Download,
+  LogOut,
+  AlertTriangle,
+  Archive,
+} from "lucide-react";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useTheme } from "@/hooks/useTheme";
-import { useUser } from "@/hooks/useQueries";
+import { useUser, useUserMemorials, useMemorialDetails } from "@/hooks/useQueries";
 import { useLogout } from "@/hooks/useLogout";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Spinner } from "@/components/ui/skeleton-loader";
 import SecurityTab from "./SecurityTab";
 import AccountDetailsTab from "./AccountDetailsTab";
 import CollaboratorsTab from "./CollaboratorsTab";
@@ -36,50 +55,51 @@ const SettingsContent = () => {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<string>("profile");
   const [emailNotifications, setEmailNotifications] = useState(true);
-  const [publicMemorial, setPublicMemorial] = useState(true);
-  const [allowTributes, setAllowTributes] = useState(true);
-  const [moderateTributes, setModerateTributes] = useState(true);
   const [adminEmails, setAdminEmails] = useState("");
   const [phoneNumbers, setPhoneNumbers] = useState("");
   const [selectedRole, setSelectedRole] = useState<string>("VIEWER");
   const [personalMessage, setPersonalMessage] = useState("");
   const [sendViaWhatsApp, setSendViaWhatsApp] = useState(false);
   const [isSendingInvites, setIsSendingInvites] = useState(false);
-  const [userMemorialId, setUserMemorialId] = useState<string | null>(null);
 
-  // Fetch user's memorial ID on mount
-  useEffect(() => {
-    const fetchUserMemorial = async () => {
-      try {
-        const response = await fetch("/api/memorials");
-        if (response.ok) {
-          const data = await response.json();
-          if (data.data?.memorials && data.data.memorials.length > 0) {
-            // Get the first memorial (user's primary memorial)
-            setUserMemorialId(data.data.memorials[0].id);
-          }
-        }
-      } catch (error) {
-        console.error("Failed to fetch user memorial:", error);
-      }
-    };
-    fetchUserMemorial();
-  }, []);
+  // Use TanStack Query for fetching user memorials
+  const { data: memorialsData } = useUserMemorials();
+
+  // Get the first owned memorial ID
+  const userMemorialId = useMemo(() => {
+    const ownedMemorials = memorialsData?.ownedMemorials || [];
+    return ownedMemorials.length > 0 ? ownedMemorials[0].id : null;
+  }, [memorialsData]);
+
+  // Fetch memorial details using TanStack Query (only when we have a memorial ID)
+  const { data: memorialDetails } = useMemorialDetails(userMemorialId);
+
+  // Derive memorial slug and name from the query data
+  const memorialSlug = useMemo(() => {
+    if (memorialDetails?.slug) return memorialDetails.slug;
+    if (userMemorialId) return userMemorialId;
+    return "";
+  }, [memorialDetails, userMemorialId]);
+
+  const memorialName = useMemo(() => {
+    if (memorialDetails?.firstName || memorialDetails?.lastName) {
+      return `${memorialDetails.firstName || ""} ${memorialDetails.lastName || ""}`.trim();
+    }
+    const ownedMemorials = memorialsData?.ownedMemorials || [];
+    if (ownedMemorials.length > 0) {
+      return (
+        ownedMemorials[0].name || t("dashboard.settings.advanced.danger.deleteDialog.memorialLabel")
+      );
+    }
+    return t("dashboard.settings.advanced.danger.deleteDialog.memorialLabel");
+  }, [memorialDetails, memorialsData, t]);
 
   // Set active tab from URL parameter on mount
   useEffect(() => {
     const tab = (searchParams?.get("tab") as string | null) || null;
     if (
       tab &&
-      [
-        "profile",
-        "security",
-        "memorial",
-        "collaborators",
-        "privacy",
-        "notifications",
-        "advanced",
-      ].includes(tab)
+      ["profile", "security", "collaborators", "privacy", "notifications", "advanced"].includes(tab)
     ) {
       setActiveTab(tab);
     }
@@ -87,10 +107,6 @@ const SettingsContent = () => {
 
   const handleSaveProfile = () => {
     toastNotification.info("Profile settings save functionality coming soon");
-  };
-
-  const handleSaveMemorialSettings = () => {
-    toastNotification.info("Memorial settings save functionality coming soon");
   };
 
   const handleSavePrivacySettings = () => {
@@ -101,20 +117,224 @@ const SettingsContent = () => {
     toastNotification.info("Notification settings save functionality coming soon");
   };
 
-  const handleExportData = () => {
-    toastNotification.info("Data export functionality coming soon");
+  // State for advanced tab
+  const [isExporting, setIsExporting] = useState(false);
+  const [isArchiving, setIsArchiving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+  const [showDeleteMemorialDialog, setShowDeleteMemorialDialog] = useState(false);
+  const [showArchiveDialog, setShowArchiveDialog] = useState(false);
+  const [showDeleteAccountDialog, setShowDeleteAccountDialog] = useState(false);
+  const [deleteMemorialConfirmText, setDeleteMemorialConfirmText] = useState("");
+  const [archiveConfirmText, setArchiveConfirmText] = useState("");
+  const [deleteAccountConfirmText, setDeleteAccountConfirmText] = useState("");
+
+  const handleExportData = async () => {
+    if (!userMemorialId) {
+      toastNotification.error("No memorial found to export");
+      return;
+    }
+
+    setIsExporting(true);
+    try {
+      const response = await fetch(`/api/memorial/${userMemorialId}/export`);
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `memorial-data-${new Date().toISOString().split("T")[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        toastNotification.success("Memorial data exported successfully!");
+      } else {
+        // Fallback: export basic memorial info from the API we already have
+        const memorialResponse = await fetch("/api/user/memorials");
+        if (memorialResponse.ok) {
+          const data = await memorialResponse.json();
+          const ownedMemorials = data.ownedMemorials || [];
+          const memorial = ownedMemorials.find((m: { id: string }) => m.id === userMemorialId);
+          if (memorial) {
+            const exportData = {
+              exportedAt: new Date().toISOString(),
+              memorial: memorial,
+            };
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+              type: "application/json",
+            });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `memorial-data-${new Date().toISOString().split("T")[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            toastNotification.success("Memorial data exported successfully!");
+          }
+        } else {
+          toastNotification.error("Failed to export memorial data");
+        }
+      }
+    } catch (error) {
+      console.error("Export error:", error);
+      toastNotification.error("Failed to export memorial data");
+    } finally {
+      setIsExporting(false);
+    }
   };
 
-  const handleConnectDomain = () => {
-    toastNotification.info("Custom domain connection functionality coming soon");
+  const handleArchiveMemorial = async () => {
+    if (!userMemorialId) {
+      toastNotification.error(
+        t("dashboard.settings.advanced.danger.archiveDialog.noMemorial") || "No memorial found"
+      );
+      return;
+    }
+
+    if (archiveConfirmText.toLowerCase() !== "archive") {
+      toastNotification.error(
+        t("dashboard.settings.advanced.danger.archiveDialog.confirmError") ||
+          "Please type ARCHIVE to confirm"
+      );
+      return;
+    }
+
+    setIsArchiving(true);
+    try {
+      const response = await fetch(`/api/user/memorials/${userMemorialId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isPublished: false }),
+      });
+
+      if (response.ok) {
+        toastNotification.success(
+          t("dashboard.settings.advanced.danger.archiveDialog.success") ||
+            "Memorial has been archived. It is no longer publicly visible."
+        );
+        setShowArchiveDialog(false);
+        setArchiveConfirmText("");
+      } else {
+        const data = await response.json();
+        toastNotification.error(
+          data.message ||
+            t("dashboard.settings.advanced.danger.archiveDialog.error") ||
+            "Failed to archive memorial"
+        );
+      }
+    } catch (error) {
+      console.error("Archive error:", error);
+      toastNotification.error(
+        t("dashboard.settings.advanced.danger.archiveDialog.error") || "Failed to archive memorial"
+      );
+    } finally {
+      setIsArchiving(false);
+    }
   };
 
-  const handleArchiveMemorial = () => {
-    toastNotification.info("Memorial archive functionality coming soon");
+  const handleDeleteMemorial = async () => {
+    if (!userMemorialId) {
+      toastNotification.error(
+        t("dashboard.settings.advanced.danger.deleteDialog.noMemorial") || "No memorial found"
+      );
+      return;
+    }
+
+    if (deleteMemorialConfirmText !== memorialSlug) {
+      toastNotification.error(
+        t("dashboard.settings.advanced.danger.deleteDialog.confirmError", { slug: memorialSlug }) ||
+          `Please type "${memorialSlug}" to confirm`
+      );
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`/api/user/memorials/${userMemorialId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        toastNotification.success(
+          t("dashboard.settings.advanced.danger.deleteDialog.success") ||
+            "Memorial has been permanently deleted."
+        );
+        setShowDeleteMemorialDialog(false);
+        setDeleteMemorialConfirmText("");
+        // Redirect to dashboard
+        window.location.href = "/user-dashboard";
+      } else {
+        const data = await response.json();
+        toastNotification.error(
+          data.message ||
+            t("dashboard.settings.advanced.danger.deleteDialog.error") ||
+            "Failed to delete memorial"
+        );
+      }
+    } catch (error) {
+      console.error("Delete error:", error);
+      toastNotification.error(
+        t("dashboard.settings.advanced.danger.deleteDialog.error") || "Failed to delete memorial"
+      );
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
-  const handleDeleteMemorial = () => {
-    toastNotification.info("Memorial deletion functionality coming soon");
+  const handleDeleteAccount = async () => {
+    const userName = userData?.user?.name || "";
+    if (!userName) {
+      toastNotification.error(
+        t("dashboard.settings.advanced.danger.deleteAccountDialog.noAccount") ||
+          "Unable to verify account"
+      );
+      return;
+    }
+
+    if (deleteAccountConfirmText !== userName) {
+      toastNotification.error(
+        t("dashboard.settings.advanced.danger.deleteAccountDialog.confirmError", {
+          username: userName,
+        }) || `Please type your username "${userName}" to confirm`
+      );
+      return;
+    }
+
+    setIsDeletingAccount(true);
+    try {
+      const response = await fetch("/api/user/account", {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        toastNotification.success(
+          t("dashboard.settings.advanced.danger.deleteAccountDialog.success") ||
+            "Your account has been permanently deleted."
+        );
+        setShowDeleteAccountDialog(false);
+        setDeleteAccountConfirmText("");
+        // Sign out and redirect
+        window.location.href = "/";
+      } else {
+        const data = await response.json();
+        toastNotification.error(
+          data.message ||
+            t("dashboard.settings.advanced.danger.deleteAccountDialog.error") ||
+            "Failed to delete account"
+        );
+      }
+    } catch (error) {
+      console.error("Delete account error:", error);
+      toastNotification.error(
+        t("dashboard.settings.advanced.danger.deleteAccountDialog.error") ||
+          "Failed to delete account"
+      );
+    } finally {
+      setIsDeletingAccount(false);
+    }
   };
 
   const { logout: handleSignOut, isLoggingOut } = useLogout();
@@ -326,7 +546,7 @@ const SettingsContent = () => {
 
       <div className="w-full lg:max-w-4xl xl:max-w-5xl mx-auto">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 gap-2 md:grid-cols-8">
+          <TabsList className="grid w-full grid-cols-3 gap-2 md:grid-cols-7">
             <TabsTrigger
               value="profile"
               className={`px-3 py-2 text-sm md:text-base whitespace-nowrap ${activeTabClasses}`}
@@ -344,12 +564,6 @@ const SettingsContent = () => {
               className={`px-3 py-2 text-sm md:text-base whitespace-nowrap ${activeTabClasses}`}
             >
               {t("dashboard.settings.tabs.account", {}, "Account")}
-            </TabsTrigger>
-            <TabsTrigger
-              value="memorial"
-              className={`px-3 py-2 text-sm md:text-base whitespace-nowrap ${activeTabClasses}`}
-            >
-              {t("dashboard.settings.tabs.memorial")}
             </TabsTrigger>
             <TabsTrigger
               value="collaborators"
@@ -447,114 +661,6 @@ const SettingsContent = () => {
 
           <TabsContent value="account" className="space-y-6">
             <AccountDetailsTab />
-          </TabsContent>
-
-          <TabsContent value="memorial" className="space-y-6">
-            <Card className={`border ${cardBorder} ${cardBg}`}>
-              <CardHeader>
-                <CardTitle>{t("dashboard.settings.memorial.title")}</CardTitle>
-                <CardDescription className={textMuted}>
-                  {t("dashboard.settings.memorial.description")}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div>
-                  <Label htmlFor="memorial-title">
-                    {t("dashboard.settings.memorial.pageTitle")}
-                  </Label>
-                  <Input id="memorial-title" defaultValue="In Loving Memory of Sarah Johnson" />
-                </div>
-
-                <div>
-                  <Label htmlFor="memorial-url">{t("dashboard.settings.memorial.customUrl")}</Label>
-                  <div className="flex">
-                    <span
-                      className={`inline-flex items-center px-3 rounded-l-md border border-r-0 text-sm ${theme === "dark" ? "border-white/20 bg-white/10 text-white/70" : "border-gray-200 bg-gray-100 text-gray-600"}`}
-                    >
-                      foreverpages.online/
-                    </span>
-                    <Input
-                      id="memorial-url"
-                      className="rounded-l-none"
-                      placeholder="sarah-johnson-memorial"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="memorial-theme">{t("dashboard.settings.memorial.theme")}</Label>
-                  <Select defaultValue="classic">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="classic">Classic Memorial</SelectItem>
-                      <SelectItem value="modern">Modern Tribute</SelectItem>
-                      <SelectItem value="garden">Garden of Memories</SelectItem>
-                      <SelectItem value="celebration">Celebration of Life</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label htmlFor="public-memorial">
-                        {t("dashboard.settings.memorial.publicMemorial.label")}
-                      </Label>
-                      <p className={`text-sm ${textMuted}`}>
-                        {t("dashboard.settings.memorial.publicMemorial.description")}
-                      </p>
-                    </div>
-                    <Switch
-                      id="public-memorial"
-                      checked={publicMemorial}
-                      onCheckedChange={setPublicMemorial}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label htmlFor="allow-tributes">
-                        {t("dashboard.settings.memorial.allowTributes.label")}
-                      </Label>
-                      <p className={`text-sm ${textMuted}`}>
-                        {t("dashboard.settings.memorial.allowTributes.description")}
-                      </p>
-                    </div>
-                    <Switch
-                      id="allow-tributes"
-                      checked={allowTributes}
-                      onCheckedChange={setAllowTributes}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label htmlFor="moderate-tributes">
-                        {t("dashboard.settings.memorial.moderateTributes.label")}
-                      </Label>
-                      <p className={`text-sm ${textMuted}`}>
-                        {t("dashboard.settings.memorial.moderateTributes.description")}
-                      </p>
-                    </div>
-                    <Switch
-                      id="moderate-tributes"
-                      checked={moderateTributes}
-                      onCheckedChange={setModerateTributes}
-                    />
-                  </div>
-                </div>
-
-                <Button
-                  variant="memorial"
-                  className={`w-50 justify-center align-center ${theme === "dark" ? "bg-white text-black" : "bg-black text-white"}`}
-                  onClick={handleSaveMemorialSettings}
-                >
-                  {t("dashboard.settings.memorial.save")}
-                </Button>
-              </CardContent>
-            </Card>
           </TabsContent>
 
           <TabsContent value="collaborators" className="space-y-6">
@@ -876,61 +982,81 @@ const SettingsContent = () => {
                   <Button
                     variant={theme === "dark" ? "memorial-outline" : "outline"}
                     onClick={handleExportData}
+                    disabled={isExporting || !userMemorialId}
                   >
                     <Download className="h-4 w-4 mr-2" />
-                    {t("dashboard.settings.advanced.export.button")}
+                    {isExporting ? "Exporting..." : t("dashboard.settings.advanced.export.button")}
                   </Button>
+                  {!userMemorialId && (
+                    <p className={`text-xs mt-2 ${textMuted}`}>
+                      Create a memorial first to export data
+                    </p>
+                  )}
                 </div>
 
                 <Separator />
 
-                <div>
-                  <h4 className="font-semibold mb-3">
-                    {t("dashboard.settings.advanced.domain.title")}
-                  </h4>
-                  <p className={`text-sm mb-4 ${textMuted}`}>
-                    {t("dashboard.settings.advanced.domain.description")}
-                  </p>
-                  <div className="flex gap-2 flex-col sm:flex-row">
-                    <Input placeholder="www.sarah-memorial.com" className="flex-1" />
-                    <Button
-                      variant={theme === "dark" ? "memorial-outline" : "outline"}
-                      onClick={handleConnectDomain}
-                    >
-                      {t("dashboard.settings.advanced.domain.connect")}
-                    </Button>
-                  </div>
-                </div>
-
-                <Separator />
-
+                {/* Danger Zone */}
                 <div>
                   <h4 className="font-semibold text-destructive mb-3 flex items-center gap-2">
-                    <Trash2 className="h-4 w-4" />
+                    <AlertTriangle className="h-4 w-4" />
                     {t("dashboard.settings.advanced.danger.title")}
                   </h4>
                   <div className="space-y-3">
+                    {/* Archive Memorial */}
                     <div className={`p-4 border ${dangerBorder} rounded-lg ${dangerBg}`}>
-                      <h5 className={`font-medium mb-2 ${dangerTitle}`}>
+                      <h5 className={`font-medium mb-2 ${dangerTitle} flex items-center gap-2`}>
+                        <Archive className="h-4 w-4" />
                         {t("dashboard.settings.advanced.danger.archive")}
                       </h5>
                       <p className={`text-sm mb-3 ${textMuted}`}>
                         {t("dashboard.settings.advanced.danger.archiveDescription")}
                       </p>
-                      <Button variant="destructive" size="sm" onClick={handleArchiveMemorial}>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => setShowArchiveDialog(true)}
+                        disabled={!userMemorialId}
+                        className="bg-amber-600 hover:bg-amber-700"
+                      >
                         {t("dashboard.settings.advanced.danger.archive")}
                       </Button>
                     </div>
 
+                    {/* Delete Memorial */}
                     <div className={`p-4 border ${dangerBorder} rounded-lg ${dangerBg}`}>
-                      <h5 className={`font-medium mb-2 ${dangerTitle}`}>
+                      <h5 className={`font-medium mb-2 ${dangerTitle} flex items-center gap-2`}>
+                        <Trash2 className="h-4 w-4" />
                         {t("dashboard.settings.advanced.danger.delete")}
                       </h5>
                       <p className={`text-sm mb-3 ${textMuted}`}>
                         {t("dashboard.settings.advanced.danger.deleteDescription")}
                       </p>
-                      <Button variant="destructive" size="sm" onClick={handleDeleteMemorial}>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => setShowDeleteMemorialDialog(true)}
+                        disabled={!userMemorialId}
+                      >
                         {t("dashboard.settings.advanced.danger.delete")}
+                      </Button>
+                    </div>
+
+                    {/* Delete Account */}
+                    <div className={`p-4 border ${dangerBorder} rounded-lg ${dangerBg}`}>
+                      <h5 className={`font-medium mb-2 ${dangerTitle} flex items-center gap-2`}>
+                        <Trash2 className="h-4 w-4" />
+                        {t("dashboard.settings.advanced.danger.deleteAccount")}
+                      </h5>
+                      <p className={`text-sm mb-3 ${textMuted}`}>
+                        {t("dashboard.settings.advanced.danger.deleteAccountDescription")}
+                      </p>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => setShowDeleteAccountDialog(true)}
+                      >
+                        {t("dashboard.settings.advanced.danger.deleteAccount")}
                       </Button>
                     </div>
                   </div>
@@ -938,6 +1064,7 @@ const SettingsContent = () => {
 
                 <Separator />
 
+                {/* Account Section */}
                 <div>
                   <h4 className="font-semibold mb-3">
                     {t("dashboard.settings.advanced.account.title")}
@@ -966,6 +1093,289 @@ const SettingsContent = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Archive Memorial Dialog */}
+            <Dialog open={showArchiveDialog} onOpenChange={setShowArchiveDialog}>
+              <DialogContent
+                className={theme === "dark" ? "bg-gray-900 border-white/10" : "bg-white"}
+              >
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2 text-amber-600">
+                    <Archive className="h-5 w-5" />
+                    {t("dashboard.settings.advanced.danger.archiveDialog.title")}
+                  </DialogTitle>
+                  <DialogDescription>
+                    {t("dashboard.settings.advanced.danger.archiveDialog.description")}
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div
+                    className={`p-4 rounded-lg ${theme === "dark" ? "bg-amber-900/20 border border-amber-500/30" : "bg-amber-50 border border-amber-200"}`}
+                  >
+                    <h4 className="font-medium text-amber-700 dark:text-amber-400 mb-2">
+                      {t("dashboard.settings.advanced.danger.archiveDialog.warningTitle")}
+                    </h4>
+                    <ul className="text-sm text-amber-600 dark:text-amber-300 space-y-1 list-disc list-inside">
+                      <li>{t("dashboard.settings.advanced.danger.archiveDialog.warning1")}</li>
+                      <li>{t("dashboard.settings.advanced.danger.archiveDialog.warning2")}</li>
+                      <li>{t("dashboard.settings.advanced.danger.archiveDialog.warning3")}</li>
+                    </ul>
+                  </div>
+
+                  {memorialName && (
+                    <div
+                      className={`p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-50"}`}
+                    >
+                      <p className={`text-sm ${textMuted}`}>
+                        {t("dashboard.settings.advanced.danger.archiveDialog.memorialLabel")}
+                      </p>
+                      <p className="font-medium">{memorialName}</p>
+                    </div>
+                  )}
+
+                  <div>
+                    <Label htmlFor="archive-confirm" className="text-sm">
+                      {t("dashboard.settings.advanced.danger.archiveDialog.confirmLabel", {
+                        word: "",
+                      })}{" "}
+                      <span className="font-bold text-amber-600">
+                        {t("dashboard.settings.advanced.danger.archiveDialog.confirmWord")}
+                      </span>
+                    </Label>
+                    <Input
+                      id="archive-confirm"
+                      value={archiveConfirmText}
+                      onChange={(e) => setArchiveConfirmText(e.target.value)}
+                      placeholder={t(
+                        "dashboard.settings.advanced.danger.archiveDialog.confirmPlaceholder"
+                      )}
+                      className="mt-2"
+                    />
+                  </div>
+                </div>
+                <DialogFooter className="gap-2 sm:gap-0">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setShowArchiveDialog(false);
+                      setArchiveConfirmText("");
+                    }}
+                  >
+                    {t("dashboard.settings.advanced.danger.archiveDialog.cancel")}
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    onClick={handleArchiveMemorial}
+                    disabled={isArchiving || archiveConfirmText.toLowerCase() !== "archive"}
+                    className="bg-amber-600 hover:bg-amber-700"
+                  >
+                    {isArchiving ? (
+                      <>
+                        <Spinner className="h-4 w-4 mr-2 animate-spin" />
+                        {t("dashboard.settings.advanced.danger.archiveDialog.archiving")}
+                      </>
+                    ) : (
+                      t("dashboard.settings.advanced.danger.archiveDialog.confirm")
+                    )}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+            {/* Delete Memorial Dialog */}
+            <Dialog open={showDeleteMemorialDialog} onOpenChange={setShowDeleteMemorialDialog}>
+              <DialogContent
+                className={theme === "dark" ? "bg-gray-900 border-white/10" : "bg-white"}
+              >
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2 text-destructive">
+                    <AlertTriangle className="h-5 w-5" />
+                    {t("dashboard.settings.advanced.danger.deleteDialog.title")}
+                  </DialogTitle>
+                  <DialogDescription>
+                    {t("dashboard.settings.advanced.danger.deleteDialog.description")}
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div
+                    className={`p-4 rounded-lg ${theme === "dark" ? "bg-red-900/20 border border-red-500/30" : "bg-red-50 border border-red-200"}`}
+                  >
+                    <h4 className="font-medium text-red-700 dark:text-red-400 mb-2">
+                      {t("dashboard.settings.advanced.danger.deleteDialog.warningTitle")}
+                    </h4>
+                    <ul className="text-sm text-red-600 dark:text-red-300 space-y-1 list-disc list-inside">
+                      <li>{t("dashboard.settings.advanced.danger.deleteDialog.warning1")}</li>
+                      <li>{t("dashboard.settings.advanced.danger.deleteDialog.warning2")}</li>
+                      <li>{t("dashboard.settings.advanced.danger.deleteDialog.warning3")}</li>
+                      <li>{t("dashboard.settings.advanced.danger.deleteDialog.warning4")}</li>
+                      <li>{t("dashboard.settings.advanced.danger.deleteDialog.warning5")}</li>
+                    </ul>
+                  </div>
+
+                  {memorialName && (
+                    <div
+                      className={`p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-50"}`}
+                    >
+                      <p className={`text-sm ${textMuted}`}>
+                        {t("dashboard.settings.advanced.danger.deleteDialog.memorialLabel")}
+                      </p>
+                      <p className="font-medium">{memorialName}</p>
+                      <p className={`text-sm ${textMuted}`}>
+                        {t("dashboard.settings.advanced.danger.deleteDialog.slugLabel")}{" "}
+                        <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">
+                          {memorialSlug}
+                        </code>
+                      </p>
+                    </div>
+                  )}
+
+                  <div>
+                    <Label htmlFor="delete-memorial-confirm" className="text-sm">
+                      {t("dashboard.settings.advanced.danger.deleteDialog.confirmLabel", {
+                        slug: "",
+                      })}{" "}
+                      <span className="font-bold text-destructive">{memorialSlug}</span>
+                    </Label>
+                    <Input
+                      id="delete-memorial-confirm"
+                      value={deleteMemorialConfirmText}
+                      onChange={(e) => setDeleteMemorialConfirmText(e.target.value)}
+                      placeholder={t(
+                        "dashboard.settings.advanced.danger.deleteDialog.confirmPlaceholder",
+                        { slug: memorialSlug }
+                      )}
+                      className="mt-2"
+                    />
+                  </div>
+                </div>
+                <DialogFooter className="gap-2 sm:gap-0">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setShowDeleteMemorialDialog(false);
+                      setDeleteMemorialConfirmText("");
+                    }}
+                  >
+                    {t("dashboard.settings.advanced.danger.deleteDialog.cancel")}
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    onClick={handleDeleteMemorial}
+                    disabled={isDeleting || deleteMemorialConfirmText !== memorialSlug}
+                  >
+                    {isDeleting ? (
+                      <>
+                        <Spinner className="h-4 w-4 mr-2 animate-spin" />
+                        {t("dashboard.settings.advanced.danger.deleteDialog.deleting")}
+                      </>
+                    ) : (
+                      t("dashboard.settings.advanced.danger.deleteDialog.confirm")
+                    )}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+            {/* Delete Account Dialog */}
+            <Dialog open={showDeleteAccountDialog} onOpenChange={setShowDeleteAccountDialog}>
+              <DialogContent
+                className={theme === "dark" ? "bg-gray-900 border-white/10" : "bg-white"}
+              >
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2 text-destructive">
+                    <AlertTriangle className="h-5 w-5" />
+                    {t("dashboard.settings.advanced.danger.deleteAccountDialog.title")}
+                  </DialogTitle>
+                  <DialogDescription>
+                    {t("dashboard.settings.advanced.danger.deleteAccountDialog.description")}
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div
+                    className={`p-4 rounded-lg ${theme === "dark" ? "bg-red-900/20 border border-red-500/30" : "bg-red-50 border border-red-200"}`}
+                  >
+                    <h4 className="font-medium text-red-700 dark:text-red-400 mb-2">
+                      {t("dashboard.settings.advanced.danger.deleteAccountDialog.warningTitle")}
+                    </h4>
+                    <ul className="text-sm text-red-600 dark:text-red-300 space-y-1 list-disc list-inside">
+                      <li>
+                        {t("dashboard.settings.advanced.danger.deleteAccountDialog.warning1")}
+                      </li>
+                      <li>
+                        {t("dashboard.settings.advanced.danger.deleteAccountDialog.warning2")}
+                      </li>
+                      <li>
+                        {t("dashboard.settings.advanced.danger.deleteAccountDialog.warning3")}
+                      </li>
+                      <li>
+                        {t("dashboard.settings.advanced.danger.deleteAccountDialog.warning4")}
+                      </li>
+                      <li>
+                        {t("dashboard.settings.advanced.danger.deleteAccountDialog.warning5")}
+                      </li>
+                    </ul>
+                  </div>
+
+                  {userData?.user?.name && (
+                    <div
+                      className={`p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-50"}`}
+                    >
+                      <p className={`text-sm ${textMuted}`}>
+                        {t("dashboard.settings.advanced.danger.deleteAccountDialog.accountLabel")}
+                      </p>
+                      <p className="font-medium">{userData.user.name}</p>
+                      <p className={`text-sm ${textMuted}`}>{userData.user.email}</p>
+                    </div>
+                  )}
+
+                  <div>
+                    <Label htmlFor="delete-account-confirm" className="text-sm">
+                      {t("dashboard.settings.advanced.danger.deleteAccountDialog.confirmLabel", {
+                        username: "",
+                      })}{" "}
+                      <span className="font-bold text-destructive">{userData?.user?.name}</span>
+                    </Label>
+                    <Input
+                      id="delete-account-confirm"
+                      value={deleteAccountConfirmText}
+                      onChange={(e) => setDeleteAccountConfirmText(e.target.value)}
+                      placeholder={t(
+                        "dashboard.settings.advanced.danger.deleteAccountDialog.confirmPlaceholder",
+                        { username: userData?.user?.name || "" }
+                      )}
+                      className="mt-2"
+                    />
+                  </div>
+                </div>
+                <DialogFooter className="gap-2 sm:gap-0">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setShowDeleteAccountDialog(false);
+                      setDeleteAccountConfirmText("");
+                    }}
+                  >
+                    {t("dashboard.settings.advanced.danger.deleteAccountDialog.cancel")}
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    onClick={handleDeleteAccount}
+                    disabled={
+                      isDeletingAccount || deleteAccountConfirmText !== userData?.user?.name
+                    }
+                  >
+                    {isDeletingAccount ? (
+                      <>
+                        <Spinner className="h-4 w-4 mr-2 animate-spin" />
+                        {t("dashboard.settings.advanced.danger.deleteAccountDialog.deleting")}
+                      </>
+                    ) : (
+                      t("dashboard.settings.advanced.danger.deleteAccountDialog.confirm")
+                    )}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </TabsContent>
         </Tabs>
       </div>

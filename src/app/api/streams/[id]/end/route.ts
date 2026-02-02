@@ -56,12 +56,12 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       ? Math.floor((endedAt.getTime() - stream.startedAt.getTime()) / 1000)
       : 0;
 
-    // Calculate 6-month deletion date
-    const sixMonthsFromNow = new Date();
-    sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
+    // Calculate 30-day deletion date for recording retention
+    const thirtyDaysFromNow = new Date();
+    thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
 
     // Calculate warning date (7 days before deletion)
-    const warningDate = new Date(sixMonthsFromNow);
+    const warningDate = new Date(thirtyDaysFromNow);
     warningDate.setDate(warningDate.getDate() - 7);
 
     // Update stream status
@@ -73,7 +73,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         actualDuration,
         // Set retention dates if recording is enabled
         ...(stream.recordStream && {
-          recordingDeleteAt: sixMonthsFromNow,
+          recordingDeleteAt: thirtyDaysFromNow,
           recordingDeleteWarningAt: warningDate,
         }),
       },

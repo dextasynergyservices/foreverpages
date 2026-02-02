@@ -5,8 +5,19 @@ import { precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from "workbox-strategies";
 import { ExpirationPlugin } from "workbox-expiration";
+import { CacheableResponsePlugin } from "workbox-cacheable-response";
 
 declare const self: ServiceWorkerGlobalScope;
+
+// Cache names
+const CACHE_NAMES = {
+  static: "static-assets-v1",
+  api: "api-responses-v1",
+  dynamic: "dynamic-content-v1",
+  images: "images-v1",
+  memorials: "memorial-pages-v1",
+  fonts: "fonts-v1",
+};
 
 // Claim all clients immediately
 clientsClaim();
@@ -16,8 +27,11 @@ precacheAndRoute(self.__WB_MANIFEST || []);
 
 // Cache strategies for different types of requests
 const cacheFirstStrategy = new CacheFirst({
-  cacheName: "static-assets-v1",
+  cacheName: CACHE_NAMES.static,
   plugins: [
+    new CacheableResponsePlugin({
+      statuses: [0, 200],
+    }),
     new ExpirationPlugin({
       maxEntries: 100,
       maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
@@ -26,8 +40,12 @@ const cacheFirstStrategy = new CacheFirst({
 });
 
 const networkFirstStrategy = new NetworkFirst({
-  cacheName: "api-responses-v1",
+  cacheName: CACHE_NAMES.api,
+  networkTimeoutSeconds: 10,
   plugins: [
+    new CacheableResponsePlugin({
+      statuses: [0, 200],
+    }),
     new ExpirationPlugin({
       maxEntries: 50,
       maxAgeSeconds: 60 * 5, // 5 minutes
@@ -36,8 +54,11 @@ const networkFirstStrategy = new NetworkFirst({
 });
 
 const staleWhileRevalidateStrategy = new StaleWhileRevalidate({
-  cacheName: "dynamic-content-v1",
+  cacheName: CACHE_NAMES.dynamic,
   plugins: [
+    new CacheableResponsePlugin({
+      statuses: [0, 200],
+    }),
     new ExpirationPlugin({
       maxEntries: 100,
       maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
@@ -45,16 +66,97 @@ const staleWhileRevalidateStrategy = new StaleWhileRevalidate({
   ],
 });
 
+// Memorial pages - Network first with longer cache for offline access
+const memorialPageStrategy = new NetworkFirst({
+  cacheName: CACHE_NAMES.memorials,
+  networkTimeoutSeconds: 5,
+  plugins: [
+    new CacheableResponsePlugin({
+      statuses: [0, 200],
+    }),
+    new ExpirationPlugin({
+      maxEntries: 50, // Cache up to 50 memorial pages
+      maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+    }),
+  ],
+});
+
+// Image caching strategy with longer expiration
+const imageCacheStrategy = new CacheFirst({
+  cacheName: CACHE_NAMES.images,
+  plugins: [
+    new CacheableResponsePlugin({
+      statuses: [0, 200],
+    }),
+    new ExpirationPlugin({
+      maxEntries: 200,
+      maxAgeSeconds: 60 * 60 * 24 * 60, // 60 days
+    }),
+  ],
+});
+
+// Font caching strategy
+const fontCacheStrategy = new CacheFirst({
+  cacheName: CACHE_NAMES.fonts,
+  plugins: [
+    new CacheableResponsePlugin({
+      statuses: [0, 200],
+    }),
+    new ExpirationPlugin({
+      maxEntries: 30,
+      maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+    }),
+  ],
+});
+
 // Register routes with different strategies
+
+// Static assets (JS, CSS)
 registerRoute(
   ({ request }) => request.destination === "script" || request.destination === "style",
   cacheFirstStrategy
 );
 
-registerRoute(({ request }) => request.destination === "image", cacheFirstStrategy);
+// Fonts
+registerRoute(({ request }) => request.destination === "font", fontCacheStrategy);
 
+// Images (including memorial photos)
+registerRoute(
+  ({ request, url }) =>
+    request.destination === "image" ||
+    url.pathname.includes("/uploads/") ||
+    url.pathname.includes("/media/"),
+  imageCacheStrategy
+);
+
+// Memorial pages - special handling for offline access
+registerRoute(({ url }) => url.pathname.startsWith("/memorial/"), memorialPageStrategy);
+
+// Memorial API endpoints - cache for offline viewing
+registerRoute(
+  ({ url }) =>
+    url.pathname.startsWith("/api/memorial/") &&
+    !url.pathname.includes("/tribute") &&
+    !url.pathname.includes("/rsvp"),
+  new NetworkFirst({
+    cacheName: CACHE_NAMES.memorials,
+    networkTimeoutSeconds: 5,
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
+      new ExpirationPlugin({
+        maxEntries: 100,
+        maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
+      }),
+    ],
+  })
+);
+
+// General API endpoints
 registerRoute(({ url }) => url.pathname.startsWith("/api/"), networkFirstStrategy);
 
+// Other documents
 registerRoute(({ request }) => request.destination === "document", staleWhileRevalidateStrategy);
 
 // Background sync for offline actions
@@ -107,30 +209,87 @@ async function handleBackgroundSync(): Promise<void> {
 self.addEventListener("push", (event: PushEvent) => {
   if (!event.data) return;
 
-  const data = event.data.json();
+  try {
+    const data = event.data.json();
 
-  const options: NotificationOptions = {
-    body: data.body || "You have a new notification",
-    icon: data.icon || "/favicon.ico",
-    badge: data.badge || "/favicon.ico",
-    data: data.url || "/",
-    requireInteraction: true,
-    silent: false,
-  };
+    // Define notification actions based on type
+    type NotificationAction = { action: string; title: string; icon?: string };
+    let actions: NotificationAction[] = [];
 
-  event.waitUntil(self.registration.showNotification(data.title || "ForeverPages", options));
+    switch (data.type) {
+      case "tribute":
+        actions = [
+          { action: "view", title: "View Tribute" },
+          { action: "dismiss", title: "Dismiss" },
+        ];
+        break;
+      case "livestream":
+        actions = [
+          { action: "join", title: "Join Now" },
+          { action: "remind", title: "Remind Me" },
+        ];
+        break;
+      case "anniversary":
+        actions = [
+          { action: "visit", title: "Visit Memorial" },
+          { action: "dismiss", title: "Dismiss" },
+        ];
+        break;
+      default:
+        actions = [
+          { action: "view", title: "View" },
+          { action: "dismiss", title: "Dismiss" },
+        ];
+    }
+
+    const options: NotificationOptions = {
+      body: data.body || "You have a new notification",
+      icon: data.icon || "/icons/icon-192x192.png",
+      badge: data.badge || "/icons/badge-72x72.png",
+      image: data.image,
+      data: {
+        url: data.url || "/",
+        type: data.type,
+        memorialSlug: data.memorialSlug,
+      },
+      tag: data.tag || `notification-${Date.now()}`,
+      renotify: data.renotify || false,
+      requireInteraction: data.requireInteraction !== false,
+      silent: data.silent || false,
+      actions: actions,
+      vibrate: [200, 100, 200],
+      timestamp: data.timestamp || Date.now(),
+    };
+
+    event.waitUntil(self.registration.showNotification(data.title || "ForeverPages", options));
+  } catch (error) {
+    console.error("Error handling push event:", error);
+  }
 });
 
 // Handle notification clicks
 self.addEventListener("notificationclick", (event: NotificationEvent) => {
   event.notification.close();
 
-  if (event.action === "dismiss") {
+  const data = event.notification.data || {};
+  const action = event.action;
+
+  // Handle dismiss action
+  if (action === "dismiss") {
     return;
   }
 
-  // Default action or "view" action
-  const urlToOpen = event.notification.data || "/";
+  // Determine URL based on action and notification type
+  let urlToOpen = data.url || "/";
+
+  if (action === "join" && data.type === "livestream" && data.memorialSlug) {
+    urlToOpen = `/memorial/${data.memorialSlug}/livestream`;
+  } else if (action === "visit" || action === "view") {
+    urlToOpen = data.url || (data.memorialSlug ? `/memorial/${data.memorialSlug}` : "/");
+  } else if (action === "remind") {
+    // For remind action, we could add to a local reminder, for now just open the page
+    urlToOpen = data.url || "/";
+  }
 
   event.waitUntil(
     self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clients) => {
@@ -155,7 +314,58 @@ self.addEventListener("message", (event: ExtendableMessageEvent) => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
   }
+
+  // Handle cache memorial request from client
+  if (event.data && event.data.type === "CACHE_MEMORIAL") {
+    const { url } = event.data;
+    if (url) {
+      cacheMemorialPage(url);
+    }
+  }
+
+  // Handle clear memorial cache request
+  if (event.data && event.data.type === "CLEAR_MEMORIAL_CACHE") {
+    clearMemorialCache();
+  }
 });
+
+// Cache a memorial page for offline access
+async function cacheMemorialPage(url: string): Promise<void> {
+  try {
+    const cache = await caches.open(CACHE_NAMES.memorials);
+    const response = await fetch(url);
+    if (response.ok) {
+      await cache.put(url, response);
+      // Notify the client
+      const clients = await self.clients.matchAll();
+      clients.forEach((client) => {
+        client.postMessage({
+          type: "MEMORIAL_CACHED",
+          url,
+          success: true,
+        });
+      });
+    }
+  } catch (error) {
+    console.error("Failed to cache memorial page:", error);
+  }
+}
+
+// Clear memorial cache
+async function clearMemorialCache(): Promise<void> {
+  try {
+    await caches.delete(CACHE_NAMES.memorials);
+    const clients = await self.clients.matchAll();
+    clients.forEach((client) => {
+      client.postMessage({
+        type: "MEMORIAL_CACHE_CLEARED",
+        success: true,
+      });
+    });
+  } catch (error) {
+    console.error("Failed to clear memorial cache:", error);
+  }
+}
 
 // Install event
 self.addEventListener("install", () => {

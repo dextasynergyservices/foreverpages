@@ -22,13 +22,12 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "20");
 
     // Get memorials where user is a collaborator (accepted invitations only)
-    // Note: Collaborator invitations have invitedUserId set and role for memorial management
+    // Check both invitedUserId and email since invitations are sent by email
     const collaboratorInvitations = await prisma.invitation.findMany({
       where: {
-        invitedUserId: session.user.id,
         status: "ACCEPTED",
-        expiresAt: { gte: new Date() }, // Not expired yet
         role: { in: ["ADMIN", "EDITOR", "CONTRIBUTOR", "VIEWER"] }, // All collaborator roles
+        OR: [{ invitedUserId: session.user.id }, { email: session.user.email || "" }],
       },
       select: {
         memorialId: true,

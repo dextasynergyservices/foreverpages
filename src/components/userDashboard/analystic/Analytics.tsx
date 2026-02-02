@@ -90,7 +90,8 @@ const Analytics = () => {
     );
   }
 
-  const { stats, recentActivity, topPages } = analyticsData.data;
+  const { stats, recentActivity, topPages, dailyVisitorTrends, memorialSummary } =
+    analyticsData.data;
 
   return (
     <div
@@ -110,9 +111,14 @@ const Analytics = () => {
 
       <StatsGrid stats={stats} themeClasses={themeClasses} />
 
-      <ChartsSection topPages={topPages} t={safeT} />
+      <ChartsSection topPages={topPages} dailyVisitorTrends={dailyVisitorTrends} t={safeT} />
 
-      <ActivityAndSummary recentActivity={recentActivity} themeClasses={themeClasses} t={safeT} />
+      <ActivityAndSummary
+        recentActivity={recentActivity}
+        themeClasses={themeClasses}
+        t={safeT}
+        memorialSummary={memorialSummary}
+      />
     </div>
   );
 };

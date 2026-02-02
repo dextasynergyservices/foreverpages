@@ -15,7 +15,7 @@ interface AnalyticsHeaderProps {
 }
 
 export const AnalyticsHeader: React.FC<AnalyticsHeaderProps> = ({ theme, t }) => {
-  const textMuted = theme === "dark" ? "text-white/70" : "text-gray-600";
+  const textMuted = theme === "dark" ? "text-white/70" : "text-black/70";
 
   return (
     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8 p-4 md:p-8">

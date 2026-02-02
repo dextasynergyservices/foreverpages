@@ -65,15 +65,14 @@ export async function GET(request: Request) {
     }
 
     // Check if user is a collaborator (has accepted invitations but no personal subscription)
-    // Note: Collaborator invitations have invitedUserId set and rsvpToken is null
+    // Check both invitedUserId and email since invitations are sent by email
     const collaboratorInvitations = await prisma.invitation.findMany({
       where: {
-        invitedUserId: user.id,
         status: "ACCEPTED",
-        expiresAt: { gte: new Date() }, // Not expired yet
         role: {
           in: ["ADMIN", "EDITOR", "CONTRIBUTOR"],
         },
+        OR: [{ invitedUserId: user.id }, { email: user.email || "" }],
       },
       include: {
         memorial: {

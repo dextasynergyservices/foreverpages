@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { StreamStatus, StreamQuality, UserTemplate, Template, Memorial } from "@/generated/prisma";
 import MemorialHero from "@/components/memorial/MemorialHero";
+import LivestreamWrapper from "@/components/memorial/LivestreamWrapper";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { TemplateRenderer } from "@/components/templates/base/TemplateRenderer";
@@ -69,10 +70,19 @@ export default function MemorialPageClient({
 
   const memorialName = `${memorial.firstName} ${memorial.lastName}`;
 
-  // If memorial has a template, use the template system
+  // Prepare memorial data for livestream wrapper
+  const memorialForLivestream = {
+    id: memorial.id,
+    slug: memorial.slug,
+    firstName: memorial.firstName,
+    lastName: memorial.lastName,
+    middleName: memorial.middleName,
+  };
+
+  // If memorial has a template, use the template system wrapped with livestream support
   if (memorial.userTemplate) {
     return (
-      <>
+      <LivestreamWrapper memorial={memorialForLivestream} activeStream={activeStream}>
         {showExpiryBanner && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
             <ExpiredMemorialBanner
@@ -83,7 +93,7 @@ export default function MemorialPageClient({
           </div>
         )}
         <TemplateRenderer userTemplate={memorial.userTemplate} memorial={memorial} />
-      </>
+      </LivestreamWrapper>
     );
   }
 
@@ -104,7 +114,7 @@ export default function MemorialPageClient({
           </div>
         )}
 
-        {/* Dynamic Hero Section */}
+        {/* Dynamic Hero Section - already handles livestream internally */}
         <MemorialHero
           memorial={{
             ...memorial,

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
@@ -124,8 +125,32 @@ export default async function MemorialPage({ params }: MemorialPageProps) {
   // Get the active stream (if any)
   const activeStream = memorial.streams[0] || null;
 
-  // Increment view count (async, don't wait) - only for accessible memorials
+  // Track page view and increment view count (async, don't wait) - only for accessible memorials
   if (expiryCheck.reason === "active" || expiryCheck.reason === "grace_period") {
+    // Get visitor info from headers
+    const headersList = await headers();
+    const ipAddress =
+      headersList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      headersList.get("x-real-ip") ||
+      "unknown";
+    const userAgent = headersList.get("user-agent") || undefined;
+    const referrer = headersList.get("referer") || undefined;
+
+    // Create PageView record for analytics
+    prisma.pageView
+      .create({
+        data: {
+          memorialId: memorial.id,
+          ipAddress,
+          userAgent,
+          referrer,
+        },
+      })
+      .catch((error) => {
+        console.error("Failed to create page view:", error);
+      });
+
+    // Also increment the legacy viewCount field
     prisma.memorial
       .update({
         where: { id: memorial.id },

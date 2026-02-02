@@ -58,6 +58,14 @@ export async function POST(req: NextRequest, context: { params: { id: string } }
         return NextResponse.json({ error: "Recording URL required" }, { status: 400 });
       }
 
+      // Calculate recording deletion dates (30 days retention for livestreams)
+      const now = new Date();
+      const deleteAt = new Date(now);
+      deleteAt.setDate(deleteAt.getDate() + 30); // 30 days from now
+
+      const deleteWarningAt = new Date(deleteAt);
+      deleteWarningAt.setDate(deleteWarningAt.getDate() - 7); // 7 days before deletion
+
       // Update stream with recording info
       const updatedStream = await prisma.memorialStream.update({
         where: { id: streamId },
@@ -66,6 +74,8 @@ export async function POST(req: NextRequest, context: { params: { id: string } }
           recordingDuration: duration || null,
           recordingSize: size || null,
           recordingStatus: RecordingStatus.READY,
+          recordingDeleteAt: deleteAt,
+          recordingDeleteWarningAt: deleteWarningAt,
         },
       });
 
@@ -98,6 +108,14 @@ export async function POST(req: NextRequest, context: { params: { id: string } }
         filename: `stream-${streamId}`,
       });
 
+      // Calculate recording deletion dates (30 days retention for livestreams)
+      const now = new Date();
+      const deleteAt = new Date(now);
+      deleteAt.setDate(deleteAt.getDate() + 30); // 30 days from now
+
+      const deleteWarningAt = new Date(deleteAt);
+      deleteWarningAt.setDate(deleteWarningAt.getDate() - 7); // 7 days before deletion
+
       // Update stream with recording info
       const updatedStream = await prisma.memorialStream.update({
         where: { id: streamId },
@@ -106,6 +124,8 @@ export async function POST(req: NextRequest, context: { params: { id: string } }
           recordingDuration: uploadResult.duration || null,
           recordingSize: uploadResult.bytes || null,
           recordingStatus: RecordingStatus.READY,
+          recordingDeleteAt: deleteAt,
+          recordingDeleteWarningAt: deleteWarningAt,
         },
       });
 

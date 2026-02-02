@@ -1797,7 +1797,69 @@
           "archive": "Debe Ncheta",
           "archiveDescription": "Mee ka ncheta dị na nzuzo ma kwụsị ịnakwere nkwanye ùgwù ọhụrụ",
           "delete": "Hichapụ Ncheta",
-          "deleteDescription": "Hichapụ ncheta a kpamkpam na data niile metụtara ya. Enweghị ike ịgbanwe nke a."
+          "deleteDescription": "Hichapụ ncheta a kpamkpam na data niile metụtara ya. Enweghị ike ịgbanwe nke a.",
+          "deleteAccount": "Hichapụ Akaụntụ",
+          "deleteAccountDescription": "Hichapụ akaụntụ gị kpamkpam na ncheta niile metụtara ya. Enweghị ike ịgbanwe nke a.",
+          "archiveDialog": {
+            "title": "Debe Ncheta",
+            "description": "Ị na-ekwe nkwa na ị chọrọ idebe ncheta a? Omume a ga-ezo ncheta n'anya ọha na eze ma kwụsị mmekọrịta ọhụrụ niile.",
+            "warningTitle": "Ịdọ aka ná ntị: Omume a ga-enwe nsonaazụ ndị a:",
+            "warning1": "Ncheta agaghị adị maka ọha na eze ọzọ",
+            "warning2": "Enweghị ike itinye nkwanye ùgwù ma ọ bụ nkwurịta ọhụrụ",
+            "warning3": "Naanị gị nwere ike ịhụ ncheta edebere",
+            "memorialLabel": "Ncheta idebe:",
+            "confirmLabel": "Pịnye \"DEBE\" iji kwado:",
+            "confirmWord": "DEBE",
+            "confirmPlaceholder": "Pịnye DEBE iji kwado",
+            "cancel": "Kagbuo",
+            "confirm": "Debe Ncheta",
+            "archiving": "Na-edebe...",
+            "success": "Edebere ncheta nke ọma",
+            "error": "Enweghị ike idebe ncheta",
+            "noMemorial": "Achọtaghị ncheta idebe",
+            "confirmError": "Biko pịnye DEBE iji kwado"
+          },
+          "deleteDialog": {
+            "title": "Hichapụ Ncheta",
+            "description": "Omume a bụ nke na-adịgide adịgide ma enweghị ike ịlaghachi azụ. Ị ji n'aka kpamkpam na ị chọrọ ihichapụ ncheta a?",
+            "warningTitle": "Ịdọ aka ná ntị: Omume a ga-ehichapụ kpamkpam:",
+            "warning1": "Ozi ncheta niile",
+            "warning2": "Foto na vidiyo niile etinyere",
+            "warning3": "Nkwanye ùgwù na nkwurịta niile",
+            "warning4": "Ozi ndị ọrụ niile",
+            "warning5": "ENWEGHỊ IKE ỊGBANWE OMUME A",
+            "memorialLabel": "Ncheta ihichapụ:",
+            "slugLabel": "Pịnye slug ncheta iji kwado:",
+            "confirmLabel": "Pịnye slug ncheta dịka e gosiri n'elu:",
+            "confirmPlaceholder": "Pịnye slug ncheta iji kwado",
+            "cancel": "Kagbuo",
+            "confirm": "Hichapụ Ncheta Kpamkpam",
+            "deleting": "Na-ehichapụ...",
+            "success": "Ehichapụrụ ncheta nke ọma",
+            "error": "Enweghị ike ihichapụ ncheta",
+            "noMemorial": "Achọtaghị ncheta ihichapụ",
+            "confirmError": "Slug ncheta adabaghị"
+          },
+          "deleteAccountDialog": {
+            "title": "Hichapụ Akaụntụ",
+            "description": "Omume a bụ nke na-adịgide adịgide ma enweghị ike ịlaghachi azụ. Ị ji n'aka kpamkpam na ị chọrọ ihichapụ akaụntụ gị?",
+            "warningTitle": "Ịdọ aka ná ntị: Omume a ga-ehichapụ kpamkpam:",
+            "warning1": "Profaịlụ onye ọrụ gị na ozi akaụntụ",
+            "warning2": "Ncheta niile ị kere",
+            "warning3": "Nkwanye ùgwù niile ị bipụtara",
+            "warning4": "Ohere niile ịbanye na ncheta ndị ọrụ",
+            "warning5": "ENWEGHỊ IKE ỊGBANWE OMUME A",
+            "accountLabel": "Email akaụntụ:",
+            "confirmLabel": "Pịnye \"HICHAPỤ AKAỤNTỤ M\" iji kwado:",
+            "confirmPlaceholder": "Pịnye HICHAPỤ AKAỤNTỤ M iji kwado",
+            "cancel": "Kagbuo",
+            "confirm": "Hichapụ Akaụntụ M Kpamkpam",
+            "deleting": "Na-ehichapụ akaụntụ...",
+            "success": "Ehichapụrụ akaụntụ nke ọma",
+            "error": "Enweghị ike ihichapụ akaụntụ",
+            "noAccount": "Achọtaghị ozi akaụntụ",
+            "confirmError": "Biko pịnye HICHAPỤ AKAỤNTỤ M iji kwado"
+          }
         },
         "account": {
           "title": "Omume Akaụntụ",
@@ -2251,7 +2313,8 @@
     },
     "banner": {
       "offlineMessage": "Ị nọ ugbu a n'ịntanetị.",
-      "pendingActions": "Ị nwere {{count}} omume na-echere {{count !== 1 ? 's' : ''}} nke ga-emekọrịta mgbe ị laghachiri n'ịntanetị."
+      "pendingActions": "Ị nwere {{count}} omume na-echere {{count !== 1 ? 's' : ''}} nke ga-emekọrịta mgbe ị laghachiri n'ịntanetị.",
+      "limitedFeatures": "Ị nọ offline. Ụfọdụ atụmatụ nwere ike ịnwe oke."
     },
     "lastSync": "Mmekọrịta ikpeazụ: {{synced}} emekọrịtala, {{failed}} dara ada",
     "loading": {
@@ -2260,6 +2323,114 @@
       "actionsQueued": "{{count}} omume {{count !== 1 ? 's' : ''}} nọ n'ahịrị",
       "willSyncWhenOnline": "ga-emekọrịta mgbe ị nọ n'ịntanetị",
       "savedLocally": "A ga-echekwa ya na mpaghara ma mekọrịta ya mgbe ị nọ n'ịntanetị"
+    },
+    "saveForOffline": {
+      "button": "Chekwaa maka Offline",
+      "saving": "Na-echekwa...",
+      "saved": "Echekwara Offline"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "Wụnye ForeverPages",
+      "description": "Wụnye ngwa anyị maka ahụmịhe kacha mma yana nnweta offline na ozi push.",
+      "button": "Wụnye Ngwa",
+      "dismiss": "Ọ Bụghị Ugbu a",
+      "later": "Eleghị anya Emechaa",
+      "benefits": {
+        "title": "Gịnị mere ji wụnye?",
+        "offline": "Nweta ncheta offline",
+        "notifications": "Nata ozi push",
+        "faster": "Oge mbufe dị ngwa",
+        "homeScreen": "Nnweta ngwa ngwa site na ihuenyo ụlọ"
+      },
+      "ios": {
+        "title": "Wụnye na iOS",
+        "step1": "Pịa bọtịnụ Kekọrịta",
+        "step2": "Pịgharịa gaa n'okpuru wee pịa \"Tinye na Ihuenyo Ụlọ\"",
+        "step3": "Pịa \"Tinye\" iji gosipụta",
+        "shareIcon": "Akara kekọrịta na Safari"
+      },
+      "android": {
+        "title": "Wụnye na Android",
+        "step1": "Pịa bọtịnụ menu (⋮)",
+        "step2": "Họrọ \"Tinye na Ihuenyo Ụlọ\" ma ọ bụ \"Wụnye Ngwa\"",
+        "step3": "Pịa \"Tinye\" ma ọ bụ \"Wụnye\" iji gosipụta"
+      },
+      "installed": "E Wụnyere Ngwa",
+      "alreadyInstalled": "ForeverPages abụrụla wụnye n'ngwaọrụ gị."
+    }
+  },
+  "pushNotifications": {
+    "title": "Ozi Push",
+    "description": "Jikwaa mmasị ozi push gị",
+    "enable": "Mee Ozi Ka Ọ Rụọ Ọrụ",
+    "disable": "Gbanyụọ Ozi",
+    "enabled": "Ọrụ Ozi Arụọla",
+    "disabled": "Agbanyụọla Ozi",
+    "permissionDenied": "Ajụrụ Ikike",
+    "permissionDeniedDescription": "Biko mee ozi ka ọ rụọ ọrụ na ntọala ihe nchọgharị gị iji nata mmelite.",
+    "notSupported": "Anaghị Akwado",
+    "notSupportedDescription": "Anaghị akwado ozi push na ihe nchọgharị gị.",
+    "preferences": {
+      "title": "Mmasị Ozi",
+      "description": "Họrọ ozi ndị ịchọrọ ịnata",
+      "tributes": {
+        "label": "Nsọpụrụ Ọhụrụ",
+        "description": "Nata ọkwa mgbe mmadụ hapụrụ nsọpụrụ na ncheta gị"
+      },
+      "livestream": {
+        "label": "Ihe omume ndị dị ndụ",
+        "description": "Nata ọkwa banyere ọrụ ncheta ndị na-abịa na ndị dị ndụ"
+      },
+      "anniversary": {
+        "label": "Ncheta Ekeresimesi",
+        "description": "Nata ncheta maka ekeresimesi ọmụmụ na ọnwụ"
+      },
+      "system": {
+        "label": "Mmelite Sistemu",
+        "description": "Mmelite dị mkpa banyere ForeverPages"
+      }
+    },
+    "testNotification": "Zipu Ozi Nnwale",
+    "testSent": "Ezigara ozi nnwale",
+    "saving": "Na-echekwa mmasị...",
+    "saved": "Echekwara mmasị",
+    "error": {
+      "subscribeFailed": "Enweghị ike ime ozi ka ọ rụọ ọrụ",
+      "unsubscribeFailed": "Enweghị ike ịgbanyụ ozi",
+      "updateFailed": "Enweghị ike melite mmasị"
+    }
+  },
+  "qrCode": {
+    "title": "Koodu QR",
+    "description": "Kekọrịta koodu QR a ka ndị ọzọ nwee ike ịnweta ncheta ahụ n'ụzọ dị mfe",
+    "generating": "Na-emepụta koodu QR...",
+    "download": "Budata Koodu QR",
+    "downloadPng": "Budata PNG",
+    "downloadSvg": "Budata SVG",
+    "copyLink": "Detuo Njikọ",
+    "linkCopied": "Edere njikọ na clipboard",
+    "shareQr": "Kekọrịta Koodu QR",
+    "customize": {
+      "title": "Hazie Koodu QR",
+      "tab": "Hazie",
+      "presets": "Agba Ndị A Họpụtara",
+      "custom": "Agba Nke Gị",
+      "size": "Nha",
+      "margin": "Oke",
+      "foreground": "Agba Ihu",
+      "background": "Agba Azụ",
+      "preview": "Nleghachi anya"
+    },
+    "print": {
+      "title": "Ntuziaka Ibi Akwụkwọ",
+      "description": "Bipụta koodu QR a maka mmemme olili ozu, kaadị ncheta, ma ọ bụ ngosi n'ọrụ ahụ.",
+      "forMemorial": "Koodu QR maka Ncheta {{name}}"
+    },
+    "error": {
+      "generateFailed": "Enweghị ike ịmepụta koodu QR",
+      "downloadFailed": "Enweghị ike ibudata koodu QR"
     }
   },
   "twoFactor": {
@@ -2918,10 +3089,13 @@
         "viewMemorial": "Lelee Ncheta",
         "created": "Emepụtara",
         "status": "Ọnọdụ",
+        "statusLive": "Na-arụ ọrụ",
+        "statusDraft": "Ndepụta",
         "photos": "Foto",
         "approvedTributes": "Ụkwanye Ùgwù Akwadoro",
         "serviceRsvps": "Nkwenye Ọrụ",
-        "memorialPage": "Ibe Ncheta"
+        "memorialPage": "Ibe Ncheta",
+        "noMemorial": "Achọtaghị ncheta ọ bụla"
       },
       "collaboratorMemorials": {
         "title": "Ncheta Ị Na-achịkwa",
@@ -3365,6 +3539,60 @@
       "performance": "Arụmọrụ",
       "security": "Nchekwa",
       "bestPractices": "Ụzọ Kacha Mma"
+    }
+  },
+  "familyTree": {
+    "title": "Ezinụlọ",
+    "born": "Amụrụ",
+    "passed": "Nwụrụ",
+    "deceased": "Onye Nwụrụ",
+    "loading": "Na-ebudata ndị ezinụlọ...",
+    "empty": "Etinyebeghị ndị ezinụlọ."
+  },
+  "relationships": {
+    "spouse": "Di/Nwunye",
+    "partner": "Onye Otu",
+    "father": "Nna",
+    "mother": "Nne",
+    "son": "Nwa Nwoke",
+    "daughter": "Nwa Nwanyị",
+    "brother": "Nwanne Nwoke",
+    "sister": "Nwanne Nwanyị",
+    "grandfather": "Nna Nna",
+    "grandmother": "Nne Nne",
+    "grandson": "Nwa Nwa Nwoke",
+    "granddaughter": "Nwa Nwa Nwanyị",
+    "uncle": "Nwanne Nna/Nne Nwoke",
+    "aunt": "Nwanne Nna/Nne Nwanyị",
+    "nephew": "Nwa Nwanne Nwoke",
+    "niece": "Nwa Nwanne Nwanyị",
+    "cousin": "Nwa Nwanne Nna/Nne",
+    "other": "Nke Ọzọ"
+  },
+  "condolences": {
+    "title": "Okwu Obi Ụtọ",
+    "placeholder": "Kọrọ echiche na ncheta gị...",
+    "postAnonymously": "Zipu na-amaghị onye",
+    "submit": "Zipu Okwu Obi Ụtọ",
+    "signInToPost": "Banye iji hapụ okwu obi ụtọ",
+    "empty": "Enweghị okwu obi ụtọ. Bụrụ onye mbụ ikwu echiche gị.",
+    "count": "{count} okwu obi ụtọ",
+    "loadMore": "Bulite Karịa",
+    "anonymous": "Onye Amaghị",
+    "reply": "nzaghachi",
+    "replies": "nzaghachi",
+    "delete": "Hichapụ",
+    "confirmDelete": "Ị ji n'aka na ị chọrọ ihichapụ okwu obi ụtọ a?",
+    "success": {
+      "posted": "Ezitere okwu obi ụtọ gị",
+      "deleted": "Ehichapụrụ okwu obi ụtọ"
+    },
+    "errors": {
+      "emptyMessage": "Biko tinye ozi",
+      "loginRequired": "Biko banye iji hapụ okwu obi ụtọ",
+      "postFailed": "Enweghị ike izipu okwu obi ụtọ. Biko nwaa ọzọ.",
+      "deleteFailed": "Enweghị ike ihichapụ okwu obi ụtọ",
+      "loadFailed": "Enweghị ike ibudata okwu obi ụtọ"
     }
   }
 }

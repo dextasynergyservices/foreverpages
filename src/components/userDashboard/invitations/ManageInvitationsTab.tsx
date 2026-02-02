@@ -20,7 +20,11 @@ import {
 import { MdDownload, MdPictureAsPdf, MdTableChart } from "react-icons/md";
 import { InvitationsTable } from "./InvitationsTable";
 import { Invitation } from "./Invitations";
-import { useResendInvitation, useDeleteInvitation } from "@/hooks/useInvitations";
+import {
+  useResendInvitation,
+  useDeleteInvitation,
+  useBulkResendInvitations,
+} from "@/hooks/useInvitations";
 import { NoInvitationsEmpty, NoSearchResultsEmpty } from "./EmptyStates";
 import { SearchAndFilter } from "./SearchAndFilter";
 
@@ -63,6 +67,7 @@ export const ManageInvitationsTab: React.FC<ManageInvitationsTabProps> = ({
 
   const resendMutation = useResendInvitation();
   const deleteMutation = useDeleteInvitation();
+  const bulkResendMutation = useBulkResendInvitations();
 
   // Undo functionality with 30-second TTL
   const { markAsDeleted, undoDelete } = useUndoableDelete<Invitation>(30000);
@@ -179,14 +184,24 @@ export const ManageInvitationsTab: React.FC<ManageInvitationsTabProps> = ({
 
   // Bulk actions handlers (called from InvitationsTable)
   const handleBulkResend = (selectedIds: string[]) => {
-    // TODO: Implement bulk resend mutation
-    console.log("Bulk resending:", selectedIds);
-    const count = selectedIds.length;
-    toast.success(
-      t("dashboard.invitations.success.bulkSent", {
-        count,
-        plural: count > 1 ? "s" : "",
-      })
+    if (selectedIds.length === 0) {
+      toast.error(t("dashboard.invitations.errors.noSelection", {}, "No invitations selected"));
+      return;
+    }
+
+    // Use the bulk resend mutation
+    bulkResendMutation.mutate(
+      {
+        invitationIds: selectedIds,
+        extendExpiration: true,
+        expirationDays: 14,
+      },
+      {
+        onSuccess: (_data) => {
+          // Clear selection in the table if successful
+          // The table component will handle this via its own state
+        },
+      }
     );
   };
 

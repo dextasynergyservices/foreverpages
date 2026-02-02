@@ -30,16 +30,22 @@ export async function GET() {
       },
     });
 
+    // Get user's email for invitation lookup
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { email: true },
+    });
+
     // Fetch memorials where user is a collaborator
-    // Note: Collaborator invitations have invitedUserId set and rsvpToken is null
+    // Note: Check both invitedUserId and email since invitations are sent by email
+    // expiresAt check removed for ACCEPTED - once accepted, access is permanent
     const collaboratorInvitations = await prisma.invitation.findMany({
       where: {
-        invitedUserId: session.user.id,
         status: "ACCEPTED",
-        expiresAt: { gte: new Date() }, // Not expired yet
         role: {
           in: ["ADMIN", "EDITOR", "CONTRIBUTOR"],
         },
+        OR: [{ invitedUserId: session.user.id }, { email: user?.email || "" }],
       },
       include: {
         memorial: {

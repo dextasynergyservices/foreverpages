@@ -1,6 +1,5 @@
-import { PrismaClient, MemorialRole } from "@/generated/prisma";
-
-const prisma = new PrismaClient();
+import { MemorialRole } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
 
 /**
  * Get the user's role for a specific memorial
@@ -21,13 +20,23 @@ export async function getUserMemorialRole(
       return "OWNER";
     }
 
-    // Check if user has an accepted invitation
+    // Get user's email for invitation lookup
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { email: true },
+    });
+
+    if (!user?.email) {
+      return null;
+    }
+
+    // Check if user has an accepted invitation (by invitedUserId OR email)
+    // Note: expiresAt check is removed for ACCEPTED invitations - once accepted, they're permanent
     const invitation = await prisma.invitation.findFirst({
       where: {
         memorialId,
-        invitedUserId: userId,
         status: "ACCEPTED",
-        expiresAt: { gte: new Date() },
+        OR: [{ invitedUserId: userId }, { email: user.email }],
       },
       select: { role: true },
     });
@@ -107,6 +116,12 @@ export function canPerformAction(role: MemorialRole, action: string): boolean {
  */
 export async function getUserAccessibleMemorials(userId: string) {
   try {
+    // Get user's email for invitation lookup
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { email: true },
+    });
+
     // Get owned memorials
     const ownedMemorials = await prisma.memorial.findMany({
       where: { ownerId: userId },
@@ -121,12 +136,12 @@ export async function getUserAccessibleMemorials(userId: string) {
       },
     });
 
-    // Get invited memorials
+    // Get invited memorials (by invitedUserId OR email)
+    // expiresAt check removed for ACCEPTED - once accepted, access is permanent
     const invitations = await prisma.invitation.findMany({
       where: {
-        invitedUserId: userId,
         status: "ACCEPTED",
-        expiresAt: { gte: new Date() },
+        OR: [{ invitedUserId: userId }, { email: user?.email || "" }],
       },
       include: {
         memorial: {
@@ -179,13 +194,19 @@ export async function needsSubscriptionForMemorial(
       return true;
     }
 
+    // Get user's email for invitation lookup
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { email: true },
+    });
+
     // If user is a collaborator, they don't need a subscription
+    // Check both invitedUserId and email since invitations are sent by email
     const invitation = await prisma.invitation.findFirst({
       where: {
         memorialId,
-        invitedUserId: userId,
         status: "ACCEPTED",
-        expiresAt: { gte: new Date() },
+        OR: [{ invitedUserId: userId }, { email: user?.email || "" }],
       },
     });
 
