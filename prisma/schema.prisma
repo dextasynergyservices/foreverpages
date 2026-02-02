@@ -96,6 +96,7 @@ model User {
   reactions        Reaction[]
   uploads          Upload[]
   notifications    Notification[]
+  pushSubscriptions PushSubscription[]
   sentInvitations  Invitation[]     @relation("InvitedBy")
   receivedInvites  Invitation[]     @relation("InvitedUser")
   subscriptions    Subscription[]
@@ -1473,6 +1474,38 @@ model Notification {
   @@index([createdAt])
 }
 
+// Push notification subscriptions for web push
+model PushSubscription {
+  id        String   @id @default(cuid())
+
+  // Web Push subscription data
+  endpoint  String   @unique
+  p256dh    String   // Public key for encryption
+  auth      String   // Auth secret for encryption
+
+  // Device info
+  userAgent String?
+  deviceType String? // "mobile", "desktop", "tablet"
+
+  // Notification preferences for this device
+  tributeNotifications     Boolean @default(true)
+  livestreamNotifications  Boolean @default(true)
+  anniversaryNotifications Boolean @default(true)
+  systemNotifications      Boolean @default(true)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lastUsedAt DateTime?
+
+  // Relations
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([endpoint])
+}
+
 enum NotificationType {
   NEW_TRIBUTE
   NEW_COMMENT
@@ -1773,7 +1806,7 @@ model MemorialStream {
   recordingDuration Int?      // In seconds
   recordingSize     Int?      // In bytes
   recordingStatus   RecordingStatus @default(NONE)
-  recordingDeleteAt DateTime? // 6 months from stream end
+  recordingDeleteAt DateTime? // 30 days from stream end
   recordingDeleteWarningAt DateTime? // 7 days before deletion
 
   // LiveKit specific (Phase 2)

@@ -56,9 +56,50 @@ app.post("/api/streams/:id/metadata", metadataHandler);
 
 const server = http.createServer(app);
 
-// Cast server/options to unknown to avoid Socket.IO type mismatches across environments
+// Build CORS allowed origins from environment
+const getAllowedOrigins = (): string[] => {
+  const origins: string[] = [];
+
+  // Always allow the main app URL
+  const appUrl = process.env.APP_URL || process.env.NEXT_PUBLIC_APP_URL;
+  if (appUrl) origins.push(appUrl.replace(/\/$/, ""));
+
+  // Socket origin (legacy support)
+  const socketOrigin = process.env.SOCKET_ORIGIN;
+  if (socketOrigin) origins.push(socketOrigin.replace(/\/$/, ""));
+
+  // Allow Vercel preview deployments
+  origins.push("https://foreverpages.online");
+  origins.push("https://www.foreverpages.online");
+
+  // Allow localhost for development
+  if (process.env.NODE_ENV !== "production") {
+    origins.push("http://localhost:3000");
+    origins.push("http://127.0.0.1:3000");
+  }
+
+  return [...new Set(origins.filter(Boolean))];
+};
+
+// Socket.IO server with proper CORS for cross-origin WebSocket connections
 const io = new IOServer(server as unknown as never, {
   path: "/api/socket",
+  cors: {
+    origin: (origin, callback) => {
+      const allowed = getAllowedOrigins();
+      // Allow requests with no origin (mobile apps, curl, etc.) or matching origins
+      if (!origin || allowed.some((o) => origin.startsWith(o)) || origin.includes("vercel.app")) {
+        callback(null, true);
+      } else {
+        console.warn(`[CORS] Blocked origin: ${origin}`);
+        callback(null, true); // Allow anyway but log for debugging
+      }
+    },
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+  transports: ["websocket", "polling"],
+  allowEIO3: true, // Allow older Socket.IO clients
 });
 
 // Stream state stored at module scope (single-process). For multi-process

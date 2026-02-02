@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { StreamStatus, StreamQuality } from "@/generated/prisma";
 import {
   Calendar,
@@ -13,6 +13,8 @@ import {
   BarChart3,
   Loader2,
   Download,
+  AlertCircle,
+  RefreshCw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -26,8 +28,10 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatDistanceToNow } from "date-fns";
+import toast from "react-hot-toast";
 import EditStreamDialog from "./EditStreamDialog";
 import DeleteStreamDialog from "./DeleteStreamDialog";
+import { StreamCardSkeleton } from "@/components/livestream/LivestreamSkeletons";
 import StreamAnalyticsDialog from "./StreamAnalyticsDialog";
 
 interface Stream {
@@ -64,21 +68,41 @@ interface StreamListProps {
 const StreamList: React.FC<StreamListProps> = ({ memorialId, refreshKey }) => {
   const [streams, setStreams] = useState<Stream[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<"all" | "upcoming" | "live" | "ended">("all");
   const [editStream, setEditStream] = useState<Stream | null>(null);
   const [deleteStream, setDeleteStream] = useState<Stream | null>(null);
   const [analyticsStream, setAnalyticsStream] = useState<Stream | null>(null);
   const [startingStreamId, setStartingStreamId] = useState<string | null>(null);
 
+  const fetchStreams = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const params = new URLSearchParams({ memorialId });
+
+      const response = await fetch(`/api/streams?${params}`);
+      if (!response.ok) {
+        throw new Error("Failed to load streams");
+      }
+      const data = await response.json();
+      setStreams(data.streams || []);
+    } catch (err) {
+      console.error("Failed to fetch streams:", err);
+      setError(err instanceof Error ? err.message : "Failed to load streams");
+      toast.error("Failed to load streams. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }, [memorialId]);
+
   useEffect(() => {
     fetchStreams();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [memorialId, refreshKey]);
+  }, [fetchStreams, refreshKey]);
 
   // Listen for cross-window events when a recording becomes available
   useEffect(() => {
     const handler = (e: Event) => {
-      // Expect CustomEvent with updated stream in detail
       const ce = e as CustomEvent;
       const updatedStream = ce.detail as Stream | undefined | null;
       if (!updatedStream) return;
@@ -98,24 +122,6 @@ const StreamList: React.FC<StreamListProps> = ({ memorialId, refreshKey }) => {
     };
   }, []);
 
-  const fetchStreams = async () => {
-    try {
-      setLoading(true);
-      const params = new URLSearchParams({ memorialId });
-      // Don't send status filter to API - we'll filter client-side for more flexibility
-
-      const response = await fetch(`/api/streams?${params}`);
-      if (response.ok) {
-        const data = await response.json();
-        setStreams(data.streams || []);
-      }
-    } catch (error) {
-      console.error("Failed to fetch streams:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleStartStream = async (streamId: string) => {
     try {
       setStartingStreamId(streamId);
@@ -129,11 +135,12 @@ const StreamList: React.FC<StreamListProps> = ({ memorialId, refreshKey }) => {
         throw new Error(error.error || "Failed to start stream");
       }
 
+      toast.success("Stream starting! Redirecting to broadcast...");
       // Navigate to broadcaster page
       window.location.href = `/stream/broadcast/${streamId}`;
-    } catch (error) {
-      console.error("Failed to start stream:", error);
-      alert(error instanceof Error ? error.message : "Failed to start stream");
+    } catch (err) {
+      console.error("Failed to start stream:", err);
+      toast.error(err instanceof Error ? err.message : "Failed to start stream");
       setStartingStreamId(null);
     }
   };
@@ -144,7 +151,7 @@ const StreamList: React.FC<StreamListProps> = ({ memorialId, refreshKey }) => {
   };
 
   const handleDownloadRecording = (recordingUrl: string, streamTitle: string) => {
-    // Create a temporary link and trigger download
+    toast.success("Download started!");
     const link = document.createElement("a");
     link.href = recordingUrl;
     link.download = `${streamTitle.replace(/[^a-z0-9]/gi, "_")}_recording.mp4`;
@@ -186,23 +193,24 @@ const StreamList: React.FC<StreamListProps> = ({ memorialId, refreshKey }) => {
   });
 
   if (loading) {
+    return <StreamCardSkeleton count={3} />;
+  }
+
+  if (error) {
     return (
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {[1, 2, 3].map((i) => (
-          <Card key={i} className="animate-pulse">
-            <CardHeader>
-              <div className="h-6 bg-gray-200 dark:bg-gray-800 rounded w-3/4" />
-              <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-1/2 mt-2" />
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded" />
-                <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-2/3" />
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <Card>
+        <CardContent className="py-8">
+          <div className="text-center">
+            <AlertCircle className="h-12 w-12 mx-auto mb-4 text-destructive opacity-70" />
+            <p className="text-destructive font-medium mb-2">Failed to load streams</p>
+            <p className="text-sm text-muted-foreground mb-4">{error}</p>
+            <Button variant="outline" onClick={fetchStreams}>
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Try Again
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     );
   }
 

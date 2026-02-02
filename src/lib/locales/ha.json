@@ -2069,7 +2069,69 @@
           "archive": "Ajiye Tunawa",
           "archiveDescription": "Sanya tunawa ta sirri da dakatar da karɓar sabuwar girmamawa",
           "delete": "Share Tunawa",
-          "deleteDescription": "Goge tunawa da duk bayanai masu alaƙa cikin duri. Wannan aiki ba za a iya komawa ba."
+          "deleteDescription": "Goge tunawa da duk bayanai masu alaƙa cikin duri. Wannan aiki ba za a iya komawa ba.",
+          "deleteAccount": "Share Asusu",
+          "deleteAccountDescription": "Share asusunka da dukan tunawar da ke da alaƙa da shi har abada. Ba za a iya sake wannan ba.",
+          "archiveDialog": {
+            "title": "Ajiye Tunawa",
+            "description": "Shin kana tabbatar da son ajiye wannan tunawa? Wannan zai ɓoye tunawa daga kallon jama'a kuma ya dakatar da dukan sabbin hulɗa.",
+            "warningTitle": "Gargaɗi: Wannan matakin zai haifar da abubuwa masu zuwa:",
+            "warning1": "Tunawa ba za ta sake samun dama ga jama'a ba",
+            "warning2": "Ba za a iya ƙara sabbin yabo ko ta'aziyya ba",
+            "warning3": "Kai kaɗai za ka iya ganin tunawar da aka ajiye",
+            "memorialLabel": "Tunawa don ajiyewa:",
+            "confirmLabel": "Rubuta \"AJIYE\" don tabbatarwa:",
+            "confirmWord": "AJIYE",
+            "confirmPlaceholder": "Rubuta AJIYE don tabbatarwa",
+            "cancel": "Soke",
+            "confirm": "Ajiye Tunawa",
+            "archiving": "Ana ajiyewa...",
+            "success": "An ajiye tunawa cikin nasara",
+            "error": "An kasa ajiye tunawa",
+            "noMemorial": "Ba a sami tunawa don ajiyewa ba",
+            "confirmError": "Da fatan a rubuta AJIYE don tabbatarwa"
+          },
+          "deleteDialog": {
+            "title": "Share Tunawa",
+            "description": "Wannan mataki na dindindin ne kuma ba za a iya mayar da shi ba. Shin kana tabbatar da cewa kana son share wannan tunawa?",
+            "warningTitle": "Gargaɗi: Wannan matakin zai share har abada:",
+            "warning1": "Dukan bayanan tunawa",
+            "warning2": "Dukan hotuna da bidiyo da aka ɗora",
+            "warning3": "Dukan yabo da ta'aziyya",
+            "warning4": "Dukan bayanan masu haɗin gwiwa",
+            "warning5": "BA ZA A IYA MAYAR DA WANNAN MATAKI BA",
+            "memorialLabel": "Tunawa don sharewa:",
+            "slugLabel": "Rubuta slug na tunawa don tabbatarwa:",
+            "confirmLabel": "Rubuta slug na tunawa kamar yadda aka nuna a sama:",
+            "confirmPlaceholder": "Rubuta slug na tunawa don tabbatarwa",
+            "cancel": "Soke",
+            "confirm": "Share Tunawa Har Abada",
+            "deleting": "Ana sharewa...",
+            "success": "An share tunawa cikin nasara",
+            "error": "An kasa share tunawa",
+            "noMemorial": "Ba a sami tunawa don sharewa ba",
+            "confirmError": "Slug na tunawa bai dace ba"
+          },
+          "deleteAccountDialog": {
+            "title": "Share Asusu",
+            "description": "Wannan mataki na dindindin ne kuma ba za a iya mayar da shi ba. Shin kana tabbatar da cewa kana son share asusunka?",
+            "warningTitle": "Gargaɗi: Wannan matakin zai share har abada:",
+            "warning1": "Bayanin mai amfani da bayanan asusu",
+            "warning2": "Dukan tunawar da ka ƙirƙira",
+            "warning3": "Dukan yabo da ka buga",
+            "warning4": "Dukan damar shiga tunawar haɗin gwiwa",
+            "warning5": "BA ZA A IYA MAYAR DA WANNAN MATAKI BA",
+            "accountLabel": "Imel na asusu:",
+            "confirmLabel": "Rubuta \"SHARE ASUSUNA\" don tabbatarwa:",
+            "confirmPlaceholder": "Rubuta SHARE ASUSUNA don tabbatarwa",
+            "cancel": "Soke",
+            "confirm": "Share Asusuna Har Abada",
+            "deleting": "Ana share asusu...",
+            "success": "An share asusu cikin nasara",
+            "error": "An kasa share asusu",
+            "noAccount": "Ba a sami bayanan asusu ba",
+            "confirmError": "Da fatan a rubuta SHARE ASUSUNA don tabbatarwa"
+          }
         },
         "account": {
           "title": "Ayyukan Asusun",
@@ -2371,13 +2433,19 @@
 
       "status": "Matsayi",
 
+      "statusLive": "Yana Aiki",
+
+      "statusDraft": "Rubutu",
+
       "photos": "Hotuna",
 
       "approvedTributes": "Girmamawar da aka Amince",
 
       "serviceRsvps": "RSVPs na Hidima",
 
-      "memorialPage": "Shafin Tunawa"
+      "memorialPage": "Shafin Tunawa",
+
+      "noMemorial": "Ba a sami tunawa ba"
     },
 
     "collaboratorMemorials": {
@@ -2629,28 +2697,137 @@
   },
   "offline": {
     "status": {
-      "online": "Online",
-      "offline": "Offline",
-      "syncing": "Syncing..."
+      "online": "A Kan Layi",
+      "offline": "Ba Kan Layi",
+      "syncing": "Ana Daidaitawa..."
     },
-    "pendingActions": "Pending actions: {{count}}",
+    "pendingActions": "Ayyukan da ke jira: {{count}}",
     "syncProgress": {
-      "synchronizing": "Synchronizing...",
-      "progress": "Progress: {{current}}/{{total}}",
-      "title": "Sync Progress",
-      "complete": "Complete"
+      "synchronizing": "Ana Daidaitawa...",
+      "progress": "Ci gaba: {{current}}/{{total}}",
+      "title": "Ci Gaban Daidaitawa",
+      "complete": "An Kammala"
     },
     "banner": {
-      "offlineMessage": "You're currently offline.",
-      "pendingActions": "You have {{count}} pending action{{count !== 1 ? 's' : ''}} that will sync when you're back online."
+      "offlineMessage": "Ba ka kan layi a yanzu.",
+      "pendingActions": "Kuna da {{count}} ayyukan {{count !== 1 ? 's' : ''}} da ke jira waɗanda za su daidaita lokacin da kuka dawo kan layi.",
+      "limitedFeatures": "Ba ka kan layi. Wasu fasalolin na iya iyakance."
     },
-    "lastSync": "Last sync: {{synced}} synced, {{failed}} failed",
+    "lastSync": "Daidaitawa ta ƙarshe: {{synced}} an daidaita, {{failed}} ya gaza",
     "loading": {
-      "offline": "Offline",
-      "viewingCached": "Viewing cached images",
-      "actionsQueued": "{{count}} action{{count !== 1 ? 's' : ''}} queued",
-      "willSyncWhenOnline": "will sync when online",
-      "savedLocally": "Will be saved locally and synced when online"
+      "offline": "Ba Kan Layi",
+      "viewingCached": "Ana kallon hotuna da aka adana",
+      "actionsQueued": "{{count}} ayyuka {{count !== 1 ? 's' : ''}} a jere",
+      "willSyncWhenOnline": "za a daidaita lokacin da kuke kan layi",
+      "savedLocally": "Za a adana a cikin gida kuma a daidaita lokacin da kuke kan layi"
+    },
+    "saveForOffline": {
+      "button": "Adana don Ba Kan Layi",
+      "saving": "Ana Adanawa...",
+      "saved": "An Adana Ba Kan Layi"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "Shigar da ForeverPages",
+      "description": "Shigar da aikace-aikacen mu don mafi kyawun gogewa tare da samun dama ba tare da layi ba da sanarwar turawa.",
+      "button": "Shigar da Aikace-aikace",
+      "dismiss": "Ba Yanzu Ba",
+      "later": "Wataƙila Daga Baya",
+      "benefits": {
+        "title": "Me yasa shigarwa?",
+        "offline": "Samun damar tunawa ba tare da layi ba",
+        "notifications": "Karɓi sanarwar turawa",
+        "faster": "Lokaci mai sauri na lodi",
+        "homeScreen": "Samun dama cikin sauri daga allon gida"
+      },
+      "ios": {
+        "title": "Shigar a iOS",
+        "step1": "Danna maɓallin Raba",
+        "step2": "Gusa ƙasa kuma danna \"Ƙara zuwa Allon Gida\"",
+        "step3": "Danna \"Ƙara\" don tabbatarwa",
+        "shareIcon": "Alamar raba a Safari"
+      },
+      "android": {
+        "title": "Shigar a Android",
+        "step1": "Danna maɓallin menu (⋮)",
+        "step2": "Zaɓi \"Ƙara zuwa Allon Gida\" ko \"Shigar da Aikace-aikace\"",
+        "step3": "Danna \"Ƙara\" ko \"Shigar\" don tabbatarwa"
+      },
+      "installed": "An Shigar da Aikace-aikace",
+      "alreadyInstalled": "An riga an shigar da ForeverPages a na'urar ku."
+    }
+  },
+  "pushNotifications": {
+    "title": "Sanarwar Turawa",
+    "description": "Sarrafa zaɓuɓɓukan sanarwar turawa",
+    "enable": "Kunna Sanarwa",
+    "disable": "Kashe Sanarwa",
+    "enabled": "An Kunna Sanarwa",
+    "disabled": "An Kashe Sanarwa",
+    "permissionDenied": "An Hana Izini",
+    "permissionDeniedDescription": "Da fatan za a kunna sanarwa a cikin saitunan burauzan ku don karɓar sabuntawa.",
+    "notSupported": "Ba A Tallafawa Ba",
+    "notSupportedDescription": "Ba a tallafawa sanarwar turawa a cikin burauzan ku ba.",
+    "preferences": {
+      "title": "Zaɓuɓɓukan Sanarwa",
+      "description": "Zaɓi waɗanne sanarwa kuke son karɓa",
+      "tributes": {
+        "label": "Sabbin Girmamawa",
+        "description": "Sami sanarwa lokacin da wani ya bar girmamawa akan tunawa da ku"
+      },
+      "livestream": {
+        "label": "Abubuwan da ke Faruwa Kai Tsaye",
+        "description": "Sami sanarwa game da ayyukan tunawa kai tsaye da masu zuwa"
+      },
+      "anniversary": {
+        "label": "Tunatarwar Bikin Cika Shekara",
+        "description": "Karɓi tunatarwa don bikin cika shekara na haihuwa da mutuwa"
+      },
+      "system": {
+        "label": "Sabuntawar Tsari",
+        "description": "Muhimman sabuntawa game da ForeverPages"
+      }
+    },
+    "testNotification": "Aika Sanarwar Gwaji",
+    "testSent": "An aika sanarwar gwaji",
+    "saving": "Ana adana zaɓuɓɓuka...",
+    "saved": "An adana zaɓuɓɓuka",
+    "error": {
+      "subscribeFailed": "Ba a iya kunna sanarwa ba",
+      "unsubscribeFailed": "Ba a iya kashe sanarwa ba",
+      "updateFailed": "Ba a iya sabunta zaɓuɓɓuka ba"
+    }
+  },
+  "qrCode": {
+    "title": "Lambar QR",
+    "description": "Raba wannan lambar QR don barin wasu su samu damar tunawa cikin sauƙi",
+    "generating": "Ana ƙirƙirar lambar QR...",
+    "download": "Zazzage Lambar QR",
+    "downloadPng": "Zazzage PNG",
+    "downloadSvg": "Zazzage SVG",
+    "copyLink": "Kwafi Hanyar Haɗi",
+    "linkCopied": "An kwafi hanyar haɗi zuwa clipboard",
+    "shareQr": "Raba Lambar QR",
+    "customize": {
+      "title": "Gyara Lambar QR",
+      "tab": "Gyara",
+      "presets": "Launuka da Aka Zaɓa",
+      "custom": "Launuka Na Musamman",
+      "size": "Girma",
+      "margin": "Iyaka",
+      "foreground": "Launin Gaba",
+      "background": "Launin Baya",
+      "preview": "Duba"
+    },
+    "print": {
+      "title": "Umarni na Buga",
+      "description": "Buga wannan lambar QR don shirye-shiryen jana'iza, katunan tunawa, ko nuni a wurin aiki.",
+      "forMemorial": "Lambar QR don Tunawa da {{name}}"
+    },
+    "error": {
+      "generateFailed": "Ba a iya ƙirƙirar lambar QR ba",
+      "downloadFailed": "Ba a iya zazzage lambar QR ba"
     }
   },
   "twoFactor": {
@@ -3713,6 +3890,60 @@
       "performance": "Aiki",
       "security": "Tsaro",
       "bestPractices": "Kyawawan Hanyoyi"
+    }
+  },
+  "familyTree": {
+    "title": "Iyali",
+    "born": "An haife shi/ta",
+    "passed": "Ya/Ta rasu",
+    "deceased": "Mai rasuwa",
+    "loading": "Ana loda iyali...",
+    "empty": "Ba a ƙara ɗan iyali ba tukuna."
+  },
+  "relationships": {
+    "spouse": "Aure",
+    "partner": "Abokin haɗin gwiwa",
+    "father": "Uba",
+    "mother": "Uwa",
+    "son": "Ɗa",
+    "daughter": "'Ya",
+    "brother": "Ɗan'uwa",
+    "sister": "'Yar'uwa",
+    "grandfather": "Kaka (namiji)",
+    "grandmother": "Kaka (mace)",
+    "grandson": "Jika (namiji)",
+    "granddaughter": "Jika (mace)",
+    "uncle": "Kawu/Baffa",
+    "aunt": "Inna/Goggo",
+    "nephew": "Ɗan'uwa/ɗan'yar'uwa (namiji)",
+    "niece": "Ɗan'uwa/ɗan'yar'uwa (mace)",
+    "cousin": "Ɗan kawu/Ɗan Inna",
+    "other": "Wani"
+  },
+  "condolences": {
+    "title": "Ta'aziyya",
+    "placeholder": "Raba tunaninku da abubuwan tunawarku...",
+    "postAnonymously": "Buga ba tare da sunan ku ba",
+    "submit": "Aika Ta'aziyya",
+    "signInToPost": "Shiga don barin saƙon ta'aziyya",
+    "empty": "Babu ta'aziyya tukuna. Kasance na farko don raba tunaninku.",
+    "count": "{count} ta'aziyya",
+    "loadMore": "Ƙara Loda",
+    "anonymous": "Ba a sani ba",
+    "reply": "amsa",
+    "replies": "amsoshi",
+    "delete": "Share",
+    "confirmDelete": "Shin kun tabbata kuna son share wannan ta'aziyya?",
+    "success": {
+      "posted": "An buga ta'aziyyar ku",
+      "deleted": "An share ta'aziyya"
+    },
+    "errors": {
+      "emptyMessage": "Da fatan za a shigar da saƙo",
+      "loginRequired": "Da fatan za a shiga don barin ta'aziyya",
+      "postFailed": "Ba a iya buga ta'aziyya ba. Da fatan za a sake gwadawa.",
+      "deleteFailed": "Ba a iya share ta'aziyya ba",
+      "loadFailed": "Ba a iya loda ta'aziyya ba"
     }
   }
 }

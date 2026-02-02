@@ -40,10 +40,9 @@ export async function POST(request: NextRequest) {
     // Check if user is ADMIN/EDITOR collaborator on any memorial
     const collaboratorInvitation = await prisma.invitation.findFirst({
       where: {
-        invitedUserId: session.user.id,
         status: "ACCEPTED",
-        expiresAt: { gte: new Date() },
         role: { in: ["ADMIN", "EDITOR"] },
+        OR: [{ invitedUserId: session.user.id }, { email: session.user.email || "" }],
       },
       include: {
         memorial: {

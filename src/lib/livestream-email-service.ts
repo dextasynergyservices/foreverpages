@@ -637,7 +637,7 @@ export async function sendRecordingDeletedEmail(
 
     <div style="background: #f3f4f6; border: 1px solid #d1d5db; padding: 15px; border-radius: 5px; margin: 20px 0;">
       <p style="margin: 0; font-size: 14px;">
-        <strong>ℹ️ Note:</strong> This was part of our standard 6-month retention policy. We hope you had the opportunity to download the recording if needed.
+        <strong>ℹ️ Note:</strong> This was part of our standard 30-day retention policy. We hope you had the opportunity to download the recording if needed.
       </p>
     </div>
 

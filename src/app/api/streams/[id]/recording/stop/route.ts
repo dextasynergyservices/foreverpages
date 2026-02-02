@@ -41,10 +41,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       return NextResponse.json({ error: "No active recording to stop" }, { status: 400 });
     }
 
-    // Calculate recording deletion dates (6 months retention)
+    // Calculate recording deletion dates (30 days retention)
     const now = new Date();
     const deleteAt = new Date(now);
-    deleteAt.setMonth(deleteAt.getMonth() + 6); // 6 months from now
+    deleteAt.setDate(deleteAt.getDate() + 30); // 30 days from now
 
     const deleteWarningAt = new Date(deleteAt);
     deleteWarningAt.setDate(deleteWarningAt.getDate() - 7); // 7 days before deletion

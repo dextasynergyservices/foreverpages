@@ -8,8 +8,12 @@ import { getUserMemorialRole } from "@/lib/permissions";
  * GET /api/memorials/[memorialId]/collaborators
  * Get all collaborators for a memorial (including pending invitations)
  */
-export async function GET(request: Request, { params }: { params: { memorialId: string } }) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ memorialId: string }> }
+) {
   try {
+    const { memorialId } = await params;
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.email) {
@@ -24,8 +28,6 @@ export async function GET(request: Request, { params }: { params: { memorialId: 
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
-
-    const memorialId = params.memorialId;
 
     // Check if memorial exists and user has access
     const memorial = await prisma.memorial.findUnique({

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
+import { Plus, Video, Film } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -11,8 +11,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTheme } from "@/hooks/useTheme";
 import StreamList from "./StreamList";
+import RecordingsList from "./RecordingsList";
 import CreateStreamDialog from "./CreateStreamDialog";
 
 interface Memorial {
@@ -27,11 +29,13 @@ const Livestreams: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const memorialIdFromUrl = searchParams?.get("memorial");
+  const tabFromUrl = searchParams?.get("tab") || "streams";
   const [selectedMemorialId, setSelectedMemorialId] = useState<string>(memorialIdFromUrl || "");
   const [memorials, setMemorials] = useState<Memorial[]>([]);
   const [loading, setLoading] = useState(true);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [activeTab, setActiveTab] = useState(tabFromUrl);
 
   // Check for stream end notification on mount
   useEffect(() => {
@@ -75,6 +79,18 @@ const Livestreams: React.FC = () => {
     setSelectedMemorialId(memorialId);
     const params = new URLSearchParams(searchParams?.toString() || "");
     params.set("memorial", memorialId);
+    params.set("tab", activeTab);
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
+
+  // Update URL when tab changes
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    const params = new URLSearchParams(searchParams?.toString() || "");
+    params.set("tab", tab);
+    if (selectedMemorialId) {
+      params.set("memorial", selectedMemorialId);
+    }
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
@@ -131,14 +147,16 @@ const Livestreams: React.FC = () => {
             </h1>
             <p className="text-muted-foreground mt-1">Manage memorial livestreams and recordings</p>
           </div>
-          <Button
-            onClick={() => setCreateDialogOpen(true)}
-            className="flex items-center gap-2"
-            disabled={!selectedMemorialId}
-          >
-            <Plus className="h-4 w-4" />
-            Create Stream
-          </Button>
+          {activeTab === "streams" && (
+            <Button
+              onClick={() => setCreateDialogOpen(true)}
+              className="flex items-center gap-2"
+              disabled={!selectedMemorialId}
+            >
+              <Plus className="h-4 w-4" />
+              Create Stream
+            </Button>
+          )}
         </div>
 
         {/* Memorial Selector */}
@@ -161,16 +179,36 @@ const Livestreams: React.FC = () => {
         </div>
       </div>
 
-      {/* Stream List */}
+      {/* Main Tabs */}
       {selectedMemorialId && selectedMemorial && (
         <div className="space-y-4">
           <div className="text-sm text-muted-foreground">
-            Managing livestreams for{" "}
+            Managing{" "}
             <span className="font-medium text-gray-900 dark:text-white">
               {selectedMemorial.firstName} {selectedMemorial.lastName}
             </span>
           </div>
-          <StreamList memorialId={selectedMemorialId} refreshKey={refreshKey} />
+
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4">
+            <TabsList className="grid w-full grid-cols-2 max-w-md">
+              <TabsTrigger value="streams" className="flex items-center gap-2">
+                <Video className="h-4 w-4" />
+                Streams
+              </TabsTrigger>
+              <TabsTrigger value="recordings" className="flex items-center gap-2">
+                <Film className="h-4 w-4" />
+                Recordings
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="streams">
+              <StreamList memorialId={selectedMemorialId} refreshKey={refreshKey} />
+            </TabsContent>
+
+            <TabsContent value="recordings">
+              <RecordingsList memorialId={selectedMemorialId} />
+            </TabsContent>
+          </Tabs>
         </div>
       )}
 

@@ -1680,7 +1680,69 @@
           "archive": "Ṣe Iwe Iranti",
           "archiveDescription": "Ṣe iranti naa ni ikọkọ ki o si duro gbigba awọn iyin tuntun",
           "delete": "Pa Iranti",
-          "deleteDescription": "Pa iranti yii patapata ati gbogbo data ti o ni ibatan. Ko le ṣe atunṣe eyi."
+          "deleteDescription": "Pa iranti yii patapata ati gbogbo data ti o ni ibatan. Ko le ṣe atunṣe eyi.",
+          "deleteAccount": "Pa Akọọlẹ",
+          "deleteAccountDescription": "Pa akọọlẹ rẹ patapata ati gbogbo iranti ti o ni ibatan. Ko le ṣe atunṣe eyi.",
+          "archiveDialog": {
+            "title": "Ṣe Iwe Iranti",
+            "description": "Ṣe o da ọ loju pe o fẹ ṣe iwe iranti yii? Iṣẹ yii yoo fi iranti pamọ kuro ninu iwo gbogbo eniyan ati duro gbogbo awọn ibaṣepọ tuntun.",
+            "warningTitle": "Ìkìlọ̀: Iṣẹ yii yoo ni awọn abajade wọnyi:",
+            "warning1": "Iranti kii yoo wa fun gbogbo eniyan mọ",
+            "warning2": "Ko le ṣe afikun awọn iyin tabi iranlọwọ tuntun",
+            "warning3": "Iwọ nikan ni o le rii iranti ti a fi pamọ",
+            "memorialLabel": "Iranti lati ṣe iwe:",
+            "confirmLabel": "Tẹ \"FIPAMỌ\" lati jẹrisi:",
+            "confirmWord": "FIPAMỌ",
+            "confirmPlaceholder": "Tẹ FIPAMỌ lati jẹrisi",
+            "cancel": "Fagilee",
+            "confirm": "Ṣe Iwe Iranti",
+            "archiving": "N ṣe iwe...",
+            "success": "A ti ṣe iwe iranti daradara",
+            "error": "A ko le ṣe iwe iranti",
+            "noMemorial": "Ko ri iranti lati ṣe iwe",
+            "confirmError": "Jọwọ tẹ FIPAMỌ lati jẹrisi"
+          },
+          "deleteDialog": {
+            "title": "Pa Iranti",
+            "description": "Iṣẹ yii jẹ patapata ati pe ko le ṣe atunṣe. Ṣe o da ọ loju patapata pe o fẹ pa iranti yii?",
+            "warningTitle": "Ìkìlọ̀: Iṣẹ yii yoo pa patapata:",
+            "warning1": "Gbogbo alaye iranti",
+            "warning2": "Gbogbo awọn fọto ati fidio ti a fi soke",
+            "warning3": "Gbogbo awọn iyin ati iranlọwọ",
+            "warning4": "Gbogbo alaye awọn alabaṣiṣẹpọ",
+            "warning5": "KO LE ṢE ATUNṢE IṢẸ YII",
+            "memorialLabel": "Iranti lati pa:",
+            "slugLabel": "Tẹ slug iranti lati jẹrisi:",
+            "confirmLabel": "Tẹ slug iranti gẹgẹ bi a ṣe fihan loke:",
+            "confirmPlaceholder": "Tẹ slug iranti lati jẹrisi",
+            "cancel": "Fagilee",
+            "confirm": "Pa Iranti Patapata",
+            "deleting": "N pa...",
+            "success": "A ti pa iranti daradara",
+            "error": "A ko le pa iranti",
+            "noMemorial": "Ko ri iranti lati pa",
+            "confirmError": "Slug iranti ko baamu"
+          },
+          "deleteAccountDialog": {
+            "title": "Pa Akọọlẹ",
+            "description": "Iṣẹ yii jẹ patapata ati pe ko le ṣe atunṣe. Ṣe o da ọ loju patapata pe o fẹ pa akọọlẹ rẹ?",
+            "warningTitle": "Ìkìlọ̀: Iṣẹ yii yoo pa patapata:",
+            "warning1": "Alaye olumulo rẹ ati alaye akọọlẹ",
+            "warning2": "Gbogbo awọn iranti ti o ṣẹda",
+            "warning3": "Gbogbo awọn iyin ti o fi sita",
+            "warning4": "Gbogbo iwọle si awọn iranti apapọ",
+            "warning5": "KO LE ṢE ATUNṢE IṢẸ YII",
+            "accountLabel": "Imeeli akọọlẹ:",
+            "confirmLabel": "Tẹ \"PA AKỌỌLẸ MI\" lati jẹrisi:",
+            "confirmPlaceholder": "Tẹ PA AKỌỌLẸ MI lati jẹrisi",
+            "cancel": "Fagilee",
+            "confirm": "Pa Akọọlẹ Mi Patapata",
+            "deleting": "N pa akọọlẹ...",
+            "success": "A ti pa akọọlẹ daradara",
+            "error": "A ko le pa akọọlẹ",
+            "noAccount": "Ko ri alaye akọọlẹ",
+            "confirmError": "Jọwọ tẹ PA AKỌỌLẸ MI lati jẹrisi"
+          }
         },
         "account": {
           "title": "Awọn Iṣe Akọọlẹ",
@@ -2224,7 +2286,8 @@
     },
     "banner": {
       "offlineMessage": "O wa laini nisisiyi.",
-      "pendingActions": "O ni {{count}} iṣe ti o nduro {{count !== 1 ? 's' : ''}} ti yoo ṣe isopọ nigbati o ba pada tẹlẹ."
+      "pendingActions": "O ni {{count}} iṣe ti o nduro {{count !== 1 ? 's' : ''}} ti yoo ṣe isopọ nigbati o ba pada tẹlẹ.",
+      "limitedFeatures": "O wa laini. Awọn ẹya kan le ni opin."
     },
     "lastSync": "Isopọ to kẹhin: {{synced}} ti a ṣe isopọ, {{failed}} ti kuna",
     "loading": {
@@ -2233,6 +2296,114 @@
       "actionsQueued": "{{count}} iṣe {{count !== 1 ? 's' : ''}} ti o wa ni ila",
       "willSyncWhenOnline": "yoo ṣe isopọ nigbati o ba tẹlẹ",
       "savedLocally": "Yoo fi pamọ ni agbegbe ki o si ṣe isopọ nigbati o ba tẹlẹ"
+    },
+    "saveForOffline": {
+      "button": "Fi pamọ fun Laini",
+      "saving": "N fi pamọ...",
+      "saved": "Ti Fi Pamọ fun Laini"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "Fi ForeverPages sii",
+      "description": "Fi ohun elo wa sii fun iriri to dara julọ pẹlu wiwọle laini ati awọn ifitonilẹti push.",
+      "button": "Fi Ohun elo sii",
+      "dismiss": "Kii ṣe Bayi",
+      "later": "Boya Nigbamii",
+      "benefits": {
+        "title": "Kini idi ti o fi yẹ ki a fi sii?",
+        "offline": "Wọle si awọn iranti laini",
+        "notifications": "Gba awọn ifitonilẹti push",
+        "faster": "Akoko ikojọpọ yiyara",
+        "homeScreen": "Wiwọle ni kiakia lati iboju ile"
+      },
+      "ios": {
+        "title": "Fi sii lori iOS",
+        "step1": "Tẹ bọtini Pinpin",
+        "step2": "Yi lọ silẹ ki o tẹ \"Fi kun si Iboju Ile\"",
+        "step3": "Tẹ \"Fi kun\" lati jẹrisi",
+        "shareIcon": "Aami pinpin ni Safari"
+      },
+      "android": {
+        "title": "Fi sii lori Android",
+        "step1": "Tẹ bọtini akojọ (⋮)",
+        "step2": "Yan \"Fi kun si Iboju Ile\" tabi \"Fi Ohun elo sii\"",
+        "step3": "Tẹ \"Fi kun\" tabi \"Fi sii\" lati jẹrisi"
+      },
+      "installed": "Ohun elo Ti Fi Sii",
+      "alreadyInstalled": "ForeverPages ti wa ni ẹrọ rẹ tẹlẹ."
+    }
+  },
+  "pushNotifications": {
+    "title": "Awọn Ifitonilẹti Push",
+    "description": "Ṣakoso awọn ayanfẹ ifitonilẹti push rẹ",
+    "enable": "Mu Awọn Ifitonilẹti Ṣiṣẹ",
+    "disable": "Pa Awọn Ifitonilẹti",
+    "enabled": "Awọn Ifitonilẹti Ti Mu Ṣiṣẹ",
+    "disabled": "Awọn Ifitonilẹti Ti Pa",
+    "permissionDenied": "Igbanilaaye Ti Kọ",
+    "permissionDeniedDescription": "Jọwọ mu awọn ifitonilẹti ṣiṣẹ ni awọn eto aṣawakiri rẹ lati gba awọn imudojuiwọn.",
+    "notSupported": "Ko Ni Atilẹyin",
+    "notSupportedDescription": "Awọn ifitonilẹti push ko ni atilẹyin ninu aṣawakiri rẹ.",
+    "preferences": {
+      "title": "Awọn Ayanfẹ Ifitonilẹti",
+      "description": "Yan awọn ifitonilẹti ti o fẹ gba",
+      "tributes": {
+        "label": "Awọn Ẹbun Tuntun",
+        "description": "Gba ifitonilẹti nigbati ẹnikan ba fi ẹbun silẹ lori iranti rẹ"
+      },
+      "livestream": {
+        "label": "Awọn Iṣẹlẹ Laaye",
+        "description": "Gba ifitonilẹti nipa awọn iṣẹ iranti laaye ati ti n bọ"
+      },
+      "anniversary": {
+        "label": "Awọn Iranti Ayẹyẹ Ọdun",
+        "description": "Gba awọn iranti fun ayẹyẹ ọjọ ibi ati iku"
+      },
+      "system": {
+        "label": "Awọn Imudojuiwọn Eto",
+        "description": "Awọn imudojuiwọn pataki nipa ForeverPages"
+      }
+    },
+    "testNotification": "Fi Ifitonilẹti Idanwo Ranṣẹ",
+    "testSent": "Ifitonilẹti idanwo ti ranṣẹ",
+    "saving": "N fi awọn ayanfẹ pamọ...",
+    "saved": "Awọn ayanfẹ ti pamọ",
+    "error": {
+      "subscribeFailed": "Ko le mu awọn ifitonilẹti ṣiṣẹ",
+      "unsubscribeFailed": "Ko le pa awọn ifitonilẹti",
+      "updateFailed": "Ko le ṣe imudojuiwọn awọn ayanfẹ"
+    }
+  },
+  "qrCode": {
+    "title": "Koodu QR",
+    "description": "Pin koodu QR yii ki awọn ẹlomiran le wọle si iranti ni irọrun",
+    "generating": "N ṣẹda koodu QR...",
+    "download": "Gba Koodu QR",
+    "downloadPng": "Gba PNG",
+    "downloadSvg": "Gba SVG",
+    "copyLink": "Daakọ Ọna Asopọ",
+    "linkCopied": "Ọna asopọ ti daakọ si apo-iwe",
+    "shareQr": "Pin Koodu QR",
+    "customize": {
+      "title": "Ṣe atunṣe Koodu QR",
+      "tab": "Ṣe atunṣe",
+      "presets": "Awọn Awọ Ti A Ti Ṣeto",
+      "custom": "Awọn Awọ Tirẹ",
+      "size": "Iwọn",
+      "margin": "Àlàfo",
+      "foreground": "Awọ Iwaju",
+      "background": "Awọ Ẹhin",
+      "preview": "Ṣawari"
+    },
+    "print": {
+      "title": "Awọn Itọnisọna Titẹ",
+      "description": "Tẹ koodu QR yii jade fun awọn eto isinku, awọn kaadi iranti, tabi ifihan ni iṣẹ naa.",
+      "forMemorial": "Koodu QR fun Iranti {{name}}"
+    },
+    "error": {
+      "generateFailed": "Ko le ṣẹda koodu QR",
+      "downloadFailed": "Ko le gba koodu QR"
     }
   },
   "twoFactor": {
@@ -2848,10 +3019,13 @@
         "viewMemorial": "Wo Ifiṣura",
         "created": "Ti a ṣẹda",
         "status": "Ipo",
+        "statusLive": "Nṣiṣẹ",
+        "statusDraft": "Akirojú",
         "photos": "Aworan",
         "approvedTributes": "Awọn Ifisẹyin Ti A Gba",
         "serviceRsvps": "Awọn Idaniloju Isin",
-        "memorialPage": "Oju-ewu Ifiṣura"
+        "memorialPage": "Oju-ewu Ifiṣura",
+        "noMemorial": "Ko ri iranti kankan"
       },
       "collaboratorMemorials": {
         "title": "Awọn Ifiṣura Ti O NṢakoso",
@@ -3335,6 +3509,60 @@
       "performance": "Ìṣe",
       "security": "Aàbò",
       "bestPractices": "Àwọn Ọ̀nà Tí Ó Dára Jùlọ"
+    }
+  },
+  "familyTree": {
+    "title": "Ẹbí",
+    "born": "A bí ní",
+    "passed": "Ó kú ní",
+    "deceased": "Olókú",
+    "loading": "N gbe àwọn ọmọ ẹbí sókè...",
+    "empty": "Kò sí ọmọ ẹbí tí a ti fi kún."
+  },
+  "relationships": {
+    "spouse": "Ìyàwó/Ọkọ",
+    "partner": "Alabárìn",
+    "father": "Bàbá",
+    "mother": "Ìyá",
+    "son": "Ọmọkùnrin",
+    "daughter": "Ọmọbìnrin",
+    "brother": "Ẹ̀gbọ́n/Àbúrò (Ọkùnrin)",
+    "sister": "Ẹ̀gbọ́n/Àbúrò (Obìnrin)",
+    "grandfather": "Bàbá Bàbá",
+    "grandmother": "Ìyá Ìyá",
+    "grandson": "Ọmọ Ọmọ (Ọkùnrin)",
+    "granddaughter": "Ọmọ Ọmọ (Obìnrin)",
+    "uncle": "Ẹ̀gbọ́n Bàbá/Àbúrò Bàbá",
+    "aunt": "Ẹ̀gbọ́n Ìyá/Àbúrò Ìyá",
+    "nephew": "Ọmọ Ẹ̀gbọ́n (Ọkùnrin)",
+    "niece": "Ọmọ Ẹ̀gbọ́n (Obìnrin)",
+    "cousin": "Ọmọ Ẹ̀gbọ́n Bàbá/Ìyá",
+    "other": "Mìíràn"
+  },
+  "condolences": {
+    "title": "Àwọn Ọ̀rọ̀ Ìkẹ́dùn",
+    "placeholder": "Pin àwọn ìrònú àti ìrántí rẹ...",
+    "postAnonymously": "Fi sílẹ̀ láìjẹ́ kí a mọ̀ ẹni",
+    "submit": "Fi Ìkẹ́dùn Ránṣẹ́",
+    "signInToPost": "Wọlé láti fi ọ̀rọ̀ ìkẹ́dùn sílẹ̀",
+    "empty": "Kò sí ìkẹ́dùn ṣíbẹ̀ṣíbẹ̀. Jẹ́ ẹni àkọ́kọ́ láti pín ìrònú rẹ.",
+    "count": "{count} ìkẹ́dùn",
+    "loadMore": "Gbe Sí Sókè",
+    "anonymous": "Aláìlórúkọ",
+    "reply": "ìdáhùn",
+    "replies": "àwọn ìdáhùn",
+    "delete": "Pa Rẹ́",
+    "confirmDelete": "Ṣé o dájú pé o fẹ́ pa ìkẹ́dùn yìí rẹ́?",
+    "success": {
+      "posted": "A ti fi ìkẹ́dùn rẹ sílẹ̀",
+      "deleted": "A ti pa ìkẹ́dùn rẹ́"
+    },
+    "errors": {
+      "emptyMessage": "Jọ̀wọ́ tẹ ìfirànṣẹ́ kan",
+      "loginRequired": "Jọ̀wọ́ wọlé láti fi ìkẹ́dùn sílẹ̀",
+      "postFailed": "Kò yọrísí láti fi ìkẹ́dùn sílẹ̀. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kansi.",
+      "deleteFailed": "Kò yọrísí láti pa ìkẹ́dùn rẹ́",
+      "loadFailed": "Kò yọrísí láti gbe àwọn ìkẹ́dùn sókè"
     }
   }
 }

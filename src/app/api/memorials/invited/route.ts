@@ -25,12 +25,21 @@ export async function GET() {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
-    // Get all accepted invitations for this user
+    // Get user's email for invitation lookup
+    const userWithEmail = await prisma.user.findUnique({
+      where: { id: user.id },
+      select: { email: true },
+    });
+
+    // Get all accepted invitations for this user (by invitedUserId OR email)
+    // expiresAt check removed for ACCEPTED - once accepted, access is permanent
     const invitations = await prisma.invitation.findMany({
       where: {
-        invitedUserId: user.id,
         status: "ACCEPTED",
-        expiresAt: { gte: new Date() }, // Not expired
+        OR: [
+          { invitedUserId: user.id },
+          { email: userWithEmail?.email || session.user.email || "" },
+        ],
       },
       include: {
         memorial: {

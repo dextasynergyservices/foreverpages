@@ -309,3 +309,87 @@ export function useDeleteInvitation() {
     },
   });
 }
+
+// Hook for bulk resending invitations
+interface BulkResendParams {
+  invitationIds: string[];
+  extendExpiration?: boolean;
+  expirationDays?: number;
+}
+
+interface BulkResendResult {
+  success: boolean;
+  message: string;
+  summary: {
+    total: number;
+    successful: number;
+    failed: number;
+    requested: number;
+    skipped: number;
+  };
+  results: Array<{
+    invitationId: string;
+    success: boolean;
+    error?: string;
+    email?: string;
+    phone?: string;
+  }>;
+}
+
+export function useBulkResendInvitations() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (params: BulkResendParams): Promise<BulkResendResult> => {
+      const response = await fetch("/api/invitations/bulk-resend", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || data.message || "Failed to bulk resend invitations");
+      }
+
+      return data;
+    },
+    onMutate: (params) => {
+      const loadingToast = toast.loading(
+        `Resending ${params.invitationIds.length} invitation${params.invitationIds.length !== 1 ? "s" : ""}...`
+      );
+      return { loadingToast };
+    },
+    onSuccess: (data, _, context) => {
+      const { summary } = data;
+
+      if (summary.successful === summary.total) {
+        toast.success(
+          data.message ||
+            `Successfully resent ${summary.successful} invitation${summary.successful !== 1 ? "s" : ""}`,
+          {
+            id: context?.loadingToast,
+          }
+        );
+      } else if (summary.successful > 0) {
+        toast.success(
+          `Resent ${summary.successful} of ${summary.total} invitations. ${summary.failed} failed.`,
+          { id: context?.loadingToast }
+        );
+      } else {
+        toast.error(`Failed to resend invitations`, { id: context?.loadingToast });
+      }
+
+      // Invalidate and refetch invitations
+      queryClient.invalidateQueries({ queryKey: ["invitations"] });
+    },
+    onError: (error: Error, _, context) => {
+      toast.error(error.message || "Failed to bulk resend invitations", {
+        id: context?.loadingToast,
+      });
+    },
+  });
+}

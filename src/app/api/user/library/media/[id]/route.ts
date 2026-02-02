@@ -100,10 +100,9 @@ export async function DELETE(
     if (!isUploader) {
       const collaboratorInvitation = await prisma.invitation.findFirst({
         where: {
-          invitedUserId: session.user.id,
           status: "ACCEPTED",
-          expiresAt: { gte: new Date() },
           role: { in: ["ADMIN", "EDITOR"] }, // Only ADMIN and EDITOR can delete media
+          OR: [{ invitedUserId: session.user.id }, { email: session.user.email || "" }],
           memorial: {
             ownerId: media.uploaderId, // Check if collaborator is on a memorial owned by the uploader
           },

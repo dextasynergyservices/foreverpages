@@ -32,8 +32,8 @@ export const RecentActivity: React.FC<RecentActivityProps> = ({ recentActivity }
 
   const cardBorder = theme === "dark" ? "border-white" : "border-black";
   const cardBg = theme === "dark" ? "bg-black text-white" : "bg-white text-black";
-  const textMuted = theme === "dark" ? "text-black/70" : "text-white/70";
-  const bgMuted = theme === "dark" ? "bg-black/10" : "bg-white/10";
+  const textMuted = theme === "dark" ? "text-white/70" : "text-black/70";
+  const bgMuted = theme === "dark" ? "bg-white/10" : "bg-black/10";
 
   const getActivityIcon = (type: string) => {
     switch (type) {

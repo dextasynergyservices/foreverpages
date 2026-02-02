@@ -1595,10 +1595,13 @@
         "viewMemorial": "Voir le Mémorial",
         "created": "Créé",
         "status": "Statut",
+        "statusLive": "En ligne",
+        "statusDraft": "Brouillon",
         "photos": "Photos",
         "approvedTributes": "Hommages Approuvés",
         "serviceRsvps": "RSVP du Service",
-        "memorialPage": "Page Commémorative"
+        "memorialPage": "Page Commémorative",
+        "noMemorial": "Aucun mémorial trouvé"
       },
       "collaboratorMemorials": {
         "title": "Mémoriaux que Vous Gérez",
@@ -1696,7 +1699,69 @@
           "archive": "Archiver le Mémorial",
           "archiveDescription": "Rendre le mémorial privé et arrêter d'accepter de nouveaux hommages",
           "delete": "Supprimer le Mémorial",
-          "deleteDescription": "Supprimer définitivement ce mémorial et toutes les données associées. Cette action ne peut pas être annulée."
+          "deleteDescription": "Supprimer définitivement ce mémorial et toutes les données associées. Cette action ne peut pas être annulée.",
+          "deleteAccount": "Supprimer le Compte",
+          "deleteAccountDescription": "Supprimer définitivement votre compte et tous les mémoriaux associés. Cette action ne peut pas être annulée.",
+          "archiveDialog": {
+            "title": "Archiver le Mémorial",
+            "description": "Êtes-vous sûr de vouloir archiver ce mémorial ? Cette action cachera le mémorial de la vue publique et arrêtera toutes les nouvelles interactions.",
+            "warningTitle": "Avertissement : Cette action aura les conséquences suivantes :",
+            "warning1": "Le mémorial ne sera plus accessible au public",
+            "warning2": "Aucun nouvel hommage ou condoléance ne pourra être ajouté",
+            "warning3": "Seul vous pourrez voir le mémorial archivé",
+            "memorialLabel": "Mémorial à archiver :",
+            "confirmLabel": "Tapez \"ARCHIVER\" pour confirmer :",
+            "confirmWord": "ARCHIVER",
+            "confirmPlaceholder": "Tapez ARCHIVER pour confirmer",
+            "cancel": "Annuler",
+            "confirm": "Archiver le Mémorial",
+            "archiving": "Archivage en cours...",
+            "success": "Mémorial archivé avec succès",
+            "error": "Échec de l'archivage du mémorial",
+            "noMemorial": "Aucun mémorial trouvé à archiver",
+            "confirmError": "Veuillez taper ARCHIVER pour confirmer"
+          },
+          "deleteDialog": {
+            "title": "Supprimer le Mémorial",
+            "description": "Cette action est permanente et irréversible. Êtes-vous absolument sûr de vouloir supprimer ce mémorial ?",
+            "warningTitle": "Avertissement : Cette action supprimera définitivement :",
+            "warning1": "Toutes les informations du mémorial",
+            "warning2": "Toutes les photos et vidéos téléchargées",
+            "warning3": "Tous les hommages et condoléances",
+            "warning4": "Toutes les informations des collaborateurs",
+            "warning5": "Cette action NE PEUT PAS ÊTRE ANNULÉE",
+            "memorialLabel": "Mémorial à supprimer :",
+            "slugLabel": "Tapez le slug du mémorial pour confirmer :",
+            "confirmLabel": "Tapez le slug du mémorial exactement comme indiqué ci-dessus :",
+            "confirmPlaceholder": "Tapez le slug du mémorial pour confirmer",
+            "cancel": "Annuler",
+            "confirm": "Supprimer Définitivement le Mémorial",
+            "deleting": "Suppression en cours...",
+            "success": "Mémorial supprimé avec succès",
+            "error": "Échec de la suppression du mémorial",
+            "noMemorial": "Aucun mémorial trouvé à supprimer",
+            "confirmError": "Le slug du mémorial ne correspond pas"
+          },
+          "deleteAccountDialog": {
+            "title": "Supprimer le Compte",
+            "description": "Cette action est permanente et irréversible. Êtes-vous absolument sûr de vouloir supprimer votre compte ?",
+            "warningTitle": "Avertissement : Cette action supprimera définitivement :",
+            "warning1": "Votre profil utilisateur et les informations de compte",
+            "warning2": "Tous les mémoriaux que vous avez créés",
+            "warning3": "Tous les hommages que vous avez publiés",
+            "warning4": "Tout accès aux mémoriaux collaboratifs",
+            "warning5": "Cette action NE PEUT PAS ÊTRE ANNULÉE",
+            "accountLabel": "Email du compte :",
+            "confirmLabel": "Tapez \"SUPPRIMER MON COMPTE\" pour confirmer :",
+            "confirmPlaceholder": "Tapez SUPPRIMER MON COMPTE pour confirmer",
+            "cancel": "Annuler",
+            "confirm": "Supprimer Mon Compte Définitivement",
+            "deleting": "Suppression du compte en cours...",
+            "success": "Compte supprimé avec succès",
+            "error": "Échec de la suppression du compte",
+            "noAccount": "Aucune information de compte trouvée",
+            "confirmError": "Veuillez taper SUPPRIMER MON COMPTE pour confirmer"
+          }
         },
         "account": {
           "title": "Actions du Compte",
@@ -2230,7 +2295,8 @@
     },
     "banner": {
       "offlineMessage": "Vous êtes actuellement hors ligne.",
-      "pendingActions": "Vous avez {{count}} action{{count !== 1 ? 's' : ''}} en attente qui se synchroniseront lorsque vous serez de nouveau en ligne."
+      "pendingActions": "Vous avez {{count}} action{{count !== 1 ? 's' : ''}} en attente qui se synchroniseront lorsque vous serez de nouveau en ligne.",
+      "limitedFeatures": "Vous êtes hors ligne. Certaines fonctionnalités peuvent être limitées."
     },
     "lastSync": "Dernière synchronisation : {{synced}} synchronisé, {{failed}} échoué",
     "loading": {
@@ -2239,6 +2305,114 @@
       "actionsQueued": "{{count}} action{{count !== 1 ? 's' : ''}} en file d'attente",
       "willSyncWhenOnline": "se synchronisera lorsqu'en ligne",
       "savedLocally": "Sera sauvegardé localement et synchronisé lorsqu'en ligne"
+    },
+    "saveForOffline": {
+      "button": "Enregistrer hors ligne",
+      "saving": "Enregistrement...",
+      "saved": "Enregistré hors ligne"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "Installer ForeverPages",
+      "description": "Installez notre application pour la meilleure expérience avec accès hors ligne et notifications push.",
+      "button": "Installer l'Application",
+      "dismiss": "Pas Maintenant",
+      "later": "Peut-être Plus Tard",
+      "benefits": {
+        "title": "Pourquoi installer ?",
+        "offline": "Accédez aux mémoriaux hors ligne",
+        "notifications": "Recevez des notifications push",
+        "faster": "Temps de chargement plus rapides",
+        "homeScreen": "Accès rapide depuis l'écran d'accueil"
+      },
+      "ios": {
+        "title": "Installer sur iOS",
+        "step1": "Appuyez sur le bouton Partager",
+        "step2": "Faites défiler vers le bas et appuyez sur \"Ajouter à l'écran d'accueil\"",
+        "step3": "Appuyez sur \"Ajouter\" pour confirmer",
+        "shareIcon": "Icône de partage dans Safari"
+      },
+      "android": {
+        "title": "Installer sur Android",
+        "step1": "Appuyez sur le bouton menu (⋮)",
+        "step2": "Sélectionnez \"Ajouter à l'écran d'accueil\" ou \"Installer l'application\"",
+        "step3": "Appuyez sur \"Ajouter\" ou \"Installer\" pour confirmer"
+      },
+      "installed": "Application Installée",
+      "alreadyInstalled": "ForeverPages est déjà installé sur votre appareil."
+    }
+  },
+  "pushNotifications": {
+    "title": "Notifications Push",
+    "description": "Gérez vos préférences de notifications push",
+    "enable": "Activer les Notifications",
+    "disable": "Désactiver les Notifications",
+    "enabled": "Notifications Activées",
+    "disabled": "Notifications Désactivées",
+    "permissionDenied": "Permission Refusée",
+    "permissionDeniedDescription": "Veuillez activer les notifications dans les paramètres de votre navigateur pour recevoir des mises à jour.",
+    "notSupported": "Non Pris en Charge",
+    "notSupportedDescription": "Les notifications push ne sont pas prises en charge par votre navigateur.",
+    "preferences": {
+      "title": "Préférences de Notification",
+      "description": "Choisissez quelles notifications vous souhaitez recevoir",
+      "tributes": {
+        "label": "Nouveaux Hommages",
+        "description": "Soyez notifié lorsque quelqu'un laisse un hommage sur votre mémorial"
+      },
+      "livestream": {
+        "label": "Événements en Direct",
+        "description": "Soyez notifié des services mémoriaux en direct et à venir"
+      },
+      "anniversary": {
+        "label": "Rappels d'Anniversaire",
+        "description": "Recevez des rappels pour les anniversaires de naissance et de décès"
+      },
+      "system": {
+        "label": "Mises à Jour Système",
+        "description": "Mises à jour importantes concernant ForeverPages"
+      }
+    },
+    "testNotification": "Envoyer une Notification Test",
+    "testSent": "Notification test envoyée",
+    "saving": "Enregistrement des préférences...",
+    "saved": "Préférences enregistrées",
+    "error": {
+      "subscribeFailed": "Échec de l'activation des notifications",
+      "unsubscribeFailed": "Échec de la désactivation des notifications",
+      "updateFailed": "Échec de la mise à jour des préférences"
+    }
+  },
+  "qrCode": {
+    "title": "Code QR",
+    "description": "Partagez ce code QR pour permettre aux autres d'accéder facilement au mémorial",
+    "generating": "Génération du code QR...",
+    "download": "Télécharger le Code QR",
+    "downloadPng": "Télécharger PNG",
+    "downloadSvg": "Télécharger SVG",
+    "copyLink": "Copier le Lien",
+    "linkCopied": "Lien copié dans le presse-papiers",
+    "shareQr": "Partager le Code QR",
+    "customize": {
+      "title": "Personnaliser le Code QR",
+      "tab": "Personnaliser",
+      "presets": "Couleurs Prédéfinies",
+      "custom": "Couleurs Personnalisées",
+      "size": "Taille",
+      "margin": "Marge",
+      "foreground": "Couleur de Premier Plan",
+      "background": "Couleur d'Arrière-plan",
+      "preview": "Aperçu"
+    },
+    "print": {
+      "title": "Instructions d'Impression",
+      "description": "Imprimez ce code QR pour les programmes funéraires, cartes mémorielles ou l'affichage lors du service.",
+      "forMemorial": "Code QR pour le Mémorial de {{name}}"
+    },
+    "error": {
+      "generateFailed": "Échec de la génération du code QR",
+      "downloadFailed": "Échec du téléchargement du code QR"
     }
   },
   "twoFactor": {
@@ -3091,6 +3265,60 @@
       "performance": "Performance",
       "security": "Sécurité",
       "bestPractices": "Bonnes Pratiques"
+    }
+  },
+  "familyTree": {
+    "title": "Famille",
+    "born": "Né(e)",
+    "passed": "Décédé(e)",
+    "deceased": "Décédé(e)",
+    "loading": "Chargement des membres de la famille...",
+    "empty": "Aucun membre de la famille n'a encore été ajouté."
+  },
+  "relationships": {
+    "spouse": "Conjoint(e)",
+    "partner": "Partenaire",
+    "father": "Père",
+    "mother": "Mère",
+    "son": "Fils",
+    "daughter": "Fille",
+    "brother": "Frère",
+    "sister": "Sœur",
+    "grandfather": "Grand-père",
+    "grandmother": "Grand-mère",
+    "grandson": "Petit-fils",
+    "granddaughter": "Petite-fille",
+    "uncle": "Oncle",
+    "aunt": "Tante",
+    "nephew": "Neveu",
+    "niece": "Nièce",
+    "cousin": "Cousin(e)",
+    "other": "Autre"
+  },
+  "condolences": {
+    "title": "Condoléances",
+    "placeholder": "Partagez vos pensées et souvenirs...",
+    "postAnonymously": "Publier anonymement",
+    "submit": "Envoyer Condoléance",
+    "signInToPost": "Connectez-vous pour laisser un message de condoléances",
+    "empty": "Pas encore de condoléances. Soyez le premier à partager vos pensées.",
+    "count": "{count} condoléance(s)",
+    "loadMore": "Charger Plus",
+    "anonymous": "Anonyme",
+    "reply": "réponse",
+    "replies": "réponses",
+    "delete": "Supprimer",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette condoléance?",
+    "success": {
+      "posted": "Votre condoléance a été publiée",
+      "deleted": "Condoléance supprimée"
+    },
+    "errors": {
+      "emptyMessage": "Veuillez entrer un message",
+      "loginRequired": "Veuillez vous connecter pour laisser une condoléance",
+      "postFailed": "Échec de la publication. Veuillez réessayer.",
+      "deleteFailed": "Échec de la suppression de la condoléance",
+      "loadFailed": "Échec du chargement des condoléances"
     }
   }
 }

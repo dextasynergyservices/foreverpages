@@ -39,13 +39,12 @@ export async function GET() {
     });
 
     // Get memorials where user is an ADMIN collaborator (can manage invitations)
-    // Note: Collaborator invitations have invitedUserId set and rsvpToken is null
+    // Check both invitedUserId and email since invitations are sent by email
     const adminCollaborations = await prisma.invitation.findMany({
       where: {
-        invitedUserId: session.user.id,
         status: "ACCEPTED",
         role: "ADMIN",
-        expiresAt: { gte: new Date() }, // Not expired yet
+        OR: [{ invitedUserId: session.user.id }, { email: session.user.email || "" }],
       },
       select: {
         memorialId: true,
