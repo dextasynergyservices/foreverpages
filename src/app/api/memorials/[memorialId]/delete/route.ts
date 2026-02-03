@@ -4,13 +4,13 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 
 /**
- * DELETE /api/memorials/[id]/delete
+ * DELETE /api/memorials/[memorialId]/delete
  * Delete a memorial from page builder
  * Requires user to type the memorial slug to confirm deletion
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ memorialId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -22,7 +22,7 @@ export async function DELETE(
       );
     }
 
-    const { id: memorialId } = await params;
+    const { memorialId } = await params;
 
     if (!memorialId) {
       return NextResponse.json(
