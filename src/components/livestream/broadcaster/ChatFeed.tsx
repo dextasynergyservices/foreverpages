@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -52,70 +53,59 @@ interface ChatFeedProps {
 }
 
 const ChatFeed: React.FC<ChatFeedProps> = ({ streamId, enableReactions, onViewerCountUpdate }) => {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [reactions, setReactions] = useState<Reaction[]>([]);
-  const [loading, setLoading] = useState(true);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const queryClient = useQueryClient();
 
-  // Fetch messages
-  const fetchMessages = async () => {
-    try {
+  // TanStack Query: Fetch messages with polling
+  const { data: messagesData, isLoading: messagesLoading } = useQuery({
+    queryKey: ["stream-comments", streamId],
+    queryFn: async () => {
       const response = await fetch(`/api/streams/${streamId}/comments`);
-      if (response.ok) {
-        const data = await response.json();
-        setMessages(data.data || []);
-      }
-    } catch (error) {
-      console.error("Failed to fetch messages:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      if (!response.ok) throw new Error("Failed to fetch messages");
+      return response.json();
+    },
+    refetchInterval: 3000, // Poll every 3 seconds
+    staleTime: 2000,
+  });
 
-  // Fetch reactions
-  const fetchReactions = async () => {
-    try {
+  // TanStack Query: Fetch reactions with polling
+  const { data: reactionsData } = useQuery({
+    queryKey: ["stream-reactions", streamId],
+    queryFn: async () => {
       const response = await fetch(`/api/streams/${streamId}/reactions`);
-      if (response.ok) {
-        const data = await response.json();
-        setReactions(data.data?.recent || []);
-      }
-    } catch (error) {
-      console.error("Failed to fetch reactions:", error);
-    }
-  };
+      if (!response.ok) throw new Error("Failed to fetch reactions");
+      return response.json();
+    },
+    refetchInterval: 3000,
+    staleTime: 2000,
+    enabled: enableReactions,
+  });
 
-  // Fetch viewers count
-  const fetchViewers = async () => {
-    try {
+  // TanStack Query: Fetch viewers with polling
+  const { data: viewersData } = useQuery({
+    queryKey: ["stream-viewers", streamId],
+    queryFn: async () => {
       const response = await fetch(`/api/streams/${streamId}/viewers`);
-      if (response.ok) {
-        const data = await response.json();
-        onViewerCountUpdate(data.data?.length || 0);
-      }
-    } catch (error) {
-      console.error("Failed to fetch viewers:", error);
-    }
-  };
+      if (!response.ok) throw new Error("Failed to fetch viewers");
+      return response.json();
+    },
+    refetchInterval: 3000,
+    staleTime: 2000,
+  });
 
-  // Initial fetch
+  // Derive state from queries (memoized to prevent unnecessary re-renders)
+  const messages: ChatMessage[] = useMemo(() => messagesData?.data || [], [messagesData?.data]);
+  const reactions: Reaction[] = reactionsData?.data?.recent || [];
+  const loading = messagesLoading;
+
+  // Update viewer count when data changes
   useEffect(() => {
-    fetchMessages();
-    fetchReactions();
-    fetchViewers();
-
-    // Poll for updates every 3 seconds
-    const interval = setInterval(() => {
-      fetchMessages();
-      fetchReactions();
-      fetchViewers();
-    }, 3000);
-
-    return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [streamId]);
+    if (viewersData?.data?.length !== undefined) {
+      onViewerCountUpdate(viewersData.data.length);
+    }
+  }, [viewersData, onViewerCountUpdate]);
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -124,72 +114,70 @@ const ChatFeed: React.FC<ChatFeedProps> = ({ streamId, enableReactions, onViewer
     }
   }, [messages]);
 
-  // Moderation handlers
-  const hideMessage = async (messageId: string) => {
-    try {
+  // Mutation: Hide message
+  const hideMessageMutation = useMutation({
+    mutationFn: async (messageId: string) => {
       const response = await fetch(`/api/streams/${streamId}/comments/${messageId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isHidden: true, moderationReason: "Hidden by broadcaster" }),
       });
-
       if (!response.ok) throw new Error("Failed to hide message");
-
-      setMessages((prev) =>
-        prev.map((msg) => (msg.id === messageId ? { ...msg, isHidden: true } : msg))
-      );
+      return { messageId };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["stream-comments", streamId] });
       toast.success("Message hidden");
-    } catch (error) {
-      console.error("Failed to hide message:", error);
+    },
+    onError: () => {
       toast.error("Failed to hide message");
-    }
-  };
+    },
+  });
 
-  const deleteMessage = async (messageId: string) => {
-    try {
+  // Mutation: Delete message
+  const deleteMessageMutation = useMutation({
+    mutationFn: async (messageId: string) => {
       const response = await fetch(`/api/streams/${streamId}/comments/${messageId}`, {
         method: "DELETE",
       });
-
       if (!response.ok) throw new Error("Failed to delete message");
-
-      setMessages((prev) => prev.filter((msg) => msg.id !== messageId));
+      return { messageId };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["stream-comments", streamId] });
       toast.success("Message deleted");
       setDeleteConfirmId(null);
-    } catch (error) {
-      console.error("Failed to delete message:", error);
+    },
+    onError: () => {
       toast.error("Failed to delete message");
-    }
-  };
+    },
+  });
 
-  const pinMessage = async (messageId: string, isPinned: boolean) => {
-    try {
+  // Mutation: Pin/Unpin message
+  const pinMessageMutation = useMutation({
+    mutationFn: async ({ messageId, isPinned }: { messageId: string; isPinned: boolean }) => {
       const response = await fetch(`/api/streams/${streamId}/comments/${messageId}/pin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isPinned }),
       });
-
       if (!response.ok) throw new Error("Failed to pin/unpin message");
-
-      setMessages((prev) =>
-        prev.map((msg) => {
-          // Unpin all other messages if pinning this one
-          if (isPinned && msg.id !== messageId) {
-            return { ...msg, isPinned: false };
-          }
-          if (msg.id === messageId) {
-            return { ...msg, isPinned };
-          }
-          return msg;
-        })
-      );
+      return { messageId, isPinned };
+    },
+    onSuccess: ({ isPinned }) => {
+      queryClient.invalidateQueries({ queryKey: ["stream-comments", streamId] });
       toast.success(isPinned ? "Message pinned" : "Message unpinned");
-    } catch (error) {
-      console.error("Failed to pin/unpin message:", error);
+    },
+    onError: () => {
       toast.error("Failed to update message");
-    }
-  };
+    },
+  });
+
+  // Handler wrappers
+  const hideMessage = (messageId: string) => hideMessageMutation.mutate(messageId);
+  const deleteMessage = (messageId: string) => deleteMessageMutation.mutate(messageId);
+  const pinMessage = (messageId: string, isPinned: boolean) =>
+    pinMessageMutation.mutate({ messageId, isPinned });
 
   const exportChat = async () => {
     setExporting(true);

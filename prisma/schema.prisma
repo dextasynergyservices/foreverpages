@@ -78,8 +78,32 @@ model User {
   twoFactorMethod  TwoFactorMethod?
   backupCodes      String[] // Hashed backup codes for account recovery
 
-  // Preferences
+  // Notification Preferences - Global
   notificationsEnabled Boolean @default(true)
+
+  // Email Notification Preferences
+  emailNotifications      Boolean @default(true)
+  emailTributes           Boolean @default(true)  // New tributes, candles, flowers
+  emailComments           Boolean @default(true)  // Comments on memorials
+  emailLivestream         Boolean @default(true)  // Livestream start/reminders
+  emailAnniversary        Boolean @default(true)  // Birthday/anniversary reminders
+  emailDigest             Boolean @default(true)  // Weekly activity digest
+  emailMarketing          Boolean @default(false) // Marketing/promotional emails
+
+  // SMS Notification Preferences
+  smsNotifications        Boolean @default(false) // Requires opt-in
+  smsTributes             Boolean @default(false)
+  smsLivestream           Boolean @default(true)  // High priority - livestream reminders
+  smsAnniversary          Boolean @default(false)
+
+  // WhatsApp Notification Preferences
+  whatsappNotifications   Boolean @default(false) // Requires opt-in
+  whatsappNumber          String?                 // WhatsApp phone number
+  whatsappTributes        Boolean @default(false)
+  whatsappLivestream      Boolean @default(true)  // High priority
+  whatsappAnniversary     Boolean @default(false)
+
+  // General Preferences
   language             String  @default("en")
   timezone             String  @default("UTC")
 
@@ -1700,6 +1724,14 @@ enum EmailTemplate {
   SUBSCRIPTION_EXPIRING
   REPORT_RECEIVED
   REPORT_RESOLVED
+  // Livestream notification templates
+  STREAM_SCHEDULED
+  STREAM_LIVE
+  STREAM_ENDED
+  STREAM_REMINDER
+  RECORDING_READY
+  RECORDING_EXPIRING
+  RECORDING_DELETED
 }
 
 enum EmailStatus {

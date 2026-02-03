@@ -40,15 +40,44 @@ export default function ForgotPasswordPage() {
 
     if (validateEmail()) {
       setIsLoading(true);
-      // Simulate API call
-      setTimeout(() => {
-        console.log("Password reset requested for:", email);
-        setIsSubmitted(true);
+
+      try {
+        const response = await fetch("/api/auth/forgot-password", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: email.toLowerCase().trim() }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          console.log("Password reset requested for:", email);
+          setIsSubmitted(true);
+          toast.success(
+            t("forgotPassword.success.emailSent") || "Password reset email sent successfully!"
+          );
+          // Clear saved email on successful submission
+          localStorage.removeItem("forgotPasswordEmail");
+        } else if (response.status === 429) {
+          toast.error(
+            t("forgotPassword.errors.tooManyRequests") ||
+              "Too many requests. Please try again later."
+          );
+        } else {
+          toast.error(
+            data.error ||
+              t("forgotPassword.errors.sendFailed") ||
+              "Failed to send reset email. Please try again."
+          );
+        }
+      } catch (error) {
+        console.error("Password reset error:", error);
+        toast.error(t("forgotPassword.errors.networkError") || "Network error. Please try again.");
+      } finally {
         setIsLoading(false);
-        toast.success("Password reset email sent successfully!");
-        // Clear saved email on successful submission
-        localStorage.removeItem("forgotPasswordEmail");
-      }, 1500);
+      }
     }
   };
 

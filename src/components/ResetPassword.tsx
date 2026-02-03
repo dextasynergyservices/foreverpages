@@ -1,16 +1,22 @@
 // app/reset-password/page.tsx
 "use client";
 
-import React, { useState } from "react";
-import { Heart, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Heart, Lock, Eye, EyeOff, ArrowLeft, AlertCircle } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Navbar } from "@/components/Navbar";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
+import { LoadingSpinner } from "@/components/ui/skeleton";
 
 export default function ResetPasswordPage() {
   const { theme } = useTheme();
   const { t } = useTranslations();
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -23,6 +29,17 @@ export default function ResetPasswordPage() {
   }>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [tokenError, setTokenError] = useState<string | null>(null);
+
+  // Check if token is present
+  useEffect(() => {
+    if (!token) {
+      setTokenError(
+        t("resetPassword.errors.noToken") ||
+          "Invalid or missing reset token. Please request a new password reset link."
+      );
+    }
+  }, [token, t]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -51,16 +68,107 @@ export default function ResetPasswordPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
+    if (validateForm() && token) {
       setIsLoading(true);
-      // Simulate API call
-      setTimeout(() => {
-        console.log("Password reset:", formData);
-        setIsSubmitted(true);
+
+      try {
+        const response = await fetch("/api/auth/reset-password", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token,
+            password: formData.password,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          console.log("Password reset successful");
+          setIsSubmitted(true);
+          toast.success(t("resetPassword.success.message") || "Password reset successfully!");
+        } else {
+          toast.error(
+            data.error ||
+              t("resetPassword.errors.resetFailed") ||
+              "Failed to reset password. Please try again."
+          );
+          if (data.error?.includes("expired") || data.error?.includes("invalid")) {
+            setTokenError(data.error);
+          }
+        }
+      } catch (error) {
+        console.error("Password reset error:", error);
+        toast.error(t("resetPassword.errors.networkError") || "Network error. Please try again.");
+      } finally {
         setIsLoading(false);
-      }, 1500);
+      }
     }
   };
+
+  // Show error state if no token
+  if (tokenError) {
+    return (
+      <div
+        className={`min-h-screen flex items-center justify-center p-4 ${
+          theme === "dark" ? "bg-black" : "bg-white"
+        }`}
+      >
+        <Navbar />
+        <div className="w-full max-w-md">
+          <div className="text-center mb-8">
+            <Link href="/" className="inline-block">
+              <div
+                className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 shadow-lg transition-colors ${
+                  theme === "dark" ? "bg-white hover:bg-white/80" : "bg-black hover:bg-black/80"
+                }`}
+              >
+                <Heart className={`w-8 h-8 ${theme === "dark" ? "text-black" : "text-white"}`} />
+              </div>
+            </Link>
+            <h1
+              className={`text-3xl font-bold mb-2 ${theme === "dark" ? "text-white" : "text-black"}`}
+            >
+              {t("resetPassword.errors.invalidLink") || "Invalid Reset Link"}
+            </h1>
+          </div>
+
+          <div
+            className={`rounded-2xl shadow-xl border p-8 text-center ${
+              theme === "dark" ? "bg-black border-white/30" : "bg-white border-black/30"
+            }`}
+          >
+            <div
+              className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${
+                theme === "dark" ? "bg-red-500/20" : "bg-red-100"
+              }`}
+            >
+              <AlertCircle
+                className={`w-8 h-8 ${theme === "dark" ? "text-red-400" : "text-red-600"}`}
+              />
+            </div>
+
+            <p className={`mb-6 ${theme === "dark" ? "text-white/70" : "text-black/70"}`}>
+              {tokenError}
+            </p>
+
+            <Link
+              href="/forgot-password"
+              className={`w-full py-3 rounded-lg font-medium transition-all shadow-md hover:shadow-lg block ${
+                theme === "dark"
+                  ? "bg-white text-black hover:bg-white/80"
+                  : "bg-black text-white hover:bg-black/80"
+              }`}
+            >
+              {t("resetPassword.errors.requestNewLink") || "Request New Reset Link"}
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (isSubmitted) {
     return (
@@ -267,9 +375,14 @@ export default function ResetPasswordPage() {
                   : "bg-black text-white hover:bg-black/80"
               }`}
             >
-              {isLoading
-                ? t("resetPassword.buttons.resetting")
-                : t("resetPassword.buttons.resetPassword")}
+              {isLoading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <LoadingSpinner size="sm" />
+                  {t("resetPassword.buttons.resetting")}
+                </span>
+              ) : (
+                t("resetPassword.buttons.resetPassword")
+              )}
             </button>
           </form>
 

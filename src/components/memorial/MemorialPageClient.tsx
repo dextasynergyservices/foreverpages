@@ -9,6 +9,8 @@ import { Footer } from "@/components/Footer";
 import { TemplateRenderer } from "@/components/templates/base/TemplateRenderer";
 import { ExpiredMemorialBanner } from "@/components/memorial/ExpiredMemorialBanner";
 import { MemorialExpiryCheck } from "@/lib/utils/checkMemorialExpiry";
+import { GallerySection } from "@/components/templates/sections/GallerySection";
+import { TributesSection } from "@/components/templates/sections/TributesSection";
 
 interface ActiveStream {
   id: string;
@@ -126,9 +128,11 @@ export default function MemorialPageClient({
           onPasswordVerified={() => setIsPasswordVerified(true)}
         />
 
-        {/* TODO: Photo Gallery Section */}
-        {/* TODO: Tribute Wall Section */}
-        {/* TODO: Service Information Section */}
+        {/* Photo Gallery Section */}
+        <GallerySection memorial={memorial} />
+
+        {/* Tribute Wall Section */}
+        <TributesSection memorial={memorial} />
       </main>
 
       <Footer />

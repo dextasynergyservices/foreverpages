@@ -160,7 +160,7 @@ export async function sendStreamScheduledEmail(
       to: recipientEmail,
       from: SENDER_EMAIL,
       subject,
-      template: "EMAIL_VERIFICATION", // TODO: Add STREAM_SCHEDULED template type
+      template: "STREAM_SCHEDULED",
       messageId: response.body.messageId,
       providerId: response.body.messageId,
       metadata: { memorialName, streamTitle, scheduledFor: scheduledFor.toISOString() },
@@ -176,7 +176,7 @@ export async function sendStreamScheduledEmail(
       to: recipientEmail,
       from: SENDER_EMAIL,
       subject,
-      template: "EMAIL_VERIFICATION",
+      template: "STREAM_SCHEDULED",
       metadata: { success: false, error: errorMsg },
     });
 
@@ -257,7 +257,7 @@ export async function sendStreamLiveEmail(params: StreamLiveEmailParams): Promis
       to: recipientEmail,
       from: SENDER_EMAIL,
       subject,
-      template: "EMAIL_VERIFICATION",
+      template: "STREAM_LIVE",
       messageId: response.body.messageId,
       providerId: response.body.messageId,
       metadata: { memorialName, streamTitle },
@@ -273,7 +273,7 @@ export async function sendStreamLiveEmail(params: StreamLiveEmailParams): Promis
       to: recipientEmail,
       from: SENDER_EMAIL,
       subject,
-      template: "EMAIL_VERIFICATION",
+      template: "STREAM_LIVE",
       metadata: { success: false, error: errorMsg },
     });
 
@@ -364,7 +364,7 @@ export async function sendStreamEndedEmail(params: StreamEndedEmailParams): Prom
       to: recipientEmail,
       from: SENDER_EMAIL,
       subject,
-      template: "EMAIL_VERIFICATION",
+      template: "STREAM_ENDED",
       messageId: response.body.messageId,
       providerId: response.body.messageId,
       metadata: { memorialName, streamTitle, duration, peakViewers, totalComments },
@@ -380,7 +380,7 @@ export async function sendStreamEndedEmail(params: StreamEndedEmailParams): Prom
       to: recipientEmail,
       from: SENDER_EMAIL,
       subject,
-      template: "EMAIL_VERIFICATION",
+      template: "STREAM_ENDED",
       metadata: { success: false, error: errorMsg },
     });
 
@@ -464,7 +464,7 @@ export async function sendRecordingReadyEmail(
       to: recipientEmail,
       from: SENDER_EMAIL,
       subject,
-      template: "EMAIL_VERIFICATION",
+      template: "RECORDING_READY",
       messageId: response.body.messageId,
       providerId: response.body.messageId,
       metadata: { memorialName, streamTitle, expiresAt: expiresAt.toISOString() },
@@ -480,7 +480,7 @@ export async function sendRecordingReadyEmail(
       to: recipientEmail,
       from: SENDER_EMAIL,
       subject,
-      template: "EMAIL_VERIFICATION",
+      template: "RECORDING_READY",
       metadata: { success: false, error: errorMsg },
     });
 
@@ -575,7 +575,7 @@ export async function sendRecordingExpiringEmail(
       to: recipientEmail,
       from: SENDER_EMAIL,
       subject,
-      template: "EMAIL_VERIFICATION",
+      template: "RECORDING_EXPIRING",
       messageId: response.body.messageId,
       providerId: response.body.messageId,
       metadata: { memorialName, streamTitle, expiresAt: expiresAt.toISOString(), daysRemaining },
@@ -591,7 +591,7 @@ export async function sendRecordingExpiringEmail(
       to: recipientEmail,
       from: SENDER_EMAIL,
       subject,
-      template: "EMAIL_VERIFICATION",
+      template: "RECORDING_EXPIRING",
       metadata: { success: false, error: errorMsg },
     });
 
@@ -666,7 +666,7 @@ export async function sendRecordingDeletedEmail(
       to: recipientEmail,
       from: SENDER_EMAIL,
       subject,
-      template: "EMAIL_VERIFICATION",
+      template: "RECORDING_DELETED",
       messageId: response.body.messageId,
       providerId: response.body.messageId,
       metadata: { memorialName, streamTitle, deletedAt: deletedAt.toISOString() },
@@ -682,7 +682,7 @@ export async function sendRecordingDeletedEmail(
       to: recipientEmail,
       from: SENDER_EMAIL,
       subject,
-      template: "EMAIL_VERIFICATION",
+      template: "RECORDING_DELETED",
       metadata: { success: false, error: errorMsg },
     });
 

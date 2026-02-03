@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import * as Brevo from "@getbrevo/brevo";
+import log from "@/lib/logger";
 
 // Initialize Brevo client
 const brevoApiInstance = new Brevo.TransactionalEmailsApi();
@@ -8,9 +9,6 @@ brevoApiInstance.setApiKey(
   Brevo.TransactionalEmailsApiApiKeys.apiKey,
   process.env.BREVO_API_KEY || ""
 );
-
-// Cron job secret for security (set in environment variables)
-const CRON_SECRET = process.env.CRON_SECRET || "your-secret-key";
 
 /**
  * Combined cron job endpoint for:
@@ -23,8 +21,14 @@ const CRON_SECRET = process.env.CRON_SECRET || "your-secret-key";
 export async function GET(request: NextRequest) {
   try {
     // Verify cron secret for security
+    const cronSecret = process.env.CRON_SECRET;
+    if (!cronSecret) {
+      log.error("CRON_SECRET environment variable is not configured");
+      return NextResponse.json({ error: "Server misconfigured" }, { status: 500 });
+    }
+
     const authHeader = request.headers.get("authorization");
-    if (authHeader !== `Bearer ${CRON_SECRET}`) {
+    if (authHeader !== `Bearer ${cronSecret}`) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

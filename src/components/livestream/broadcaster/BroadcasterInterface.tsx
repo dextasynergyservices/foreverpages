@@ -199,9 +199,34 @@ const BroadcasterInterface: React.FC<BroadcasterInterfaceProps> = ({
     setStatus(newStatus);
   };
 
-  const handleQualityChange = (newQuality: StreamQuality) => {
+  const handleQualityChange = async (newQuality: StreamQuality) => {
     setQuality(newQuality);
-    // TODO: Implement quality change in WebRTC
+
+    // Map quality enum to video constraints
+    const qualityMap: Record<StreamQuality, MediaTrackConstraints> = {
+      FULL_HD: { width: { ideal: 1920 }, height: { ideal: 1080 } },
+      HD: { width: { ideal: 1280 }, height: { ideal: 720 } },
+      SD: { width: { ideal: 854 }, height: { ideal: 480 } },
+      MEDIUM: { width: { ideal: 640 }, height: { ideal: 360 } },
+      LOW: { width: { ideal: 426 }, height: { ideal: 240 } },
+      LOWEST: { width: { ideal: 256 }, height: { ideal: 144 } },
+    };
+
+    const constraints = qualityMap[newQuality] || qualityMap.HD;
+
+    // Apply constraints to local stream
+    if (localStream) {
+      try {
+        const videoTracks = localStream.getVideoTracks();
+        for (const track of videoTracks) {
+          await track.applyConstraints(constraints);
+        }
+        toast.success(`Stream quality changed to ${newQuality}`);
+      } catch (err) {
+        console.warn("Failed to apply quality constraints:", err);
+        toast.error("Failed to change stream quality");
+      }
+    }
   };
 
   const handleError = (errorMessage: string) => {

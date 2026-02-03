@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/dialog";
 import {
   User,
-  Bell,
   Shield,
   Globe,
   Trash2,
@@ -46,6 +45,7 @@ import { Spinner } from "@/components/ui/skeleton-loader";
 import SecurityTab from "./SecurityTab";
 import AccountDetailsTab from "./AccountDetailsTab";
 import CollaboratorsTab from "./CollaboratorsTab";
+import NotificationPreferencesSettings from "@/components/settings/NotificationPreferencesSettings";
 import toastNotification from "@/lib/toastNotifications";
 
 const SettingsContent = () => {
@@ -54,7 +54,6 @@ const SettingsContent = () => {
   const { data: userData, isLoading, error } = useUser();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<string>("profile");
-  const [emailNotifications, setEmailNotifications] = useState(true);
   const [adminEmails, setAdminEmails] = useState("");
   const [phoneNumbers, setPhoneNumbers] = useState("");
   const [selectedRole, setSelectedRole] = useState<string>("VIEWER");
@@ -111,10 +110,6 @@ const SettingsContent = () => {
 
   const handleSavePrivacySettings = () => {
     toastNotification.info("Privacy settings save functionality coming soon");
-  };
-
-  const handleSaveNotificationSettings = () => {
-    toastNotification.info("Notification settings save functionality coming soon");
   };
 
   // State for advanced tab
@@ -857,107 +852,8 @@ const SettingsContent = () => {
           </TabsContent>
 
           <TabsContent value="notifications" className="space-y-6">
-            <Card className={`border ${cardBorder} ${cardBg}`}>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Bell className="h-5 w-5" />
-                  {t("dashboard.settings.notifications.title")}
-                </CardTitle>
-                <CardDescription className={textMuted}>
-                  {t("dashboard.settings.notifications.description")}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="divide-y rounded-md overflow-hidden border" role="list">
-                  <div
-                    className={`flex items-center justify-between p-4 ${theme === "dark" ? "bg-white/3 hover:bg-white/5" : "bg-white hover:bg-gray-50"}`}
-                    role="listitem"
-                  >
-                    <div>
-                      <h4 className="font-medium">
-                        {t("dashboard.settings.notifications.email.label")}
-                      </h4>
-                      <p className={`text-sm ${textMuted}`}>
-                        {t("dashboard.settings.notifications.email.description")}
-                      </p>
-                    </div>
-                    <Switch
-                      id="email-notifications"
-                      checked={emailNotifications}
-                      onCheckedChange={setEmailNotifications}
-                    />
-                  </div>
-
-                  <div
-                    className={`flex items-center justify-between p-4 ${theme === "dark" ? "bg-transparent hover:bg-white/5" : "bg-white hover:bg-gray-50"}`}
-                    role="listitem"
-                  >
-                    <div>
-                      <h4 className="font-medium">
-                        {t("dashboard.settings.notifications.types.newTributes")}
-                      </h4>
-                      <p className={`text-sm ${textMuted}`}>
-                        When someone leaves a tribute message
-                      </p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-
-                  <div
-                    className={`flex items-center justify-between p-4 ${theme === "dark" ? "bg-transparent hover:bg-white/5" : "bg-white hover:bg-gray-50"}`}
-                    role="listitem"
-                  >
-                    <div>
-                      <h4 className="font-medium">
-                        {t("dashboard.settings.notifications.types.photoUploads")}
-                      </h4>
-                      <p className={`text-sm ${textMuted}`}>
-                        When new photos are added to the memorial
-                      </p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-
-                  <div
-                    className={`flex items-center justify-between p-4 ${theme === "dark" ? "bg-transparent hover:bg-white/5" : "bg-white hover:bg-gray-50"}`}
-                    role="listitem"
-                  >
-                    <div>
-                      <h4 className="font-medium">
-                        {t("dashboard.settings.notifications.types.rsvpUpdates")}
-                      </h4>
-                      <p className={`text-sm ${textMuted}`}>
-                        When someone responds to service invitations
-                      </p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-
-                  <div
-                    className={`flex items-center justify-between p-4 ${theme === "dark" ? "bg-transparent hover:bg-white/5" : "bg-white hover:bg-gray-50"}`}
-                    role="listitem"
-                  >
-                    <div>
-                      <h4 className="font-medium">
-                        {t("dashboard.settings.notifications.types.weeklySummary")}
-                      </h4>
-                      <p className={`text-sm ${textMuted}`}>Weekly report of memorial activity</p>
-                    </div>
-                    <Switch />
-                  </div>
-                </div>
-
-                <div>
-                  <Button
-                    variant="memorial"
-                    className={`w-50 justify-center align-center ${theme === "dark" ? "bg-white text-black" : "bg-black text-white"}`}
-                    onClick={handleSaveNotificationSettings}
-                  >
-                    {t("dashboard.settings.notifications.save")}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            {/* User Notification Preferences - Connected to Backend */}
+            <NotificationPreferencesSettings />
           </TabsContent>
 
           <TabsContent value="advanced" className="space-y-6">

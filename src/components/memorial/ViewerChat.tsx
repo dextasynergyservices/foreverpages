@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -43,11 +44,39 @@ export default function ViewerChat({
   allowComments,
   isLocked = false,
 }: ViewerChatProps) {
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [reactions, setReactions] = useState<Reaction[]>([]);
   const [newComment, setNewComment] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const queryClient = useQueryClient();
+
+  // TanStack Query: Fetch comments with polling
+  const { data: commentsData } = useQuery({
+    queryKey: ["viewer-comments", streamId],
+    queryFn: async () => {
+      const response = await fetch(`/api/streams/${streamId}/comments`);
+      if (!response.ok) throw new Error("Failed to fetch comments");
+      return response.json();
+    },
+    refetchInterval: 3000,
+    staleTime: 2000,
+    enabled: !isLocked,
+  });
+
+  // TanStack Query: Fetch reactions with polling
+  const { data: reactionsData } = useQuery({
+    queryKey: ["viewer-reactions", streamId],
+    queryFn: async () => {
+      const response = await fetch(`/api/streams/${streamId}/reactions`);
+      if (!response.ok) throw new Error("Failed to fetch reactions");
+      return response.json();
+    },
+    refetchInterval: 3000,
+    staleTime: 2000,
+    enabled: !isLocked,
+  });
+
+  // Derive state from queries (memoized to prevent unnecessary re-renders)
+  const comments: Comment[] = useMemo(() => commentsData?.comments || [], [commentsData?.comments]);
+  const reactions: Reaction[] = reactionsData?.reactions || [];
 
   // Auto-scroll to latest message
   const scrollToBottom = () => {
@@ -58,97 +87,56 @@ export default function ViewerChat({
     scrollToBottom();
   }, [comments]);
 
-  // Poll for comments and reactions
-  useEffect(() => {
-    if (isLocked) return;
-
-    const fetchData = async () => {
-      try {
-        const [commentsRes, reactionsRes] = await Promise.all([
-          fetch(`/api/streams/${streamId}/comments`),
-          fetch(`/api/streams/${streamId}/reactions`),
-        ]);
-
-        if (commentsRes.ok) {
-          const commentsData = await commentsRes.json();
-          setComments(commentsData.comments || []);
-        }
-
-        if (reactionsRes.ok) {
-          const reactionsData = await reactionsRes.json();
-          setReactions(reactionsData.reactions || []);
-        }
-      } catch (error) {
-        console.error("Failed to fetch chat data:", error);
-      }
-    };
-
-    // Initial fetch
-    fetchData();
-
-    // Poll every 3 seconds
-    const interval = setInterval(fetchData, 3000);
-
-    return () => clearInterval(interval);
-  }, [streamId, isLocked]);
-
-  // Submit comment
-  const handleSubmitComment = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!newComment.trim() || isSubmitting) return;
-
-    setIsSubmitting(true);
-
-    try {
+  // Mutation: Submit comment
+  const submitCommentMutation = useMutation({
+    mutationFn: async (content: string) => {
       const response = await fetch(`/api/streams/${streamId}/comments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: newComment.trim() }),
+        body: JSON.stringify({ content }),
       });
-
-      if (response.ok) {
-        setNewComment("");
-        // Refresh comments
-        const commentsRes = await fetch(`/api/streams/${streamId}/comments`);
-        if (commentsRes.ok) {
-          const data = await commentsRes.json();
-          setComments(data.comments || []);
-        }
-      } else {
+      if (!response.ok) {
         const error = await response.json();
-        alert(error.message || "Failed to post comment");
+        throw new Error(error.message || "Failed to post comment");
       }
-    } catch (error) {
-      console.error("Failed to submit comment:", error);
-      alert("Failed to post comment. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+      return response.json();
+    },
+    onSuccess: () => {
+      setNewComment("");
+      queryClient.invalidateQueries({ queryKey: ["viewer-comments", streamId] });
+    },
+    onError: (error: Error) => {
+      alert(error.message || "Failed to post comment. Please try again.");
+    },
+  });
 
-  // Send reaction
-  const handleReaction = async (type: string) => {
-    if (isLocked) return;
-
-    try {
+  // Mutation: Send reaction
+  const sendReactionMutation = useMutation({
+    mutationFn: async (type: string) => {
       const response = await fetch(`/api/streams/${streamId}/reactions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type }),
       });
+      if (!response.ok) throw new Error("Failed to send reaction");
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["viewer-reactions", streamId] });
+    },
+  });
 
-      if (response.ok) {
-        // Refresh reactions
-        const reactionsRes = await fetch(`/api/streams/${streamId}/reactions`);
-        if (reactionsRes.ok) {
-          const data = await reactionsRes.json();
-          setReactions(data.reactions || []);
-        }
-      }
-    } catch (error) {
-      console.error("Failed to send reaction:", error);
-    }
+  // Handler: Submit comment
+  const handleSubmitComment = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newComment.trim() || submitCommentMutation.isPending) return;
+    submitCommentMutation.mutate(newComment.trim());
+  };
+
+  // Handler: Send reaction
+  const handleReaction = (type: string) => {
+    if (isLocked) return;
+    sendReactionMutation.mutate(type);
   };
 
   if (isLocked) {
@@ -228,12 +216,12 @@ export default function ViewerChat({
               placeholder={`Share your memories of ${memorialName}...`}
               className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
               maxLength={500}
-              disabled={isSubmitting}
+              disabled={submitCommentMutation.isPending}
             />
             <Button
               type="submit"
               size="icon"
-              disabled={!newComment.trim() || isSubmitting}
+              disabled={!newComment.trim() || submitCommentMutation.isPending}
               className="bg-white/20 hover:bg-white/30"
             >
               <Send className="h-4 w-4" />

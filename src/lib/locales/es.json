@@ -56,7 +56,10 @@
       "messagePlaceholder": "Cuéntanos cómo podemos ayudarte...",
       "send": "Enviar Mensaje",
       "sending": "Enviando..."
-    }
+    },
+    "successTitle": "¡Mensaje Enviado Exitosamente!",
+    "successMessage": "Gracias por contactarnos. Hemos recibido tu mensaje y te responderemos en 24-48 horas.",
+    "sendAnother": "Enviar Otro Mensaje"
   },
   "features": {
     "title": "Características Compasivas",
@@ -1800,6 +1803,17 @@
           "title": "Acciones de Cuenta",
           "signOut": "Cerrar Sesión"
         },
+        "security": {
+          "changePassword": {
+            "title": "Cambiar Contraseña",
+            "description": "Actualiza tu contraseña para mantener tu cuenta segura",
+            "currentPassword": "Contraseña Actual",
+            "newPassword": "Nueva Contraseña",
+            "requirements": "La contraseña debe tener al menos 8 caracteres con mayúsculas, minúsculas y un número",
+            "confirmPassword": "Confirmar Nueva Contraseña",
+            "button": "Actualizar Contraseña"
+          }
+        },
         "accountDetails": {
           "title": "Detalles de Cuenta",
           "description": "Gestiona los detalles de tu cuenta para recibir donaciones y apoyo a través de tus páginas de memorial.",
@@ -3341,6 +3355,20 @@
       "postFailed": "Error al publicar la condolencia. Por favor intenta de nuevo.",
       "deleteFailed": "Error al eliminar la condolencia",
       "loadFailed": "Error al cargar las condolencias"
+    }
+  },
+  "security": {
+    "changePassword": {
+      "title": "Cambiar Contraseña",
+      "description": "Actualiza tu contraseña para mantener tu cuenta segura",
+      "currentPassword": "Contraseña Actual",
+      "newPassword": "Nueva Contraseña",
+      "requirements": "La contraseña debe tener al menos 8 caracteres con mayúsculas, minúsculas y un número",
+      "confirmPassword": "Confirmar Nueva Contraseña",
+      "button": "Actualizar Contraseña",
+      "updating": "Actualizando...",
+      "success": "¡Contraseña cambiada exitosamente!",
+      "error": "Error al cambiar la contraseña"
     }
   }
 }

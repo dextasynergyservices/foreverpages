@@ -7,11 +7,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useTheme } from "@/hooks/useTheme";
-import { Shield, Smartphone, Mail, Key, Copy, Check, AlertCircle } from "lucide-react";
+import {
+  Shield,
+  Smartphone,
+  Mail,
+  Key,
+  Copy,
+  Check,
+  AlertCircle,
+  Lock,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import { useTranslations } from "@/hooks/useTranslations";
+import { changePasswordSchema } from "@/lib/validation";
 
 interface TwoFactorStatus {
   enabled: boolean;
@@ -34,6 +46,21 @@ export default function SecurityTab() {
   const [qrCode, setQrCode] = useState<string>("");
   const [secret, setSecret] = useState<string>("");
   const [verificationCode, setVerificationCode] = useState("");
+
+  // Password change state
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmNewPassword: "",
+  });
+  const [passwordErrors, setPasswordErrors] = useState<{
+    currentPassword?: string;
+    newPassword?: string;
+    confirmNewPassword?: string;
+  }>({});
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Get 2FA status
   const { data: twoFactorStatus, isLoading } = useQuery<TwoFactorStatus>({
@@ -163,6 +190,61 @@ export default function SecurityTab() {
       toast.error(t.t("twoFactor.settings.error.regenerateFailed"));
     },
   });
+
+  // Change password mutation
+  const changePasswordMutation = useMutation({
+    mutationFn: async (data: {
+      currentPassword: string;
+      newPassword: string;
+      confirmNewPassword: string;
+    }) => {
+      const res = await fetch("/api/user/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || "Failed to change password");
+      return result;
+    },
+    onSuccess: () => {
+      toast.success(t.t("security.changePassword.success") || "Password changed successfully!");
+      setPasswordForm({ currentPassword: "", newPassword: "", confirmNewPassword: "" });
+      setPasswordErrors({});
+    },
+    onError: (error: Error) => {
+      toast.error(
+        error.message || t.t("security.changePassword.error") || "Failed to change password"
+      );
+    },
+  });
+
+  const handlePasswordChange = (field: keyof typeof passwordForm, value: string) => {
+    setPasswordForm((prev) => ({ ...prev, [field]: value }));
+    // Clear error when user starts typing
+    if (passwordErrors[field]) {
+      setPasswordErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
+  };
+
+  const handleChangePassword = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validate using Zod schema
+    const validation = changePasswordSchema.safeParse(passwordForm);
+
+    if (!validation.success) {
+      const errors: typeof passwordErrors = {};
+      validation.error.issues.forEach((issue) => {
+        const field = issue.path[0] as keyof typeof passwordErrors;
+        errors[field] = issue.message;
+      });
+      setPasswordErrors(errors);
+      return;
+    }
+
+    changePasswordMutation.mutate(passwordForm);
+  };
 
   const handleCopyCode = (code: string, index: number) => {
     navigator.clipboard.writeText(code);
@@ -468,30 +550,118 @@ export default function SecurityTab() {
       {/* Password Change */}
       <Card className={`border ${cardBorder} ${cardBg}`}>
         <CardHeader>
-          <CardTitle>Change Password</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Lock className="h-5 w-5" />
+            {t.t("security.changePassword.title") || "Change Password"}
+          </CardTitle>
           <CardDescription className={textMuted}>
-            Update your password regularly to keep your account secure
+            {t.t("security.changePassword.description") ||
+              "Update your password regularly to keep your account secure"}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label htmlFor="current-password">Current Password</Label>
-            <Input id="current-password" type="password" />
-          </div>
-          <div>
-            <Label htmlFor="new-password">New Password</Label>
-            <Input id="new-password" type="password" />
-          </div>
-          <div>
-            <Label htmlFor="confirm-password">Confirm New Password</Label>
-            <Input id="confirm-password" type="password" />
-          </div>
-          <Button
-            variant={theme === "dark" ? "memorial" : "default"}
-            className={theme === "dark" ? "bg-white text-black" : ""}
-          >
-            Update Password
-          </Button>
+        <CardContent>
+          <form onSubmit={handleChangePassword} className="space-y-4">
+            <div>
+              <Label htmlFor="current-password">
+                {t.t("security.changePassword.currentPassword") || "Current Password"}
+              </Label>
+              <div className="relative">
+                <Input
+                  id="current-password"
+                  type={showCurrentPassword ? "text" : "password"}
+                  value={passwordForm.currentPassword}
+                  onChange={(e) => handlePasswordChange("currentPassword", e.target.value)}
+                  className={passwordErrors.currentPassword ? "border-red-500" : ""}
+                  disabled={changePasswordMutation.isPending}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  {showCurrentPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
+              {passwordErrors.currentPassword && (
+                <p className="text-sm text-red-500 mt-1">{passwordErrors.currentPassword}</p>
+              )}
+            </div>
+
+            <div>
+              <Label htmlFor="new-password">
+                {t.t("security.changePassword.newPassword") || "New Password"}
+              </Label>
+              <div className="relative">
+                <Input
+                  id="new-password"
+                  type={showNewPassword ? "text" : "password"}
+                  value={passwordForm.newPassword}
+                  onChange={(e) => handlePasswordChange("newPassword", e.target.value)}
+                  className={passwordErrors.newPassword ? "border-red-500" : ""}
+                  disabled={changePasswordMutation.isPending}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+              {passwordErrors.newPassword && (
+                <p className="text-sm text-red-500 mt-1">{passwordErrors.newPassword}</p>
+              )}
+              <p className={`text-xs ${textMuted} mt-1`}>
+                {t.t("security.changePassword.requirements") ||
+                  "Password must be at least 12 characters with uppercase, lowercase, number, and special character."}
+              </p>
+            </div>
+
+            <div>
+              <Label htmlFor="confirm-password">
+                {t.t("security.changePassword.confirmPassword") || "Confirm New Password"}
+              </Label>
+              <div className="relative">
+                <Input
+                  id="confirm-password"
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={passwordForm.confirmNewPassword}
+                  onChange={(e) => handlePasswordChange("confirmNewPassword", e.target.value)}
+                  className={passwordErrors.confirmNewPassword ? "border-red-500" : ""}
+                  disabled={changePasswordMutation.isPending}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
+              {passwordErrors.confirmNewPassword && (
+                <p className="text-sm text-red-500 mt-1">{passwordErrors.confirmNewPassword}</p>
+              )}
+            </div>
+
+            <Button
+              type="submit"
+              variant={theme === "dark" ? "memorial" : "default"}
+              className={theme === "dark" ? "bg-white text-black hover:bg-white/90" : ""}
+              disabled={changePasswordMutation.isPending}
+            >
+              {changePasswordMutation.isPending
+                ? t.t("security.changePassword.updating") || "Updating..."
+                : t.t("security.changePassword.button") || "Update Password"}
+            </Button>
+          </form>
         </CardContent>
       </Card>
     </div>
