@@ -668,7 +668,7 @@ async function sendSMSNotification(
 export async function notifyStreamSubscribers(
   streamId: string,
   event: NotificationEvent,
-  additionalParams?: Partial<NotificationParams>
+  additionalParams?: Record<string, unknown>
 ): Promise<{ sent: number; failed: number; total: number }> {
   try {
     // Get stream with memorial info
@@ -722,9 +722,9 @@ export async function notifyStreamSubscribers(
         params = {
           memorialName,
           streamTitle: stream.title,
-          duration: additionalParams?.duration || "Unknown",
-          peakViewers: additionalParams?.peakViewers || 0,
-          totalComments: additionalParams?.totalComments || 0,
+          duration: (additionalParams?.duration as string) || "Unknown",
+          peakViewers: (additionalParams?.peakViewers as number) || 0,
+          totalComments: (additionalParams?.totalComments as number) || 0,
           ...additionalParams,
         } as StreamEndedParams;
         break;
@@ -745,7 +745,7 @@ export async function notifyStreamSubscribers(
           streamTitle: stream.title,
           recordingUrl: stream.recordingUrl || streamUrl,
           expiresAt: stream.recordingDeleteAt || new Date(),
-          daysRemaining: additionalParams?.daysRemaining || 7,
+          daysRemaining: (additionalParams?.daysRemaining as number) || 7,
           ...additionalParams,
         } as RecordingExpiringParams;
         break;
@@ -863,54 +863,3 @@ export async function sendStreamReminders(streamId: string): Promise<{
     return { sent: 0, failed: 0 };
   }
 }
-
-// Type definitions for additionalParams
-interface StreamScheduledParams {
-  memorialName: string;
-  streamTitle: string;
-  streamUrl: string;
-  scheduledFor: Date;
-}
-
-interface StreamLiveParams {
-  memorialName: string;
-  streamTitle: string;
-  streamUrl: string;
-}
-
-interface StreamEndedParams {
-  memorialName: string;
-  streamTitle: string;
-  duration: string;
-  peakViewers: number;
-  totalComments: number;
-}
-
-interface RecordingReadyParams {
-  memorialName: string;
-  streamTitle: string;
-  recordingUrl: string;
-  expiresAt: Date;
-}
-
-interface RecordingExpiringParams {
-  memorialName: string;
-  streamTitle: string;
-  recordingUrl: string;
-  expiresAt: Date;
-  daysRemaining: number;
-}
-
-interface RecordingDeletedParams {
-  memorialName: string;
-  streamTitle: string;
-  deletedAt: Date;
-}
-
-type NotificationParams =
-  | StreamScheduledParams
-  | StreamLiveParams
-  | StreamEndedParams
-  | RecordingReadyParams
-  | RecordingExpiringParams
-  | RecordingDeletedParams;

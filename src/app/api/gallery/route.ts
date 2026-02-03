@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
+import { UploadType, Prisma } from "@/generated/prisma";
 
 export async function GET(request: NextRequest) {
   try {
@@ -25,12 +26,7 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
 
     // Build the where clause
-    const where: {
-      uploaderId: string;
-      memorialId?: string | null;
-      type?: string;
-      album?: string;
-    } = {
+    const where: Prisma.UploadWhereInput = {
       uploaderId: session.user.id,
     };
 
@@ -41,7 +37,7 @@ export async function GET(request: NextRequest) {
 
     // Filter by type if specified
     if (type && ["IMAGE", "VIDEO", "AUDIO", "DOCUMENT"].includes(type.toUpperCase())) {
-      where.type = type.toUpperCase();
+      where.type = type.toUpperCase() as UploadType;
     }
 
     // Filter by album if specified
