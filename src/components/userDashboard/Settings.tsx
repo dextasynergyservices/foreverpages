@@ -71,7 +71,13 @@ const SettingsContent = () => {
   }, [memorialsData]);
 
   // Fetch memorial details using TanStack Query (only when we have a memorial ID)
-  const { data: memorialDetails } = useMemorialDetails(userMemorialId);
+  const { data: memorialDetails, refetch: refetchMemorialDetails } =
+    useMemorialDetails(userMemorialId);
+
+  // Check if memorial is archived (not published)
+  const isMemorialArchived = useMemo(() => {
+    return memorialDetails?.isPublished === false;
+  }, [memorialDetails]);
 
   // Derive memorial slug and name from the query data
   const memorialSlug = useMemo(() => {
@@ -115,13 +121,16 @@ const SettingsContent = () => {
   // State for advanced tab
   const [isExporting, setIsExporting] = useState(false);
   const [isArchiving, setIsArchiving] = useState(false);
+  const [isRestoring, setIsRestoring] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
   const [showDeleteMemorialDialog, setShowDeleteMemorialDialog] = useState(false);
   const [showArchiveDialog, setShowArchiveDialog] = useState(false);
+  const [showRestoreDialog, setShowRestoreDialog] = useState(false);
   const [showDeleteAccountDialog, setShowDeleteAccountDialog] = useState(false);
   const [deleteMemorialConfirmText, setDeleteMemorialConfirmText] = useState("");
   const [archiveConfirmText, setArchiveConfirmText] = useState("");
+  const [restoreConfirmText, setRestoreConfirmText] = useState("");
   const [deleteAccountConfirmText, setDeleteAccountConfirmText] = useState("");
 
   const handleExportData = async () => {
@@ -189,10 +198,11 @@ const SettingsContent = () => {
       return;
     }
 
-    if (archiveConfirmText.toLowerCase() !== "archive") {
+    if (archiveConfirmText !== memorialSlug) {
       toastNotification.error(
-        t("dashboard.settings.advanced.danger.archiveDialog.confirmError") ||
-          "Please type ARCHIVE to confirm"
+        t("dashboard.settings.advanced.danger.archiveDialog.confirmError", {
+          slug: memorialSlug,
+        }) || `Please type "${memorialSlug}" to confirm`
       );
       return;
     }
@@ -212,6 +222,8 @@ const SettingsContent = () => {
         );
         setShowArchiveDialog(false);
         setArchiveConfirmText("");
+        // Refetch memorial details to update UI
+        refetchMemorialDetails();
       } else {
         const data = await response.json();
         toastNotification.error(
@@ -227,6 +239,58 @@ const SettingsContent = () => {
       );
     } finally {
       setIsArchiving(false);
+    }
+  };
+
+  const handleRestoreMemorial = async () => {
+    if (!userMemorialId) {
+      toastNotification.error(
+        t("dashboard.settings.advanced.danger.restoreDialog.noMemorial") || "No memorial found"
+      );
+      return;
+    }
+
+    if (restoreConfirmText !== memorialSlug) {
+      toastNotification.error(
+        t("dashboard.settings.advanced.danger.restoreDialog.confirmError", {
+          slug: memorialSlug,
+        }) || `Please type "${memorialSlug}" to confirm`
+      );
+      return;
+    }
+
+    setIsRestoring(true);
+    try {
+      const response = await fetch(`/api/user/memorials/${userMemorialId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isPublished: true }),
+      });
+
+      if (response.ok) {
+        toastNotification.success(
+          t("dashboard.settings.advanced.danger.restoreDialog.success") ||
+            "Memorial has been restored. It is now publicly visible again."
+        );
+        setShowRestoreDialog(false);
+        setRestoreConfirmText("");
+        // Refetch memorial details to update UI
+        refetchMemorialDetails();
+      } else {
+        const data = await response.json();
+        toastNotification.error(
+          data.message ||
+            t("dashboard.settings.advanced.danger.restoreDialog.error") ||
+            "Failed to restore memorial"
+        );
+      }
+    } catch (error) {
+      console.error("Restore error:", error);
+      toastNotification.error(
+        t("dashboard.settings.advanced.danger.restoreDialog.error") || "Failed to restore memorial"
+      );
+    } finally {
+      setIsRestoring(false);
     }
   };
 
@@ -248,8 +312,14 @@ const SettingsContent = () => {
 
     setIsDeleting(true);
     try {
-      const response = await fetch(`/api/user/memorials/${userMemorialId}`, {
+      const response = await fetch(`/api/memorials/${userMemorialId}/delete`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          confirmationSlug: memorialSlug,
+        }),
       });
 
       if (response.ok) {
@@ -899,24 +969,41 @@ const SettingsContent = () => {
                     {t("dashboard.settings.advanced.danger.title")}
                   </h4>
                   <div className="space-y-3">
-                    {/* Archive Memorial */}
+                    {/* Archive/Restore Memorial */}
                     <div className={`p-4 border ${dangerBorder} rounded-lg ${dangerBg}`}>
                       <h5 className={`font-medium mb-2 ${dangerTitle} flex items-center gap-2`}>
                         <Archive className="h-4 w-4" />
-                        {t("dashboard.settings.advanced.danger.archive")}
+                        {isMemorialArchived
+                          ? t("dashboard.settings.advanced.danger.restore") || "Restore Memorial"
+                          : t("dashboard.settings.advanced.danger.archive")}
                       </h5>
                       <p className={`text-sm mb-3 ${textMuted}`}>
-                        {t("dashboard.settings.advanced.danger.archiveDescription")}
+                        {isMemorialArchived
+                          ? t("dashboard.settings.advanced.danger.restoreDescription") ||
+                            "Restore this memorial to make it publicly visible again."
+                          : t("dashboard.settings.advanced.danger.archiveDescription")}
                       </p>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => setShowArchiveDialog(true)}
-                        disabled={!userMemorialId}
-                        className="bg-amber-600 hover:bg-amber-700"
-                      >
-                        {t("dashboard.settings.advanced.danger.archive")}
-                      </Button>
+                      {isMemorialArchived ? (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setShowRestoreDialog(true)}
+                          disabled={!userMemorialId}
+                          className="border-green-600 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20"
+                        >
+                          {t("dashboard.settings.advanced.danger.restore") || "Restore Memorial"}
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => setShowArchiveDialog(true)}
+                          disabled={!userMemorialId}
+                          className="bg-amber-600 hover:bg-amber-700"
+                        >
+                          {t("dashboard.settings.advanced.danger.archive")}
+                        </Button>
+                      )}
                     </div>
 
                     {/* Delete Memorial */}
@@ -1031,20 +1118,16 @@ const SettingsContent = () => {
 
                   <div>
                     <Label htmlFor="archive-confirm" className="text-sm">
-                      {t("dashboard.settings.advanced.danger.archiveDialog.confirmLabel", {
-                        word: "",
-                      })}{" "}
-                      <span className="font-bold text-amber-600">
-                        {t("dashboard.settings.advanced.danger.archiveDialog.confirmWord")}
-                      </span>
+                      {t("dashboard.settings.advanced.danger.archiveDialog.confirmSlugLabel", {
+                        slug: "",
+                      }) || "Type the memorial slug to confirm:"}{" "}
+                      <span className="font-bold text-amber-600">{memorialSlug}</span>
                     </Label>
                     <Input
                       id="archive-confirm"
                       value={archiveConfirmText}
                       onChange={(e) => setArchiveConfirmText(e.target.value)}
-                      placeholder={t(
-                        "dashboard.settings.advanced.danger.archiveDialog.confirmPlaceholder"
-                      )}
+                      placeholder={memorialSlug}
                       className="mt-2"
                     />
                   </div>
@@ -1062,7 +1145,7 @@ const SettingsContent = () => {
                   <Button
                     variant="destructive"
                     onClick={handleArchiveMemorial}
-                    disabled={isArchiving || archiveConfirmText.toLowerCase() !== "archive"}
+                    disabled={isArchiving || archiveConfirmText !== memorialSlug}
                     className="bg-amber-600 hover:bg-amber-700"
                   >
                     {isArchiving ? (
@@ -1072,6 +1155,104 @@ const SettingsContent = () => {
                       </>
                     ) : (
                       t("dashboard.settings.advanced.danger.archiveDialog.confirm")
+                    )}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+            {/* Restore Memorial Dialog */}
+            <Dialog open={showRestoreDialog} onOpenChange={setShowRestoreDialog}>
+              <DialogContent
+                className={theme === "dark" ? "bg-gray-900 border-white/10" : "bg-white"}
+              >
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2 text-green-600">
+                    <Archive className="h-5 w-5" />
+                    {t("dashboard.settings.advanced.danger.restoreDialog.title") ||
+                      "Restore Memorial"}
+                  </DialogTitle>
+                  <DialogDescription>
+                    {t("dashboard.settings.advanced.danger.restoreDialog.description") ||
+                      "This will make your memorial publicly visible again."}
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div
+                    className={`p-4 rounded-lg ${theme === "dark" ? "bg-green-900/20 border border-green-500/30" : "bg-green-50 border border-green-200"}`}
+                  >
+                    <h4 className="font-medium text-green-700 dark:text-green-400 mb-2">
+                      {t("dashboard.settings.advanced.danger.restoreDialog.infoTitle") ||
+                        "What happens when you restore:"}
+                    </h4>
+                    <ul className="text-sm text-green-600 dark:text-green-300 space-y-1 list-disc list-inside">
+                      <li>
+                        {t("dashboard.settings.advanced.danger.restoreDialog.info1") ||
+                          "The memorial will be publicly visible again"}
+                      </li>
+                      <li>
+                        {t("dashboard.settings.advanced.danger.restoreDialog.info2") ||
+                          "All content and settings will be preserved"}
+                      </li>
+                      <li>
+                        {t("dashboard.settings.advanced.danger.restoreDialog.info3") ||
+                          "Visitors can access the memorial page"}
+                      </li>
+                    </ul>
+                  </div>
+
+                  {memorialName && (
+                    <div
+                      className={`p-3 rounded-lg ${theme === "dark" ? "bg-white/5" : "bg-gray-50"}`}
+                    >
+                      <p className={`text-sm ${textMuted}`}>
+                        {t("dashboard.settings.advanced.danger.restoreDialog.memorialLabel") ||
+                          "Memorial to restore:"}
+                      </p>
+                      <p className="font-medium">{memorialName}</p>
+                    </div>
+                  )}
+
+                  <div>
+                    <Label htmlFor="restore-confirm" className="text-sm">
+                      {t("dashboard.settings.advanced.danger.restoreDialog.confirmSlugLabel", {
+                        slug: "",
+                      }) || "Type the memorial slug to confirm:"}{" "}
+                      <span className="font-bold text-green-600">{memorialSlug}</span>
+                    </Label>
+                    <Input
+                      id="restore-confirm"
+                      value={restoreConfirmText}
+                      onChange={(e) => setRestoreConfirmText(e.target.value)}
+                      placeholder={memorialSlug}
+                      className="mt-2"
+                    />
+                  </div>
+                </div>
+                <DialogFooter className="gap-2 sm:gap-0">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setShowRestoreDialog(false);
+                      setRestoreConfirmText("");
+                    }}
+                  >
+                    {t("dashboard.settings.advanced.danger.restoreDialog.cancel") || "Cancel"}
+                  </Button>
+                  <Button
+                    onClick={handleRestoreMemorial}
+                    disabled={isRestoring || restoreConfirmText !== memorialSlug}
+                    className="bg-green-600 hover:bg-green-700 text-white"
+                  >
+                    {isRestoring ? (
+                      <>
+                        <Spinner className="h-4 w-4 mr-2 animate-spin" />
+                        {t("dashboard.settings.advanced.danger.restoreDialog.restoring") ||
+                          "Restoring..."}
+                      </>
+                    ) : (
+                      t("dashboard.settings.advanced.danger.restoreDialog.confirm") ||
+                      "Restore Memorial"
                     )}
                   </Button>
                 </DialogFooter>
@@ -1127,19 +1308,16 @@ const SettingsContent = () => {
 
                   <div>
                     <Label htmlFor="delete-memorial-confirm" className="text-sm">
-                      {t("dashboard.settings.advanced.danger.deleteDialog.confirmLabel", {
+                      {t("dashboard.settings.advanced.danger.deleteDialog.confirmSlugLabel", {
                         slug: "",
-                      })}{" "}
+                      }) || "Type the memorial slug to confirm deletion:"}{" "}
                       <span className="font-bold text-destructive">{memorialSlug}</span>
                     </Label>
                     <Input
                       id="delete-memorial-confirm"
                       value={deleteMemorialConfirmText}
                       onChange={(e) => setDeleteMemorialConfirmText(e.target.value)}
-                      placeholder={t(
-                        "dashboard.settings.advanced.danger.deleteDialog.confirmPlaceholder",
-                        { slug: memorialSlug }
-                      )}
+                      placeholder={memorialSlug}
                       className="mt-2"
                     />
                   </div>

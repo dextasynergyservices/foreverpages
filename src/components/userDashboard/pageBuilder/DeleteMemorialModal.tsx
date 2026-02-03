@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { AlertTriangle } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslations } from "@/hooks/useTranslations";
-import { useDeleteMemorial } from "@/hooks/useDeleteMemorial";
+import { useDeleteMemorialBySlug } from "@/hooks/useDeleteMemorialBySlug";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/skeleton-loader";
 
@@ -45,7 +45,7 @@ export const DeleteMemorialModal: React.FC<DeleteMemorialModalProps> = ({
   const router = useRouter();
   const [confirmationInput, setConfirmationInput] = useState("");
 
-  const { mutate: deleteMemorial, isPending } = useDeleteMemorial();
+  const { mutate: deleteMemorial, isPending } = useDeleteMemorialBySlug();
 
   // Only run validation logic when modal is open
   const expectedConfirmation = isOpen ? memorialSlug : "";
@@ -86,7 +86,7 @@ export const DeleteMemorialModal: React.FC<DeleteMemorialModalProps> = ({
     deleteMemorial(
       {
         memorialId,
-        confirmationName: confirmationInput.trim(),
+        confirmationSlug: confirmationInput.trim(),
       },
       {
         onSuccess: () => {

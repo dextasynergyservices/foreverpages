@@ -121,11 +121,12 @@ export function useMemorialDetails(memorialId: string | null) {
         throw new Error(`API Error: ${response.status} ${response.statusText}`);
       }
       const data = await response.json();
-      return data.data as {
+      return data as {
         id: string;
         slug: string;
         firstName: string;
         lastName: string;
+        isPublished: boolean;
       };
     },
     enabled: !!memorialId,
