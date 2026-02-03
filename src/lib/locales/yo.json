@@ -56,7 +56,10 @@
       "messagePlaceholder": "Sọ fun wa bi a ṣe le ran ọ lọwọ...",
       "send": "Firanṣẹ Ifiranṣẹ",
       "sending": "N firanṣẹ..."
-    }
+    },
+    "successTitle": "Ifiranṣẹ Ti Firanṣẹ Ni Aṣeyọri!",
+    "successMessage": "A dupe fun ipe wa. A ti gba ifiranṣẹ rẹ ati pe a yoo da ọ lohun laarin awọn wakati 24-48.",
+    "sendAnother": "Firanṣẹ Ifiranṣẹ Miran"
   },
   "features": {
     "title": "Awọn Ẹya Anu",
@@ -1747,6 +1750,17 @@
         "account": {
           "title": "Awọn Iṣe Akọọlẹ",
           "signOut": "Jade"
+        },
+        "security": {
+          "changePassword": {
+            "title": "Yi Ọrọkun-ẹnu Padà",
+            "description": "Tunṣe ọrdükọn-ẹnu rẹ láti pa akọọlẹ rẹ mọ lỉkunsí",
+            "currentPassword": "Ọrdükọn-ẹnu Lọwọlọwọ",
+            "newPassword": "Ọrdýkọn-ẹnu Tuntun",
+            "requirements": "Ọrdúkọn-ẹnu gbọdọ ní ó kéré jù ohun kíkọ 8 pẹlú lẹta nlá, lẹta kékeré, àti nọmba kan",
+            "confirmPassword": "Jẹrísí Ọrdýkọn-ẹnu Tuntun",
+            "button": "Tunṣe Ọrdúkọn-ẹnu"
+          }
         },
         "accountDetails": {
           "title": "Awọn Alaye Akanti",
@@ -3563,6 +3577,20 @@
       "postFailed": "Kò yọrísí láti fi ìkẹ́dùn sílẹ̀. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kansi.",
       "deleteFailed": "Kò yọrísí láti pa ìkẹ́dùn rẹ́",
       "loadFailed": "Kò yọrísí láti gbe àwọn ìkẹ́dùn sókè"
+    }
+  },
+  "security": {
+    "changePassword": {
+      "title": "Yi Ọrọkun-ẹnu Padà",
+      "description": "Ṣe imudojuiwọn ọrọkun-ẹnu rẹ láti dáàbò bo àkáǹtì rẹ",
+      "currentPassword": "Ọrọkun-ẹnu Lọwọlọwọ",
+      "newPassword": "Ọrọkun-ẹnu Tuntun",
+      "requirements": "Ọrọkun-ẹnu gbọdọ jẹ o kere ju àwọn ohun kikọ 8 pẹlu lẹta nla, lẹta kekere, àti nọmba",
+      "confirmPassword": "Jẹrisi Ọrọkun-ẹnu Tuntun",
+      "button": "Ṣe Imudojuiwọn Ọrọkun-ẹnu",
+      "updating": "N ṣe imudojuiwọn...",
+      "success": "A ti yi ọrọkun-ẹnu padà ni aṣeyọri!",
+      "error": "Ko yọrísí láti yi ọrọkun-ẹnu padà"
     }
   }
 }

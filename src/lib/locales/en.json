@@ -56,7 +56,10 @@
       "messagePlaceholder": "Tell us how we can help you...",
       "send": "Send Message",
       "sending": "Sending..."
-    }
+    },
+    "successTitle": "Message Sent Successfully!",
+    "successMessage": "Thank you for reaching out. We've received your message and will get back to you within 24-48 hours.",
+    "sendAnother": "Send Another Message"
   },
   "features": {
     "title": "Compassionate Features",
@@ -1692,6 +1695,17 @@
           "title": "Account Actions",
           "signOut": "Sign Out"
         },
+        "security": {
+          "changePassword": {
+            "title": "Change Password",
+            "description": "Update your password to keep your account secure",
+            "currentPassword": "Current Password",
+            "newPassword": "New Password",
+            "requirements": "Password must be at least 8 characters with uppercase, lowercase, and a number",
+            "confirmPassword": "Confirm New Password",
+            "button": "Update Password"
+          }
+        },
         "accountDetails": {
           "title": "Account Details",
           "description": "Manage your account details for receiving donations and support through your memorial pages.",
@@ -3235,6 +3249,20 @@
       "postFailed": "Failed to post condolence. Please try again.",
       "deleteFailed": "Failed to delete condolence",
       "loadFailed": "Failed to load condolences"
+    }
+  },
+  "security": {
+    "changePassword": {
+      "title": "Change Password",
+      "description": "Update your password to keep your account secure",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "requirements": "Password must be at least 8 characters with uppercase, lowercase, and a number",
+      "confirmPassword": "Confirm New Password",
+      "button": "Update Password",
+      "updating": "Updating...",
+      "success": "Password changed successfully!",
+      "error": "Failed to change password"
     }
   }
 }

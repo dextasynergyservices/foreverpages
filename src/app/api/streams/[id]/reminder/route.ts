@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { sendStreamReminders } from "@/lib/notification-service";
 
+/**
+ * POST /api/streams/[id]/reminder
+ * Send reminder notifications to all stream subscribers
+ */
 export async function POST(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const user = await getCurrentUser();
@@ -29,34 +34,35 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    // TODO: Implement actual reminder notification system
-    // This could be done via:
-    // 1. Email notifications to invited guests
-    // 2. Push notifications to mobile app users
-    // 3. SMS reminders
-    // 4. In-app notifications
+    // Check if stream is scheduled
+    if (stream.status !== "SCHEDULED") {
+      return NextResponse.json(
+        { error: "Can only send reminders for scheduled streams" },
+        { status: 400 }
+      );
+    }
 
-    // For now, just log and update reminderSent flag
-    console.log(`Sending stream reminder for: ${stream.title}`);
-    console.log(`Memorial: ${stream.memorial.firstName} ${stream.memorial.lastName}`);
-    console.log(`Scheduled for: ${stream.scheduledFor}`);
+    // Check if reminder was already sent
+    if (stream.reminderSent) {
+      return NextResponse.json(
+        { error: "Reminder has already been sent for this stream" },
+        { status: 400 }
+      );
+    }
 
-    // Update reminderSent flag
-    await prisma.memorialStream.update({
-      where: { id: streamId },
-      data: { reminderSent: true },
-    });
+    // Send reminders using the unified notification service
+    // This handles email, SMS, and WhatsApp based on user preferences
+    const result = await sendStreamReminders(streamId);
 
-    // In production, you would:
-    // 1. Query all invited users/guests
-    // 2. Send email via SendGrid/AWS SES
-    // 3. Send push notifications
-    // 4. Create in-app notifications
-    // 5. Track delivery status
+    console.log(
+      `✅ Stream reminder sent for: ${stream.title} (${result.sent} sent, ${result.failed} failed)`
+    );
 
     return NextResponse.json({
       success: true,
       message: "Reminder sent successfully",
+      sent: result.sent,
+      failed: result.failed,
     });
   } catch (error) {
     console.error("Error sending reminder:", error);

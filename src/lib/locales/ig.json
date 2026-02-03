@@ -56,7 +56,10 @@
       "messagePlaceholder": "Gwa anyị otu anyị ga-esi nyere gị aka...",
       "send": "Zipụ Ozi",
       "sending": "Na-eziga..."
-    }
+    },
+    "successTitle": "Ozi Ezigara Nke Ọma!",
+    "successMessage": "Daalụ maka ịkpọtụrụ anyị. Anyị anatawo ozi gị ma ga-aza gị n'ime awa iri abụọ na anọ ruo awa iri anọ na asatọ.",
+    "sendAnother": "Zigara Ozi Ọzọ"
   },
   "features": {
     "title": "Atụmatụ Obi Ọmịiko",
@@ -1865,6 +1868,17 @@
           "title": "Omume Akaụntụ",
           "signOut": "Pụọ"
         },
+        "security": {
+          "changePassword": {
+            "title": "Gbanwee Okwuntụghe",
+            "description": "Melite okwuntụghe gị ka akaụntụ gị dị nche",
+            "currentPassword": "Okwuntụghe Ugbu a",
+            "newPassword": "Okwuntụghe Ọhụrụ",
+            "requirements": "Okwuntụghe ga-enweriri mkpụrụ edẹ ọkara asatọ na mkpụrụ ukwu, mkpụrụ nta, na ọnụ ọgụgụ",
+            "confirmPassword": "Kwado Okwuntụghe Ọhụrụ",
+            "button": "Melite Okwuntụghe"
+          }
+        },
         "accountDetails": {
           "title": "Nkọwa Akaụntụ",
           "description": "Jikwaa nkọwa akaụntụ gị maka ịnata onyinye na nkwado site na ibe ncheta gị.",
@@ -3593,6 +3607,20 @@
       "postFailed": "Enweghị ike izipu okwu obi ụtọ. Biko nwaa ọzọ.",
       "deleteFailed": "Enweghị ike ihichapụ okwu obi ụtọ",
       "loadFailed": "Enweghị ike ibudata okwu obi ụtọ"
+    }
+  },
+  "security": {
+    "changePassword": {
+      "title": "Gbanwee Okwuntụghe",
+      "description": "Melite okwuntụghe gị iji chekwaa akaụntụ gị",
+      "currentPassword": "Okwuntụghe Ugbu a",
+      "newPassword": "Okwuntụghe Ọhụrụ",
+      "requirements": "Okwuntụghe ga-enwerịrị opekata mpe mkpụrụedemede 8 nwere nnukwu mkpụrụedemede, obere mkpụrụedemede, na ọnụọgụgụ",
+      "confirmPassword": "Kwenye Okwuntụghe Ọhụrụ",
+      "button": "Melite Okwuntụghe",
+      "updating": "Na-emelite...",
+      "success": "Agbanweela okwuntụghe nke ọma!",
+      "error": "Enweghị ike ịgbanwe okwuntụghe"
     }
   }
 }

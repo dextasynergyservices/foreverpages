@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { sendNotification, NotificationEvent } from "@/lib/notification-service";
 
+/**
+ * POST /api/streams/[id]/invites
+ * Send stream invitations to users via email or SMS
+ */
 export async function POST(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const user = await getCurrentUser();
@@ -16,7 +21,7 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
       where: { id: streamId },
       include: {
         memorial: {
-          select: { ownerId: true },
+          select: { ownerId: true, firstName: true, lastName: true, slug: true },
         },
       },
     });
@@ -44,47 +49,72 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
       return NextResponse.json({ error: "Message required" }, { status: 400 });
     }
 
-    // TODO: Implement actual email/SMS sending logic here
-    // For now, just log the invitations
     console.log(`Sending ${type} invitations to:`, recipients);
-    console.log(`Message: ${message}`);
 
-    // You could integrate with services like:
-    // - SendGrid or AWS SES for email
-    // - Twilio or AWS SNS for SMS
-    // - Or create a notification queue
+    let sentCount = 0;
+    let failedCount = 0;
 
-    // For demonstration, we'll create notifications for registered users
-    if (type === "email") {
-      const users = await prisma.user.findMany({
-        where: {
-          email: {
-            in: recipients,
-          },
+    // Find registered users by email
+    const users = await prisma.user.findMany({
+      where: {
+        email: {
+          in: recipients,
         },
-        select: {
-          id: true,
-          email: true,
-        },
-      });
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+      },
+    });
 
-      if (users.length > 0) {
-        await prisma.notification.createMany({
-          data: users.map((u) => ({
-            userId: u.id,
-            type: "SYSTEM",
-            title: "You've been invited to a livestream",
-            message: message,
-            link: `/memorial-pages/${stream.memorialId}/stream/${stream.id}`,
-          })),
+    // Send notifications to registered users using the notification service
+    for (const invitedUser of users) {
+      try {
+        const result = await sendNotification(invitedUser.id, NotificationEvent.STREAM_SCHEDULED, {
+          memorialName: `${stream.memorial.firstName} ${stream.memorial.lastName}`,
+          streamTitle: stream.title,
+          streamUrl: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/${stream.memorial.slug}?stream=${streamId}`,
+          scheduledFor: stream.scheduledFor || new Date(),
         });
+
+        if (result.success) {
+          sentCount++;
+        } else {
+          failedCount++;
+        }
+      } catch {
+        failedCount++;
       }
     }
 
+    // Create in-app notifications for registered users
+    if (users.length > 0) {
+      await prisma.notification.createMany({
+        data: users.map((u) => ({
+          userId: u.id,
+          type: "SYSTEM",
+          title: `You're invited to a livestream: ${stream.title}`,
+          message: message,
+          link: `/memorial-pages/${stream.memorialId}/stream/${stream.id}`,
+        })),
+      });
+    }
+
+    // Track non-registered recipients (those not found as users)
+    const registeredEmails = new Set(users.map((u) => u.email));
+    const unregisteredRecipients = recipients.filter((r) => !registeredEmails.has(r));
+
     return NextResponse.json({
       success: true,
-      sent: recipients.length,
+      sent: sentCount,
+      failed: failedCount,
+      unregistered: unregisteredRecipients.length,
       type,
+      message:
+        unregisteredRecipients.length > 0
+          ? `${sentCount} notifications sent. ${unregisteredRecipients.length} recipients are not registered users.`
+          : `${sentCount} notifications sent successfully.`,
     });
   } catch (error) {
     console.error("Error sending invites:", error);

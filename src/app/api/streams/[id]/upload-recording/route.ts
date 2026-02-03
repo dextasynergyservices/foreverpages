@@ -5,24 +5,25 @@ import { prisma } from "@/lib/prisma";
 import { RecordingStatus } from "@/generated/prisma";
 import { uploadStreamRecording } from "@/lib/cloudinary/videoUpload";
 import { notifySignalingMetadataUpdate } from "@/lib/signaling";
+import { notifyStreamSubscribers, NotificationEvent } from "@/lib/notification-service";
+import log from "@/lib/logger";
 
 /**
  * POST /api/streams/[id]/upload-recording
  * Upload stream recording to Cloudinary
  * Body: FormData with video file or { url: string, duration: number, size: number }
  */
-export async function POST(req: NextRequest, context: { params: { id: string } }) {
+export async function POST(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id } = context.params || {};
-    if (!id) {
+    const { id: streamId } = await context.params;
+    if (!streamId) {
       return NextResponse.json({ error: "Missing stream id" }, { status: 400 });
     }
-    const streamId = id;
 
     // Check if stream exists and user owns it
     const stream = await prisma.memorialStream.findUnique({
@@ -83,7 +84,12 @@ export async function POST(req: NextRequest, context: { params: { id: string } }
       notifySignalingMetadataUpdate(streamId, {
         recordingUrl: updatedStream.recordingUrl,
         recordingStatus: updatedStream.recordingStatus,
-      }).catch(() => {});
+      }).catch((err) => log.warn("Failed to notify signaling of recording update", err));
+
+      // Send recording ready notifications to all stream subscribers
+      notifyStreamSubscribers(streamId, NotificationEvent.RECORDING_READY).catch((error) => {
+        log.error("Failed to send recording ready notifications", error);
+      });
 
       return NextResponse.json({ stream: updatedStream });
     }
@@ -133,14 +139,19 @@ export async function POST(req: NextRequest, context: { params: { id: string } }
       notifySignalingMetadataUpdate(streamId, {
         recordingUrl: updatedStream.recordingUrl,
         recordingStatus: updatedStream.recordingStatus,
-      }).catch(() => {});
+      }).catch((err) => log.warn("Failed to notify signaling of recording URL update", err));
+
+      // Send recording ready notifications to all stream subscribers
+      notifyStreamSubscribers(streamId, NotificationEvent.RECORDING_READY).catch((error) => {
+        log.error("Failed to send recording ready notifications", error);
+      });
 
       return NextResponse.json({ stream: updatedStream });
     }
 
     return NextResponse.json({ error: "Invalid content type" }, { status: 400 });
   } catch (error) {
-    console.error("Error uploading recording:", error);
+    log.error("Error uploading recording", error);
     return NextResponse.json({ error: "Failed to upload recording" }, { status: 500 });
   }
 }

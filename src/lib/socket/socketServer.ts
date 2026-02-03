@@ -1,5 +1,6 @@
 import { Server as SocketIOServer } from "socket.io";
 import type { Server as HTTPServer } from "http";
+import { prisma } from "@/lib/prisma";
 
 interface SocketServer extends HTTPServer {
   io?: SocketIOServer;
@@ -7,6 +8,21 @@ interface SocketServer extends HTTPServer {
 
 // Global socket server instance
 let globalSocketServer: SocketIOServer | null = null;
+
+/**
+ * Lower Third Configuration
+ */
+export interface LowerThirdConfig {
+  name: string;
+  title: string;
+  position: "bottom-left" | "bottom-center" | "bottom-right";
+  backgroundColor: string;
+  textColor: string;
+  opacity: number;
+  fontSize: number;
+  duration: number;
+  visible: boolean;
+}
 
 /**
  * Socket.io Event Types for Livestream
@@ -33,6 +49,10 @@ export interface ServerToClientEvents {
 
   // Stream quality
   "quality-changed": (data: { quality: string }) => void;
+
+  // Lower third graphics
+  "lower-third-update": (data: { streamId: string; config: LowerThirdConfig }) => void;
+  "lower-third-hide": (data: { streamId: string }) => void;
 
   // Viewer fallback: server (or broadcaster) may emit this to indicate a viewer is ready
   "viewer-ready": (data: { viewerId: string }) => void;
@@ -291,15 +311,31 @@ export function initializeSocketServer(httpServer: HTTPServer): SocketIOServer {
         timestamp: Date.now(),
       };
 
-      // Broadcast to all in stream
+      // Broadcast to all in stream immediately for real-time experience
       io.to(`stream:${streamId}`).emit("chat-message", chatMessage);
 
-      // TODO: Save to database
-      // await prisma.streamComment.create({ ... })
+      // Persist to database asynchronously
+      try {
+        await prisma.streamComment.create({
+          data: {
+            streamId,
+            userId: message.authorId || null,
+            authorName: message.authorName,
+            content: message.content,
+            timestamp: Math.floor(Date.now() / 1000), // Store as seconds
+            isApproved: true,
+            isHidden: false,
+          },
+        });
+        console.log(`✅ Chat message persisted for stream ${streamId}`);
+      } catch (error) {
+        console.error(`❌ Failed to persist chat message for stream ${streamId}:`, error);
+        // Don't fail the broadcast - message was already sent in real-time
+      }
     });
 
     // Reaction
-    socket.on("reaction", ({ streamId, reaction }) => {
+    socket.on("reaction", async ({ streamId, reaction }) => {
       console.log(`❤️ Reaction in stream ${streamId}:`, reaction.type);
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -312,11 +348,35 @@ export function initializeSocketServer(httpServer: HTTPServer): SocketIOServer {
         timestamp: Date.now(),
       };
 
-      // Broadcast to all in stream
+      // Broadcast to all in stream immediately for real-time experience
       io.to(`stream:${streamId}`).emit("reaction", streamReaction);
 
-      // TODO: Save to database
-      // await prisma.streamReaction.create({ ... })
+      // Persist to database asynchronously (upsert to handle unique constraint)
+      try {
+        await prisma.streamReaction.upsert({
+          where: {
+            streamId_sessionId_type: {
+              streamId,
+              sessionId: socket.id,
+              type: reaction.type as "HEART" | "PRAYER" | "CANDLE" | "FLOWER" | "DOVE" | "APPLAUSE",
+            },
+          },
+          create: {
+            streamId,
+            userId: reaction.userId || null,
+            sessionId: socket.id,
+            type: reaction.type as "HEART" | "PRAYER" | "CANDLE" | "FLOWER" | "DOVE" | "APPLAUSE",
+            timestamp: Math.floor(Date.now() / 1000), // Store as seconds
+          },
+          update: {
+            timestamp: Math.floor(Date.now() / 1000), // Update timestamp if reaction already exists
+          },
+        });
+        console.log(`✅ Reaction persisted for stream ${streamId}`);
+      } catch (error) {
+        console.error(`❌ Failed to persist reaction for stream ${streamId}:`, error);
+        // Don't fail the broadcast - reaction was already sent in real-time
+      }
     });
 
     // Quality change
@@ -387,6 +447,28 @@ export function notifyStreamStarted(streamId: string, io: SocketIOServer): void 
   console.log(`📡 Notifying viewers that stream ${streamId} has started`);
   io.to(`stream:${streamId}`).emit("stream-started", { streamId });
   io.to(`stream:${streamId}`).emit("stream-status-changed", { streamId, status: "LIVE" });
+}
+
+/**
+ * Broadcast lower-third graphic update to all viewers in a stream
+ */
+export function broadcastLowerThird(streamId: string, config: LowerThirdConfig): void {
+  const io = getGlobalSocketServer();
+  if (io) {
+    console.log(`📡 Broadcasting lower-third update to stream ${streamId}`);
+    io.to(`stream:${streamId}`).emit("lower-third-update", { streamId, config });
+  }
+}
+
+/**
+ * Hide lower-third graphic for all viewers in a stream
+ */
+export function hideLowerThird(streamId: string): void {
+  const io = getGlobalSocketServer();
+  if (io) {
+    console.log(`📡 Broadcasting lower-third hide to stream ${streamId}`);
+    io.to(`stream:${streamId}`).emit("lower-third-hide", { streamId });
+  }
 }
 
 /**

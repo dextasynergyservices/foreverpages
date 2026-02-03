@@ -90,7 +90,13 @@
       "send": "Aika Saƙo",
 
       "sending": "Ana Aikawa..."
-    }
+    },
+
+    "successTitle": "An Aika Saƙo Cikin Nasara!",
+
+    "successMessage": "Mun gode da sadarwa da mu. Mun karɓi saƙonku kuma za mu mayar da martani cikin awanni 24-48.",
+
+    "sendAnother": "Aika Wani Saƙo"
   },
 
   "features": {
@@ -2137,6 +2143,17 @@
           "title": "Ayyukan Asusun",
           "signOut": "Fita"
         },
+        "security": {
+          "changePassword": {
+            "title": "Canza Kalmar Sirri",
+            "description": "Sabunta kalmar sirri don kiyaye asusunka",
+            "currentPassword": "Kalmar Sirri Ta Yanzu",
+            "newPassword": "Sabuwar Kalmar Sirri",
+            "requirements": "Kalmar sirri dole ta kasance aƙalla haruffa 8 tare da babban harafi, ƙaramin harafi, da lamba",
+            "confirmPassword": "Tabbatar da Sabuwar Kalmar Sirri",
+            "button": "Sabunta Kalmar Sirri"
+          }
+        },
         "accountDetails": {
           "title": "Bayanan Asusun",
           "description": "Sarrafa bayanan asusun ku domin karbar gudunmawa da tallafi ta hanyar shafukan tunawa.",
@@ -3944,6 +3961,20 @@
       "postFailed": "Ba a iya buga ta'aziyya ba. Da fatan za a sake gwadawa.",
       "deleteFailed": "Ba a iya share ta'aziyya ba",
       "loadFailed": "Ba a iya loda ta'aziyya ba"
+    }
+  },
+  "security": {
+    "changePassword": {
+      "title": "Canza Kalmar Sirri",
+      "description": "Sabunta kalmar sirrinka don kare asusunka",
+      "currentPassword": "Kalmar Sirri ta Yanzu",
+      "newPassword": "Sabuwar Kalmar Sirri",
+      "requirements": "Kalmar sirri dole ta kasance aƙalla haruffa 8 tare da babban harafi, ƙaramin harafi, da lamba",
+      "confirmPassword": "Tabbatar da Sabuwar Kalmar Sirri",
+      "button": "Sabunta Kalmar Sirri",
+      "updating": "Ana sabuntawa...",
+      "success": "An canza kalmar sirri cikin nasara!",
+      "error": "Ba a iya canza kalmar sirri ba"
     }
   }
 }

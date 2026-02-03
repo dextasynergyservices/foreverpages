@@ -3,26 +3,26 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import { StreamStatus } from "@/generated/prisma";
-import { sendStreamEndedEmail } from "@/lib/livestream-email-service";
 import { getGlobalSocketServer, notifyStreamEnded } from "@/lib/socket/socketServer";
 import { notifySignalingMetadataUpdate } from "@/lib/signaling";
+import { notifyStreamSubscribers, NotificationEvent } from "@/lib/notification-service";
+import log from "@/lib/logger";
 
 /**
  * POST /api/streams/[id]/end
  * End a stream (change status to ENDED)
  */
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id } = (await params) as { id?: string };
-    if (!id) {
+    const { id: streamId } = await params;
+    if (!streamId) {
       return NextResponse.json({ error: "Missing stream id" }, { status: 400 });
     }
-    const streamId = id;
 
     // Check if stream exists and user owns it
     const stream = await prisma.memorialStream.findUnique({
@@ -96,25 +96,23 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     });
 
     // Notify all connected viewers that the stream has ended
-    // Note: Socket server may not be initialized if no clients have connected yet
     try {
       const io = getGlobalSocketServer();
       if (io) {
         notifyStreamEnded(streamId, io);
-        console.log(`✅ Notified viewers that stream ${streamId} has ended`);
+        log.info(`Notified viewers that stream ${streamId} has ended`);
       } else {
-        console.log(
-          `ℹ️ Socket server not initialized yet - viewers will need to refresh to see stream ended`
+        log.debug(
+          `Socket server not initialized yet - viewers will need to refresh to see stream ended`
         );
-        // TODO: Implement alternative notification mechanism (e.g., database polling)
       }
       // Also notify external signaling server about status change
       notifySignalingMetadataUpdate(streamId, {
         status: "ENDED",
         endedAt: updatedStream.endedAt?.toISOString?.() ?? null,
-      }).catch(() => {});
+      }).catch((err) => log.warn("Failed to notify signaling server of stream end", err));
     } catch (error) {
-      console.error("Failed to notify viewers of stream end:", error);
+      log.error("Failed to notify viewers of stream end", error);
       // Don't fail the request if notification fails
     }
 
@@ -129,40 +127,27 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       },
     });
 
-    // Send email notification to memorial owner
-    const memorialName = `${updatedStream.memorial.firstName} ${updatedStream.memorial.lastName}`;
-    const owner = await prisma.user.findUnique({
-      where: { id: stream.memorial.ownerId },
-      select: { email: true, name: true },
+    // Format duration for notifications (e.g., "1h 23m")
+    const hours = Math.floor(actualDuration / 3600);
+    const minutes = Math.floor((actualDuration % 3600) / 60);
+    const durationStr = hours > 0 ? `${hours}h ${minutes}m` : minutes > 0 ? `${minutes}m` : "< 1m";
+
+    // Send notifications to all stream subscribers (async, non-blocking)
+    // This uses the unified notification service which handles:
+    // - Email notifications
+    // - WhatsApp notifications (if user has opted in)
+    // - SMS notifications (if user has opted in)
+    notifyStreamSubscribers(streamId, NotificationEvent.STREAM_ENDED, {
+      duration: durationStr,
+      peakViewers: updatedStream.peakViewers || 0,
+      totalComments: updatedStream._count.comments,
+    }).catch((error) => {
+      log.error("Failed to notify stream subscribers", error);
     });
-
-    if (owner?.email) {
-      // Format duration (e.g., "1h 23m")
-      const hours = Math.floor(actualDuration / 3600);
-      const minutes = Math.floor((actualDuration % 3600) / 60);
-      const durationStr =
-        hours > 0 ? `${hours}h ${minutes}m` : minutes > 0 ? `${minutes}m` : "< 1m";
-
-      // Send email notification (async, non-blocking)
-      sendStreamEndedEmail({
-        recipientEmail: owner.email,
-        recipientName: owner.name || "User",
-        memorialName,
-        streamTitle: updatedStream.title,
-        duration: durationStr,
-        peakViewers: updatedStream.peakViewers || 0,
-        totalComments: updatedStream._count.comments,
-      }).catch((error) => {
-        console.error("Failed to send stream ended email:", error);
-      });
-    }
-
-    // TODO: Send notifications to memorial followers
-    // TODO: Add WhatsApp notifications (Phase 1G)
 
     return NextResponse.json({ stream: updatedStream });
   } catch (error) {
-    console.error("Error ending stream:", error);
+    log.error("Error ending stream", error);
     return NextResponse.json({ error: "Failed to end stream" }, { status: 500 });
   }
 }

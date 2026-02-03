@@ -3,9 +3,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import { StreamStatus } from "@/generated/prisma";
-import { sendStreamLiveEmail } from "@/lib/livestream-email-service";
 import { getGlobalSocketServer, notifyStreamStarted } from "@/lib/socket/socketServer";
 import { notifySignalingMetadataUpdate } from "@/lib/signaling";
+import { notifyStreamSubscribers, NotificationEvent } from "@/lib/notification-service";
+import log from "@/lib/logger";
 
 /**
  * POST /api/streams/[id]/start
@@ -78,41 +79,25 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       notifySignalingMetadataUpdate(streamId, {
         status: "LIVE",
         startedAt: updatedStream.startedAt?.toISOString?.() ?? null,
-      }).catch(() => {});
+      }).catch((err) => log.warn("Failed to notify signaling server of stream start", err));
     } catch (error) {
-      console.error("Failed to notify viewers of stream start:", error);
+      log.error("Failed to notify viewers of stream start", error);
       // Don't fail the request if notification fails
     }
 
-    // Send email notifications to memorial owner (async, non-blocking)
-    const memorialName = `${updatedStream.memorial.firstName} ${updatedStream.memorial.lastName}`;
-    const streamUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/${updatedStream.memorial.slug}`;
-
-    // Get memorial owner email
-    const owner = await prisma.user.findUnique({
-      where: { id: updatedStream.memorial.ownerId },
-      select: { email: true, name: true },
+    // Send notifications to all stream subscribers (async, non-blocking)
+    // This uses the unified notification service which handles:
+    // - Email notifications
+    // - WhatsApp notifications (if user has opted in)
+    // - SMS notifications (if user has opted in)
+    // All based on user notification preferences
+    notifyStreamSubscribers(streamId, NotificationEvent.STREAM_LIVE).catch((error) => {
+      log.error("Failed to notify stream subscribers", error);
     });
-
-    if (owner?.email) {
-      // Send email notification (don't await to avoid blocking the response)
-      sendStreamLiveEmail({
-        recipientEmail: owner.email,
-        recipientName: owner.name || "User",
-        memorialName,
-        streamTitle: updatedStream.title,
-        streamUrl,
-      }).catch((error) => {
-        console.error("Failed to send stream live email:", error);
-      });
-    }
-
-    // TODO: Send notifications to memorial followers (once follower system is implemented)
-    // TODO: Add WhatsApp notifications (Phase 1G)
 
     return NextResponse.json({ stream: updatedStream });
   } catch (error) {
-    console.error("Error starting stream:", error);
+    log.error("Error starting stream", error);
     return NextResponse.json({ error: "Failed to start stream" }, { status: 500 });
   }
 }

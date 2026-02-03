@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { StreamStatus } from "@/generated/prisma";
 import bcrypt from "bcryptjs";
 import { notifySignalingMetadataUpdate } from "@/lib/signaling";
+import log from "@/lib/logger";
 
 /**
  * GET /api/streams/[id]
@@ -103,7 +104,7 @@ export async function GET(req: NextRequest, context: { params?: { id?: string } 
 
     return NextResponse.json({ stream });
   } catch (error) {
-    console.error("Error fetching stream:", error);
+    log.error("Error fetching stream", error);
     return NextResponse.json({ error: "Failed to fetch stream" }, { status: 500 });
   }
 }
@@ -202,12 +203,14 @@ export async function PATCH(req: NextRequest, context: { params?: { id?: string 
     if (updateData.status) notifyPayload.status = updateData.status;
     if (updateData.recordingUrl) notifyPayload.recordingUrl = updateData.recordingUrl;
     if (Object.keys(notifyPayload).length > 0) {
-      notifySignalingMetadataUpdate(streamId, notifyPayload).catch(() => {});
+      notifySignalingMetadataUpdate(streamId, notifyPayload).catch((err) =>
+        log.warn("Failed to notify signaling server of stream update", err)
+      );
     }
 
     return NextResponse.json({ stream: updatedStream });
   } catch (error) {
-    console.error("Error updating stream:", error);
+    log.error("Error updating stream", error);
     return NextResponse.json({ error: "Failed to update stream" }, { status: 500 });
   }
 }
@@ -259,7 +262,7 @@ export async function DELETE(req: NextRequest, context: { params?: { id?: string
         const { deleteStreamRecording } = await import("@/lib/cloudinary/videoUpload");
         await deleteStreamRecording(stream.recordingUrl);
       } catch (error) {
-        console.error("Failed to delete recording from Cloudinary:", error);
+        log.error("Failed to delete recording from Cloudinary", error);
         // Continue with deletion anyway
       }
     }
@@ -271,7 +274,7 @@ export async function DELETE(req: NextRequest, context: { params?: { id?: string
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error deleting stream:", error);
+    log.error("Error deleting stream", error);
     return NextResponse.json({ error: "Failed to delete stream" }, { status: 500 });
   }
 }

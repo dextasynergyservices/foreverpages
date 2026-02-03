@@ -148,34 +148,132 @@ interface UserNotificationPreferences {
   whatsapp: boolean;
   sms: boolean;
   push: boolean;
+  // Granular preferences for event types
+  emailTributes: boolean;
+  emailComments: boolean;
+  emailLivestream: boolean;
+  emailAnniversary: boolean;
+  emailDigest: boolean;
+  smsTributes: boolean;
+  smsLivestream: boolean;
+  smsAnniversary: boolean;
+  whatsappTributes: boolean;
+  whatsappLivestream: boolean;
+  whatsappAnniversary: boolean;
 }
 
 /**
- * Get user notification preferences
- * For now, use default preferences. In future, read from User model.
+ * Get user notification preferences from database
  */
-async function getUserPreferences(): Promise<UserNotificationPreferences> {
-  // TODO: Read from User model fields (emailNotifications, whatsappNotifications, smsNotifications, etc.)
-  // For now, default to email only (WhatsApp and SMS require opt-in)
+async function getUserPreferences(userId: string): Promise<UserNotificationPreferences> {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      notificationsEnabled: true,
+      // Email
+      emailNotifications: true,
+      emailTributes: true,
+      emailComments: true,
+      emailLivestream: true,
+      emailAnniversary: true,
+      emailDigest: true,
+      // SMS
+      smsNotifications: true,
+      smsTributes: true,
+      smsLivestream: true,
+      smsAnniversary: true,
+      phone: true,
+      // WhatsApp
+      whatsappNotifications: true,
+      whatsappNumber: true,
+      whatsappTributes: true,
+      whatsappLivestream: true,
+      whatsappAnniversary: true,
+    },
+  });
 
-  // Future implementation:
-  // const user = await prisma.user.findUnique({
-  //   where: { id: userId },
-  //   select: {
-  //     emailNotifications: true,
-  //     whatsappOptIn: true,
-  //     whatsappNumber: true,
-  //     smsOptIn: true,
-  //     phoneNumber: true,
-  //   },
-  // });
+  // If user not found or notifications globally disabled, return all false
+  if (!user || !user.notificationsEnabled) {
+    return {
+      email: false,
+      whatsapp: false,
+      sms: false,
+      push: false,
+      emailTributes: false,
+      emailComments: false,
+      emailLivestream: false,
+      emailAnniversary: false,
+      emailDigest: false,
+      smsTributes: false,
+      smsLivestream: false,
+      smsAnniversary: false,
+      whatsappTributes: false,
+      whatsappLivestream: false,
+      whatsappAnniversary: false,
+    };
+  }
 
   return {
-    email: true, // Always send email if user has email
-    whatsapp: false, // Requires explicit opt-in + phone number
-    sms: isSMSConfigured(), // Enable if Twilio is configured
-    push: false,
+    // Channel-level preferences
+    email: user.emailNotifications,
+    sms: user.smsNotifications && !!user.phone && isSMSConfigured(),
+    whatsapp: user.whatsappNotifications && !!user.whatsappNumber,
+    push: false, // Push uses separate PushSubscription model
+
+    // Granular email preferences
+    emailTributes: user.emailNotifications && user.emailTributes,
+    emailComments: user.emailNotifications && user.emailComments,
+    emailLivestream: user.emailNotifications && user.emailLivestream,
+    emailAnniversary: user.emailNotifications && user.emailAnniversary,
+    emailDigest: user.emailNotifications && user.emailDigest,
+
+    // Granular SMS preferences
+    smsTributes: user.smsNotifications && user.smsTributes && !!user.phone,
+    smsLivestream: user.smsNotifications && user.smsLivestream && !!user.phone,
+    smsAnniversary: user.smsNotifications && user.smsAnniversary && !!user.phone,
+
+    // Granular WhatsApp preferences
+    whatsappTributes: user.whatsappNotifications && user.whatsappTributes && !!user.whatsappNumber,
+    whatsappLivestream:
+      user.whatsappNotifications && user.whatsappLivestream && !!user.whatsappNumber,
+    whatsappAnniversary:
+      user.whatsappNotifications && user.whatsappAnniversary && !!user.whatsappNumber,
   };
+}
+
+/**
+ * Determine if a notification event should be sent to a specific channel
+ * based on user's granular preferences
+ */
+function shouldSendToChannel(
+  preferences: UserNotificationPreferences,
+  event: NotificationEvent,
+  channel: "email" | "sms" | "whatsapp"
+): boolean {
+  // Check channel-level preference first
+  if (!preferences[channel]) return false;
+
+  // Map events to preference categories
+  switch (event) {
+    case NotificationEvent.STREAM_SCHEDULED:
+    case NotificationEvent.STREAM_LIVE:
+    case NotificationEvent.STREAM_ENDED:
+    case NotificationEvent.RECORDING_READY:
+    case NotificationEvent.RECORDING_EXPIRING:
+    case NotificationEvent.RECORDING_DELETED:
+      // Livestream-related events
+      if (channel === "email") return preferences.emailLivestream;
+      if (channel === "sms") return preferences.smsLivestream;
+      if (channel === "whatsapp") return preferences.whatsappLivestream;
+      break;
+    // Add more cases as new event types are added:
+    // case NotificationEvent.NEW_TRIBUTE:
+    //   if (channel === "email") return preferences.emailTributes;
+    //   ...
+  }
+
+  // Default to channel preference for unmapped events
+  return preferences[channel];
 }
 
 /**
@@ -193,14 +291,14 @@ export async function sendNotification(
   };
 
   try {
-    // Get user info
+    // Get user info including WhatsApp number
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {
         email: true,
         name: true,
-        phone: true, // For SMS notifications
-        // Future: whatsappNumber, whatsappOptIn, smsOptIn, etc.
+        phone: true,
+        whatsappNumber: true,
       },
     });
 
@@ -208,13 +306,18 @@ export async function sendNotification(
       throw new Error(`User ${userId} not found`);
     }
 
-    // Get user preferences
-    const preferences = await getUserPreferences();
+    // Get user preferences from database
+    const preferences = await getUserPreferences(userId);
 
     const recipientName = user.name || "User";
 
+    // Determine if this event type should be sent based on granular preferences
+    const shouldSendEmail = shouldSendToChannel(preferences, event, "email");
+    const shouldSendSMS = shouldSendToChannel(preferences, event, "sms");
+    const shouldSendWhatsApp = shouldSendToChannel(preferences, event, "whatsapp");
+
     // Send email notification
-    if (preferences.email && user.email) {
+    if (shouldSendEmail && user.email) {
       try {
         await sendEmailNotification(user.email, recipientName, event, params);
         result.sentChannels.push(NotificationChannel.EMAIL);
@@ -225,18 +328,18 @@ export async function sendNotification(
     }
 
     // Send WhatsApp notification
-    // if (preferences.whatsapp && user.whatsappNumber) {
-    //   try {
-    //     await sendWhatsAppNotification(user.whatsappNumber, recipientName, event, params);
-    //     result.sentChannels.push(NotificationChannel.WHATSAPP);
-    //   } catch (err) {
-    //     const errorMsg = err instanceof Error ? err.message : "Unknown error";
-    //     result.errors.push({ channel: NotificationChannel.WHATSAPP, error: errorMsg });
-    //   }
-    // }
+    if (shouldSendWhatsApp && user.whatsappNumber) {
+      try {
+        await sendWhatsAppNotification(user.whatsappNumber, recipientName, event, params);
+        result.sentChannels.push(NotificationChannel.WHATSAPP);
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : "Unknown error";
+        result.errors.push({ channel: NotificationChannel.WHATSAPP, error: errorMsg });
+      }
+    }
 
     // Send SMS notification
-    if (preferences.sms && user.phone) {
+    if (shouldSendSMS && user.phone) {
       try {
         await sendSMSNotification(user.phone, recipientName, event, params);
         result.sentChannels.push(NotificationChannel.SMS);
@@ -400,7 +503,6 @@ async function sendEmailNotification(
  * Send WhatsApp notification based on event type
  * Currently unused - will be enabled when WhatsApp opt-in is implemented
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function sendWhatsAppNotification(
   phoneNumber: string,
   name: string,
@@ -555,5 +657,209 @@ async function sendSMSNotification(
 
     default:
       throw new Error(`Unknown notification event: ${event}`);
+  }
+}
+
+/**
+ * Notify all stream subscribers (memorial invitees with ACCEPTED status)
+ * about stream events. This sends to all users who have accepted invitations
+ * to the memorial.
+ */
+export async function notifyStreamSubscribers(
+  streamId: string,
+  event: NotificationEvent,
+  additionalParams?: Record<string, unknown>
+): Promise<{ sent: number; failed: number; total: number }> {
+  try {
+    // Get stream with memorial info
+    const stream = await prisma.memorialStream.findUnique({
+      where: { id: streamId },
+      include: {
+        memorial: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            slug: true,
+            ownerId: true,
+          },
+        },
+      },
+    });
+
+    if (!stream) {
+      console.error(`[notifyStreamSubscribers] Stream ${streamId} not found`);
+      return { sent: 0, failed: 0, total: 0 };
+    }
+
+    const memorialName = `${stream.memorial.firstName} ${stream.memorial.lastName}`;
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const streamUrl = `${baseUrl}/${stream.memorial.slug}?stream=${streamId}`;
+
+    // Build notification params based on event type
+    let params: NotificationParams;
+    switch (event) {
+      case NotificationEvent.STREAM_SCHEDULED:
+        params = {
+          memorialName,
+          streamTitle: stream.title,
+          streamUrl,
+          scheduledFor: stream.scheduledFor || new Date(),
+          ...additionalParams,
+        } as StreamScheduledParams;
+        break;
+
+      case NotificationEvent.STREAM_LIVE:
+        params = {
+          memorialName,
+          streamTitle: stream.title,
+          streamUrl,
+          ...additionalParams,
+        } as StreamLiveParams;
+        break;
+
+      case NotificationEvent.STREAM_ENDED:
+        params = {
+          memorialName,
+          streamTitle: stream.title,
+          duration: (additionalParams?.duration as string) || "Unknown",
+          peakViewers: (additionalParams?.peakViewers as number) || 0,
+          totalComments: (additionalParams?.totalComments as number) || 0,
+          ...additionalParams,
+        } as StreamEndedParams;
+        break;
+
+      case NotificationEvent.RECORDING_READY:
+        params = {
+          memorialName,
+          streamTitle: stream.title,
+          recordingUrl: stream.recordingUrl || streamUrl,
+          expiresAt: stream.recordingDeleteAt || new Date(),
+          ...additionalParams,
+        } as RecordingReadyParams;
+        break;
+
+      case NotificationEvent.RECORDING_EXPIRING:
+        params = {
+          memorialName,
+          streamTitle: stream.title,
+          recordingUrl: stream.recordingUrl || streamUrl,
+          expiresAt: stream.recordingDeleteAt || new Date(),
+          daysRemaining: (additionalParams?.daysRemaining as number) || 7,
+          ...additionalParams,
+        } as RecordingExpiringParams;
+        break;
+
+      case NotificationEvent.RECORDING_DELETED:
+        params = {
+          memorialName,
+          streamTitle: stream.title,
+          deletedAt: new Date(),
+          ...additionalParams,
+        } as RecordingDeletedParams;
+        break;
+
+      default:
+        console.error(`[notifyStreamSubscribers] Unknown event type: ${event}`);
+        return { sent: 0, failed: 0, total: 0 };
+    }
+
+    // Get all users to notify:
+    // 1. Memorial owner
+    // 2. Users who accepted invitations to this memorial
+    const acceptedInvitations = await prisma.invitation.findMany({
+      where: {
+        memorialId: stream.memorial.id,
+        status: "ACCEPTED",
+        invitedUserId: { not: null },
+      },
+      select: { invitedUserId: true },
+    });
+
+    const subscriberUserIds = new Set<string>();
+
+    // Add memorial owner
+    subscriberUserIds.add(stream.memorial.ownerId);
+
+    // Add accepted invitation users
+    for (const inv of acceptedInvitations) {
+      if (inv.invitedUserId) {
+        subscriberUserIds.add(inv.invitedUserId);
+      }
+    }
+
+    const userIds = Array.from(subscriberUserIds);
+    console.log(`[notifyStreamSubscribers] Notifying ${userIds.length} subscribers for ${event}`);
+
+    // Send notifications in batch
+    const results = await sendBatchNotifications(userIds, event, params);
+
+    const sent = results.filter((r) => r.success).length;
+    const failed = results.filter((r) => !r.success).length;
+
+    console.log(
+      `[notifyStreamSubscribers] ${event} complete: ${sent} sent, ${failed} failed, ${userIds.length} total`
+    );
+
+    return { sent, failed, total: userIds.length };
+  } catch (error) {
+    console.error("[notifyStreamSubscribers] Error:", error);
+    return { sent: 0, failed: 0, total: 0 };
+  }
+}
+
+/**
+ * Send stream reminder notifications
+ * Called by cron job or scheduled task
+ */
+export async function sendStreamReminders(streamId: string): Promise<{
+  sent: number;
+  failed: number;
+}> {
+  try {
+    const stream = await prisma.memorialStream.findUnique({
+      where: { id: streamId },
+      include: {
+        memorial: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            slug: true,
+            ownerId: true,
+          },
+        },
+      },
+    });
+
+    if (!stream || !stream.scheduledFor) {
+      console.error(`[sendStreamReminders] Stream ${streamId} not found or not scheduled`);
+      return { sent: 0, failed: 0 };
+    }
+
+    // Don't send reminders if stream already started or ended
+    if (stream.status !== "SCHEDULED") {
+      console.log(`[sendStreamReminders] Stream ${streamId} is not scheduled, skipping reminders`);
+      return { sent: 0, failed: 0 };
+    }
+
+    // Don't send reminder if already sent
+    if (stream.reminderSent) {
+      console.log(`[sendStreamReminders] Reminder already sent for stream ${streamId}`);
+      return { sent: 0, failed: 0 };
+    }
+
+    const result = await notifyStreamSubscribers(streamId, NotificationEvent.STREAM_SCHEDULED);
+
+    // Mark reminder as sent
+    await prisma.memorialStream.update({
+      where: { id: streamId },
+      data: { reminderSent: true },
+    });
+
+    return { sent: result.sent, failed: result.failed };
+  } catch (error) {
+    console.error("[sendStreamReminders] Error:", error);
+    return { sent: 0, failed: 0 };
   }
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendDailyDigests, sendWeeklyDigests } from "@/lib/notificationDigestScheduler";
+import log from "@/lib/logger";
 
 /**
  * POST /api/cron/send-digests
@@ -13,11 +14,15 @@ import { sendDailyDigests, sendWeeklyDigests } from "@/lib/notificationDigestSch
  */
 export async function POST(request: NextRequest) {
   try {
-    // Verify authorization (use a secret token in production)
-    const authHeader = request.headers.get("authorization");
-    const expectedToken = process.env.CRON_SECRET || "your-secret-token";
+    // Verify authorization
+    const cronSecret = process.env.CRON_SECRET;
+    if (!cronSecret) {
+      log.error("CRON_SECRET environment variable is not configured");
+      return NextResponse.json({ error: "Server misconfigured" }, { status: 500 });
+    }
 
-    if (authHeader !== `Bearer ${expectedToken}`) {
+    const authHeader = request.headers.get("authorization");
+    if (authHeader !== `Bearer ${cronSecret}`) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -28,10 +33,10 @@ export async function POST(request: NextRequest) {
     let result;
 
     if (type === "daily") {
-      console.log("Starting daily digest send...");
+      log.info("Starting daily digest send...");
       result = await sendDailyDigests();
     } else if (type === "weekly") {
-      console.log("Starting weekly digest send...");
+      log.info("Starting weekly digest send...");
       result = await sendWeeklyDigests();
     } else {
       return NextResponse.json({ error: "Invalid digest type" }, { status: 400 });
@@ -42,7 +47,7 @@ export async function POST(request: NextRequest) {
       result,
     });
   } catch (error) {
-    console.error("Error in digest cron job:", error);
+    log.error("Error in digest cron job:", error);
     return NextResponse.json({ error: "Failed to send digests" }, { status: 500 });
   }
 }

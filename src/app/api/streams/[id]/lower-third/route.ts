@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { broadcastLowerThird, hideLowerThird } from "@/lib/socket/socketServer";
+import { log } from "@/lib/logger";
 
 export async function POST(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
@@ -31,18 +33,14 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
 
     const config = await request.json();
 
-    // TODO: Implement real-time broadcasting of lower third to viewers
-    // This could be done via:
-    // - WebSocket broadcast to all connected viewers
-    // - Server-Sent Events
-    // - Socket.io rooms
-    // For now, just acknowledge the request
+    // Broadcast lower-third to all connected viewers via Socket.io
+    broadcastLowerThird(streamId, config);
 
-    console.log("Lower third config for stream", streamId, config);
+    log.info(`Lower third applied for stream ${streamId}`);
 
     return NextResponse.json({ success: true, config });
   } catch (error) {
-    console.error("Error applying lower third:", error);
+    log.error("Error applying lower third:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
@@ -74,12 +72,14 @@ export async function DELETE(request: NextRequest, context: { params: Promise<{ 
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    // TODO: Broadcast hide command to viewers
-    console.log("Hiding lower third for stream", streamId);
+    // Broadcast hide command to all connected viewers
+    hideLowerThird(streamId);
+
+    log.info(`Lower third hidden for stream ${streamId}`);
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error hiding lower third:", error);
+    log.error("Error hiding lower third:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

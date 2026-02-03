@@ -87,6 +87,40 @@ const nextConfig = {
         ],
       },
       {
+        // Cache-Control for HTML pages - revalidate often
+        source: "/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=0, must-revalidate",
+          },
+        ],
+      },
+      {
+        // Long cache for static Next.js assets (they have content hashes)
+        source: "/_next/static/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        // Service worker should never be cached
+        source: "/sw.js",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
+          },
+          {
+            key: "Service-Worker-Allowed",
+            value: "/",
+          },
+        ],
+      },
+      {
         // CORS headers for API routes
         source: "/api/:path*",
         headers: [
@@ -108,6 +142,11 @@ const nextConfig = {
           {
             key: "Access-Control-Max-Age",
             value: "86400", // 24 hours
+          },
+          {
+            // Prevent API responses from being cached by browser
+            key: "Cache-Control",
+            value: "no-store, no-cache, must-revalidate, proxy-revalidate",
           },
         ],
       },
