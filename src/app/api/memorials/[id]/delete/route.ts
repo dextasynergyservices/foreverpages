@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../../auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 
 /**
- * DELETE /api/user/memorials/[id]
- * Delete a memorial and its associated user template
- * Requires user to be the owner of the memorial
+ * DELETE /api/memorials/[id]/delete
+ * Delete a memorial from page builder
+ * Requires user to type the memorial slug to confirm deletion
  */
 export async function DELETE(
   request: NextRequest,
@@ -33,7 +33,7 @@ export async function DELETE(
 
     // Parse request body for confirmation
     const body = await request.json();
-    const { confirmationName } = body;
+    const { confirmationSlug } = body;
 
     // Verify memorial exists and user owns it
     const memorial = await prisma.memorial.findUnique({
@@ -62,15 +62,13 @@ export async function DELETE(
       );
     }
 
-    // Validate confirmation - only accept full name (firstName + lastName)
-    const expectedName = `${memorial.firstName} ${memorial.lastName}`.trim();
-
-    if (confirmationName?.trim() !== expectedName) {
+    // Validate confirmation - only accept slug
+    if (confirmationSlug?.trim() !== memorial.slug) {
       return NextResponse.json(
         {
           error: "Bad Request",
           message:
-            "Confirmation name does not match. Please type the full name to confirm deletion.",
+            "Confirmation slug does not match. Please type the memorial slug to confirm deletion.",
         },
         { status: 400 }
       );
