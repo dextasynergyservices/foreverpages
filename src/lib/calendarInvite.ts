@@ -119,10 +119,12 @@ export function generateMemorialCalendarInvite(
   // Generate the ICS content
   const { error, value } = createEvent(event);
 
-  if (error) {
+  if (error || !value) {
     return {
       success: false,
-      error: `Failed to create calendar event: ${error.message}`,
+      error: error
+        ? `Failed to create calendar event: ${error.message}`
+        : "Failed to create calendar event: no ICS content was generated",
     };
   }
 

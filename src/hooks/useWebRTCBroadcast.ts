@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useEffectEvent } from "react";
 import { io, Socket } from "socket.io-client";
 import { PeerConnectionManager } from "@/lib/webrtc/peerManager";
 import { getSocketUrl } from "@/lib/socket/getSocketUrl";
@@ -333,7 +333,7 @@ export function useWebRTCBroadcast({
   }, [localStream, peers]);
 
   // Remove peer connection
-  const removePeerConnection = useCallback((viewerId: string) => {
+  const removePeerConnection = useEffectEvent((viewerId: string) => {
     const peer = peersRef.current.get(viewerId);
     if (peer) {
       console.log("🗑️ Removing peer connection for:", viewerId);
@@ -344,82 +344,79 @@ export function useWebRTCBroadcast({
         return updated;
       });
     }
-  }, []);
+  });
 
   // Create peer connection for a viewer
-  const createPeerConnection = useCallback(
-    (viewerId: string, socketInstance: Socket) => {
-      if (peersRef.current.has(viewerId)) {
-        console.log("⚠️ Peer connection already exists for:", viewerId);
-        return;
+  const createPeerConnection = useEffectEvent((viewerId: string, socketInstance: Socket) => {
+    if (peersRef.current.has(viewerId)) {
+      console.log("⚠️ Peer connection already exists for:", viewerId);
+      return;
+    }
+
+    console.log("🔗 Creating peer connection for viewer:", viewerId);
+
+    const peerConnection = new PeerConnectionManager(
+      true, // isBroadcaster
+      undefined, // onStream (not needed for broadcaster)
+      (error) => {
+        console.error("❌ Peer error for", viewerId, error);
+        onError(`Peer connection error: ${error.message}`);
+        removePeerConnection(viewerId);
+      },
+      () => {
+        // onConnect - peer connection established
+        console.log("✅ Peer connection established for:", viewerId);
+      },
+      () => {
+        // onDisconnect - peer connection lost
+        console.log("🔌 Peer connection lost for:", viewerId);
+        removePeerConnection(viewerId);
       }
+    );
 
-      console.log("🔗 Creating peer connection for viewer:", viewerId);
+    // Set local stream
+    if (localStream) {
+      peerConnection.setLocalStream(localStream);
+    }
 
-      const peerConnection = new PeerConnectionManager(
-        true, // isBroadcaster
-        undefined, // onStream (not needed for broadcaster)
-        (error) => {
-          console.error("❌ Peer error for", viewerId, error);
-          onError(`Peer connection error: ${error.message}`);
-          removePeerConnection(viewerId);
-        },
-        () => {
-          // onConnect - peer connection established
-          console.log("✅ Peer connection established for:", viewerId);
-        },
-        () => {
-          // onDisconnect - peer connection lost
-          console.log("🔌 Peer connection lost for:", viewerId);
-          removePeerConnection(viewerId);
-        }
-      );
+    // Create peer (broadcaster initiates)
+    const peer = peerConnection.createPeerConnection(true);
 
-      // Set local stream
-      if (localStream) {
-        peerConnection.setLocalStream(localStream);
+    // Handle signal events (SDP offer and ICE candidates)
+    peer.on("signal", (signal) => {
+      console.log("📡 Sending signal to viewer:", viewerId, signal.type);
+
+      if (signal.type === "offer") {
+        // Send offer to specific viewer
+        socketInstance.emit("offer", {
+          streamId,
+          offer: signal,
+          targetId: viewerId,
+        });
+      } else if ("candidate" in signal && signal.candidate) {
+        // Send ICE candidate to specific viewer
+        socketInstance.emit("ice-candidate", {
+          streamId,
+          candidate: signal.candidate,
+          targetId: viewerId,
+        });
       }
+    });
 
-      // Create peer (broadcaster initiates)
-      const peer = peerConnection.createPeerConnection(true);
+    // Store peer connection
+    const newPeer: Peer = {
+      id: viewerId,
+      peerConnection,
+    };
 
-      // Handle signal events (SDP offer and ICE candidates)
-      peer.on("signal", (signal) => {
-        console.log("📡 Sending signal to viewer:", viewerId, signal.type);
+    setPeers((prev) => {
+      const updated = new Map(prev);
+      updated.set(viewerId, newPeer);
+      return updated;
+    });
 
-        if (signal.type === "offer") {
-          // Send offer to specific viewer
-          socketInstance.emit("offer", {
-            streamId,
-            offer: signal,
-            targetId: viewerId,
-          });
-        } else if ("candidate" in signal && signal.candidate) {
-          // Send ICE candidate to specific viewer
-          socketInstance.emit("ice-candidate", {
-            streamId,
-            candidate: signal.candidate,
-            targetId: viewerId,
-          });
-        }
-      });
-
-      // Store peer connection
-      const newPeer: Peer = {
-        id: viewerId,
-        peerConnection,
-      };
-
-      setPeers((prev) => {
-        const updated = new Map(prev);
-        updated.set(viewerId, newPeer);
-        return updated;
-      });
-
-      console.log("✅ Peer connection created for:", viewerId);
-    },
-    [localStream, streamId, onError, removePeerConnection]
-  );
+    console.log("✅ Peer connection created for:", viewerId);
+  });
 
   // Get connection stats
   const getConnectionStats = useCallback(async () => {
