@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
-import path from "path";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/route";
 import { validateAndExtractZip } from "@/lib/template/validation";
@@ -400,9 +399,8 @@ async function handleNextJsTemplateUpload(
     const { createTemplateSectionsData, extractSupportedSections, readTemplateManifest } =
       await import("@/lib/template/nextjs-processor");
     const { createPrForTemplate } = await import("@/lib/github/pr");
-    const { processTemplateUpload, prepareFilesForPR } = await import(
-      "@/lib/template/enhanced-upload-handler"
-    );
+    const { processTemplateUpload, prepareFilesForPR, readTemplateConfigData } =
+      await import("@/lib/template/enhanced-upload-handler");
 
     if (!validation.tempDir) {
       return NextResponse.json({ message: "No extracted directory available" }, { status: 500 });
@@ -436,10 +434,9 @@ async function handleNextJsTemplateUpload(
     // Read config.ts to get defaultDesign and customization
     let configData: { defaultDesign?: unknown; customization?: unknown } = {};
     try {
-      const configPath = path.join(validation.tempDir, "config.ts");
-      if (fs.existsSync(configPath)) {
-        const { templateConfig } = await import(configPath);
-        configData = templateConfig || {};
+      const parsedConfig = await readTemplateConfigData(validation.tempDir);
+      if (parsedConfig) {
+        configData = parsedConfig;
       }
     } catch (err) {
       console.warn("Could not load config.ts:", err);
