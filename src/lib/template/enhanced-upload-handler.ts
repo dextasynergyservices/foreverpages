@@ -23,6 +23,11 @@ export interface EnhancedTemplateResult {
   warnings: string[];
 }
 
+export interface TemplateConfigData {
+  defaultDesign?: DesignTokens;
+  customization?: Record<string, unknown>;
+}
+
 /**
  * Process an uploaded template and generate all scaffold files
  */
@@ -192,31 +197,49 @@ function validateManifest(manifest: TemplateManifestJson): {
  * Read design tokens from config.ts if it exists
  */
 async function readDesignTokensFromConfig(templatePath: string): Promise<DesignTokens | null> {
+  const configData = await readTemplateConfigData(templatePath);
+  return configData?.defaultDesign || null;
+}
+
+/**
+ * Read template config data from config.ts without importing the file at runtime.
+ * Turbopack cannot statically analyze a variable import path here.
+ */
+export async function readTemplateConfigData(
+  templatePath: string
+): Promise<TemplateConfigData | null> {
   try {
     const configPath = path.join(templatePath, "config.ts");
     if (!fs.existsSync(configPath)) {
       return null;
     }
 
-    // Read the config file and try to extract defaultDesign
     const content = fs.readFileSync(configPath, "utf-8");
+    const configData: TemplateConfigData = {};
 
-    // Simple regex-based extraction (not perfect but works for standard format)
     const defaultDesignMatch = content.match(
       /defaultDesign\s*:\s*({[\s\S]*?})\s*,?\s*customization/
     );
     if (defaultDesignMatch) {
       try {
-        // Create a function to evaluate the design tokens
-        // This is a simple approach - in production you might want to use AST parsing
-        const evalFn = new Function(`return ${defaultDesignMatch[1]}`);
-        return evalFn() as DesignTokens;
+        const evalFn = new Function(`return (${defaultDesignMatch[1]})`);
+        configData.defaultDesign = evalFn() as DesignTokens;
       } catch {
         console.warn("Could not parse defaultDesign from config.ts");
       }
     }
 
-    return null;
+    const customizationMatch = content.match(/customization\s*:\s*({[\s\S]*?})\s*,?\s*preview/);
+    if (customizationMatch) {
+      try {
+        const evalFn = new Function(`return (${customizationMatch[1]})`);
+        configData.customization = evalFn() as Record<string, unknown>;
+      } catch {
+        console.warn("Could not parse customization from config.ts");
+      }
+    }
+
+    return Object.keys(configData).length > 0 ? configData : null;
   } catch (error) {
     console.warn("Failed to read config.ts:", error);
     return null;
